@@ -1,0 +1,8 @@
+.compilation-results {
+    border-radius: 12px;
+    border: 2px solid #73AD21;
+    padding: 20px; 
+    width: 500px;
+    height: 500px;  
+    color: #73AD21;
+}

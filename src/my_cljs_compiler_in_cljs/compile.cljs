@@ -1,9 +1,6 @@
 (ns my-cljs-compiler-in-cljs.compile
   (:require [cljs.js :as cljs]))
 
-(enable-console-print!)
-
-(print "in compile!" cljs.user)
 ;; create cljs.user
 (set! (.. js/window -cljs -user) #js {})
 

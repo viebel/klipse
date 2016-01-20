@@ -4,9 +4,6 @@
             [om.dom :as dom]
             [cljs.js :as cljs]))
 
-(enable-console-print!)
-
-(print "in compile!")
 ;; create cljs.user
 (set! (.. js/window -cljs -user) #js {})
 

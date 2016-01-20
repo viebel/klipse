@@ -7,3 +7,4 @@
     ))
 
 (enable-console-print!)
+(print "core")

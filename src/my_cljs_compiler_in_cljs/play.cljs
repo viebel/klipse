@@ -1,8 +1,9 @@
 (ns my-cljs-compiler-in-cljs.play
-  (:require [gadjett.core :as g :refer-macros [deftrack]]))
+  (:require [cljs.js :as cljs]) 
+  (:use-macros [gadjett.core :only [deftrack]]))
 
 (defn run []
-  7)
+  8)
 
 
 (deftrack noop[a] a)

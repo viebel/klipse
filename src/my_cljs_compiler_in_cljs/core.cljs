@@ -7,4 +7,4 @@
     ))
 
 (enable-console-print!)
-(print "core")
+(print "T BB bcore")

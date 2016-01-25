@@ -11,5 +11,5 @@ Open the browser [http://localhost:3449](http://localhost:3449)
 
 ## Deploy to Goolge Storage
 ```bash
-gsutil rsync -R local-dir gs://www.example.com
+~/bin/gsutil/gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
 ```

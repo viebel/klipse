@@ -80,27 +80,38 @@
 ;; =============================================================================
 ;; Components
 
-(defn input-ui [compiler {:keys [input]}]
-  (dom/div nil
-    (dom/div nil "Cljs source code")
-    (dom/textarea #js {:rows 20 
-                       :cols 80
-                       :onChange #(process-input compiler (.. % -target -value))})))
+(defn input-ui [compiler]
+  (dom/section nil
+    (dom/img #js {:src "img/cljs.png"
+                  :width 40
+                  :className "what"})
+    (dom/textarea #js {:onChange #(process-input compiler (.. % -target -value))
+                       :autoFocus true})))
 
 (defn compile-cljs-ui [{:keys [compilation]}]
-  (dom/div nil
-    (dom/div nil "Compilation result CLJS:")
-    (dom/div nil compilation)))
-
-(defn evaluate-js-ui [{:keys [evalutation-js]}]
-  (dom/div nil
-    (dom/div nil "Evaluation JS:")
-    (dom/div nil evalutation-js)))
+  (dom/section nil
+    (dom/img #js {:src "img/js.png"
+                  :width 40
+                  :className "what"})
+    (dom/textarea #js {:value compilation
+                       :readOnly true})))
 
 (defn evaluate-clj-ui [{:keys [evalutation-clj]}]
-  (dom/div nil
-    (dom/div nil "Evaluation CLJ:")
-    (dom/div nil evalutation-clj)))
+  (dom/section nil
+    (dom/img #js {:src "img/cljs.png"
+                  :width 40
+                  :className "what eval"})
+    (dom/textarea #js {:value evalutation-clj
+                       :readOnly true})))
+
+(defn evaluate-js-ui [{:keys [evalutation-js]}]
+  (dom/section nil
+    (dom/img #js {:src "img/js.png"
+                  :width 40
+                  :className "what eval"})
+    (dom/textarea #js {:value evalutation-js
+                       :readOnly true})))
+
 
 (defui CompilerUI
   
@@ -112,11 +123,11 @@
   (render [this]
     (as->
       (om/props this) $
-      (dom/div nil
+      (dom/div #js {:className "container"}
         (input-ui this)
         (compile-cljs-ui $)
-        (evaluate-js-ui $)
-        (evaluate-clj-ui $)))))
+        (evaluate-clj-ui $)
+        (evaluate-js-ui $)))))
 
 
 ;; =============================================================================
@@ -133,7 +144,5 @@
     {:state app-state 
      :parser (om/parser {:read read 
                          :mutate mutate})}))
-
-(process-input reconciler "(str \"Hello World!\")")
 
 (om/add-root! reconciler CompilerUI (gdom/getElement "compiler"))

@@ -1,13 +1,44 @@
-.evaluation-results-clj {
-    border: 2px solid blue;
-    color: orange;
-}
-.evaluation-results-js {
-    border: 2px solid blue;
-    color: blue;
+* {
+  box-sizing: border-box;
 }
 
-.compilation-results {
-    border: 2px solid #73AD21;
-    color: #73AD21;
+html, body { 
+  height: 100%; 
+  padding: 0; 
+  margin: 0; 
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
+section { 
+  width: 50%; 
+  height: 50%; 
+  padding: 5px;
+  float: left; 
+  border: solid 2px white;
+  position: relative;
+}
+
+.container {
+  height: 100%;
+  border: solid 5px white;
+}
+
+textarea {
+  width: 100%;
+  height: 100%;
+  resize: none;
+}
+
+.what {
+  position: absolute;
+  bottom: 15px;
+  right:15px;
+  color: darkgrey;
+  font-style: italic;
+  font-size: 20px;
+}
+
+.eval {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
 }

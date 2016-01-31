@@ -1,5 +1,5 @@
 (ns my-cljs-compiler-in-cljs.compiler
-  (:require-macros [gadjett.core :refer [dbg]])
+  (:require-macros [gadjett.core :refer [dbg deftrack]])
   (:require 
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
@@ -13,40 +13,38 @@
 ;; create cljs.user
 (set! (.. js/window -cljs -user) #js {})
 
-(defn _compilation [s]
+(deftrack _compilation [s]
   (cljs/compile-str (cljs/empty-state) s
-    (fn [{:keys [value error]}]
-      (if error
-        (println "compile error: " error)   
-        (if error 
-          (.. error -cause -message)
-          value)))))
+                    (fn [{:keys [value error]}]
+                      (let [status (if error :error :ok)
+                            res (if error 
+                                  (.. error -cause -message)
+                                  value)]
+                        [status res]))
+                    ))
 
-(defn _evaluation-js [s]
+(deftrack _eval [s]
   (cljs/eval-str (cljs/empty-state) s 'test {:eval cljs/js-eval} 
-                 (fn [{:keys [error value]}]
-                   (when error
-                     (println "eval error: " error))
-                   (let [res (if error 
+                 (fn [{:keys [value error]}]
+                   (let [status (if error :error :ok)
+                         res (if error 
                                (.. error -cause -message)
                                value)]
-                     (.stringify js/JSON res nil 4)))))
+                     [status res]))))
 
-(defn _evaluation-clj [s]
-  (cljs/eval-str (cljs/empty-state) s 'test {:eval cljs/js-eval} 
-     (fn [{:keys [value error]}]
-       (when error
-         (println "eval error: " error))
-       (let [res (if error 
-                   (.. error -cause -message)
-                   value)]
-         (str res)))))
+(deftrack _evaluation-js [s]
+  (let [[status res] (_eval s)]
+    [status (.stringify js/JSON res nil 4)]))
+
+(deftrack _evaluation-clj [s]
+  (let [[status res] (_eval s)]
+    [status (str res)]))
 
 
 ;; =============================================================================
 ;; Reads
 
-(defn read [{:keys [state]} key params]
+(deftrack read [{:keys [state]} key params]
   {:value (get @state key "")})
 
 
@@ -67,7 +65,7 @@
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] (swap! state update :evaluation-clj (partial _evaluation-clj value)))})
 
-(defn process-input [compiler s]
+(deftrack process-input [compiler s]
   (om/transact! compiler 
        [(list 'input/save     {:value s})
         (list 'cljs/compile   {:value s})
@@ -78,7 +76,7 @@
 ;; =============================================================================
 ;; Components
 
-(defn input-ui [compiler]
+(deftrack input-ui [compiler]
   (dom/section nil
     (dom/img #js {:src "img/cljs.png"
                   :width 40
@@ -86,29 +84,38 @@
     (dom/textarea #js {:onKeyDown #(when (and (.. % -ctrlKey) (= 13 (.. % -keyCode))) (process-input compiler (.. % -target -value)) (.preventDefault %))
                        :autoFocus true})))
 
-(defn compile-cljs-ui [{:keys [compilation]}]
-  (dom/section nil
-    (dom/img #js {:src "img/js.png"
-                  :width 40
-                  :className "what"})
-    (dom/textarea #js {:value compilation
-                       :readOnly true})))
+(deftrack compile-cljs-ui [{:keys [compilation]}]
+  (let [[status result] compilation
+        status-class (if (= :ok status) "ok" "error")]
+    (dom/section nil
+                 (dom/img #js {:src "img/js.png"
+                               :width 40
+                               :className "what"})
+                 (dom/textarea #js {:value result
+                                    :className status-class
+                                    :readOnly true}))))
 
-(defn evaluate-clj-ui [{:keys [evaluation-clj]}]
-  (dom/section nil
-    (dom/img #js {:src "img/cljs.png"
-                  :width 40
-                  :className "what eval"})
-    (dom/textarea #js {:value evaluation-clj
-                       :readOnly true})))
+(deftrack evaluate-clj-ui [{:keys [evaluation-clj]}]
+  (let [[status result] evaluation-clj
+        status-class (if (= :ok status) "ok" "error")]
+    (dom/section nil
+                 (dom/img #js {:src "img/cljs.png"
+                               :width 40
+                               :className "what eval"})
+                 (dom/textarea #js {:value result
+                                    :className status-class
+                                    :readOnly true}))))
 
-(defn evaluate-js-ui [{:keys [evaluation-js]}]
-  (dom/section nil
-    (dom/img #js {:src "img/js.png"
-                  :width 40
-                  :className "what eval"})
-    (dom/textarea #js {:value evaluation-js
-                       :readOnly true})))
+(deftrack evaluate-js-ui [{:keys [evaluation-js]}]
+  (let [[status result] evaluation-js
+        status-class (if (= :ok status) "ok" "error")]
+    (dom/section nil
+                 (dom/img #js {:src "img/js.png"
+                               :width 40
+                               :className "what eval"})
+                 (dom/textarea #js {:value result
+                                    :className status-class
+                                    :readOnly true}))))
 
 
 (defui CompilerUI

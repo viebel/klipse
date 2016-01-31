@@ -1,4 +1,5 @@
 (ns my-cljs-compiler-in-cljs.compiler
+  (:require-macros [gadjett.core :refer [dbg deftrack]])
   (:require 
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
@@ -11,44 +12,39 @@
 
 ;; create cljs.user
 (set! (.. js/window -cljs -user) #js {})
-(defonce eval-res nil)
 
-(defn _compilation [s]
+(deftrack _compilation [s]
   (cljs/compile-str (cljs/empty-state) s
-    (fn [{:keys [value error]}]
-      (if error
-        (println "compile error: " error)   
-        (if error 
-          (.. error -cause -message)
-          value)))))
+                    (fn [{:keys [value error]}]
+                      (let [status (if error :error :ok)
+                            res (if error 
+                                  (.. error -cause -message)
+                                  value)]
+                        [status res]))
+                    ))
 
-(defn _evaluation-js [s]
+(deftrack _eval [s]
   (cljs/eval-str (cljs/empty-state) s 'test {:eval cljs/js-eval} 
-     (fn [{:keys [value error]}]
-       (if error
-         (println "eval error: " error)
-         (set! eval-res value))
-       (let [res (if error 
-                   (.. error -cause -message)
-                   value)]
-         #_"Not yet available" (str (.stringify js/JSON res nil 4))))))
+                 (fn [{:keys [value error]}]
+                   (let [status (if error :error :ok)
+                         res (if error 
+                               (.. error -cause -message)
+                               value)]
+                     [status res]))))
 
-(defn _evaluation-clj [s]
-  (cljs/eval-str (cljs/empty-state) s 'test {:eval cljs/js-eval} 
-     (fn [{:keys [value error]}]
-       (if error
-         (println "eval error: " error)
-         (set! eval-res value))
-       (let [res (if error 
-                   (.. error -cause -message)
-                   value)]
-         (str res)))))
+(deftrack _evaluation-js [s]
+  (let [[status res] (_eval s)]
+    [status (.stringify js/JSON res nil 4)]))
+
+(deftrack _evaluation-clj [s]
+  (let [[status res] (_eval s)]
+    [status (str res)]))
 
 
 ;; =============================================================================
 ;; Reads
 
-(defn read [{:keys [state]} key params]
+(deftrack read [{:keys [state]} key params]
   {:value (get @state key "")})
 
 
@@ -61,15 +57,15 @@
   {:action (fn [] (swap! state assoc :input value))})
 
 (defmethod mutate 'cljs/compile [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] (swap! state update :compilation #(_compilation value)))})
+  {:action (fn [] (swap! state update :compilation (partial _compilation value)))})
 
 (defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] (swap! state update :evalutation-js #(_evaluation-js value)))})
+  {:action (fn [] (swap! state update :evaluation-js (partial _evaluation-js value)))})
 
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] (swap! state update :evalutation-clj #(_evaluation-clj value)))})
+  {:action (fn [] (swap! state update :evaluation-clj (partial _evaluation-clj value)))})
 
-(defn process-input [compiler s]
+(deftrack process-input [compiler s]
   (om/transact! compiler 
        [(list 'input/save     {:value s})
         (list 'cljs/compile   {:value s})
@@ -80,44 +76,53 @@
 ;; =============================================================================
 ;; Components
 
-(defn input-ui [compiler]
+(deftrack input-ui [compiler]
   (dom/section nil
     (dom/img #js {:src "img/cljs.png"
                   :width 40
                   :className "what"})
-    (dom/textarea #js {:onChange #(process-input compiler (.. % -target -value))
+    (dom/textarea #js {:onKeyDown #(when (and (.. % -ctrlKey) (= 13 (.. % -keyCode))) (process-input compiler (.. % -target -value)) (.preventDefault %))
                        :autoFocus true})))
 
-(defn compile-cljs-ui [{:keys [compilation]}]
-  (dom/section nil
-    (dom/img #js {:src "img/js.png"
-                  :width 40
-                  :className "what"})
-    (dom/textarea #js {:value compilation
-                       :readOnly true})))
+(deftrack compile-cljs-ui [{:keys [compilation]}]
+  (let [[status result] compilation
+        status-class (if (= :ok status) "ok" "error")]
+    (dom/section nil
+                 (dom/img #js {:src "img/js.png"
+                               :width 40
+                               :className "what"})
+                 (dom/textarea #js {:value result
+                                    :className status-class
+                                    :readOnly true}))))
 
-(defn evaluate-clj-ui [{:keys [evalutation-clj]}]
-  (dom/section nil
-    (dom/img #js {:src "img/cljs.png"
-                  :width 40
-                  :className "what eval"})
-    (dom/textarea #js {:value evalutation-clj
-                       :readOnly true})))
+(deftrack evaluate-clj-ui [{:keys [evaluation-clj]}]
+  (let [[status result] evaluation-clj
+        status-class (if (= :ok status) "ok" "error")]
+    (dom/section nil
+                 (dom/img #js {:src "img/cljs.png"
+                               :width 40
+                               :className "what eval"})
+                 (dom/textarea #js {:value result
+                                    :className status-class
+                                    :readOnly true}))))
 
-(defn evaluate-js-ui [{:keys [evalutation-js]}]
-  (dom/section nil
-    (dom/img #js {:src "img/js.png"
-                  :width 40
-                  :className "what eval"})
-    (dom/textarea #js {:value evalutation-js
-                       :readOnly true})))
+(deftrack evaluate-js-ui [{:keys [evaluation-js]}]
+  (let [[status result] evaluation-js
+        status-class (if (= :ok status) "ok" "error")]
+    (dom/section nil
+                 (dom/img #js {:src "img/js.png"
+                               :width 40
+                               :className "what eval"})
+                 (dom/textarea #js {:value result
+                                    :className status-class
+                                    :readOnly true}))))
 
 
 (defui CompilerUI
   
   static om/IQuery
   (query [this] 
-    '[:compilation :evalutation-js :evalutation-clj])
+    '[:compilation :evaluation-js :evaluation-clj])
   
   Object
   (render [this]
@@ -136,13 +141,15 @@
 (defonce app-state (atom
   {:input ""
    :compilation ""
-   :evalutation-js ""
-   :evalutation-clj ""}))
+   :evaluation-js ""
+   :evaluation-clj ""}))
+
+(def parser (om/parser {:read read 
+                        :mutate mutate}))
 
 (def reconciler 
   (om/reconciler 
     {:state app-state 
-     :parser (om/parser {:read read 
-                         :mutate mutate})}))
+     :parser parser}))
 
 (om/add-root! reconciler CompilerUI (gdom/getElement "compiler"))

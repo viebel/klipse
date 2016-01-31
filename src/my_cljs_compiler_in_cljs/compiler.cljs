@@ -1,6 +1,8 @@
 (ns my-cljs-compiler-in-cljs.compiler
-  (:require-macros [gadjett.core :refer [dbg deftrack]])
   (:require 
+    cljsjs.codemirror
+    cljsjs.codemirror.mode.clojure
+    cljsjs.codemirror.addon.edit.matchbrackets
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]
@@ -13,7 +15,7 @@
 ;; create cljs.user
 (set! (.. js/window -cljs -user) #js {})
 
-(deftrack _compilation [s]
+(defn _compilation [s]
   (cljs/compile-str (cljs/empty-state) s
                     (fn [{:keys [value error]}]
                       (let [status (if error :error :ok)
@@ -23,7 +25,7 @@
                         [status res]))
                     ))
 
-(deftrack _eval [s]
+(defn _eval [s]
   (cljs/eval-str (cljs/empty-state) s 'test {:eval cljs/js-eval} 
                  (fn [{:keys [value error]}]
                    (let [status (if error :error :ok)
@@ -32,11 +34,11 @@
                                value)]
                      [status res]))))
 
-(deftrack _evaluation-js [s]
+(defn _evaluation-js [s]
   (let [[status res] (_eval s)]
     [status (.stringify js/JSON res nil 4)]))
 
-(deftrack _evaluation-clj [s]
+(defn _evaluation-clj [s]
   (let [[status res] (_eval s)]
     [status (str res)]))
 
@@ -44,7 +46,7 @@
 ;; =============================================================================
 ;; Reads
 
-(deftrack read [{:keys [state]} key params]
+(defn read [{:keys [state]} key params]
   {:value (get @state key "")})
 
 
@@ -65,7 +67,7 @@
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] (swap! state update :evaluation-clj (partial _evaluation-clj value)))})
 
-(deftrack process-input [compiler s]
+(defn process-input [compiler s]
   (om/transact! compiler 
        [(list 'input/save     {:value s})
         (list 'cljs/compile   {:value s})
@@ -74,45 +76,80 @@
 
 
 ;; =============================================================================
+;; CodeMirror
+
+(def config-editor 
+  {:lineNumbers true
+   :matchBrackets true 
+   :autoCloseBrackets true
+   :mode "clojure"})
+               
+(defn set-option [editor option value]
+  (.setOption editor option value))
+
+(defn get-value 
+  ([editor] (.getValue editor))
+  ([editor sep] (.getValue editor sep)))
+
+(defn ctrl-enter [editor]
+  (js/console.log (.getValue (.getDoc editor))))
+
+(defn create-editor [compiler config]
+  (let [editor (js/CodeMirror.fromTextArea
+                  (js/document.getElementById "code") 
+                  (clj->js config))] 
+    (set-option editor "extraKeys" 
+        #js {"Ctrl-Enter" #(process-input compiler (get-value editor))})))
+
+
+;; =============================================================================
 ;; Components
 
-(deftrack input-ui [compiler]
+(defn logo [status base]
+  (as->
+    (case status
+      :ok "ok"
+      :error "error"
+      "base") $
+    (str "img/" base "-" $ ".png")))
+
+(defn input-ui [compiler]
   (dom/section nil
     (dom/img #js {:src "img/cljs.png"
                   :width 40
                   :className "what"})
-    (dom/textarea #js {:onKeyDown #(when (and (.. % -ctrlKey) (= 13 (.. % -keyCode))) (process-input compiler (.. % -target -value)) (.preventDefault %))
-                       :autoFocus true})))
+    (dom/textarea #js {:autoFocus true
+                       :id "code"})))
 
-(deftrack compile-cljs-ui [{:keys [compilation]}]
+(defn compile-cljs-ui [{:keys [compilation]}]
   (let [[status result] compilation
         status-class (if (= :ok status) "ok" "error")]
     (dom/section nil
                  (dom/img #js {:src "img/js.png"
-                               :width 40
+                               :width 35
                                :className "what"})
                  (dom/textarea #js {:value result
                                     :className status-class
                                     :readOnly true}))))
 
-(deftrack evaluate-clj-ui [{:keys [evaluation-clj]}]
+(defn evaluate-clj-ui [{:keys [evaluation-clj]}]
   (let [[status result] evaluation-clj
         status-class (if (= :ok status) "ok" "error")]
     (dom/section nil
-                 (dom/img #js {:src "img/cljs.png"
+                 (dom/img #js {:src (logo status "cljs")
                                :width 40
-                               :className "what eval"})
+                               :className (str "what " status-class)})
                  (dom/textarea #js {:value result
                                     :className status-class
                                     :readOnly true}))))
 
-(deftrack evaluate-js-ui [{:keys [evaluation-js]}]
+(defn evaluate-js-ui [{:keys [evaluation-js]}]
   (let [[status result] evaluation-js
         status-class (if (= :ok status) "ok" "error")]
     (dom/section nil
-                 (dom/img #js {:src "img/js.png"
-                               :width 40
-                               :className "what eval"})
+                 (dom/img #js {:src (logo status "js")
+                               :width 35
+                               :className (str "what " status-class)})
                  (dom/textarea #js {:value result
                                     :className status-class
                                     :readOnly true}))))
@@ -125,6 +162,10 @@
     '[:compilation :evaluation-js :evaluation-clj])
   
   Object
+  
+  (componentDidMount [this]
+    (create-editor this config-editor))
+   
   (render [this]
     (as->
       (om/props this) $

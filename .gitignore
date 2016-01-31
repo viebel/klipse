@@ -1,5 +1,6 @@
 figwheel_server.log
 resources/public/js/
+public/js/
 target/
 .lein-repl-history
-public/
+*-init.clj

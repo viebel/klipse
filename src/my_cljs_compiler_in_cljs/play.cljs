@@ -1,12 +1,12 @@
 (ns my-cljs-compiler-in-cljs.play
-  (:require [cljs.js :as cljs]) 
-  (:use-macros [gadjett.core :only [deftrack]]))
+  (:use-macros [gadjett.core :only [deftrack]])
+  (:require [gadjett.core :as g :include-macros true]))
 
 (defn run []
-  8)
+  (assert (= 1 3) "blah blah")
+  998)
 
 
 (deftrack noop[a] a)
-(defn mmmmmmmm[])
 (deftrack me[])
 

@@ -2,7 +2,7 @@
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.228"]
-                 [viebel/gadjett "0.1.6"]
+                 [viebel/gadjett "0.1.7"]
                  [im.chit/purnam "0.5.2"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [org.omcljs/om "1.0.0-alpha22"]
@@ -15,7 +15,7 @@
   :clean-targets ["public/js"]
   :plugins [[lein-cljsbuild "1.1.1"]]
   :source-paths ["src"]
-  :cljsbuild {
+  :cljsbuildaaa {; for the moment it doesn't work
               :builds {
                        :production {
                                     :source-paths ["src"]

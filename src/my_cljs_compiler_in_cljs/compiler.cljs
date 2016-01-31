@@ -83,7 +83,7 @@
     (dom/img #js {:src "img/cljs.png"
                   :width 40
                   :className "what"})
-    (dom/textarea #js {:onChange #(process-input compiler (.. % -target -value))
+    (dom/textarea #js {:onKeyDown #(when (and (.. % -ctrlKey) (= 13 (.. % -keyCode))) (process-input compiler (.. % -target -value)) (.preventDefault %))
                        :autoFocus true})))
 
 (defn compile-cljs-ui [{:keys [compilation]}]

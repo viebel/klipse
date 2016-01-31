@@ -12,12 +12,16 @@ lein run -m clojure.main script/figwheel.clj
 ```
 Open the browser [http://localhost:3449](http://localhost:3449)
 
+## Usage
+Insert your code in the top left area.
+Press Ctrl-Enter to evaluate.
+
 ## Deploy to Goolge Storage
 ```bash
 ~/bin/gsutil/gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
 ```
 
-## Explain
+## Explanation
 
 First of all you need an app-state and a parser to read the data.
 

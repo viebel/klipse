@@ -1,4 +1,5 @@
 (ns my-cljs-compiler-in-cljs.compiler
+  (:require-macros [gadjett.core :refer [dbg]])
   (:require 
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
@@ -11,7 +12,6 @@
 
 ;; create cljs.user
 (set! (.. js/window -cljs -user) #js {})
-(defonce eval-res nil)
 
 (defn _compilation [s]
   (cljs/compile-str (cljs/empty-state) s
@@ -24,21 +24,19 @@
 
 (defn _evaluation-js [s]
   (cljs/eval-str (cljs/empty-state) s 'test {:eval cljs/js-eval} 
-     (fn [{:keys [value error]}]
-       (if error
-         (println "eval error: " error)
-         (set! eval-res value))
-       (let [res (if error 
-                   (.. error -cause -message)
-                   value)]
-         #_"Not yet available" (str (.stringify js/JSON res nil 4))))))
+                 (fn [{:keys [error value]}]
+                   (when error
+                     (println "eval error: " error))
+                   (let [res (if error 
+                               (.. error -cause -message)
+                               value)]
+                     (.stringify js/JSON res nil 4)))))
 
 (defn _evaluation-clj [s]
   (cljs/eval-str (cljs/empty-state) s 'test {:eval cljs/js-eval} 
      (fn [{:keys [value error]}]
-       (if error
-         (println "eval error: " error)
-         (set! eval-res value))
+       (when error
+         (println "eval error: " error))
        (let [res (if error 
                    (.. error -cause -message)
                    value)]
@@ -61,13 +59,13 @@
   {:action (fn [] (swap! state assoc :input value))})
 
 (defmethod mutate 'cljs/compile [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] (swap! state update :compilation #(_compilation value)))})
+  {:action (fn [] (swap! state update :compilation (partial _compilation value)))})
 
 (defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] (swap! state update :evalutation-js #(_evaluation-js value)))})
+  {:action (fn [] (swap! state update :evaluation-js (partial _evaluation-js value)))})
 
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] (swap! state update :evalutation-clj #(_evaluation-clj value)))})
+  {:action (fn [] (swap! state update :evaluation-clj (partial _evaluation-clj value)))})
 
 (defn process-input [compiler s]
   (om/transact! compiler 
@@ -96,20 +94,20 @@
     (dom/textarea #js {:value compilation
                        :readOnly true})))
 
-(defn evaluate-clj-ui [{:keys [evalutation-clj]}]
+(defn evaluate-clj-ui [{:keys [evaluation-clj]}]
   (dom/section nil
     (dom/img #js {:src "img/cljs.png"
                   :width 40
                   :className "what eval"})
-    (dom/textarea #js {:value evalutation-clj
+    (dom/textarea #js {:value evaluation-clj
                        :readOnly true})))
 
-(defn evaluate-js-ui [{:keys [evalutation-js]}]
+(defn evaluate-js-ui [{:keys [evaluation-js]}]
   (dom/section nil
     (dom/img #js {:src "img/js.png"
                   :width 40
                   :className "what eval"})
-    (dom/textarea #js {:value evalutation-js
+    (dom/textarea #js {:value evaluation-js
                        :readOnly true})))
 
 
@@ -117,7 +115,7 @@
   
   static om/IQuery
   (query [this] 
-    '[:compilation :evalutation-js :evalutation-clj])
+    '[:compilation :evaluation-js :evaluation-clj])
   
   Object
   (render [this]
@@ -136,13 +134,15 @@
 (defonce app-state (atom
   {:input ""
    :compilation ""
-   :evalutation-js ""
-   :evalutation-clj ""}))
+   :evaluation-js ""
+   :evaluation-clj ""}))
+
+(def parser (om/parser {:read read 
+                        :mutate mutate}))
 
 (def reconciler 
   (om/reconciler 
     {:state app-state 
-     :parser (om/parser {:read read 
-                         :mutate mutate})}))
+     :parser parser}))
 
 (om/add-root! reconciler CompilerUI (gdom/getElement "compiler"))

@@ -27,6 +27,7 @@ textarea {
   width: 100%;
   height: 100%;
   resize: none;
+  outline: none;
 }
 
 .what {
@@ -36,13 +37,9 @@ textarea {
   color: darkgrey;
   font-style: italic;
   font-size: 20px;
-}
-
-.eval {
-  -webkit-filter: grayscale(100%);
-  filter: grayscale(100%);
+  z-index: 1;
 }
 
 .error {
-    color: red;
+    color: #E45F5F;
 }

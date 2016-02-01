@@ -3,6 +3,7 @@
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.addon.edit.matchbrackets
+    [gadjett.core :as gadjett :refer-macros [deftrack]]
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]
@@ -15,7 +16,7 @@
 ;; create cljs.user
 (set! (.. js/window -cljs -user) #js {})
 
-(defn _compilation [s]
+(deftrack _compilation [s]
   (cljs/compile-str (cljs/empty-state) s
                     (fn [{:keys [value error]}]
                       (let [status (if error :error :ok)
@@ -25,20 +26,22 @@
                         [status res]))
                     ))
 
-(defn _eval [s]
+(deftrack _eval [s]
   (cljs/eval-str (cljs/empty-state) s 'test {:eval cljs/js-eval} 
                  (fn [{:keys [value error]}]
                    (let [status (if error :error :ok)
                          res (if error 
                                (.. error -cause -message)
-                               value)]
+                               (do
+                                 (.log js/console value)
+                                 value))]
                      [status res]))))
 
-(defn _evaluation-js [s]
+(deftrack _evaluation-js [s]
   (let [[status res] (_eval s)]
     [status (.stringify js/JSON res nil 4)]))
 
-(defn _evaluation-clj [s]
+(deftrack _evaluation-clj [s]
   (let [[status res] (_eval s)]
     [status (str res)]))
 
@@ -67,7 +70,7 @@
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] (swap! state update :evaluation-clj (partial _evaluation-clj value)))})
 
-(defn process-input [compiler s]
+(deftrack process-input [compiler s]
   (om/transact! compiler 
        [(list 'input/save     {:value s})
         (list 'cljs/compile   {:value s})

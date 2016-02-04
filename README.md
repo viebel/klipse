@@ -3,14 +3,14 @@
 ## Run Locally
 
 ```bash
-rlwrap lein run -m clojure.main script/figwheel.clj
+rlwrap lein figwheel
 ```
 or 
 
 ```bash
-lein run -m clojure.main script/figwheel.clj
+lein figwheel
 ```
-Open the browser [http://localhost:3449](http://localhost:3449)
+Open the browser [http://localhost:5014](http://localhost:5014)
 
 ## Usage
 Insert your code in the top left area.

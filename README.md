@@ -23,10 +23,13 @@ Press Ctrl-Enter to evaluate.
 
 ## Contribution
 
+- [x] nice design (4 text areas)
+- [x] code mirror
 - [ ] bigger fonts and logos
 - [ ] input field should not be emptied on reload (compilation)
 - [ ] display compilation warnings
 - [ ] compile into a single `js` file
+- [ ] history
 
 
 ## Explanation

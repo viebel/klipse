@@ -30,6 +30,7 @@ Press Ctrl-Enter to evaluate.
 - [ ] display compilation warnings
 - [ ] compile into a single `js` file
 - [ ] history
+- [ ] history in localStorage
 
 
 ## Explanation

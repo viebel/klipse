@@ -1,4 +1,4 @@
-(ns my-cljs-compiler-in-cljs.compile
+(ns klipse.compile
   (:require [cljs.js :as cljs]))
 
 ;; create cljs.user

@@ -1,4 +1,4 @@
-(defproject my-cljs-compiler-in-cljs "0.1.0"
+(defproject klipse "0.1.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.228"]
@@ -24,7 +24,7 @@
                        :dev {
                              :figwheel true
                              :source-paths ["src"]
-                             :compiler {:main "my-cljs-compiler-in-cljs.core"
+                             :compiler {:main "klipse.core"
                                         :asset-path "js"
                                         :output-to "resources/public/dev/js/main.js"
                                         :output-dir "resources/public/dev/js"
@@ -34,7 +34,7 @@
                        :figwheel {
                                   :figwheel true
                                   :source-paths ["src"]
-                                  :compiler {:main "my-cljs-compiler-in-cljs.core"
+                                  :compiler {:main "klipse.core"
                                              :asset-path "js"
                                              :output-to "resources/public/js/main.js"
                                              :output-dir "resources/public/js"

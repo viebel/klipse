@@ -1,4 +1,4 @@
-# my-cljs-compiler-in-cljs
+# klipse
 
 ## Run Locally
 
@@ -53,7 +53,7 @@ First of all you need an app-state and a parser to read the data.
 We can test the read function in the repl:
 
 ```bash
-(in-ns 'my-cljs-compiler-in-cljs.compiler)
+(in-ns 'klipse.compiler)
 (my-parser {:state app-state} '[:input :compilation :evalutation-js :evalutation-clj])
 ```
 
@@ -94,7 +94,7 @@ So now create a simple mutate function:
 ```
 
 ```bash
-(in-ns 'my-cljs-compiler-in-cljs.compiler)
+(in-ns 'klipse.compiler)
 (om/transact! reconciler '[(input/save {:value "Hellooooo input!"})
                            (cljs/compile {:value "Hellooooo compile!"})
                            (js/eval {:value "Hellooooo js!"})

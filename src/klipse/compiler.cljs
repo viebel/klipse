@@ -1,4 +1,4 @@
-(ns my-cljs-compiler-in-cljs.compiler
+(ns klipse.compiler
   (:require 
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure

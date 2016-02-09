@@ -21,6 +21,18 @@ Press Ctrl-Enter to evaluate.
 ~/bin/gsutil/gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
 ```
 
+## Contribution
+
+- [x] nice design (4 text areas)
+- [x] code mirror
+- [ ] bigger fonts and logos
+- [ ] input field should not be emptied on reload (compilation)
+- [ ] display compilation warnings
+- [ ] compile into a single `js` file
+- [ ] history
+- [ ] history in localStorage
+
+
 ## Explanation
 
 First of all you need an app-state and a parser to read the data.

@@ -21,6 +21,16 @@
              :server-port 5014}
   :cljsbuild {
               :builds {
+                       :dev {
+                             :figwheel true
+                             :source-paths ["src"]
+                             :compiler {:main "my-cljs-compiler-in-cljs.core"
+                                        :asset-path "js"
+                                        :output-to "resources/public/dev/js/main.js"
+                                        :output-dir "resources/public/dev/js"
+                                        ;:elide-asserts true
+                                        :optimizations :whitespace
+                                        :verbose true}}
                        :figwheel {
                                   :figwheel true
                                   :source-paths ["src"]

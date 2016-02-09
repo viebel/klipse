@@ -4,4 +4,3 @@
     [klipse.play]))
 
 (enable-console-print!)
-(print "T BB bcore")

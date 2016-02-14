@@ -4,3 +4,4 @@
     [klipse.play]))
 
 (enable-console-print!)
+(print "core")

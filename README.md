@@ -18,6 +18,7 @@ Press Ctrl-Enter to evaluate.
 
 ## Deploy to Goolge Storage
 ```bash
+lein cljsbuild once dev
 ~/bin/gsutil/gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
 ```
 
@@ -25,6 +26,7 @@ Press Ctrl-Enter to evaluate.
 
 - [x] nice design (4 text areas)
 - [x] code mirror
+- [x] ctrl-enter to compile
 - [ ] keep state in localStorage
 - [ ] code mirror for js output
 - [ ] bigger fonts and logos

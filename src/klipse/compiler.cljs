@@ -2,6 +2,7 @@
   (:require 
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
+    cljsjs.codemirror.mode.javascript
     cljsjs.codemirror.addon.edit.matchbrackets
     [gadjett.core :as gadjett :refer-macros [deftrack]]
     [goog.dom :as gdom]
@@ -32,9 +33,7 @@
                    (let [status (if error :error :ok)
                          res (if error 
                                (.. error -cause -message)
-                               (do
-                                 (.log js/console value)
-                                 value))]
+                               value)]
                      [status res]))))
 
 (deftrack _evaluation-js [s]
@@ -81,7 +80,7 @@
 ;; =============================================================================
 ;; CodeMirror
 
-(def config-editor 
+(def cljs-config 
   {:lineNumbers true
    :matchBrackets true 
    :autoCloseBrackets true
@@ -90,19 +89,59 @@
 (defn set-option [editor option value]
   (.setOption editor option value))
 
-(defn get-value 
-  ([editor] (.getValue editor))
-  ([editor sep] (.getValue editor sep)))
+(defn get-value [editor] 
+  (.getValue editor))
 
-(defn ctrl-enter [editor]
-  (js/console.log (.getValue (.getDoc editor))))
+(defn set-value [editor value] 
+  (.setValue editor value)
+  editor)
 
-(defn create-editor [compiler config]
+(defn select-all [editor]
+  (->
+    (.-commands js/CodeMirror)
+    (.selectAll editor))
+  editor)
+
+(defn goto-end [editor]
+  (->
+    (.-commands js/CodeMirror)
+    (.goDocEnd editor))
+  editor)
+
+(defn auto-format [editor]
+  (js/console.log "mirsouflade")
+  (select-all editor)
+  (let [from (.getCursor editor true)
+        to (.getCursor editor false)]
+    (.autoFormatRange editor from to))
+  (goto-end editor)
+  editor)
+
+(defn auto-indent [editor]
+  (select-all editor)
+  (let [from (.getCursor editor true)
+        to (.getCursor editor false)]
+    (.autoIndentRange editor from to))
+  (goto-end editor)
+  editor)
+
+(defn cljs-editor [compiler]
   (let [editor (js/CodeMirror.fromTextArea
-                  (js/document.getElementById "code") 
-                  (clj->js config))] 
+                  (js/document.getElementById "cljs-code") 
+                  (clj->js cljs-config))] 
     (set-option editor "extraKeys" 
         #js {"Ctrl-Enter" #(process-input compiler (get-value editor))})))
+
+(def js-config 
+  {:lineNumbers true
+   :matchBrackets true 
+   :autoCloseBrackets true
+   :mode "javascript"})
+
+(defn js-editor [compiler]
+  (js/CodeMirror.fromTextArea
+    (js/document.getElementById "js-code") 
+    (clj->js js-config)))
 
 
 ;; =============================================================================
@@ -116,24 +155,51 @@
       "base") $
     (str "img/" base "-" $ ".png")))
 
-(defn input-ui [compiler]
-  (dom/section nil
-    (dom/img #js {:src "img/cljs.png"
-                  :width 40
-                  :className "what"})
-    (dom/textarea #js {:autoFocus true
-                       :id "code"})))
-
-(defn compile-cljs-ui [{:keys [compilation]}]
-  (let [[status result] compilation
-        status-class (if (= :ok status) "ok" "error")]
+(defui InputCljsUI
+  static om/IQuery
+  (query [this])
+  
+  Object
+  
+  (componentDidMount [this]
+    (cljs-editor this))
+   
+  (render [this]
     (dom/section nil
-                 (dom/img #js {:src "img/js.png"
-                               :width 35
-                               :className "what"})
-                 (dom/textarea #js {:value result
-                                    :className status-class
-                                    :readOnly true}))))
+      (dom/img #js {:src "img/cljs.png"
+                    :width 40
+                    :className "what"})
+      (dom/textarea #js {:autoFocus true
+                         :id "cljs-code"}))))
+
+(def input-cljs-ui (om/factory InputCljsUI))
+
+(defui CompileCljsUI
+  Object
+  
+  (componentDidMount [this]
+    (om/set-state! this {:editor (js-editor this)}))
+  
+  (componentDidUpdate [this prev-props prev-state]
+    (let [[status result] (:compilation (om/props this))]
+      (->>
+        (if (= :ok status) result " ")
+        (set-value (om/get-state this :editor))
+        (auto-format)
+        (auto-indent))))
+   
+  (render [this]
+    (let [[status _] (:compilation (om/props this))
+          status-class (if (= :ok status) "ok" "error")]
+      (dom/section nil
+                   (dom/img #js {:src "img/js.png"
+                                 :width 35
+                                 :className "what"})
+                   (dom/textarea #js {:className status-class
+                                      :readOnly true
+                                      :id "js-code"})))))
+
+(def compile-cljs-ui (om/factory CompileCljsUI))
 
 (defn evaluate-clj-ui [{:keys [evaluation-clj]}]
   (let [[status result] evaluation-clj
@@ -162,18 +228,16 @@
   
   static om/IQuery
   (query [this] 
-    '[:compilation :evaluation-js :evaluation-clj])
+     '[:compilation
+       :evaluation-js 
+       :evaluation-clj])
   
   Object
-  
-  (componentDidMount [this]
-    (create-editor this config-editor))
-   
   (render [this]
     (as->
       (om/props this) $
       (dom/div #js {:className "container"}
-        (input-ui this)
+        (input-cljs-ui)
         (compile-cljs-ui $)
         (evaluate-clj-ui $)
         (evaluate-js-ui $)))))

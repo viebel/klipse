@@ -25,10 +25,12 @@ Press Ctrl-Enter to evaluate.
 
 - [x] nice design (4 text areas)
 - [x] code mirror
+- [ ] keep state in localStorage
+- [ ] code mirror for js output
 - [ ] bigger fonts and logos
 - [ ] input field should not be emptied on reload (compilation)
 - [ ] display compilation warnings
-- [ ] compile into a single `js` file
+- [x] compile into a single `js` file
 - [ ] history
 - [ ] history in localStorage
 

@@ -24,6 +24,12 @@
   background-color: white; /* The little square between H and V scrollbars */
 }
 
+/* PLACEHOLDER */
+
+.CodeMirror pre.CodeMirror-placeholder { 
+  color: #999; 
+}
+
 /* GUTTER */
 
 .CodeMirror-gutters {

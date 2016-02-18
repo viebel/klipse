@@ -3,6 +3,7 @@
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.addon.edit.matchbrackets
+    cljsjs.codemirror.addon.display.placeholder
     [gadjett.core :as gadjett :refer-macros [deftrack]]
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
@@ -122,7 +123,8 @@
                   :width 40
                   :className "what"})
     (dom/textarea #js {:autoFocus true
-                       :id "code"})))
+                       :id "code"
+                       :placeholder ";; Press Ctrl-Enter to evaluate..."})))
 
 (defn compile-cljs-ui [{:keys [compilation]}]
   (let [[status result] compilation

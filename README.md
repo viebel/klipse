@@ -21,6 +21,7 @@ Press Ctrl-Enter to evaluate.
 - [x] compile into a single `js` file
 - [ ] history
 - [ ] history in localStorage
+- [ ] receives cljs code as a URL parameter
 
 ## Run Locally
 

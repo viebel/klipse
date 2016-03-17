@@ -4,13 +4,7 @@
 Insert your code in the top left area.
 Press Ctrl-Enter to evaluate.
 
-## Deploy to Goolge Storage
 
-Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
-```bash
-lein cljsbuild once dev
-gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
-```
 
 ## Contribution
 
@@ -411,4 +405,20 @@ and our 4 textareas
                                     :readOnly true}))))
 ```
 
+## Deploy to Goolge Storage
+
+Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
+
+There is currenlty a bug on clojurescript with self-hosting and compilation :optimizations :whitespace. The issue is fixed in clojurescript github repository version `1.8.33` but not yet deployed. 
+One must build cljs from the source.
+
+```bash
+lein cljsbuild once dev
+```
+Test that `dev` build works properly => Open the browser [http://localhost:5014/index-dev.html](http://localhost:5014/index-dev.html)
+
+
+```bash
+gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
+```
 Go to [http://localhost:3449/](http://localhost:3449/), you have an awesome clojurescript compiler.

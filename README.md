@@ -32,7 +32,7 @@ or
 ```bash
 lein figwheel
 ```
- Open the browser [http://localhost:5014](http://localhost:5014)
+ Open the browser [http://localhost:5014/index-dbg.html](http://localhost:5014/index-dbg.html)
  
  
 ## Tutorial

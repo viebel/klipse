@@ -22,6 +22,19 @@ Press Ctrl-Enter to evaluate.
 - [ ] history
 - [ ] history in localStorage
 
+## Run Locally
+
+```bash
+rlwrap lein figwheel
+```
+or 
+
+```bash
+lein figwheel
+```
+ Open the browser [http://localhost:5014](http://localhost:5014)
+ 
+ 
 ## Tutorial
 
 Tutorial Summary

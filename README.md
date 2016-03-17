@@ -5,8 +5,11 @@ Insert your code in the top left area.
 Press Ctrl-Enter to evaluate.
 
 ## Deploy to Goolge Storage
+
+Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
 ```bash
-~/bin/gsutil/gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
+lein cljsbuild once dev
+gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
 ```
 
 ## Contribution

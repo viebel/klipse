@@ -405,6 +405,8 @@ and our 4 textareas
                                     :readOnly true}))))
 ```
 
+Go to [http://localhost:3449/](http://localhost:3449/), you have an awesome clojurescript compiler.
+
 ## Deploy to Goolge Storage
 
 Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
@@ -421,4 +423,3 @@ Test that `dev` build works properly => Open the browser [http://localhost:5014/
 ```bash
 gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
 ```
-Go to [http://localhost:3449/](http://localhost:3449/), you have an awesome clojurescript compiler.

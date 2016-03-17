@@ -5,3 +5,4 @@ resources/public/prod
 target/
 .lein-repl-history
 *-init.clj
+*.swp

@@ -48,9 +48,6 @@ Read [KLIPSE Magic](https://github.com/viebel/klipse/blob/master/tutorial.md) to
 
 Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
 
-There is currenlty a bug on clojurescript with self-hosting and compilation :optimizations :whitespace. The issue is fixed in clojurescript github repository version `1.8.33` but not yet deployed. 
-One must build cljs from the source.
-
 ```bash
 lein cljsbuild once dev
 ```

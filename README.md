@@ -1,4 +1,4 @@
-# klipse
+# KLIPSE
 
 KLIPSE is live [here](http://app.gadjett.com/cljs_compiler/index.html).
 

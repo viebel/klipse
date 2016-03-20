@@ -17,6 +17,7 @@ Press Ctrl-Enter to evaluate.
 
 - [x] nice design (4 text areas)
 - [x] code mirror
+- [ ] cljs code from url parameter
 - [ ] keep state in localStorage
 - [ ] code mirror for js output
 - [ ] bigger fonts and logos

@@ -1,8 +1,11 @@
 # klipse
 
 ## Usage
+
+Introductory blog post: [KLIPSE: why? what? how?](http://raphaelboukara.github.io/clojure/2016/03/17/klipse.html)
 Insert your code in the top left area.
 Press Ctrl-Enter to evaluate.
+
 
 
 

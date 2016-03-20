@@ -1,5 +1,7 @@
 # klipse
 
+KLIPSE is live [here](http://app.gadjett.com/cljs_compiler/index.html).
+
 ## Usage
 
 Introductory blog post: [KLIPSE: why? what? how?](http://raphaelboukara.github.io/clojure/2016/03/17/klipse.html)

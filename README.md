@@ -1,6 +1,6 @@
 # KLIPSE
 
-KLIPSE is live [here](http://app.gadjett.com/cljs_compiler/index.html).
+KLIPSE is live [here](http://app.gadjett.com/cljs_compiler/index-dev.html).
 
 ## Usage
 

@@ -126,7 +126,7 @@
                (dom/textarea #js {:autoFocus true
                                   :value input
                                   :id "code"
-                                  :placeholder ";; Press Ctrl-Enter to evaluate..."})))
+                                  :placeholder ";; Write your clojurescript expression and press Ctrl-Enter to experiment the magic..."})))
 
 (defn compile-cljs-ui [{:keys [compilation]}]
   (let [[status result] compilation
@@ -137,6 +137,7 @@
                                :className "what"})
                  (dom/textarea #js {:value result
                                     :className status-class
+                                    :placeholder ";; Press Ctrl-Enter to transpile..."
                                     :readOnly true}))))
 
 (defn evaluate-clj-ui [{:keys [evaluation-clj]}]
@@ -148,6 +149,7 @@
                                :className (str "what " status-class)})
                  (dom/textarea #js {:value result
                                     :className status-class
+                                    :placeholder ";; Press Ctrl-Enter to eval in clojure..."
                                     :readOnly true}))))
 
 (defn evaluate-js-ui [{:keys [evaluation-js]}]
@@ -159,6 +161,7 @@
                                :className (str "what " status-class)})
                  (dom/textarea #js {:value result
                                     :className status-class
+                                    :placeholder ";; Press Ctrl-Enter to eval in js..."
                                     :readOnly true}))))
 
 

@@ -29,11 +29,13 @@ Press Ctrl-Enter to evaluate.
 
 - [x] nice design (4 text areas)
 - [x] code mirror
-- [ ] cljs code from url parameter
+- [x] cljs code from url parameter
 - [ ] keep state in localStorage
 - [ ] code mirror for js output
+- [ ] make sure the js output is not hidden by the github banner
 - [ ] bigger fonts and logos
-- [ ] input field should not be emptied on reload (compilation)
+- [ ] resizable textareas
+- [x] input field should not be emptied on reload (compilation)
 - [ ] display compilation warnings
 - [x] compile into a single `js` file
 - [ ] history

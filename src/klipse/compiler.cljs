@@ -187,12 +187,13 @@
               (om/props this) $
               (dom/div #js {:className "container"}
                        (input-ui this cljs_in full-width)
+                       (when-not eval_only
+                         (compile-cljs-ui $ full-width))
                        (when-not js_only
                          (evaluate-clj-ui $ full-width))
                        (when-not (or eval_only js_only)
                          (evaluate-js-ui $ full-width))
-                       (when-not eval_only
-                         (compile-cljs-ui $ full-width)))))))
+                       )))))
 
 
 ;; =============================================================================

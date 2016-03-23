@@ -68,7 +68,7 @@ lein cljsbuild once dev
 
 Test that `dev` build works properly => Open the browser [http://localhost:5014/index-dev.html](http://localhost:5014/index-dev.html)
 
-####1. Deploy
+####3. Deploy
 
 Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
 

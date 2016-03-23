@@ -16,7 +16,7 @@ Basically, [KLIPSE](http://app.gadjett.com/cljs_compiler/index-dev.html) is made
 
 ## Usage
 
-Introductory blog post: [KLIPSE: why? what? how?](http://raphaelboukara.github.io/clojure/2016/03/17/klipse.html)
+Here is an introductory blog post: [KLIPSE: why? what? how?](http://raphaelboukara.github.io/clojure/2016/03/17/klipse.html)
 
 
 Insert your code in the top left area.

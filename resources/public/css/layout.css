@@ -9,8 +9,15 @@ html, body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
-section { 
-  width: 50%; 
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 50%;
+}
+
+section {
   height: 50%; 
   padding: 5px;
   float: left; 

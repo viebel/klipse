@@ -5,7 +5,7 @@
     cljsjs.codemirror.addon.edit.matchbrackets
     cljsjs.codemirror.addon.display.placeholder
     [klipse.utils :refer [url-parameters]]
-    [gadjett.core :as gadjett :refer-macros [deftrack]]
+    [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]
@@ -118,8 +118,9 @@
       "base") $
     (str "img/" base "-" $ ".png")))
 
-(defn input-ui [compiler input]
-  (dom/section nil
+(defn input-ui [compiler input full-width?]
+  (dom/section #js {:id "input-ui"
+                    :className (if full-width? "full-width" "half-width")}
                (dom/img #js {:src "img/cljs.png"
                              :width 40
                              :className "what"})
@@ -128,10 +129,11 @@
                                   :id "code"
                                   :placeholder ";; Write your clojurescript expression and press Ctrl-Enter to experiment the magic..."})))
 
-(defn compile-cljs-ui [{:keys [compilation]}]
+(defn compile-cljs-ui [{:keys [compilation]} full-width?]
   (let [[status result] compilation
         status-class (if (= :ok status) "ok" "error")]
-    (dom/section nil
+    (dom/section #js {:id "compile-cljs-ui"
+                      :className (if full-width? "full-width" "half-width")}
                  (dom/img #js {:src "img/js.png"
                                :width 35
                                :className "what"})
@@ -140,10 +142,11 @@
                                     :placeholder ";; Press Ctrl-Enter to transpile..."
                                     :readOnly true}))))
 
-(defn evaluate-clj-ui [{:keys [evaluation-clj]}]
+(defn evaluate-clj-ui [{:keys [evaluation-clj]} full-width?]
   (let [[status result] evaluation-clj
         status-class (if (= :ok status) "ok" "error")]
-    (dom/section nil
+    (dom/section #js {:id "evaluate-clj-ui"
+                      :className (if full-width? "full-width" "half-width")}
                  (dom/img #js {:src (logo status "cljs")
                                :width 40
                                :className (str "what " status-class)})
@@ -152,10 +155,11 @@
                                     :placeholder ";; Press Ctrl-Enter to eval in clojure..."
                                     :readOnly true}))))
 
-(defn evaluate-js-ui [{:keys [evaluation-js]}]
+(defn evaluate-js-ui [{:keys [evaluation-js]} full-width?]
   (let [[status result] evaluation-js
         status-class (if (= :ok status) "ok" "error")]
-    (dom/section nil
+    (dom/section #js {:id "evaluate-js-ui"
+                      :className (if full-width? "full-width" "half-width")}
                  (dom/img #js {:src (logo status "js")
                                :width 35
                                :className (str "what " status-class)})
@@ -166,24 +170,27 @@
 
 
 (defui CompilerUI
-  
+
   static om/IQuery
   (query [this] 
-    '[:compilation :evaluation-js :evaluation-clj])
-  
+         '[:compilation :evaluation-js :evaluation-clj])
+
   Object
-  
+
   (componentDidMount [this]
-    (create-editor this config-editor))
-   
+                     (create-editor this config-editor))
+
   (render [this]
-    (as->
-      (om/props this) $
-      (dom/div #js {:className "container"}
-        (input-ui this (:cljs_in (url-parameters)))
-        (compile-cljs-ui $)
-        (evaluate-clj-ui $)
-        (evaluate-js-ui $)))))
+          (let [{:keys [eval_only cljs_in]} (url-parameters)]
+            (as->
+              (om/props this) $
+              (dom/div #js {:className "container"}
+                       (input-ui this cljs_in eval_only)
+                       (evaluate-clj-ui $ eval_only)
+                       (when-not eval_only
+                         (evaluate-js-ui $ false))
+                       (when-not eval_only
+                         (compile-cljs-ui $ false)))))))
 
 
 ;; =============================================================================

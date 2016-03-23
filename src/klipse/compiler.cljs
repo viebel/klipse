@@ -181,16 +181,18 @@
                      (create-editor this config-editor))
 
   (render [this]
-          (let [{:keys [eval_only cljs_in]} (url-parameters)]
+          (let [{:keys [js_only eval_only cljs_in]} (url-parameters)
+                full-width (or js_only eval_only)]
             (as->
               (om/props this) $
               (dom/div #js {:className "container"}
-                       (input-ui this cljs_in eval_only)
-                       (evaluate-clj-ui $ eval_only)
+                       (input-ui this cljs_in full-width)
+                       (when-not js_only
+                         (evaluate-clj-ui $ full-width))
+                       (when-not (or eval_only js_only)
+                         (evaluate-js-ui $ full-width))
                        (when-not eval_only
-                         (evaluate-js-ui $ false))
-                       (when-not eval_only
-                         (compile-cljs-ui $ false)))))))
+                         (compile-cljs-ui $ full-width)))))))
 
 
 ;; =============================================================================

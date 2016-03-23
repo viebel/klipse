@@ -2,6 +2,12 @@
 
 KLIPSE is live [here](http://app.gadjett.com/cljs_compiler/index-dev.html).
 
+And it looks like this:
+
+
+![KLIPSE screenshot](http://raphaelboukara.github.io/assets/hello_klipse.png "KLIPSE screenshot")
+
+
 ## Usage
 
 Introductory blog post: [KLIPSE: why? what? how?](http://raphaelboukara.github.io/clojure/2016/03/17/klipse.html)

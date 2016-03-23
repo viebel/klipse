@@ -35,6 +35,7 @@ Press Ctrl-Enter to evaluate.
 - [ ] make sure the js output is not hidden by the github banner
 - [ ] bigger fonts and logos
 - [ ] resizable textareas
+- [ ] deletable textareas (Orel's idea)
 - [x] input field should not be emptied on reload (compilation)
 - [ ] display compilation warnings
 - [x] compile into a single `js` file

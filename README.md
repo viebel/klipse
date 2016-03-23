@@ -7,6 +7,12 @@ And it looks like this:
 
 ![KLIPSE screenshot](http://raphaelboukara.github.io/assets/hello_klipse.png "KLIPSE screenshot")
 
+Basically, [KLIPSE][app-url] is made of 4 rectangles:
+
+1. Top left rectangle: you insert your cljs code
+2. Top right rectangle: you see the generated javascript code from the cljs code
+3. Bottom left rectangle: you see the evaluation of the cljs code as a clojure object
+4. Bottom right rectangle: you see the evaluation of the cljs code as a js object
 
 ## Usage
 

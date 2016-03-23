@@ -4,6 +4,7 @@
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.addon.edit.matchbrackets
     cljsjs.codemirror.addon.display.placeholder
+    [klipse.utils :refer [url-parameters]]
     [gadjett.core :as gadjett :refer-macros [deftrack]]
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
@@ -117,14 +118,15 @@
       "base") $
     (str "img/" base "-" $ ".png")))
 
-(defn input-ui [compiler]
+(defn input-ui [compiler input]
   (dom/section nil
-    (dom/img #js {:src "img/cljs.png"
-                  :width 40
-                  :className "what"})
-    (dom/textarea #js {:autoFocus true
-                       :id "code"
-                       :placeholder ";; Press Ctrl-Enter to evaluate..."})))
+               (dom/img #js {:src "img/cljs.png"
+                             :width 40
+                             :className "what"})
+               (dom/textarea #js {:autoFocus true
+                                  :value input
+                                  :id "code"
+                                  :placeholder ";; Press Ctrl-Enter to evaluate..."})))
 
 (defn compile-cljs-ui [{:keys [compilation]}]
   (let [[status result] compilation
@@ -175,7 +177,7 @@
     (as->
       (om/props this) $
       (dom/div #js {:className "container"}
-        (input-ui this)
+        (input-ui this (:cljs_in (url-parameters)))
         (compile-cljs-ui $)
         (evaluate-clj-ui $)
         (evaluate-js-ui $)))))

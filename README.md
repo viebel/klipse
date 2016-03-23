@@ -1,6 +1,18 @@
 # KLIPSE
 
-KLIPSE is live [here](http://app.gadjett.com/cljs_compiler/index.html).
+KLIPSE is live [here](http://app.gadjett.com/cljs_compiler/index-dev.html).
+
+And it looks like this:
+
+
+![KLIPSE screenshot](http://raphaelboukara.github.io/assets/hello_klipse.png "KLIPSE screenshot")
+
+Basically, [KLIPSE](http://app.gadjett.com/cljs_compiler/index-dev.html) is made of 4 rectangles:
+
+1. Top left rectangle: you insert your cljs code
+2. Top right rectangle: you see the generated javascript code from the cljs code
+3. Bottom left rectangle: you see the evaluation of the cljs code as a clojure object
+4. Bottom right rectangle: you see the evaluation of the cljs code as a js object
 
 ## Usage
 
@@ -47,13 +59,18 @@ Read [KLIPSE Magic](https://github.com/viebel/klipse/blob/master/tutorial.md) to
 
 ## Deploy to Goolge Storage
 
-Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
+####1. Build
 
 ```bash
 lein cljsbuild once dev
 ```
+####2. Test
+
 Test that `dev` build works properly => Open the browser [http://localhost:5014/index-dev.html](http://localhost:5014/index-dev.html)
 
+####3. Deploy
+
+Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
 
 ```bash
 gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler

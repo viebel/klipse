@@ -16,7 +16,7 @@ Basically, [KLIPSE](http://app.gadjett.com/cljs_compiler/index-dev.html) is made
 
 ## Usage
 
-Introductory blog post: [KLIPSE: why? what? how?](http://raphaelboukara.github.io/clojure/2016/03/17/klipse.html)
+Here is an introductory blog post: [KLIPSE: why? what? how?](http://raphaelboukara.github.io/clojure/2016/03/17/klipse.html)
 
 
 Insert your code in the top left area.
@@ -29,11 +29,14 @@ Press Ctrl-Enter to evaluate.
 
 - [x] nice design (4 text areas)
 - [x] code mirror
-- [ ] cljs code from url parameter
+- [x] cljs code from url parameter
 - [ ] keep state in localStorage
 - [ ] code mirror for js output
+- [ ] make sure the js output is not hidden by the github banner
 - [ ] bigger fonts and logos
-- [ ] input field should not be emptied on reload (compilation)
+- [ ] resizable textareas
+- [ ] deletable textareas (Orel's idea)
+- [x] input field should not be emptied on reload (compilation)
 - [ ] display compilation warnings
 - [x] compile into a single `js` file
 - [ ] history

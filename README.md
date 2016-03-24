@@ -35,13 +35,14 @@ Press Ctrl-Enter to evaluate.
 - [ ] make sure the js output is not hidden by the github banner
 - [ ] bigger fonts and logos
 - [ ] resizable textareas
-- [ ] deletable textareas (Orel's idea)
+- [ ] what should we do when the cljs code contains several expressions? Display somehow the results of all the expressions?
+- [x] deletable textareas by url parameter (Orel's idea)
 - [x] input field should not be emptied on reload (compilation)
 - [ ] display compilation warnings
 - [x] compile into a single `js` file
 - [ ] history
 - [ ] history in localStorage
-- [ ] receives cljs code as a URL parameter
+- [x] receives cljs code as a URL parameter
 
 ## Run Locally
 

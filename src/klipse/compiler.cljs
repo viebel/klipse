@@ -127,7 +127,7 @@
                (dom/textarea #js {:autoFocus true
                                   :value input
                                   :id "code"
-                                  :placeholder ";; Write your clojurescript expression and press Ctrl-Enter to experiment the magic..."})))
+                                  :placeholder ";; Write your clojurescript expression \n;; and press Ctrl-Enter to experiment the magic..."})))
 
 (defn compile-cljs-ui [{:keys [compilation]} full-width?]
   (let [[status result] compilation

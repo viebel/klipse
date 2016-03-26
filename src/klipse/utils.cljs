@@ -1,5 +1,9 @@
 (ns klipse.utils
-  (:require [cemerick.url :refer [url]]))
+  (:use-macros 
+    [cljs.core.async.macros :only [go]])
+  (:require 
+    [cljs.core.async :refer [timeout <!]]
+    [cemerick.url :refer [url]]))
 
 
 (defn current-url []
@@ -17,3 +21,13 @@
   (-> (current-url)
       (assoc-in [:query (name key)] value)
       str))
+
+(defn debounce [func wait-in-ms]
+  (let [counter (atom 0)]
+    (fn [] 
+      (go
+        (swap! counter inc)
+        (<! (timeout wait-in-ms))
+        (swap! counter dec)
+        (when (zero? @counter)  
+          (func))))))

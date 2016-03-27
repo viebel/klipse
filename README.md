@@ -30,6 +30,7 @@ Press Ctrl-Enter to evaluate.
 - [x] nice design (4 text areas)
 - [x] code mirror
 - [x] cljs code from url parameter
+- [ ] improve load time: separate into modules?
 - [ ] keep state in localStorage
 - [ ] code mirror for js output
 - [x] make sure the js output is not hidden by the github banner

@@ -24,7 +24,7 @@
                        :dev {
                              :source-paths ["src"]
                              :compiler {
-                                        :output-to "resources/public/dev/js/main.js"
+                                        :output-to "resources/public/dev/js/klipse.js"
                                         :output-dir "resources/public/dev/js"
                                         ;:elide-asserts true
                                         :optimizations :whitespace
@@ -33,7 +33,7 @@
                              :figwheel true
                              :source-paths ["src"]
                              :compiler {
-                                        :output-to "resources/public/prod/js/main.js"
+                                        :output-to "resources/public/prod/js/klipse.js"
                                         :output-dir "resources/public/prod/js"
                                         ;:elide-asserts true
                                         :optimizations :advanced
@@ -43,7 +43,7 @@
                                   :source-paths ["src"]
                                   :compiler {:main "klipse.core"
                                              :asset-path "dbg/js"
-                                             :output-to "resources/public/dbg/js/main.js"
+                                             :output-to "resources/public/dbg/js/klipse.js"
                                              :output-dir "resources/public/dbg/js"
                                              ;:elide-asserts true
                                              :verbose true}}}})

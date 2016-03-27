@@ -25,26 +25,6 @@ Press Ctrl-Enter to evaluate.
 
 
 
-## Contribution
-
-- [x] nice design (4 text areas)
-- [x] code mirror
-- [x] cljs code from url parameter
-- [ ] improve load time: separate into modules?
-- [ ] keep state in localStorage
-- [ ] code mirror for js output
-- [x] make sure the js output is not hidden by the github banner
-- [ ] bigger fonts and logos
-- [ ] resizable textareas
-- [ ] what should we do when the cljs code contains several expressions? Display somehow the results of all the expressions?
-- [x] deletable textareas by url parameter (Orel's idea)
-- [x] input field should not be emptied on reload (compilation)
-- [ ] display compilation warnings
-- [x] compile into a single `js` file
-- [ ] history
-- [ ] history in localStorage
-- [x] receives cljs code as a URL parameter
-
 ## Run Locally
 
 ```bash
@@ -78,5 +58,7 @@ Test that `dev` build works properly => Open the browser [http://localhost:5014/
 Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
 
 ```bash
-gsutil -m rsync -R resources/public gs://app.gadjett.com/cljs_compiler
+gzip resources/public/dev/js/klipse.js; mv resources/public/dev/js/klipse.js.gz resources/public/dev/js/klipse.js;
+gsutil -h "Content-Encoding:gzip" -h "Content-Type:application/javascript" cp resources/public/dev/js/klipse.js gs://app.klipse.tech/dev/js
+gsutil -m rsync -R resources/public gs://app.klipse.tech
 ```

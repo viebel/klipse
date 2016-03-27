@@ -4,7 +4,7 @@
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.addon.edit.matchbrackets
     cljsjs.codemirror.addon.display.placeholder
-    [klipse.utils :refer [url-parameters]]
+    [klipse.utils :refer [add-url-parameter url-parameters]]
     [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
@@ -34,13 +34,12 @@
                    (let [status (if error :error :ok)
                          res (if error 
                                (.. error -cause -message)
-                               (do
-                                 (.log js/console value)
-                                 value))]
+                               value)]
                      [status res]))))
 
 (deftrack _evaluation-js [s]
   (let [[status res] (_eval s)]
+    (.log js/console res)
     [status (.stringify js/JSON res nil 4)]))
 
 (deftrack _evaluation-clj [s]
@@ -71,6 +70,9 @@
 
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] (swap! state update :evaluation-clj (partial _evaluation-clj value)))})
+
+(deftrack create-url-with-input [input]
+  (js/alert (add-url-parameter :cljs_in input)))
 
 (deftrack process-input [compiler s]
   (om/transact! compiler 
@@ -104,7 +106,8 @@
                   (js/document.getElementById "code") 
                   (clj->js config))] 
     (set-option editor "extraKeys" 
-        #js {"Ctrl-Enter" #(process-input compiler (get-value editor))})))
+        #js {"Ctrl-S" #(create-url-with-input (get-value editor))
+             "Ctrl-Enter" #(process-input compiler (get-value editor))})))
 
 
 ;; =============================================================================

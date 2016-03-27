@@ -32,7 +32,7 @@ Press Ctrl-Enter to evaluate.
 - [x] cljs code from url parameter
 - [ ] keep state in localStorage
 - [ ] code mirror for js output
-- [ ] make sure the js output is not hidden by the github banner
+- [x] make sure the js output is not hidden by the github banner
 - [ ] bigger fonts and logos
 - [ ] resizable textareas
 - [ ] what should we do when the cljs code contains several expressions? Display somehow the results of all the expressions?

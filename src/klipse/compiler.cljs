@@ -11,6 +11,8 @@
     [om.dom :as dom]
     [cljs.js :as cljs]))
 
+(enable-console-print!)
+
 
 ;; =============================================================================
 ;; Compiler functions
@@ -72,7 +74,9 @@
   {:action (fn [] (swap! state update :evaluation-clj (partial _evaluation-clj value)))})
 
 (deftrack create-url-with-input [input]
-  (js/alert (add-url-parameter :cljs_in input)))
+  (doto (add-url-parameter :cljs_in input)
+        print
+        js/alert))
 
 (deftrack process-input [compiler s]
   (when-not (clojure.string/blank? s)

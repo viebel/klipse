@@ -5,8 +5,10 @@
     cljsjs.codemirror.addon.edit.matchbrackets
     cljsjs.codemirror.addon.display.placeholder
     [klipse.utils :refer [add-url-parameter url-parameters debounce]]
+    [klipse.io :as io]
     [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
     [goog.dom :as gdom]
+    [replumb.core :as replumb]
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]
     [cljs.js :as cljs]))
@@ -35,17 +37,17 @@
                         [status res]))
                     ))
 
+(def repl-opts-noop (merge (replumb/options :browser
+                                             ["/dbg/js" "/js/compiled/out"]
+                                             io/no-op)
+                            {:warning-as-error false
+                             :verbose false}))
+
 (deftrack _eval [s]
-  (cljs/eval-str (cljs/empty-state) s 
-                 'test
-                 {:eval cljs/js-eval :load load-inlined} 
-                 (fn [{:keys [value error]}]
-                   (println error)
-                   (let [status (if error :error :ok)
-                         res (if error 
-                               (.. error -cause -message)
-                               value)]
-                     [status res]))))
+  (let [{:keys [form warning error value success?]} (replumb/read-eval-call repl-opts-noop identity s)
+        status (if error :error :ok)
+        res (or value (.. error -cause))]
+    [status res]))
 
 (deftrack _evaluation-js [s]
   (let [[status res] (_eval s)]

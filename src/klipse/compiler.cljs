@@ -20,8 +20,13 @@
 ;; create cljs.user
 (set! (.. js/window -cljs -user) #js {})
 
+(defn load-inlined [opts cb]
+  (cb {:lang :clj :source ""}))
+
 (deftrack _compilation [s]
   (cljs/compile-str (cljs/empty-state) s
+                    "cljs-in"
+                    {:load load-inlined}
                     (fn [{:keys [value error]}]
                       (let [status (if error :error :ok)
                             res (if error 
@@ -31,8 +36,11 @@
                     ))
 
 (deftrack _eval [s]
-  (cljs/eval-str (cljs/empty-state) s 'test {:eval cljs/js-eval} 
+  (cljs/eval-str (cljs/empty-state) s 
+                 'test
+                 {:eval cljs/js-eval :load load-inlined} 
                  (fn [{:keys [value error]}]
+                   (println error)
                    (let [status (if error :error :ok)
                          res (if error 
                                (.. error -cause -message)

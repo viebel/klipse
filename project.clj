@@ -7,6 +7,7 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [org.omcljs/om "1.0.0-alpha22"]
                  [shodan "0.4.2"]
+                 [replumb "0.2.1"]
                  [com.cemerick/url "0.1.1"]
                  [com.andrewmcveigh/cljs-time "0.3.10"]
                  [figwheel-sidecar "0.5.0" :scope "test"]

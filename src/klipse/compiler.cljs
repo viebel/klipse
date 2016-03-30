@@ -154,7 +154,7 @@
   (let [[status result] compilation
         status-class (if (= :ok status) "ok" "error")]
     (dom/section #js {:id "compile-cljs-ui"
-                      :className (str "sectiontop " (if full-width? "full-width" "half-width"))}
+                      :className (if full-width? "sectionbottom full-width" "sectiontop half-width")}
                  (dom/img #js {:src "img/js.png"
                                :width 35
                                :className "what"})

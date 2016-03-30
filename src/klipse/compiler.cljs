@@ -44,7 +44,7 @@
                              :verbose false}))
 
 (deftrack _eval [s]
-  (let [{:keys [form warning error value success?]} (replumb/read-eval-call repl-opts-noop identity s)
+  (let [{:keys [form warning error value success?]} (replumb/read-eval-call repl-opts-noop identity (str "(do " s ")"))
         status (if error :error :ok)
         res (or value (.. error -cause))]
     [status res]))

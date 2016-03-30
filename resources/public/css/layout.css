@@ -18,11 +18,19 @@ html, body {
 }
 
 section {
-  height: 50%; 
   padding: 5px;
   float: left; 
   border: solid 2px white;
   position: relative;
+}
+
+.sectiontop {
+    height: 80%;
+}
+
+
+.sectionbottom {
+    height: 20%;
 }
 
 .container {

@@ -141,7 +141,7 @@
 
 (defn input-ui [compiler input full-width?]
   (dom/section #js {:id "input-ui"
-                    :className (if full-width? "full-width" "half-width")}
+                    :className (str "sectiontop " (if full-width? "full-width" "half-width"))}
                (dom/img #js {:src "img/cljs.png"
                              :width 40
                              :className "what"})
@@ -154,7 +154,7 @@
   (let [[status result] compilation
         status-class (if (= :ok status) "ok" "error")]
     (dom/section #js {:id "compile-cljs-ui"
-                      :className (if full-width? "full-width" "half-width")}
+                      :className (str "sectiontop " (if full-width? "full-width" "half-width"))}
                  (dom/img #js {:src "img/js.png"
                                :width 35
                                :className "what"})
@@ -167,7 +167,7 @@
   (let [[status result] evaluation-clj
         status-class (if (= :ok status) "ok" "error")]
     (dom/section #js {:id "evaluate-clj-ui"
-                      :className (if full-width? "full-width" "half-width")}
+                      :className (str "sectionbottom " (if full-width? "full-width" "half-width"))}
                  (dom/img #js {:src (logo status "cljs")
                                :width 40
                                :className (str "what " status-class)})
@@ -180,7 +180,7 @@
   (let [[status result] evaluation-js
         status-class (if (= :ok status) "ok" "error")]
     (dom/section #js {:id "evaluate-js-ui"
-                      :className (if full-width? "full-width" "half-width")}
+                      :className (str "sectionbottom " (if full-width? "full-width" "half-width"))}
                  (dom/img #js {:src (logo status "js")
                                :width 35
                                :className (str "what " status-class)})

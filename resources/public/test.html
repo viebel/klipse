@@ -2,93 +2,95 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+    <link rel='shortcut icon' type='image/x-icon' href='img/tdd.png' />
   <title>KLIPSE TEST PAGE</title>
 </head>
 <body style="margin: 0 auto; max-width: 750px;">
+    <p> Test page for <b>dev</b> compilation.  </p>
 
   <iframe frameborder="0" width="100%" height="300px"
       src= 
-  "http://localhost:5014/index-dbg.html?cljs_in=(map inc [1 2 3])">
+  "http://localhost:5014/index-dev.html?cljs_in=(map inc [1 2 3])">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
       src= 
-  "http://localhost:5014/index-dbg.html?js_only=1&cljs_in=(defprotocol%20IFoo%0A(foo%20%5Bthis%5D))%0A%0A%3B%3B%20dummy%20cljs%20type%0A(deftype%20Bar%20%5B%5D)%0A%0A%3B%3B%20extending%20a%20cljs%20type%0A(extend-type%20Bar%0AIFoo%20(foo%20%5Bthis%5D%20(println%20%22Hello%20from%20IFoo.foo%20for%20Bar%22)))%0A%0A%3B%3B%20extending%20a%20js%20type%0A(extend-type%20js%2FFunction%0AIFoo%20(foo%20%5Bthis%5D%20(println%20%22Hello%20from%20IFoo.foo%20for%20js%2FFunction%22)))%0A%0A%3B%3B%20extending%20a%20js%20base%20type%0A(extend-type%20number%0AIFoo%20(foo%20%5Bthis%5D%20(println%20%22Hello%20from%20IFoo.foo%20for%20number%22)))">
+  "http://localhost:5014/index-dev.html?js_only=1&cljs_in=(defprotocol%20IFoo%0A(foo%20%5Bthis%5D))%0A%0A%3B%3B%20dummy%20cljs%20type%0A(deftype%20Bar%20%5B%5D)%0A%0A%3B%3B%20extending%20a%20cljs%20type%0A(extend-type%20Bar%0AIFoo%20(foo%20%5Bthis%5D%20(println%20%22Hello%20from%20IFoo.foo%20for%20Bar%22)))%0A%0A%3B%3B%20extending%20a%20js%20type%0A(extend-type%20js%2FFunction%0AIFoo%20(foo%20%5Bthis%5D%20(println%20%22Hello%20from%20IFoo.foo%20for%20js%2FFunction%22)))%0A%0A%3B%3B%20extending%20a%20js%20base%20type%0A(extend-type%20number%0AIFoo%20(foo%20%5Bthis%5D%20(println%20%22Hello%20from%20IFoo.foo%20for%20number%22)))">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="200px"
       src= 
-      "http://localhost:5014/index-dbg.html?js_only=1&cljs_in=(defmacro%20hello%0A%20%20%5Bx%5D%0A%20%20%60(inc%20~x))">
+      "http://localhost:5014/index-dev.html?js_only=1&cljs_in=(defmacro%20hello%0A%20%20%5Bx%5D%0A%20%20%60(inc%20~x))">
   </iframe>
 
   <hr>
   
   <iframe frameborder="0" width="100%" height="200px"
       src= 
-      "http://localhost:5014/index-dbg.html?eval_only=1&cljs_in=(defmacro%20hello%20%0A%20%20%5Bx%5D%20%0A%20%20%60(inc%20~x))%0A%0A(hello%20nil%20nil%2013)">
+      "http://localhost:5014/index-dev.html?eval_only=1&cljs_in=(defmacro%20hello%20%0A%20%20%5Bx%5D%20%0A%20%20%60(inc%20~x))%0A%0A(hello%20nil%20nil%2013)">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="200px"
       src= 
-      "http://localhost:5014/index-dbg.html?eval_only=1&cljs_in=(defmacro%20hello%20%0A%20%20%5Bx%5D%20%0A%20%20%60(inc%20~x))%0A%0A(meta%20%23%27hello)">
+      "http://localhost:5014/index-dev.html?eval_only=1&cljs_in=(defmacro%20hello%20%0A%20%20%5Bx%5D%20%0A%20%20%60(inc%20~x))%0A%0A(meta%20%23%27hello)">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
       src= 
-      "http://localhost:5014/index-dbg.html?eval_only=1&cljs_in=(ns%20foo.core%24macros)%0A%0A(defmacro%20hello%20%0A%20%20%5Bx%5D%0A%20%20(prn%20%26form)%0A%20%20%60(inc%20~x))%0A%0A(foo.core%2Fhello%2012)">
+      "http://localhost:5014/index-dev.html?eval_only=1&cljs_in=(ns%20foo.core%24macros)%0A%0A(defmacro%20hello%20%0A%20%20%5Bx%5D%0A%20%20(prn%20%26form)%0A%20%20%60(inc%20~x))%0A%0A(foo.core%2Fhello%2012)">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
     src= 
-    "http://localhost:5014/index-dbg.html?js_only=1&cljs_in=(if%202%203)%0A(def%20x%20(if%202%203))">
+    "http://localhost:5014/index-dev.html?js_only=1&cljs_in=(if%202%203)%0A(def%20x%20(if%202%203))">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
     src= 
-    "http://localhost:5014/index-dbg.html?eval_only=1">
+    "http://localhost:5014/index-dev.html?eval_only=1">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
     src= 
-    "http://localhost:5014/index-dbg.html?js_only=1">
+    "http://localhost:5014/index-dev.html?js_only=1">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
-      src="http://localhost:5014/index-dbg.html?eval_only=1&cljs_in=(defn%20append-cyclic%5Blst%20a%5D%0A%20%20(concat%20(rest%20lst)%20%5Ba%5D))%0A%0A%0A(-%3E%20(repeat%203%20nil)%0A%20%20%20%20(append-cyclic%20%209)%0A%20%20%20%20(append-cyclic%20%2010)%0A%20%20%20%20(append-cyclic%20%2011)%0A%20%20%20%20(append-cyclic%20%2012))">
+      src="http://localhost:5014/index-dev.html?eval_only=1&cljs_in=(defn%20append-cyclic%5Blst%20a%5D%0A%20%20(concat%20(rest%20lst)%20%5Ba%5D))%0A%0A%0A(-%3E%20(repeat%203%20nil)%0A%20%20%20%20(append-cyclic%20%209)%0A%20%20%20%20(append-cyclic%20%2010)%0A%20%20%20%20(append-cyclic%20%2011)%0A%20%20%20%20(append-cyclic%20%2012))">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
-      src="http://localhost:5014/index-dbg.html?cljs_in=(ns%20my-project.my-ns)%0A%0A(def%20x%201)%0A(def%20y%202)&js_only=1">
+      src="http://localhost:5014/index-dev.html?cljs_in=(ns%20my-project.my-ns)%0A%0A(def%20x%201)%0A(def%20y%202)&js_only=1">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
-      src="http://localhost:5014/index-dbg.html?cljs_in=(ns%20my-ns%0A%20%20(%3Arequire%20%0A%20%20%20%20%5Bclojure.string%20%3Aas%20string%5D))%0A%0A(string%2Fblank%3F%20%22HELLO!!%22)&eval_only=1">
+      src="http://localhost:5014/index-dev.html?cljs_in=(ns%20my-ns%0A%20%20(%3Arequire%20%0A%20%20%20%20%5Bclojure.string%20%3Aas%20string%5D))%0A%0A(string%2Fblank%3F%20%22HELLO!!%22)&eval_only=1">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
-      src="http://localhost:5014/index-dbg.html?cljs_in=(ns%20my-ns%0A%20%20(%3Arequire%20%0A%20%20%20%20%5Breplumb.core%20%3Aas%20replumb%5D))%0A%0A(replumb%2Fread-eval-call%20%7B%7D%20identity%20%22(%2B%202%203)%22)&eval_only=1">
+      src="http://localhost:5014/index-dev.html?cljs_in=(ns%20my-ns%0A%20%20(%3Arequire%20%0A%20%20%20%20%5Breplumb.core%20%3Aas%20replumb%5D))%0A%0A(replumb%2Fread-eval-call%20%7B%7D%20identity%20%22(%2B%202%203)%22)&eval_only=1">
   </iframe>
 
   <hr>

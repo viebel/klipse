@@ -41,6 +41,7 @@
                                              ["/dbg/js" "/js/compiled/out"]
                                              io/no-op)
                             {:warning-as-error false
+                             :context :statement
                              :verbose false}))
 
 (deftrack _eval [s]

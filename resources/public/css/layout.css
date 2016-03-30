@@ -24,12 +24,15 @@ section {
   position: relative;
 }
 
-.sectiontop {
+.height80 {
     height: 80%;
 }
 
+.height50 {
+    height: 50%;
+}
 
-.sectionbottom {
+.height20 {
     height: 20%;
 }
 

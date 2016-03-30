@@ -139,9 +139,9 @@
       "base") $
     (str "img/" base "-" $ ".png")))
 
-(defn input-ui [compiler input full-width?]
+(defn input-ui [compiler input height-class width-class]
   (dom/section #js {:id "input-ui"
-                    :className (str "sectiontop " (if full-width? "full-width" "half-width"))}
+                    :className (str height-class " " width-class)}
                (dom/img #js {:src "img/cljs.png"
                              :width 40
                              :className "what"})
@@ -150,11 +150,11 @@
                                   :id "code"
                                   :placeholder ";; Write your clojurescript expression \n;; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."})))
 
-(defn compile-cljs-ui [{:keys [compilation]} full-width?]
+(defn compile-cljs-ui [{:keys [compilation]} height-class width-class]
   (let [[status result] compilation
         status-class (if (= :ok status) "ok" "error")]
     (dom/section #js {:id "compile-cljs-ui"
-                      :className (if full-width? "sectionbottom full-width" "sectiontop half-width")}
+                      :className (str height-class " " width-class)}
                  (dom/img #js {:src "img/js.png"
                                :width 35
                                :className "what"})
@@ -163,11 +163,11 @@
                                     :placeholder ";; Press Ctrl-Enter or wait for 3 sec to transpile..."
                                     :readOnly true}))))
 
-(defn evaluate-clj-ui [{:keys [evaluation-clj]} full-width?]
+(defn evaluate-clj-ui [{:keys [evaluation-clj]} height-class width-class]
   (let [[status result] evaluation-clj
         status-class (if (= :ok status) "ok" "error")]
     (dom/section #js {:id "evaluate-clj-ui"
-                      :className (str "sectionbottom " (if full-width? "full-width" "half-width"))}
+                      :className (str height-class " " width-class)}
                  (dom/img #js {:src (logo status "cljs")
                                :width 40
                                :className (str "what " status-class)})
@@ -176,11 +176,11 @@
                                     :placeholder ";; Press Ctrl-Enter or wait for 3 sec to eval in clojure..."
                                     :readOnly true}))))
 
-(defn evaluate-js-ui [{:keys [evaluation-js]} full-width?]
+(defn evaluate-js-ui [{:keys [evaluation-js]} height-class width-class]
   (let [[status result] evaluation-js
         status-class (if (= :ok status) "ok" "error")]
     (dom/section #js {:id "evaluate-js-ui"
-                      :className (str "sectionbottom " (if full-width? "full-width" "half-width"))}
+                      :className (str height-class " " width-class)}
                  (dom/img #js {:src (logo status "js")
                                :width 35
                                :className (str "what " status-class)})
@@ -189,6 +189,10 @@
                                     :placeholder ";; Press Ctrl-Enter or wait for 3 sec to eval in js..."
                                     :readOnly true}))))
 
+(def height-classes
+  {:js_only {:input "height50" :compile-cljs "height50"}
+   :eval_only {:input "height80" :evaluate-clj "height20"}
+   :default {:input "height80" :compile-cljs "height80" :evaluate-clj "height20" :evaluate-js "height20"}})
 
 (defui CompilerUI
 
@@ -203,18 +207,18 @@
 
   (render [this]
           (let [{:keys [js_only eval_only cljs_in]} (url-parameters)
-                full-width (or js_only eval_only)]
+                width-class (if (or js_only eval_only) "full-width" "half-width")
+                height-key (dbg (cond js_only :js_only eval_only :eval_only :default :default))]
             (as->
               (om/props this) $
               (dom/div #js {:className "container"}
-                       (input-ui this cljs_in full-width)
+                       (input-ui this cljs_in (get-in height-classes [height-key :input]) width-class)
                        (when-not eval_only
-                         (compile-cljs-ui $ full-width))
+                         (compile-cljs-ui $ (get-in height-classes [height-key :compile-cljs]) width-class))
                        (when-not js_only
-                         (evaluate-clj-ui $ full-width))
+                         (evaluate-clj-ui $ (get-in height-classes [height-key :evaluate-clj]) width-class))
                        (when-not (or eval_only js_only)
-                         (evaluate-js-ui $ full-width))
-                       )))))
+                         (evaluate-js-ui $ (get-in height-classes [height-key :evaluate-js]) width-class)))))))
 
 
 ;; =============================================================================

@@ -191,7 +191,7 @@
                                     :readOnly true}))))
 
 (def height-classes
-  {:js_only {:input "height50" :compile-cljs "height50"}
+  {:js_only {:input "height-js-up" :compile-cljs "height-js-down"}
    :eval_only {:input "height80" :evaluate-clj "height20"}
    :default {:input "height80" :compile-cljs "height80" :evaluate-clj "height20" :evaluate-js "height20"}})
 

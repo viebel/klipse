@@ -36,6 +36,15 @@ section {
     height: 20%;
 }
 
+
+.height-js-up {
+    height: 30%;
+}
+
+.height-js-down {
+    height: 70%;
+}
+
 .container {
   height: 100%;
   border: solid 5px white;

@@ -209,7 +209,7 @@
   (render [this]
           (let [{:keys [js_only eval_only cljs_in]} (url-parameters)
                 width-class (if (or js_only eval_only) "full-width" "half-width")
-                height-key (dbg (cond js_only :js_only eval_only :eval_only :default :default))]
+                height-key (cond js_only :js_only eval_only :eval_only :default :default)]
             (as->
               (om/props this) $
               (dom/div #js {:className "container"}

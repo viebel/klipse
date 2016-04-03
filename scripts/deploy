@@ -1,3 +1,4 @@
 gzip resources/public/dev/js/klipse.js
 gsutil -h "Content-Encoding:gzip" -h "Content-Type:application/javascript" cp resources/public/dev/js/klipse.js.gz gs://app.klipse.tech/dev/js/klipse.js
+rm resources/public/dev/js/klipse.js.gz
 gsutil -m rsync -R resources/public gs://app.klipse.tech

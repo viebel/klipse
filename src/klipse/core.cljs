@@ -1,6 +1,6 @@
 (ns klipse.core
   (:require 
-    [klipse.compiler]))
+    [klipse.ui]))
 
 (enable-console-print!)
 (print "core")

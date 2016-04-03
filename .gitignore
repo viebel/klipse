@@ -1,4 +1,5 @@
 figwheel_server.log
+resources/private/
 resources/public/dbg
 resources/public/dev
 resources/public/prod

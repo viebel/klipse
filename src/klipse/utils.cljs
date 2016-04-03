@@ -2,6 +2,7 @@
   (:use-macros 
     [cljs.core.async.macros :only [go]])
   (:require 
+    [clojure.walk :refer [keywordize-keys]]
     [cljs.core.async :refer [timeout <!]]
     [cemerick.url :refer [url]]))
 
@@ -12,7 +13,7 @@
 (defn url-parameters []
   (-> (current-url)
       :query
-      clojure.walk/keywordize-keys))
+      keywordize-keys))
 
 (defn add-url-parameter
   "Returns the current url with an additional parameter.

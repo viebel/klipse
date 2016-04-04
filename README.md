@@ -62,7 +62,5 @@ Test that `dev` build works properly =>
 Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
 
 ```bash
-gzip resources/public/dev/js/klipse.js; mv resources/public/dev/js/klipse.js.gz resources/public/dev/js/klipse.js;
-gsutil -h "Content-Encoding:gzip" -h "Content-Type:application/javascript" cp resources/public/dev/js/klipse.js gs://app.klipse.tech/dev/js
-gsutil -m rsync -R resources/public gs://app.klipse.tech
+./scripts/deploy
 ```

@@ -1,7 +1,7 @@
 (defproject klipse "0.2.0"
   :description "Cljs compiler in cljs"
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [org.clojure/clojurescript "1.8.34"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/clojurescript "1.8.40"]
                  [im.chit/purnam "0.5.2"]
                  [viebel/gadjett "0.1.8"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
@@ -21,23 +21,23 @@
   :figwheel {:css-dirs ["resources/public/"]
              :server-port 5014}
   :cljsbuild {
+              :test-commands {"unit" ["phantomjs" "test/phantom/unit-test.js" "test/phantom/unit-test.html"]}
               :builds {
-                       :dev {
+                       :test {
+                                :source-paths ["test"]
+                                :notify-command ["phantomjs" "test/phantom/unit-test.js" "test/phantom/unit-test.html"]
+                                :compiler {
+                                           :output-to "resources/private/test/klipse.testable.js"
+                                           :output-dir "resources/private/test"
+                                           :verbose true
+                                           :optimizations :whitespace }}
+                    :dev {
                              :source-paths ["src"]
                              :compiler {
                                         :output-to "resources/public/dev/js/klipse.js"
                                         :output-dir "resources/public/dev/js"
                                         ;:elide-asserts true
                                         :optimizations :whitespace
-                                        :verbose true}}
-                       :prod {
-                             :figwheel true
-                             :source-paths ["src"]
-                             :compiler {
-                                        :output-to "resources/public/prod/js/klipse.js"
-                                        :output-dir "resources/public/prod/js"
-                                        ;:elide-asserts true
-                                        :optimizations :advanced
                                         :verbose true}}
                        :figwheel {
                                   :figwheel true

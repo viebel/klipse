@@ -36,6 +36,9 @@
                              :compiler {
                                         :output-to "resources/public/dev/js/klipse.js"
                                         :output-dir "resources/public/dev/js"
+                                        :pretty-print false
+                                        :optimize-constants true
+                                        :static-fns true
                                         ;:elide-asserts true
                                         :optimizations :whitespace
                                         :verbose true}}

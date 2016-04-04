@@ -51,7 +51,11 @@ lein cljsbuild once dev
 ```
 ####2. Test
 
-Test that `dev` build works properly => Open the browser [http://localhost:5014/index-dev.html](http://localhost:5014/index-dev.html)
+Test that `dev` build works properly => 
+
+- Open the browser [http://localhost:5014/index-dev.html](http://localhost:5014/index-dev.html)
+- Open the browser [http://localhost:5014/test.html](http://localhost:5014/test.html)
+ 
 
 ####3. Deploy
 

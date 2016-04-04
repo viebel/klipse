@@ -4,6 +4,7 @@
     [test.compiler]))
     
 
+(enable-console-print!)
 
 (defmethod report [::test/default :summary] [m]
     (println "\nRan" (:test m) "tests containing"
@@ -11,8 +12,7 @@
     (println (:fail m) "failures," (:error m) "errors.")
     (aset js/window "test-failures" (+ (:fail m) (:error m))))
 
-(enable-console-print!)
 
 (defn ^:export run[]
-  (run-all-tests #"test.*"))
+  (println "res: " (run-all-tests #"test.*")))
     

@@ -34,17 +34,13 @@ page.open(url, function (status) {
     console.log("Running test.");
 
     var result = page.evaluate(function() {
-        return test.runner.run();
+        test.runner.run();
+        return window["test-failures"];
     });
 
-    // NOTE: PhantomJS 1.4.0 has a bug that prevents the exit codes
-    //        below from being returned properly. :(
-    //
-    // http://code.google.com/p/phantomjs/issues/detail?id=294
-
-    if (result != 0) {
+   if (result != 0) {
         console.log("*** Test failed! ***");
-        phantom.exit(1);
+        phantom.exit(result);
     }
 
     console.log("Test succeeded.");

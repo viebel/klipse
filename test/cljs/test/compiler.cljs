@@ -12,8 +12,8 @@
   	(are [input-clj output-clj]
       (= (eval input-clj) [:ok output-clj])
       "(+ 1 2)" 3
-      "(ns my.aa) (+ 1 2)" 3
-      )))
+      "(map inc [1 2 3])" '(2 3 4)
+      "(ns my.aa) (+ 1 2)" 3)))
 
          
    

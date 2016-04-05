@@ -1,4 +1,4 @@
-# KLIPSE
+# KLIPSE [![Build Status](https://travis-ci.org/viebel/klipse.svg?branch=master)](https://travis-ci.org/viebel/klipse)
 
 KLIPSE is live [here](http://app.gadjett.com/cljs_compiler/index-dev.html).
 

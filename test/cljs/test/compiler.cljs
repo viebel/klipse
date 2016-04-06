@@ -50,8 +50,16 @@
                                                                                           my_project.my_ns.x = (1);
                                                                                           my_project.my_ns.y = (2);
                                                                                           "))
-    (is (a= (remove-chars (second (compile "(if 2 3) (def x (if 2 3))"))) "cljs.user.x= (3);"))))
+    (is (a= (remove-chars (second (compile "(if 2 3) (def x (if 2 3))"))) "cljs.user.x= (3);")))
 
+
+  (testing "compiler eval :ok"
+  	(are [input-clj output-clj]
+      (= (eval input-clj) [:ok output-clj])
+      "(type 1)" "#object[Number \"function Number() {\n    [native code]\n}\"]"
+      "(+ 1 2)" 3
+      "(map inc [1 2 3])" '(2 3 4)
+      "(ns my.aa) (+ 1 2)" 3)))
 
    
 

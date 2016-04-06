@@ -8,8 +8,10 @@
 (deftest test-eval
   (testing "when it should fail "
     (are [input-clj output-clj]
-         (= (eval input-clj) [:error output-clj])
+         (let [[status res] (eval input-clj)]
+           (= [status (.. res -message)] [:error output-clj]))
          "(+ 1 2" "EOF while reading"))
+
   (testing "when it should succeed"
     (are [input-clj output-clj]
          (= (eval input-clj) [:ok output-clj])
@@ -31,7 +33,7 @@
   (testing "when it should succeed with namespaces"
     (are [input-clj output-clj]
          (= (eval input-clj) [:ok output-clj])
-         "(ns my-ns (:require [clojure.string :as string])) (string/blank? \"HELLO!!\")" false
+         "(ns my.ns (:require [clojure.string :as string])) (string/blank? \"HELLO!!\")" false
          "(ns my-ns (:require [replumb.core :as replumb])) (replumb/read-eval-call {} identity \"(+ 2 3)\")" '{:value "5", :warning "my-ns is a single segment namespace at line 1 ", :form (+ 2 3), :success? true}))
 
   #_(testing "when it should succeed with macros"

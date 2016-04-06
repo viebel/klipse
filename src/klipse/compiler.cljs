@@ -28,11 +28,12 @@
                         [status res]))
                     ))
 
-(def repl-opts-noop (merge (replumb/options :browser
-                                             ["/dbg/js" "/js/compiled/out"]
+(def repl-opts-noop (merge (replumb/options :browser ; see https://github.com/Lambda-X/replumb
+                                             ["/dbg/js"]
                                              io/no-op)
                             {:warning-as-error false
                              :context :statement
+                             :cache {:src-paths-lookup? true} ; this is required to support :refer inside :require => see https://github.com/Lambda-X/replumb/issues/170
                              :verbose false}))
 
 (defn read-string-cond [s]
@@ -46,7 +47,16 @@
         status (if error :error :ok)
         res (if value 
               (read-string-cond value)
-              (.. error -message))]
+              error)]
     [status res]))
 
-
+(defn test-eval []
+  (let [exp
+  "(ns my.main
+    (:require [cljs.js :as cjs]))
+  (def state (cjs/empty-state))
+  (cjs/eval-str state \"(+ 1 2)\"
+                \"bla\"
+                {:eval cjs/js-eval}
+                identity))"]
+    (replumb/read-eval-call repl-opts-noop identity exp)))

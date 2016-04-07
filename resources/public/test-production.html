@@ -6,27 +6,24 @@
   <title>KLIPSE TEST PAGE</title>
 </head>
 <body style="margin: 0 auto; max-width: 750px;">
-    <p> Test page for <b>dbg</b> compilation.  </p>
-    <script>
-    alert("Don't forget to test dev compilation!!!!!!!");
-    </script>
+    <p> Test page for <b>production</b>.  </p>
 
   <iframe frameborder="0" width="100%" height="300px"
     src= 
-    "http://localhost:5014/index-dbg.html">
+    "http://app.klipse.tech">
   </iframe>
 
   <hr>
   <iframe frameborder="0" width="100%" height="300px"
     src= 
-    "http://localhost:5014/index-dbg.html?eval_only=1">
+    "http://app.klipse.tech?eval_only=1">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="300px"
     src= 
-    "http://localhost:5014/index-dbg.html?js_only">
+    "http://app.klipse.tech?js_only">
   </iframe>
 
   <hr>
@@ -35,21 +32,21 @@
 
   <iframe frameborder="0" width="100%" height="300px"
       src= 
-  "http://localhost:5014/index-dbg.html?cljs_in=(map inc [1 2 3])">
+  "http://app.klipse.tech?cljs_in=(map inc [1 2 3])">
   </iframe>
 
   <hr>
 
   <iframe frameborder="0" width="100%" height="200px"
       src= 
-      "http://localhost:5014/index-dbg.html?js_only=1&cljs_in=(defmacro%20hello%0A%20%20%5Bx%5D%0A%20%20%60(inc%20~x))">
+      "http://app.klipse.tech?js_only=1&cljs_in=(defmacro%20hello%0A%20%20%5Bx%5D%0A%20%20%60(inc%20~x))">
   </iframe>
 
   <hr>
   
   <iframe frameborder="0" width="100%" height="300px"
       src= 
-      "http://localhost:5014/index-dbg.html?eval_only=1&cljs_in=(ns%20foo.core%24macros)%0A%0A(defmacro%20hello%20%0A%20%20%5Bx%5D%0A%20%20(prn%20%26form)%0A%20%20%60(inc%20~x))%0A%0A(foo.core%2Fhello%2012)">
+      "http://app.klipse.tech?eval_only=1&cljs_in=(ns%20foo.core%24macros)%0A%0A(defmacro%20hello%20%0A%20%20%5Bx%5D%0A%20%20(prn%20%26form)%0A%20%20%60(inc%20~x))%0A%0A(foo.core%2Fhello%2012)">
   </iframe>
 
   <hr>

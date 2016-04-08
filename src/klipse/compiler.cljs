@@ -35,11 +35,17 @@
                              :context :statement
                              :verbose false}))
 
+(defn read-string-cond [s]
+  (try
+    (read-string s)
+    (catch js/Object e
+      s)))
+
 (deftrack eval [s]
   (let [{:keys [form warning error value success?]} (replumb/read-eval-call repl-opts-noop identity s)
         status (if error :error :ok)
         res (if value 
-              (read-string value)
+              (read-string-cond value)
               (.. error -message))]
     [status res]))
 

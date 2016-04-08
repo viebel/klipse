@@ -95,10 +95,10 @@
     (.selectAll editor))
   editor)
 
-(defn goto-end [editor]
+(defn goto-start [editor]
   (->
     (.-commands js/CodeMirror)
-    (.goDocEnd editor))
+    (.goDocStart editor))
   editor)
 
 (defn auto-format [editor]
@@ -106,7 +106,6 @@
   (let [from (.getCursor editor true)
         to (.getCursor editor false)]
     (.autoFormatRange editor from to))
-  (goto-end editor)
   editor)
 
 (defn auto-indent [editor]
@@ -114,7 +113,6 @@
   (let [from (.getCursor editor true)
         to (.getCursor editor false)]
     (.autoIndentRange editor from to))
-  (goto-end editor)
   editor)
 
 (defn ctrl-enter [editor]
@@ -222,6 +220,7 @@
           (set-value (om/get-state this :editor))
           (auto-format)
           (auto-indent)
+          (goto-start)
           ))))
 
   (componentDidMount [this]

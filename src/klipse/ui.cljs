@@ -2,6 +2,7 @@
   (:require 
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
+    cljsjs.codemirror.mode.javascript
     cljsjs.codemirror.addon.edit.matchbrackets
     cljsjs.codemirror.addon.display.placeholder
     [klipse.utils :refer [add-url-parameter url-parameters debounce]]
@@ -12,6 +13,7 @@
     [om.dom :as dom]))
 
 (enable-console-print!)
+(js/initMirrorCustomExtensions)
 
 (deftrack eval-js [s]
   (let [[status res] (eval s)]
@@ -63,11 +65,18 @@
 ;; =============================================================================
 ;; CodeMirror
 
-(def config-editor 
+(def config-editor-cljs 
   {:lineNumbers true
    :matchBrackets true 
    :autoCloseBrackets true
    :mode "clojure"})
+
+(def config-editor-js 
+  {:lineNumbers true
+   :matchBrackets true 
+   :autoCloseBrackets true
+   :mode "javascript"
+   :readOnly true})
                
 (defn set-option [editor option value]
   (.setOption editor option value))
@@ -76,13 +85,48 @@
   ([editor] (.getValue editor))
   ([editor sep] (.getValue editor sep)))
 
+(defn set-value [editor value] 
+  (.setValue editor value)
+  editor)
+
+(defn select-all [editor]
+  (->
+    (.-commands js/CodeMirror)
+    (.selectAll editor))
+  editor)
+
+(defn goto-end [editor]
+  (->
+    (.-commands js/CodeMirror)
+    (.goDocEnd editor))
+  editor)
+
+(defn auto-format [editor]
+  (select-all editor)
+  (let [from (.getCursor editor true)
+        to (.getCursor editor false)]
+    (.autoFormatRange editor from to))
+  (goto-end editor)
+  editor)
+
+(defn auto-indent [editor]
+  (select-all editor)
+  (let [from (.getCursor editor true)
+        to (.getCursor editor false)]
+    (.autoIndentRange editor from to))
+  (goto-end editor)
+  editor)
+
 (defn ctrl-enter [editor]
   (js/console.log (.getValue (.getDoc editor))))
 
-(defn create-editor [compiler config]
+(defmulti create-editor (fn [k _] k))
+
+(defmethod create-editor :cljs 
+  [_ compiler]
   (let [editor (js/CodeMirror.fromTextArea
-                  (js/document.getElementById "code") 
-                  (clj->js config))
+                  (js/document.getElementById "code-cljs") 
+                  (clj->js config-editor-cljs))
         idle-time 3000
         fn-process #(process-input compiler (get-value editor))] 
     (fn-process)
@@ -90,6 +134,12 @@
     (set-option editor "extraKeys" 
         #js {"Ctrl-S" #(create-url-with-input (get-value editor))
              "Ctrl-Enter" fn-process})))
+
+(defmethod create-editor :js 
+  [_ compiler]
+  (js/CodeMirror.fromTextArea
+    (js/document.getElementById "code-js") 
+    (clj->js config-editor-js)))
 
 ;; =============================================================================
 ;; Components
@@ -110,7 +160,7 @@
                              :className "what"})
                (dom/textarea #js {:autoFocus true
                                   :value input
-                                  :id "code"
+                                  :id "code-cljs"
                                   :placeholder ";; Write your clojurescript expression \n;; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."})))
 
 (defn compile-cljs-ui [{:keys [compilation]} height-class width-class]
@@ -121,10 +171,9 @@
                  (dom/img #js {:src "img/js.png"
                                :width 35
                                :className "what"})
-                 (dom/textarea #js {:value result
-                                    :className status-class
-                                    :placeholder ";; Press Ctrl-Enter or wait for 3 sec to transpile..."
-                                    :readOnly true}))))
+                 (dom/textarea #js {:id "code-js"
+                                    ; :className status-class
+                                    :placeholder ";; Press Ctrl-Enter or wait for 3 sec to transpile..."}))))
 
 (defn evaluate-clj-ui [{:keys [evaluation-clj]} height-class width-class]
   (let [[status result] evaluation-clj
@@ -164,9 +213,20 @@
          '[:compilation :evaluation-js :evaluation-clj])
 
   Object
+  
+  (componentDidUpdate [this prev-props prev-state]
+    (let [[status result] (:compilation (om/props this))]
+      (when result
+        (->>
+          (if (= :ok status) result " ")
+          (set-value (om/get-state this :editor))
+          (auto-format)
+          (auto-indent)
+          ))))
 
   (componentDidMount [this]
-                     (create-editor this config-editor))
+                     (create-editor :cljs this)
+                     (om/set-state! this {:editor (create-editor :js this)}))
 
   (render [this]
           (let [{:keys [js_only eval_only cljs_in]} (url-parameters)

@@ -64,7 +64,7 @@ textarea {
   color: darkgrey;
   font-style: italic;
   font-size: 20px;
-  z-index: 1;
+  z-index: 9;
 }
 
 .error {

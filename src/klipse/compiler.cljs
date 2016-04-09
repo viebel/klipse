@@ -2,7 +2,7 @@
   (:require 
     [cljs.reader :refer [read-string]]
     [klipse.io :as io]
-    [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
+    [gadjett.core :as gadjett :refer-macros [deflog dbg log log-with-msg]]
     [replumb.core :as replumb]
     [cljs.js :as cljs]))
 
@@ -16,7 +16,7 @@
 (defn load-inlined [opts cb]
   (cb {:lang :clj :source ""}))
 
-(deftrack compile [s]
+(deflog compile [s]
   (cljs/compile-str (cljs/empty-state) s
                     "cljs-in"
                     {:load load-inlined}
@@ -41,12 +41,13 @@
     (catch js/Object e
       s)))
 
-(deftrack eval [s]
+(defn eval [s]
   (let [{:keys [form warning error value success?]} (replumb/read-eval-call repl-opts-noop identity s)
         status (if error :error :ok)
         res (if value 
               (read-string-cond value)
-              (.. error -message))]
+              error
+              #_(.. error -message))]
     [status res]))
 
 

@@ -1,5 +1,5 @@
 (ns klipse.io
-    (:require [gadjett.core :as gadjett :refer-macros [dbg]])
+    (:require [gadjett.core :as gadjett :refer-macros [dbg deflog log log-with-msg]])
     (:import goog.net.XhrIo))
 
 (defn no-op [file-url src-cb]

@@ -8,7 +8,8 @@
 (deftest test-eval
   (testing "when it should fail "
     (are [input-clj output-clj]
-         (= (eval input-clj) [:error output-clj])
+         (let [[status res] (eval input-clj)]
+           (=  [status (.. res -message)] [:error output-clj]))
          "(+ 1 2" "EOF while reading"))
   (testing "when it should succeed"
     (are [input-clj output-clj]

@@ -7,7 +7,7 @@
     cljsjs.codemirror.addon.display.placeholder
     [klipse.utils :refer [add-url-parameter url-parameters debounce]]
     [klipse.compiler :refer [eval compile]]
-    [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
+    [gadjett.core :as gadjett :refer-macros [deflog deftrack dbg log log-with-msg]]
     [goog.dom :as gdom]
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]))
@@ -86,8 +86,9 @@
   ([editor sep] (.getValue editor sep)))
 
 (defn set-value [editor value] 
-  (.setValue editor value)
-  editor)
+  (when editor
+    (.setValue editor value)
+    editor))
 
 (defn select-all [editor]
   (->
@@ -175,7 +176,7 @@
                                     ; :className status-class
                                     :placeholder ";; Press Ctrl-Enter or wait for 3 sec to transpile..."}))))
 
-(defn evaluate-clj-ui [{:keys [evaluation-clj]} height-class width-class]
+(deflog evaluate-clj-ui [{:keys [evaluation-clj]} height-class width-class]
   (let [[status result] evaluation-clj
         status-class (if (= :ok status) "ok" "error")]
     (dom/section #js {:id "evaluate-clj-ui"
@@ -215,14 +216,15 @@
   Object
   
   (componentDidUpdate [this prev-props prev-state]
-    (let [[status result] (:compilation (om/props this))]
-      (when result
+
+    (let [[status result] (:compilation (om/props this))
+          editor (om/get-state this :editor)]
+      (when (and editor result)
         (->>
           (if (= :ok status) result " ")
-          (set-value (om/get-state this :editor))
-          (auto-format)
-          (auto-indent)
-          ))))
+          (set-value editor)
+          auto-format
+          auto-indent))))
 
   (componentDidMount [this]
                      (create-editor :cljs this)

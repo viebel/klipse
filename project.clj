@@ -3,7 +3,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.8.40"]
                  [im.chit/purnam "0.5.2"]
-                 [viebel/gadjett "0.1.8"]
+                 [viebel/gadjett "0.1.10"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [org.omcljs/om "1.0.0-alpha22"]
                  [shodan "0.4.2"]

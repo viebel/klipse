@@ -32,10 +32,12 @@
                     ))
 
 (def repl-opts-noop (merge (replumb/options :browser
-                                             ["/dbg/js" "/js/compiled/out"]
-                                             io/no-op)
+                                             ["src" "/fig/js"]
+                                             io/fetch-file!)
                             {:warning-as-error false
                              :context :statement
+                             :src-paths ["src" "/fig/js"]
+                             :cache {:src-paths-lookup? true}
                              :verbose false}))
 
 (defn read-string-cond [s]

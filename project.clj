@@ -11,7 +11,7 @@
                  [com.cemerick/url "0.1.1"]
                  [com.andrewmcveigh/cljs-time "0.3.10"]
                  [figwheel-sidecar "0.5.0" :scope "test"]
-                 [cljsjs/codemirror "5.10.0-0"]]
+                 [cljsjs/codemirror "5.11.0-1"]]
   :hooks [leiningen.cljsbuild]
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ["public/js"]

@@ -213,19 +213,22 @@
   Object
   
   (componentDidUpdate [this prev-props prev-state]
-    (let [[status result] (:compilation (om/props this))]
-      (when result
+    (let [[status result] (:compilation (om/props this))
+          editor-js (om/get-state this :editor)]
+      (when (and result editor-js)
         (->>
           (if (= :ok status) result " ")
-          (set-value (om/get-state this :editor))
+          (set-value editor-js)
           (auto-format)
           (auto-indent)
           (goto-start)
           ))))
 
   (componentDidMount [this]
-                     (create-editor :cljs this)
-                     (om/set-state! this {:editor (create-editor :js this)}))
+     (create-editor :cljs this)
+     (let [{:keys [eval_only]} (url-parameters)]
+       (when-not eval_only 
+         (om/set-state! this {:editor (create-editor :js this)}))))
 
   (render [this]
           (let [{:keys [js_only eval_only cljs_in]} (url-parameters)

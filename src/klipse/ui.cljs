@@ -150,14 +150,14 @@
       "base") $
     (str "img/" base "-" $ ".png")))
 
-(defn input-ui [compiler input height-class width-class]
+(defn input-ui [compiler {:keys [input]} default-value height-class width-class]
   (dom/section #js {:id "input-ui"
                     :className (str height-class " " width-class)}
                (dom/img #js {:src "img/cljs.png"
                              :width 40
                              :className "what"})
                (dom/textarea #js {:autoFocus true
-                                  :value input
+                                  :value (or input default-value)
                                   :id "code-cljs"
                                   :placeholder ";; Write your clojurescript expression \n;; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."})))
 
@@ -208,7 +208,7 @@
 
   static om/IQuery
   (query [this] 
-         '[:compilation :evaluation-js :evaluation-clj])
+         '[:input :compilation :evaluation-js :evaluation-clj])
 
   Object
   
@@ -237,7 +237,7 @@
             (as->
               (om/props this) $
               (dom/div #js {:className "container"}
-                       (input-ui this cljs_in (get-in height-classes [height-key :input]) width-class)
+                       (input-ui this $ cljs_in (get-in height-classes [height-key :input]) width-class)
                        (when-not eval_only
                          (compile-cljs-ui $ (get-in height-classes [height-key :compile-cljs]) width-class))
                        (when-not js_only

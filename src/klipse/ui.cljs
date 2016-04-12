@@ -5,6 +5,7 @@
     cljsjs.codemirror.mode.javascript
     cljsjs.codemirror.addon.edit.matchbrackets
     cljsjs.codemirror.addon.display.placeholder
+    [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters debounce]]
     [klipse.compiler :refer [eval compile]]
     [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
@@ -40,7 +41,8 @@
   {:action (fn [] (swap! state assoc :input value))})
 
 (defmethod mutate 'cljs/compile [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] (swap! state update :compilation (partial compile value)))})
+  (let [static-fns (dbg (boolean (read-string (or (:static-fns (url-parameters) "false")))))]
+    {:action (fn [] (swap! state update :compilation (partial compile value :static-fns static-fns)))}))
 
 (defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] (swap! state update :evaluation-js (partial eval-js value)))})

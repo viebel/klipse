@@ -16,10 +16,13 @@
 (defn load-inlined [opts cb]
   (cb {:lang :clj :source ""}))
 
-(deftrack compile [s]
+(deftrack compile [s & {:keys [static-fns] :or {static-fns false}}]
   (cljs/compile-str (cljs/empty-state) s
                     "cljs-in"
-                    {:load load-inlined}
+                    {
+                     :static-fns static-fns
+                     :load load-inlined
+                    }
                     (fn [{:keys [value error]}]
                       (let [status (if error :error :ok)
                             res (if error 

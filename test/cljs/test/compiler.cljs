@@ -33,7 +33,13 @@
          (= (eval input-clj) [:ok output-clj])
          "(ns my-ns (:require [clojure.string :as string])) (string/blank? \"HELLO!!\")" false
          "(ns my-ns (:require [replumb.core :as replumb])) (replumb/read-eval-call {} identity \"(+ 2 3)\")" '{:value "5", :warning "my-ns is a single segment namespace at line 1 ", :form (+ 2 3), :success? true}))
-
+  (testing "compiler eval :ok"
+    (are [input-clj output-clj]
+         (= (eval input-clj) [:ok output-clj])
+         "(type 1)" "#object[Number \"function Number() {\n    [native code]\n}\"]"
+         "(+ 1 2)" 3
+         "(map inc [1 2 3])" '(2 3 4)
+         "(ns my.aa) (+ 1 2)" 3))
   #_(testing "when it should succeed with macros"
     (is (= (dbg (eval "(ns foo.core$macros) (defmacro hello [x] (prn &form) `(inc ~x)) (foo.core/hello 12)")) [:ok 14]))))
 
@@ -50,16 +56,10 @@
                                                                                           my_project.my_ns.x = (1);
                                                                                           my_project.my_ns.y = (2);
                                                                                           "))
-    (is (a= (remove-chars (second (compile "(if 2 3) (def x (if 2 3))"))) "cljs.user.x= (3);")))
-
-
-  (testing "compiler eval :ok"
-  	(are [input-clj output-clj]
-      (= (eval input-clj) [:ok output-clj])
-      "(type 1)" "#object[Number \"function Number() {\n    [native code]\n}\"]"
-      "(+ 1 2)" 3
-      "(map inc [1 2 3])" '(2 3 4)
-      "(ns my.aa) (+ 1 2)" 3)))
+    (is (a= (remove-chars (second (compile "(if 2 3) (def x (if 2 3))"))) "cljs.user.x= (3);"))
+    (is (a= (remove-chars (second (compile "(= 1 2)"))) "cljs.core._EQ_.call(null,(1),(2));")))
+  (testing ":static-fns true"
+    (is (a= (remove-chars (second (compile "(= 1 2)" :static-fns true))) "cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2((1),(2));"))))
 
    
 

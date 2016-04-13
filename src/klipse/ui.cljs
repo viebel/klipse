@@ -250,7 +250,7 @@
 ;; Init
 
 (defonce app-state (atom
-  {:input ""
+  {:input nil
    :compilation ""
    :evaluation-js ""
    :evaluation-clj ""}))

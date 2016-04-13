@@ -5,6 +5,7 @@
     cljsjs.codemirror.mode.javascript
     cljsjs.codemirror.addon.edit.matchbrackets
     cljsjs.codemirror.addon.display.placeholder
+    cljsjs.codemirror.addon.scroll.simplescrollbars
     [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters debounce]]
     [klipse.compiler :refer [eval compile]]
@@ -71,14 +72,16 @@
   {:lineNumbers true
    :matchBrackets true 
    :autoCloseBrackets true
-   :mode "clojure"})
+   :mode "clojure"
+   :scrollbarStyle "overlay"})
 
 (def config-editor-js 
   {:lineNumbers true
    :matchBrackets true 
    :autoCloseBrackets true
    :mode "javascript"
-   :readOnly true})
+   :readOnly true
+   :scrollbarStyle "simple"})
                
 (defn set-option [editor option value]
   (.setOption editor option value))
@@ -155,9 +158,6 @@
 (defn input-ui [compiler input height-class width-class]
   (dom/section #js {:id "input-ui"
                     :className (str height-class " " width-class)}
-               (dom/img #js {:src "img/cljs.png"
-                             :width 40
-                             :className "what"})
                (dom/textarea #js {:autoFocus true
                                   :value input
                                   :id "code-cljs"
@@ -168,21 +168,15 @@
         status-class (if (= :ok status) "ok" "error")]
     (dom/section #js {:id "compile-cljs-ui"
                       :className (str height-class " " width-class)}
-                 (dom/img #js {:src "img/js.png"
-                               :width 35
-                               :className "what"})
                  (dom/textarea #js {:id "code-js"
                                     ; :className status-class
                                     :placeholder ";; Press Ctrl-Enter or wait for 3 sec to transpile..."}))))
 
 (defn evaluate-clj-ui [{:keys [evaluation-clj]} height-class width-class]
   (let [[status result] evaluation-clj
-        status-class (if (= :ok status) "ok" "error")]
+        status-class (when status (name status))]
     (dom/section #js {:id "evaluate-clj-ui"
                       :className (str height-class " " width-class)}
-                 (dom/img #js {:src (logo status "cljs")
-                               :width 40
-                               :className (str "what " status-class)})
                  (dom/textarea #js {:value result
                                     :className status-class
                                     :placeholder ";; Press Ctrl-Enter or wait for 3 sec to eval in clojure..."
@@ -190,12 +184,9 @@
 
 (defn evaluate-js-ui [{:keys [evaluation-js]} height-class width-class]
   (let [[status result] evaluation-js
-        status-class (if (= :ok status) "ok" "error")]
+        status-class (when status (name status))]
     (dom/section #js {:id "evaluate-js-ui"
                       :className (str height-class " " width-class)}
-                 (dom/img #js {:src (logo status "js")
-                               :width 35
-                               :className (str "what " status-class)})
                  (dom/textarea #js {:value result
                                     :className status-class
                                     :placeholder ";; Press Ctrl-Enter or wait for 3 sec to eval in js..."

@@ -24,6 +24,57 @@ section {
   position: relative;
 }
 
+.container .CodeMirror {
+  height: 100%;
+  border: solid 1px #90B4FE;
+}
+
+.container .CodeMirror-linenumber {
+  padding: none;
+}
+
+.CodeMirror pre.CodeMirror-placeholder { 
+  color: #999; 
+}
+
+section .CodeMirror, section textarea {
+  background-position: right bottom;
+  background-size: 40px;
+  background-repeat: no-repeat;
+}
+
+section#input-ui .CodeMirror {
+  background-image: url(../img/cljs.png);
+}
+
+section#compile-cljs-ui .CodeMirror {
+  background-image: url(../img/js.png);
+}
+
+section#evaluate-clj-ui textarea {
+  background-image: url(http://localhost:5014/img/cljs-base.png);
+}
+
+section#evaluate-clj-ui textarea.ok {
+  background-image: url(http://localhost:5014/img/cljs-ok.png);
+}
+
+section#evaluate-clj-ui textarea.error {
+  background-image: url(http://localhost:5014/img/cljs-error.png);
+}
+
+section#evaluate-js-ui textarea {
+  background-image: url(http://localhost:5014/img/js-base.png);
+}
+
+section#evaluate-js-ui textarea.ok {
+  background-image: url(http://localhost:5014/img/js-ok.png);
+}
+
+section#evaluate-js-ui textarea.error {
+  background-image: url(http://localhost:5014/img/js-error.png);
+}
+
 .height80 {
     height: 80%;
 }

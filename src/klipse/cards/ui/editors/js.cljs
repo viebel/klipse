@@ -1,0 +1,49 @@
+(ns klipse.cards.ui.editors.js
+  (:require 
+    [klipse.ui.editors.js :refer [js-editor]]
+    [om.next :as om :refer-macros [defui]]
+    [om.dom :as dom]
+    [devcards.core :as dc :refer-macros [defcard]]))
+
+(defui Root-computed
+  Object
+  (render [this]
+    (let [{:keys [updateJS]} (om/get-computed this)]
+      (dom/div #js {:className "dev-cards-section"}
+        (dom/div #js {:className "toolbox"}
+          (dom/button #js {:onClick updateJS} "Add JS code to editor"))
+        (js-editor (om/props this))))))
+
+(def root-computed (om/factory Root-computed))
+
+(defcard js-editor 
+  "__Purpose:__ 
+  
+  * Basic javascript read-only editor.
+  
+  __Requirements:__ 
+  
+  1. UI
+    * Editor takes the entire width of section.
+    * Editor takes the entire height of section.
+    * Syntax hightlighting: `javascript`.
+    * Display line number.
+    * Placeholder.
+    * Editor background: a js logo in the right bottom corner.
+  
+  2. TOOLS
+    * Automatic js beautifier.
+  
+  __ToolBox:__"
+  (fn [data _]
+    (let [p-data @data
+          f-data {:updateJS  
+                  (fn [] (swap! data assoc 
+                     :compilation 
+                     [:ok "cljs.user.f = (function cljs$user$f(x){return (x + x);});"]))}]
+      (root-computed (om/computed p-data f-data))))
+  {:compilation nil}
+  {:inspect-data true
+   :history true
+   :frame false})
+

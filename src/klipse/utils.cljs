@@ -23,6 +23,11 @@
       (assoc-in [:query (name key)] value)
       str))
 
+(defn create-url-with-input [input]
+  (doto (add-url-parameter :cljs_in input)
+        print
+        js/alert))
+
 (defn debounce [func wait-in-ms]
   (let [counter (atom 0)]
     (fn [] 

@@ -29,6 +29,7 @@
                                 :compiler {
                                            :output-to "resources/private/test/klipse.testable.js"
                                            :output-dir "resources/private/test"
+                                           :static-fns true
                                            :verbose true
                                            :optimizations :whitespace }}
                     :dev {
@@ -49,5 +50,6 @@
                                              :asset-path "dbg/js"
                                              :output-to "resources/public/dbg/js/klipse.js"
                                              :output-dir "resources/public/dbg/js"
+                                             :static-fns true
                                              ;:elide-asserts true
                                              :verbose true}}}})

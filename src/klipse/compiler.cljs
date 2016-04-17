@@ -36,6 +36,7 @@
                                              io/no-op)
                             {:warning-as-error false
                              :context :statement
+                             :static-fns true
                              :verbose false}))
 
 (defn read-string-cond [s]
@@ -44,12 +45,20 @@
     (catch js/Object e
       s)))
 
+(defn eval-cljs [s]
+  (cljs/eval-str (cljs/empty-state) s
+                 'test {:eval cljs/js-eval
+                        ;:static-fns true
+                        ;:context :statement 
+                        :load load-inlined
+                        } identity))
+
 (deftrack eval [s]
-  (let [{:keys [form warning error value success?]} (replumb/read-eval-call repl-opts-noop identity s)
+  (let [{:keys [form warning error value success?]} (eval-cljs s) #_(replumb/read-eval-call repl-opts-noop identity s)
         status (if error :error :ok)
         res (if value 
               (read-string-cond value)
-              (.. error -message))]
+              error)]
     [status res]))
 
 

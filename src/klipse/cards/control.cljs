@@ -15,15 +15,14 @@
 
 
 (defn error->clj [[status error]]
-  [status {:message (.. error -message)
-           :cause (str (.. error -cause))}])
+  [status {:message (.. error -message)}])
 
 (deftest test-eval
   "When it should failed"
-  (are [input-clj message cause]
-       (= [:error {:message message :cause cause}] (error->clj (eval input-clj)))
-       "(+ 1 2" "EOF while reading" ""
-       "(a)" "ERROR" "TypeError: Cannot read property 'call' of undefined"))
+  (are [input-clj message]
+       (= [:error {:message message}] (error->clj (eval input-clj)))
+       "(+ 1 2" "EOF while reading" 
+       "(a)" "ERROR"))
 
 (deftest test-eval-2
   "When it should succeed"

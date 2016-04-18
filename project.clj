@@ -30,7 +30,7 @@
                                 :compiler {
                                            :output-to "resources/private/test/klipse.testable.js"
                                            :output-dir "resources/private/test"
-                                           :verbose true
+                                           :verbose false
                                            :optimizations :whitespace }}
                       :dev {
                                :source-paths ["src"]
@@ -48,8 +48,8 @@
                                   :source-paths ["src"]
                                   :compiler {:main "klipse.core"
                                              :asset-path "dbg/js"
-                                             :output-to "resources/public/dbg/js/klipse.js"
-                                             :output-dir "resources/public/dbg/js"
+                                             :output-to "resources/public/fig/js/klipse.fig.js"
+                                             :output-dir "resources/public/fig/js"
                                              ;:elide-asserts true
                                              :verbose true}}
                        

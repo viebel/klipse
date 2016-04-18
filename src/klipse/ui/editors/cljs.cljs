@@ -21,7 +21,8 @@
     [(list 'input/save     {:value s})
      (list 'cljs/compile   {:value s})
      (list 'js/eval        {:value s})
-     (list 'clj/eval       {:value s})]))
+     (list 'clj/eval       {:value s})
+     ':input]))
 
 (defn init-editor [compiler]
   (let [editor (editor/create "code-cljs" config-editor)

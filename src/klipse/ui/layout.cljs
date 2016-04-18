@@ -2,12 +2,21 @@
   (:require
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]
-    [klipse.ui.editors.cljs :refer [cljs-editor]]
-    [klipse.ui.editors.js :refer [js-editor]]
-    [klipse.ui.outputs.cljs :refer [cljs-textarea]]
-    [klipse.ui.outputs.js :refer [js-textarea]]))
+    [klipse.ui.editors.cljs :refer [cljs-editor Cljs-editor]]
+    [klipse.ui.editors.js :refer [js-editor Js-editor]]
+    [klipse.ui.outputs.cljs :refer [cljs-textarea Cljs-textarea]]
+    [klipse.ui.outputs.js :refer [js-textarea Js-textarea]]))
 
 (defui Layout
+  
+  static om/IQuery
+  (query [this] 
+    `[:code-layout 
+      {:input ~(om/get-query Cljs-editor)}
+      {:compilation ~(om/get-query Js-editor)}
+      {:evaluation-clj ~(om/get-query Cljs-textarea)}
+      {:evaluation-js ~(om/get-query Js-textarea)}])
+    
   Object
   (render [this]
     (let [{:keys [code-layout]} (om/props this)]

@@ -3,17 +3,24 @@
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]
     [klipse.ui.editors.cljs :refer [cljs-editor]]
+    [klipse.control.control :as control]
+    [devcards-om-next.core :refer-macros [defcard-om-next]]
     [devcards.core :as dc :refer-macros [defcard]]))
 
-(defui Root-computed
+(defui ^:once Root-computed
   Object
   (render [this]
     (dom/div #js {:className "dev-cards-section"}
       (cljs-editor (om/props this)))))
 
+(defonce root-reconciler
+  (om/reconciler 
+    {:state {:input "(+ 2 2)"} 
+     :parser control/parser}))
+
 (def root-computed (om/factory Root-computed))
 
-(defcard cljs-editor
+(defcard-om-next cljs-editor
   "__Purpose:__ 
   
   * Basic clojurescript input editor.
@@ -29,11 +36,11 @@
     * Editor background: a cljs logo in the right bottom corner.
   
   2. TOOLS
-    * `ctrl+enter` launch a function handler.
+    * `ctrl+enter` launch a function handler to update data.
     * `ctrl+s` launch a function handler.
     * Typing launch a function handler with a debounce of 3s."
-  (fn [data _]
-    (root-computed @data))
+  Root-computed
+  root-reconciler
   {:input "(+ 2 2)"}
   {:inspect-data true
    :frame false})

@@ -7,11 +7,23 @@
     [klipse.compiler :refer [eval compile]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 
+(defn remove-chars [s]
+  (string/replace s #"\n|\s" ""))
+
+(defn a= [& args]
+  (apply = (map remove-chars args)))
+
+
+(defn error->clj [[status error]]
+  [status {:message (.. error -message)
+           :cause (str (.. error -cause))}])
+
 (deftest test-eval
   "When it should failed"
-  (are [input-clj output-clj]
-       (= (eval input-clj) [:error output-clj])
-       "(+ 1 2" "EOF while reading"))
+  (are [input-clj message cause]
+       (= [:error {:message message :cause cause}] (error->clj (eval input-clj)))
+       "(+ 1 2" "EOF while reading" ""
+       "(a)" "ERROR" "TypeError: Cannot read property 'call' of undefined"))
 
 (deftest test-eval-2
   "When it should succeed"
@@ -19,11 +31,12 @@
        (= (eval input-clj) [:ok output-clj])
        "(+ 1 2)" 3
        "(map inc [1 2 3])" '(2 3 4)
-       "(defmacro hello 
+       "(ns my.hello) 
+       (defmacro hello 
        [x] 
        `(inc ~x))
        (hello nil nil 13)" '(cljs.core/inc 13)
-       "(defmacro hello [x] `(inc ~x)) (meta #'hello)" '{:ns cljs.user, :name hello, :file nil, :end-column 16, :column 1, :line 1, :macro true, :end-line 1, :arglists ([x]), :doc nil, :test nil}
+       "(defmacro hello [x] `(inc ~x)) (meta #'hello)" '{:ns my.hello, :name hello, :file nil, :end-column 16, :column 1, :line 1, :macro true, :end-line 1, :arglists ([x]), :doc nil, :test nil}
        "(defn append-cyclic[lst a]
            (concat (rest lst) [a]))
        (-> (repeat 3 nil)
@@ -43,17 +56,14 @@
 (deftest test-eval-4 
   "Compiler eval :ok"
   (are [input-clj output-clj]
+       (a= (remove-chars (second (eval input-clj))) output-clj)
+       "(type 1)" "#object[Number \"function Number() {\n    [native code]\n}\"]")
+   
+  (are [input-clj output-clj]
        (= (eval input-clj) [:ok output-clj])
-       "(type 1)" "#object[Number \"function Number() {\n    [native code]\n}\"]"
        "(+ 1 2)" 3
        "(map inc [1 2 3])" '(2 3 4)
        "(ns my.aa) (+ 1 2)" 3))
-
-(defn remove-chars [s]
-  (string/replace s #"\n|\s" ""))
-
-(defn a= [& args]
-  (apply = (map remove-chars args)))
 
 (deftest test-compile
   "When it should success"

@@ -40,6 +40,18 @@ or
 lein figwheel
 ```
  Open the browser [http://localhost:5014/index-dbg.html](http://localhost:5014/index-dbg.html)
+
+ ## Run dev-card
+
+ ```bash
+rlwrap lein figwheel devcards
+```
+or 
+
+```bash
+lein figwheel devcards
+```
+ Open the browser [http://localhost:5014/cards.html](http://localhost:5014/cards.html)
  
  
 ## Tutorial

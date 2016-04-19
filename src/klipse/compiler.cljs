@@ -26,7 +26,7 @@
                     (fn [{:keys [value error]}]
                       (let [status (if error :error :ok)
                             res (if error 
-                                  (.. error -cause -message)
+                                  error
                                   value)]
                         [status res]))
                     ))
@@ -49,7 +49,7 @@
         status (if error :error :ok)
         res (if value 
               (read-string-cond value)
-              (.. error -message))]
+              error)]
     [status res]))
 
 

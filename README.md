@@ -1,4 +1,4 @@
-# KLIPSE [![Build Status](https://travis-ci.org/viebel/klipse.svg?branch=master)](https://travis-ci.org/viebel/klipse)
+# KLIPSE [![Circle CI](https://circleci.com/gh/viebel/klipse/tree/master.svg?style=svg)](https://circleci.com/gh/viebel/klipse/tree/master)
 
 KLIPSE is live [here](http://app.klipse.tech).
 

@@ -35,15 +35,3 @@
      :parser parser}))
 
 
-;; =============================================================================
-;; Init data
-
-(defn process-input [component s]
-  (when-not (clojure.string/blank? s)
-      (om/transact! component 
-           [(list 'input/save     {:value s})
-            (list 'cljs/compile   {:value s})
-            (list 'js/eval        {:value s})
-            (list 'clj/eval       {:value s})])))
-
-(process-input reconciler (:cljs_in (url-parameters)))

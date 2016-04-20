@@ -1,5 +1,6 @@
 (ns klipse.control.parser
   (:require 
+    [gadjett.core :as gadjett :refer-macros [dbg]]
     [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters]]
     [klipse.compiler :refer [eval compile]]

@@ -1,7 +1,9 @@
 (ns klipse.ui.editors.cljs
   (:require
+    [gadjett.core :as gadjett :refer-macros [dbg]]
+    [clojure.string :as string :refer [blank?]]
     [klipse.ui.editors.editor :as editor]
-    [klipse.utils :refer [create-url-with-input debounce]] 
+    [klipse.utils :refer [url-parameters create-url-with-input debounce]] 
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]))
 
@@ -17,12 +19,13 @@
     ";; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."))
 
 (defn process-input [component s]
-  (om/transact! component 
-    [(list 'input/save     {:value s})
-     (list 'cljs/compile   {:value s})
-     (list 'js/eval        {:value s})
-     (list 'clj/eval       {:value s})
-     ':input]))
+  (when-not (blank? s)
+    (om/transact! component 
+                  [(list 'input/save     {:value s})
+                   (list 'cljs/compile   {:value s})
+                   (list 'js/eval        {:value s})
+                   (list 'clj/eval       {:value s})
+                   ':input])))
 
 (defn init-editor [compiler]
   (let [editor (editor/create "code-cljs" config-editor)
@@ -46,7 +49,7 @@
     (init-editor this))
 
   (render [this]
-    (let [input (:input (om/props this))]
+    (let [input (or (:input (om/props this) (:cljs_in (url-parameters))))] ;ugly workaround: read the url parameter
       (dom/section #js {:className "cljs-editor"}
       (dom/textarea #js {:autoFocus true
                          :value input

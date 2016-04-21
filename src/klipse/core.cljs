@@ -1,9 +1,11 @@
 (ns ^:figwheel-no-load klipse.core
   (:require 
     [goog.dom :as gdom]
-    [om.next :as om :refer-macros [defui]]
+    [om.next :as om]
     [klipse.ui.layout :as ui]
-    [klipse.control.control :as control]))
+    [klipse.utils :refer [url-parameters]]
+    [klipse.control.control :as control]
+    [klipse.ui.editors.cljs :as cljs-editor]))
 
 (enable-console-print!)
 
@@ -11,3 +13,5 @@
   control/reconciler 
   ui/Layout 
   (gdom/getElement "compiler"))
+
+(cljs-editor/process-input control/reconciler (:cljs_in (url-parameters)))

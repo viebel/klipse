@@ -5,4 +5,6 @@
     klipse.cards.ui.layout.global
     klipse.cards.ui.layout.eval-only
     klipse.cards.ui.layout.js-only
-    klipse.cards.control))
+    klipse.cards.special.eval
+    klipse.cards.test.compile
+    klipse.cards.test.eval))

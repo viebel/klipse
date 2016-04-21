@@ -16,7 +16,7 @@
 
 (defonce editor-cljs-reconciler
   (om/reconciler 
-    {:state {:input "(+ 2 2)"} 
+    {:state {:input "(+ 103212 2)"} 
      :parser control/parser}))
 
 (defcard-om-next cljs-editor

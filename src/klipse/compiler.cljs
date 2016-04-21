@@ -44,8 +44,9 @@
     (catch js/Object e
       s)))
 
-(deftrack eval [s]
-  (let [{:keys [form warning error value success?]} (replumb/read-eval-call repl-opts-noop identity s)
+(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
+  (let [opts (merge repl-opts-noop {:static-fns static-fns})
+        {:keys [form warning error value success?]} (replumb/read-eval-call opts identity s)
         status (if error :error :ok)
         res (if value 
               (read-string-cond value)

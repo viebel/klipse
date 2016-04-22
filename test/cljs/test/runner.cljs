@@ -1,7 +1,9 @@
 (ns test.runner
   (:require
     [cljs.test :as test :refer-macros [run-all-tests] :refer [report]]
-    [klipse.cards.control]))
+    [klipse.cards.test.eval]
+    [klipse.cards.test.compile]
+    ))
     
 (enable-console-print!)
 
@@ -13,5 +15,5 @@
 
 
 (defn ^:export run[]
-  (println "res: " (run-all-tests #".*")))
+  (println "res: " (run-all-tests #"klipse.cards.test.*")))
     

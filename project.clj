@@ -26,7 +26,7 @@
               :test-commands {"unit" ["phantomjs" "test/phantom/unit-test.js" "test/phantom/unit-test.html"]}
               :builds {
                        :test {
-                                :source-paths ["test"]
+                                :source-paths ["test" "src/klipse/cards/test"]
                                 :notify-command ["phantomjs" "test/phantom/unit-test.js" "test/phantom/unit-test.html"]
                                 :compiler {
                                            :output-to "resources/private/test/klipse.testable.js"

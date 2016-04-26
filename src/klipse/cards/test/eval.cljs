@@ -28,6 +28,9 @@
   "eval with several expressions"
   (are [input-clj output-clj]
        (= (eval input-clj) [:ok output-clj])
+;       "(if (> 100 10) 1 2)" 1
+       " (def x 12)
+         (+ x 5)" 17
        "(+ 1 2)" 3
        "(map inc [1 2 3])" '(2 3 4)
        "(defn append-cyclic[lst a]
@@ -43,6 +46,7 @@
   "eval with macros"
   (are [input-clj output-clj]
        (= (eval input-clj) [:ok output-clj])
+
        "(ns my.hello) 
        (defmacro hello 
        [x] 

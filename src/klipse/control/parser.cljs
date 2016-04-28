@@ -11,13 +11,16 @@
 ;; =============================================================================
 ;; Utils
 
+(defn static-fns? []
+  (boolean (read-string (or (:static-fns (url-parameters) "false")))))
+
 (deftrack eval-js [s]
-  (let [[status res] (eval s)]
+  (let [[status res] (eval s :static-fns (static-fns?))]
     (.log js/console res)
     [status (.stringify js/JSON res nil 4)]))
 
 (deftrack eval-clj [s]
-  (let [[status res] (eval s)]
+  (let [[status res] (eval s :static-fns (static-fns?))]
     [status (if (string? res)
               res
               (with-out-str (pprint res)))]))
@@ -40,9 +43,8 @@
              (swap! state assoc :input value))})
 
 (defmethod mutate 'cljs/compile [{:keys [state]} _ {:keys [value]}]
-  (let [static-fns (boolean (read-string (or (:static-fns (url-parameters) "false"))))]
-    {:action (fn [] 
-               (swap! state update :compilation (partial compile value :static-fns static-fns)))}))
+  {:action (fn []
+             (swap! state update :compilation (partial compile value :static-fns (static-fns?))))})
 
 (defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] 

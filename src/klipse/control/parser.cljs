@@ -1,5 +1,6 @@
 (ns klipse.control.parser
   (:require 
+    [cljs.pprint :refer [pprint]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
     [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters]]
@@ -17,7 +18,9 @@
 
 (deftrack eval-clj [s]
   (let [[status res] (eval s)]
-    [status (str res)]))
+    [status (if (string? res)
+              res
+              (with-out-str (pprint res)))]))
 
 
 ;; =============================================================================

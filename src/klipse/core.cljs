@@ -3,6 +3,7 @@
     [goog.dom :as gdom]
     [om.next :as om]
     [gadjett.core :as gadjett]
+    [com.rpl.specter :as specter]
     [klipse.ui.layout :as ui]
     [klipse.utils :refer [url-parameters]]
     [klipse.control.control :as control]

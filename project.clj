@@ -35,6 +35,7 @@
                       :dev {
                                :source-paths ["src"]
                                :compiler {
+                                    :preamble ["mirror_extensions.js"]
                                           :main "klipse.core"
                                           :output-to "resources/public/dev/js/klipse.js"
                                           :output-dir "resources/public/dev/js"
@@ -46,8 +47,9 @@
                                           :verbose false}}
                        :figwheel {
                                   :figwheel true
-                                  :source-paths ["src"]
+                                  :source-paths ["src" "resources/public/lib"]
                                   :compiler {:main "klipse.core"
+                                             :preamble ["mirror_extensions.js"]
                                              :asset-path "fig/js"
                                              :output-to "resources/public/fig/js/klipse.fig.js"
                                              :output-dir "resources/public/fig/js"

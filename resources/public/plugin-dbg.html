@@ -4,15 +4,9 @@
         <meta charset="UTF-8">
         <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
         <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
-        <link rel="stylesheet" type="text/css" href="css/layout.css">
-        <link rel="stylesheet" type="text/css" href="css/cards/layout.css">
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
-        <link rel="stylesheet" type="text/css" href="css/simplescrollbars.css">
     </head>
     <body>
-        <div style="position: absolute; z-index: 9; right: 5px; top: 5px;" > 
-            <a class="github-button" href="https://github.com/viebel/klipse" data-count-href="/viebel/klipse/stargazers" data-count-api="/repos/viebel/klipse#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star viebel/klipse on GitHub">Star</a>
-        </div>
         <div class="clojure">
         (
         <span>
@@ -20,15 +14,21 @@
         </span>)
         </div>
         <br/>
-        <div class="clojure">
-        (
-        <span>
-        map inc [1 2 3]
-        </span>
-        </div>
+        <span class="clojure"> (defn foo [x] (* x x)) </span>
+        <span class="clojure"> (foo 19) </span>
+        <span class="clojure"> (ns my.elyahou) (defn bar [x] (* x x)) </span>
+        <span class="clojure"> (ns my.rafi) (my.elyahou/bar 19) </span>
+        <span class="clojure"> (map inc [1 2 3]) </span>
+        <br/>
+        <span class="clojure"> (map inc [100 2 3]) </span>
+        <br/>
+        <span class="clojure"> (map inc [1000 2 3]) </span>
+        <br/>
+        <span class="clojure"> (map dec [1 2 3]) </span>
         <br/>
         <div class="clojure">
             (ns my.best$macros)
+            <br/>
 
             (defmacro disp [& forms]
               (cons `str (for [form forms]
@@ -39,14 +39,11 @@
                                      (+ 4 5 6))
         </div>
         <br/>
-       <div id="compiler" style="height: 100%;"></div>
-        <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
         <script>
         window.klipse_settings = {
-            selector: 'div.clojure'
+            selector: '.clojure'
         };
         </script>
-        <script src="lib/mirror_extensions.js"></script>
         <script src="fig/js/klipse.fig.js"></script>
     </body>
 </html>

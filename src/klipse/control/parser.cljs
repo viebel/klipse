@@ -20,7 +20,7 @@
     [status (.stringify js/JSON res nil 4)]))
 
 (deftrack eval-clj [s]
-  (let [[status res] (eval s :static-fns (static-fns?))]
+  (let [[status res] (eval (dbg s ):static-fns (static-fns?))]
     [status (if (string? res)
               res
               (with-out-str (pprint res)))]))

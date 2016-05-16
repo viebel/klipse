@@ -1,5 +1,6 @@
 (ns klipse.ui.editors.editor
   (:require 
+    [goog.dom :as gdom]
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.mode.javascript
@@ -7,12 +8,14 @@
     cljsjs.codemirror.addon.display.placeholder
     cljsjs.codemirror.addon.scroll.simplescrollbars))
 
-(js/initMirrorCustomExtensions)
+(when js/window.initMirrorCustomExtensions
+  (js/window.initMirrorCustomExtensions))
 
 (defn create [dom-id config]
     (js/CodeMirror.fromTextArea
         (js/document.getElementById dom-id)
         (clj->js config)))
+
 
 (defn get-value [editor] 
   (.getValue editor))
@@ -52,3 +55,20 @@
         to (.getCursor editor false)]
     (.autoIndentRange editor from to))
   editor)
+
+(defn replace-element-by-editor [element value]
+  (-> (js/CodeMirror (fn [elt]
+                   (goog.dom/replaceNode elt element))
+                 #js {:value value})
+      auto-format
+      auto-indent
+      goto-start))
+
+(defn create-div-after [element]
+    (let [div (gdom/createDom "div" nil (gdom/createTextNode ""))]
+      (gdom/insertSiblingAfter div element)
+      div))
+
+(defn create-editor-after-element [element value]
+  (-> (create-div-after element)
+      (replace-element-by-editor value)))

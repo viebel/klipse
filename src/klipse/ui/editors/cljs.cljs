@@ -3,7 +3,7 @@
     [gadjett.core :as gadjett :refer-macros [dbg]]
     [clojure.string :as string :refer [blank?]]
     [klipse.ui.editors.editor :as editor]
-    [klipse.utils :refer [url-parameters create-url-with-input debounce]] 
+    [klipse.utils :refer [current-url url-parameters create-url-with-input debounce]] 
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]))
 
@@ -27,15 +27,17 @@
                    (list 'clj/eval       {:value s})
                    ':input])))
 
+(defn handle-events [editor {:keys [on-should-eval idle-msec base-url] :or {base-url nil}}]
+  (editor/on-change editor 
+                    (debounce on-should-eval idle-msec))
+  (editor/set-option editor "extraKeys" 
+                     #js {"Ctrl-S" #(create-url-with-input base-url (editor/get-value editor))
+                          "Ctrl-Enter" on-should-eval}))
+
 (defn init-editor [compiler]
-  (let [editor (editor/create "code-cljs" config-editor)
-        idle-time 3000
-        fn-process #(process-input compiler (editor/get-value editor))] 
-    (editor/on-change editor 
-        (debounce fn-process idle-time))
-    (editor/set-option editor "extraKeys" 
-        #js {"Ctrl-S" #(create-url-with-input (editor/get-value editor))
-             "Ctrl-Enter" fn-process})))
+  (as-> (editor/create "code-cljs" config-editor) $
+    (handle-events $
+      {:on-should-eval #(process-input compiler (editor/get-value $))})))
 
 (defui Cljs-editor
   

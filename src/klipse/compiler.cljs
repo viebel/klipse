@@ -53,4 +53,8 @@
               error)]
     [status res]))
 
+(defn str-eval [exp]
+  (-> (eval exp)
+      second
+      str))
 

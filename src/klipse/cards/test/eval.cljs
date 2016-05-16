@@ -52,6 +52,15 @@
        [x] 
        `(inc ~x))
        (hello nil nil 13)" '(cljs.core/inc 13)
+       "(ns my.best)
+
+       (defmacro disp [& forms]
+           (cons `str (for [form forms]
+                                         `(str (pr-str '~form) \" => \" (pr-str ~form) \"\n\"))))
+
+       (my.best/disp 
+           (map inc [1 2 3])
+               (+ 4 5 6))" 123
        "(defmacro hello [x] `(inc ~x)) (meta #'hello)" '{:ns my.hello, :name hello, :file nil, :end-column 16, :column 1, :line 1, :macro true, :end-line 1, :arglists ([x]), :doc nil, :test nil}))
 
 (deftest test-eval-3 

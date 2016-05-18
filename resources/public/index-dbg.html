@@ -13,33 +13,7 @@
         <div style="position: absolute; z-index: 9; right: 5px; top: 5px;" > 
             <a class="github-button" href="https://github.com/viebel/klipse" data-count-href="/viebel/klipse/stargazers" data-count-api="/repos/viebel/klipse#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star viebel/klipse on GitHub">Star</a>
         </div>
-        <div class="clojure">
-        (
-        <span>
-        map inc [1 2 3]
-        </span>)
-        </div>
-        <br/>
-        <div class="clojure">
-        (
-        <span>
-        map inc [1 2 3]
-        </span>
-        </div>
-        <br/>
-        <div class="clojure">
-            (ns my.best$macros)
-
-            (defmacro disp [& forms]
-              (cons `str (for [form forms]
-                               `(str (pr-str '~form) " => " (pr-str ~form) "\n"))))
-
-                               (my.best/disp 
-                                 (map inc [1 2 3])
-                                     (+ 4 5 6))
-        </div>
-        <br/>
-       <div id="compiler" style="height: 100%;"></div>
+      <div id="compiler" style="height: 100%;"></div>
         <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
         <script>
         window.klipse_settings = {

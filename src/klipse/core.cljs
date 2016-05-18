@@ -12,5 +12,5 @@
 (def version "0.4.3")
 (println "KLIPSE version:" version)
 
-(plugin/init (js->clj js/klipse_settings :keywordize-keys true))
+(plugin/init (dbg js/klipse_settings))
 (app/init)

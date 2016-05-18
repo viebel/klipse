@@ -37,7 +37,8 @@
 (defn init-editor [compiler]
   (as-> (editor/create "code-cljs" config-editor) $
     (handle-events $
-      {:on-should-eval #(process-input compiler (editor/get-value $))})))
+      {:idle-msec 3000
+       :on-should-eval #(process-input compiler (editor/get-value $))})))
 
 (defui Cljs-editor
   

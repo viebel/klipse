@@ -32,7 +32,7 @@
                     ))
 
 (def repl-opts-noop (merge (replumb/options :browser
-                                             ["/dbg/js" "/js/compiled/out"]
+                                             ["https://gist.githubusercontent.com/" "/dbg/js" "/js/compiled/out"]
                                              io/no-op)
                             {:warning-as-error false
                              :context :statement
@@ -52,6 +52,11 @@
               (read-string-cond value)
               error)]
     [status res]))
+
+(defn str-compile [exp]
+  (-> (compile exp)
+      second
+      str))
 
 (defn str-eval [exp]
   (-> (eval exp)

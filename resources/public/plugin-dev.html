@@ -4,16 +4,9 @@
         <meta charset="UTF-8">
         <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
         <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
-        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-        <div class="clojure-js">
-            (map inc [100000 2 3])
-        </div>
-        <div class="clojure-js">
-            (deftype A[x])
-        </div>
-         <div class="clojure">
+        <div class="clojure">
         (
         <span>
         map inc [1 2 3]
@@ -21,15 +14,12 @@
         </div>
         <br/>
         <span class="clojure"> (defn foo [x] (* x x)) </span>
-        <br/>
         <span class="clojure"> (foo 19) </span>
-        <br/>
         <span class="clojure"> (ns my.elyahou) (defn bar [x] (* x x)) </span>
-        <br/>
         <span class="clojure"> (ns my.rafi) (my.elyahou/bar 19) </span>
         <span class="clojure"> (map inc [1 2 3]) </span>
         <br/>
-        <span class="clojure"> (zipmap '[a b c] [100 2 3]) </span>
+        <span class="clojure"> (map inc [100 2 3]) </span>
         <br/>
         <span class="clojure"> (map inc [1000 2 3]) </span>
         <br/>
@@ -48,13 +38,12 @@
                                      (+ 4 5 6))
         </div>
         <br/>
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
         <script>
         window.klipse_settings = {
-            selector: '.clojure',
-            selector_js: '.clojure-js'
+            selector: '.clojure'
         };
         </script>
-        <script src="lib/mirror_extensions.js"></script>
-        <script src="fig/js/klipse.fig.js"></script>
+        <script src="dev/js/klipse.js"></script>
     </body>
 </html>

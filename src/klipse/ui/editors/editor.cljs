@@ -1,6 +1,7 @@
 (ns klipse.ui.editors.editor
   (:require 
     [goog.dom :as gdom]
+    [gadjett.core :as gadjett :refer-macros [dbg]]
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.mode.javascript
@@ -56,19 +57,22 @@
     (.autoIndentRange editor from to))
   editor)
 
-(defn replace-element-by-editor [element value]
-  (-> (js/CodeMirror (fn [elt]
-                   (goog.dom/replaceNode elt element))
-                 #js {:value value})
-      auto-format
-      auto-indent
-      goto-start))
+(defn replace-element-by-editor [element value opts]
+  (let [editor (js/CodeMirror (fn [elt]
+                                (goog.dom/replaceNode elt element))
+                              (clj->js opts))]
+    (-> editor
+        (set-value value)
+        auto-format
+        auto-indent
+        goto-start
+        )))
 
 (defn create-div-after [element]
     (let [div (gdom/createDom "div" nil (gdom/createTextNode ""))]
       (gdom/insertSiblingAfter div element)
       div))
 
-(defn create-editor-after-element [element value]
+(defn create-editor-after-element [element value opts]
   (-> (create-div-after element)
-      (replace-element-by-editor value)))
+      (replace-element-by-editor value opts)))

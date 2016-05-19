@@ -36,16 +36,8 @@
         <span class="clojure"> (map dec [1 2 3]) </span>
         <br/>
         <div class="clojure">
-            (ns my.best$macros)
-            <br/>
 
-            (defmacro disp [& forms]
-              (cons `str (for [form forms]
-                               `(str (pr-str '~form) " => " (pr-str ~form) "\n"))))
-
-                               (my.best/disp 
-                                 (map inc [1 2 3])
-                                     (+ 4 5 6))
+(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)
         </div>
         <br/>
         <script>

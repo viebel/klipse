@@ -4,7 +4,7 @@
   (:require 
     [clojure.string :as string]
     [gadjett.core :as gadjett :refer-macros [dbg]]
-    [klipse.compiler :refer [eval compile]]
+    [klipse.compiler :refer [str-compile compile]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 
 (defn remove-chars [s]
@@ -15,6 +15,7 @@
 
 (defn error->clj [[status error]]
   [status {:message (.. error -message)}])
+
 
 (deftest success
   "compile with success"

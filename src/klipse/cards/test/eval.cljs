@@ -4,7 +4,7 @@
   (:require 
     [clojure.string :as string]
     [gadjett.core :as gadjett :refer-macros [dbg]]
-    [klipse.compiler :refer [eval compile]]
+    [klipse.compiler :refer [eval str-eval]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 
 (defn remove-chars [s]

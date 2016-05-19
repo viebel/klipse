@@ -7,7 +7,7 @@
     [klipse.compiler :refer [str-eval str-compile]]))
 
 (def language->eval-fn 
-  {:clojure str-eval
+  {:clojure #(do (str-eval %) (str-eval %)); ugly workaround 
    :javascript str-compile})
 
 (def editor-options

@@ -46,11 +46,11 @@
 
 (deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
   (let [opts (merge repl-opts-noop {:static-fns static-fns})
-        {:keys [form warning error value success?]} (replumb/read-eval-call opts identity s)
+        {:keys [form warning error value success?]} (replumb/read-eval-call opts #(do (print "eval: " %) %) s)
         status (if error :error :ok)
-        res (if value 
+        res (dbg (if value 
               (read-string-cond value)
-              error)]
+              error))]
     [status res]))
 
 (defn str-compile [exp]

@@ -21,9 +21,25 @@
         <br/>
         <span class="clojure"> (foo 19) </span>
         <br/>
-        <span class="clojure"> (ns my.elyahou) (defn bar [x] (* x x)) </span>
+        <span class="clojure"> 
+            (ns my.ns
+              (:require [gadjett.collections :as collections :refer [map-object my-replace]]))
+
+      [(map-object inc {:a 1 :b 2})
+       (my-replace '{a (b) c (C C)} '(a c))]
+
+      </span>
+            
         <br/>
-        <span class="clojure"> (ns my.rafi) (my.elyahou/bar 19) </span>
+        <span class="clojure">
+            (ns my.gg
+                (:require [goog.async]))
+
+                (str goog.async.nextTick)
+        </span>
+
+            
+            
         <span class="clojure"> (map inc [1 2 3]) </span>
         <br/>
         <span class="clojure"> (zipmap '[a b c] [100 2 3]) </span>

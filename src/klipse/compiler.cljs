@@ -17,6 +17,7 @@
 (set! (.. js/window -cljs -user) #js {})
 
 (defn load-inlined [opts cb]
+  (dbg opts)
   (cb {:lang :clj :source ""}))
 
 (deftrack compile [s & {:keys [static-fns] :or {static-fns false}}]
@@ -33,15 +34,24 @@
                                   value)]
                         [status res]))
                     ))
+(defn repos []
+  ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/" 
+   "https://raw.githubusercontent.com/viebel/gadjett/master/src"
+   "https://gist.githubusercontent.com/"])
 
-(defn repl-opts-noop [] (merge (replumb/options :browser
- ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/" 
-  "https://raw.githubusercontent.com/viebel/gadjett/master/src"
-  "https://gist.githubusercontent.com/"]
-                                             io/fetch-file!)
-                            {:warning-as-error false
-                             :context :statement
-                             :verbose false}))
+(def repl-opts-noop (merge (replumb/options :browser
+                                           (repos) 
+                                           io/no-op)
+                          {:warning-as-error false
+                           :context :statement
+                           :verbose false}))
+
+(defn repl-opts [] (merge (replumb/options :browser
+                                           (repos) 
+                                           io/fetch-file!)
+                          {:warning-as-error false
+                           :context :statement
+                           :verbose false}))
 
 (defn read-string-cond [s]
   (try
@@ -60,12 +70,22 @@
 (defn eval-async [s & {:keys [static-fns] :or {static-fns false}}]
   (dbg s)
   (let [c (chan)
-        opts (merge (repl-opts-noop) {:static-fns static-fns})]
+        opts (merge (repl-opts) {:static-fns static-fns})]
     (replumb/read-eval-call opts #(do (print "eval: " %) (put! c (convert-res %))) s)
     c))
 
-  (deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
-  (let [opts (merge (repl-opts-noop) {:static-fns static-fns})
+#_(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
+  (let [opts {:eval cljs/js-eval
+              :load load-inlined}
+        {:keys [form warning error value success?]} (cljs/eval-str (cljs/empty-state) s "" opts #(do (print "eval: " %) %))
+        status (if error :error :ok)
+        res (dbg (if value 
+              (read-string-cond value)
+              error))]
+    [status res]))
+
+(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
+  (let [opts (merge (repl-opts) {:static-fns static-fns})
         {:keys [form warning error value success?]} (replumb/read-eval-call opts #(do (print "eval: " %) %) s)
         status (if error :error :ok)
         res (dbg (if value 

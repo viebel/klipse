@@ -17,9 +17,11 @@
    :scrollbarStyle "overlay"})
 
 (defn eval-in-editor [eval-fn editor-target editor-source]
+  (go
   (->> (get-value editor-source)
        eval-fn
-       (set-value editor-target)))
+       <!
+       (set-value editor-target))))
 
 (defn klipsify [element language]
   (go

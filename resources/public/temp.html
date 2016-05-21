@@ -8,11 +8,11 @@
     </head>
     <body>
         <span class="clojure"> 
-            (ns my.ns
-              (:require [gadjett.collections :as collections :refer [map-object my-replace]]))
+            (ns my.ns3
+              (:require-macros [gadjett.core :as gadjett]))
 
-      [(map-object inc {:a 1 :b 2})
-       (my-replace '{a (b) c (C C)} '(a c))]
+              (with-out-str
+              (gadjett/dbg (map inc [1 23 ])))
 
       </span>
             

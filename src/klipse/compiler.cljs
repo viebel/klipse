@@ -2,6 +2,9 @@
   (:use-macros
     [cljs.core.async.macros :only [go]])
   (:require 
+    [goog.string.format :as f]
+    [goog.date.Interval]
+    [goog.date.UtcDateTime]
     [cljs.reader :refer [read-string]]
     [klipse.io :as io]
     [cljs.core.async :refer [chan put!]]
@@ -35,7 +38,13 @@
                         [status res]))
                     ))
 (defn repos []
-  ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/" 
+  ["/fig/js"
+   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/" 
+   "https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
+   "https://raw.githubusercontent.com/clojure/core.rrb-vector/master/src/main/cljs/"
+   ;"https://raw.githubusercontent.com/reagent-project/reagent/master/src/"
+   ;"https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
+   ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
    "https://raw.githubusercontent.com/viebel/gadjett/master/src"
    "https://gist.githubusercontent.com/"])
 

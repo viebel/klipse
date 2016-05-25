@@ -9,7 +9,7 @@
     [klipse.compiler :refer [str-eval-async str-eval str-compile]]))
 
 (def language->eval-fn 
-  {:clojure #(do (str-eval-async %) #_(str-eval %)); ugly workaround 
+  {:clojure #(do (str-eval-async %) (str-eval-async %)); ugly workaround 
    :javascript str-compile})
 
 (def editor-options

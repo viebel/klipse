@@ -38,32 +38,33 @@
                         [status res]))
                     ))
 (defn repos []
-  ["/fig/js"
+  [ "/fig/js"
    "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/" 
-   "https://raw.githubusercontent.com/binaryage/cljs-devtools/master/src"
    ;"https://raw.githubusercontent.com/clojure/core.match/master/src/main/clojure/"
    ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
    ;"https://raw.githubusercontent.com/clojure/core.rrb-vector/master/src/main/cljs/"
    ;"https://raw.githubusercontent.com/reagent-project/reagent/master/src/"
    ;"https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
-   ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
    ;"https://raw.githubusercontent.com/viebel/gadjett/master/src"
    "https://gist.githubusercontent.com/"
    ])
 
-(def repl-opts-noop (merge (replumb/options :browser
+(defn repl-opts-noop [] (merge (replumb/options :browser
                                            (repos) 
                                            io/no-op)
                           {:warning-as-error false
                            :context :statement
                            :verbose false}))
 
-(defn repl-opts [] (merge (replumb/options :browser
+(defn repl-opts-load [] (merge (replumb/options :browser
                                            (repos) 
                                            io/fetch-file!)
                           {:warning-as-error false
                            :context :statement
                            :verbose false}))
+
+(defn repl-opts []
+  (repl-opts-noop))
 
 (defn read-string-cond [s]
   (try

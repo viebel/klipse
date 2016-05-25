@@ -2,8 +2,9 @@
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.8.51"]
-                 [viebel/gadjett "0.1.10"]
                  [org.clojure/core.async "0.2.374"]
+                 [im.chit/purnam "0.5.2"]
+                 [viebel/gadjett "0.1.12"]
                  [org.omcljs/om "1.0.0-alpha32"]
                  [replumb "0.2.2-SNAPSHOT"]
                  [com.cemerick/url "0.1.1"]

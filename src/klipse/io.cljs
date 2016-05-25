@@ -1,5 +1,4 @@
 (ns klipse.io
-    (:require [gadjett.core :as gadjett :refer-macros [dbg]])
     (:import goog.net.XhrIo))
 
 (defn no-op [file-url src-cb]

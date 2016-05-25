@@ -20,7 +20,6 @@
 (set! (.. js/window -cljs -user) #js {})
 
 (defn load-inlined [opts cb]
-  (dbg opts)
   (cb {:lang :clj :source ""}))
 
 (deftrack compile [s & {:keys [static-fns] :or {static-fns false}}]

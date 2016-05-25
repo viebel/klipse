@@ -33,13 +33,26 @@
                                            :output-dir "resources/private/test"
                                            :verbose false
                                            :optimizations :whitespace }}
-                      :dev {
+                      :app {
                                :source-paths ["src" "resources/public/lib"]
                                :compiler {
                                     :preamble ["mirror_extensions.js"]
-                                          :main "klipse.core"
-                                          :output-to "resources/public/dev/js/klipse.js"
-                                          :output-dir "resources/public/dev/js"
+                                          :main "klipse.run.app"
+                                          :output-to "resources/public/app/js/klipse.js"
+                                          :output-dir "resources/public/app/js"
+                                          :pretty-print false
+                                          :optimize-constants true
+                                          :static-fns true
+                                          ;:elide-asserts true
+                                          :optimizations :whitespace
+                                          :verbose false}}
+                      :plugin {
+                               :source-paths ["src" "resources/public/lib"]
+                               :compiler {
+                                    :preamble ["mirror_extensions.js"]
+                                          :main "klipse.run.plugin"
+                                          :output-to "resources/public/plugin/js/klipse.js"
+                                          :output-dir "resources/public/plugin/js"
                                           :pretty-print false
                                           :optimize-constants true
                                           :static-fns true
@@ -49,7 +62,7 @@
                        :figwheel {
                                   :figwheel true
                                   :source-paths ["src"]
-                                  :compiler {:main "klipse.core"
+                                  :compiler {:main "klipse.run.all"
                                              :preamble ["mirror_extensions.js"]
                                              :asset-path "fig/js"
                                              :output-to "resources/public/fig/js/klipse.fig.js"

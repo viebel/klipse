@@ -8,6 +8,8 @@
     [klipse.ui.editors.editor :refer [set-value get-value]] 
     [klipse.compiler :refer [str-eval-async str-eval str-compile-async]]))
 
+(def app-url "http://app.klipse.tech")
+
 (def language->eval-fn 
   {:clojure #(do (str-eval-async %) (str-eval-async %)); ugly workaround 
    :javascript str-compile-async})
@@ -34,7 +36,7 @@
               in-editor (replace-element-by-editor element clj-in my-editor-options)]
           (handle-events in-editor
                          {:idle-msec 2000
-                          :base-url "http://app.klipse.tech"
+                          :base-url app-url
                           :on-should-eval #(eval-in-editor eval-fn out-editor in-editor)}))))))
 
 (defn klipsify-elements [elements language]

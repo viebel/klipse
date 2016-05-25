@@ -3,8 +3,8 @@ resources/private/
 resources/public/cards
 resources/public/dbg
 resources/public/fig
-resources/public/dev
-resources/public/prod
+resources/public/app
+resources/public/plugin
 target/
 .lein-repl-history
 *-init.clj

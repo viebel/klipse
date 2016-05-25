@@ -62,6 +62,12 @@
 "(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)" 14
        )))
 
+(deftest test-eval-twice-macro
+  "eval twice with macros"
+  (are [input-clj output-clj]
+       (= (do (eval input-clj) (eval input-clj)) [:ok output-clj])
+"(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)" 14
+       ))
 (deftest test-eval-3 
   "eval with namespaces"
   (are [input-clj output-clj]

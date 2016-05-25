@@ -72,38 +72,26 @@
       s)))
 
 (defn convert-res [{:keys [form warning error value success?]}]
-  (print "convert-res")
   (let [status (if error :error :ok)
-        res (dbg (if value 
-                   (read-string-cond value)
-                   error))]
+        res (if value 
+              (read-string-cond value)
+              error)]
     [status res]))
 
 (defn eval-async [s & {:keys [static-fns] :or {static-fns false}}]
-  (dbg s)
   (let [c (chan)
         opts (merge (repl-opts) {:static-fns static-fns})]
-    (replumb/read-eval-call opts #(do (print "eval: " %) (put! c (convert-res %))) s)
+    (replumb/read-eval-call opts #(put! c (convert-res %)) s)
     c))
 
 #_(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
-  (let [opts {:eval cljs/js-eval
-              :load load-inlined}
-        {:keys [form warning error value success?]} (cljs/eval-str (cljs/empty-state) s "" opts #(do (print "eval: " %) %))
-        status (if error :error :ok)
-        res (dbg (if value 
-              (read-string-cond value)
-              error))]
-    [status res]))
+    (let [opts {:eval cljs/js-eval
+                :load load-inlined}]
+      (cljs/eval-str (cljs/empty-state) s "" opts convert-res)))
 
 (deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
-  (let [opts (merge (repl-opts) {:static-fns static-fns})
-        {:keys [form warning error value success?]} (replumb/read-eval-call opts #(do (print "eval: " %) %) s)
-        status (if error :error :ok)
-        res (dbg (if value 
-              (read-string-cond value)
-              error))]
-    [status res]))
+  (let [opts (merge (repl-opts) {:static-fns static-fns})]
+    (replumb/read-eval-call opts convert-res s)))
 
 (defn str-compile [exp]
   (-> (compile exp)

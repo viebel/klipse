@@ -51,7 +51,7 @@
                                :compiler {
                                     :preamble ["mirror_extensions.js"]
                                           :main "klipse.run.plugin"
-                                          :output-to "resources/public/plugin/js/klipse.js"
+                                          :output-to "resources/public/plugin/js/klipse_plugin.js"
                                           :output-dir "resources/public/plugin/js"
                                           :pretty-print false
                                           :optimize-constants true

@@ -2,7 +2,7 @@
   (:use-macros
     [cljs.core.async.macros :only [go]])
   (:require 
-    [goog.string.format :as f]
+    [goog.string.format]; some goog libs must be required manually in order to be available at run time
     [goog.date.Interval]
     [goog.date.UtcDateTime]
     [cljs.reader :refer [read-string]]

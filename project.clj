@@ -2,8 +2,9 @@
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.8.51"]
-                 [viebel/gadjett "0.1.10"]
                  [org.clojure/core.async "0.2.374"]
+                 [im.chit/purnam "0.5.2"]
+                 [viebel/gadjett "0.1.12"]
                  [org.omcljs/om "1.0.0-alpha32"]
                  [replumb "0.2.2-SNAPSHOT"]
                  [com.cemerick/url "0.1.1"]
@@ -32,12 +33,26 @@
                                            :output-dir "resources/private/test"
                                            :verbose false
                                            :optimizations :whitespace }}
-                      :dev {
-                               :source-paths ["src"]
+                      :app {
+                               :source-paths ["src" "resources/public/lib"]
                                :compiler {
-                                          :main "klipse.core"
+                                    :preamble ["mirror_extensions.js"]
+                                          :main "klipse.run.app"
                                           :output-to "resources/public/dev/js/klipse.js"
                                           :output-dir "resources/public/dev/js"
+                                          :pretty-print false
+                                          :optimize-constants true
+                                          :static-fns true
+                                          ;:elide-asserts true
+                                          :optimizations :whitespace
+                                          :verbose false}}
+                      :plugin {
+                               :source-paths ["src" "resources/public/lib"]
+                               :compiler {
+                                    :preamble ["mirror_extensions.js"]
+                                          :main "klipse.run.plugin"
+                                          :output-to "resources/public/plugin/js/klipse_plugin.js"
+                                          :output-dir "resources/public/plugin/js"
                                           :pretty-print false
                                           :optimize-constants true
                                           :static-fns true
@@ -47,7 +62,8 @@
                        :figwheel {
                                   :figwheel true
                                   :source-paths ["src"]
-                                  :compiler {:main "klipse.core"
+                                  :compiler {:main "klipse.run.all"
+                                             :preamble ["mirror_extensions.js"]
                                              :asset-path "fig/js"
                                              :output-to "resources/public/fig/js/klipse.fig.js"
                                              :output-dir "resources/public/fig/js"

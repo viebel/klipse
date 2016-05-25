@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+        <div class="clojure-js">
+            (map inc [100000 2 3])
+        </div>
+        <div class="clojure">
+        (
+        <span>
+        map inc [1 2 3]
+        </span>)
+        </div>
+        <br/>
+        <span class="clojure"> (defn foo [x] (* x x)) </span>
+        <br/>
+        <span class="clojure"> (foo 19) </span>
+        <br/>
+        <span class="clojure"> 
+            (ns my.ns
+              (:require [gadjett.collections :as collections :refer [map-object my-replace]]))
+
+      [(map-object inc {:a 1 :b 2})
+       (my-replace '{a (b) c (C C)} '(a c))]
+
+      </span>
+            
+        <br/>
+        <span class="clojure">
+            (ns my.gg
+                (:require [goog.async]))
+
+                (str goog.async.nextTick)
+        </span>
+
+            
+            
+        <span class="clojure"> (map inc [1 2 3]) </span>
+        <br/>
+        <span class="clojure"> (zipmap '[a b c] [100 2 3]) </span>
+        <br/>
+        <span class="clojure"> (map inc [1000 2 3]) </span>
+        <br/>
+        <span class="clojure"> (map dec [1 2 3]) </span>
+        <br/>
+        <div class="clojure">
+
+(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)
+        </div>
+        <br/>
+        <script>
+        window.klipse_settings = {
+            selector: '.clojure',
+            selector_js: '.clojure-js'
+        };
+        </script>
+        <script src="lib/mirror_extensions.js"></script>
+        <script src="fig/js/klipse.fig.js"></script>
+    </body>
+</html>

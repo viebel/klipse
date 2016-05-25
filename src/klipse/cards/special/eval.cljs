@@ -4,7 +4,7 @@
   (:require 
     [clojure.string :as string]
     [gadjett.core :as gadjett :refer-macros [dbg]]
-    [klipse.compiler :refer [eval compile]]
+    [klipse.compiler :refer [eval compile str-eval str-compile]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 
 (defn remove-chars [s]
@@ -27,3 +27,39 @@
   (are [input-clj output-clj]
        (= (eval input-clj) [:ok output-clj])
        "(ns my.ns$macros) (defmacro disp [& forms] (cons `str (for [form forms] `(str (pr-str '~form) \" => \" (pr-str ~form) \"\n\")))) (my.ns/disp (+ 1 2))" "(+ 1 2) => 3\n"))
+
+
+(deftest test-str-compile-ok
+  "str-compile should return the compileuation of the expression as a strin"
+  (are [input output]
+       (= (str-compile input) output)
+       "(+ 1 2)" "((1) + (2));\n"
+       "(map inc [1 2 3])" "cljs.core.map.call(null,cljs.core.inc,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [(1),(2),(3)], null));\n"))
+
+(deftest test-str-eval-ok
+  "str-eval should return the evaluation of the expression as a strin"
+  (are [input output]
+       (= (str-eval input) output)
+       "(+ 1 2)" "3"
+       "(map inc [1 2 3])" "(2 3 4)"))
+
+(deftest test-str-eval-error
+  "str-eval should return an error as a string"
+  (are [input output]
+       (= (str-eval input) output)
+       "(+ 1 2" "#error {:message \"EOF while reading\", :data {:type :reader-exception}}"
+       "(map inc [1 2 3]"    "#error {:message \"EOF while reading\", :data {:type :reader-exception}}"))
+
+(deftest test-str-compile-error
+  "str-compile should return an error as a string"
+  (are [input output]
+       (= (str-compile input) output)
+       "(+ 1 2" "#error {:message \"Could not compile cljs-in\", :data {:tag :cljs/analysis-error}, :cause #error {:message \"EOF while reading, starting at line 1 and column 1\", :data {:type :reader-exception, :line 1, :column 6, :file \"cljs-in\"}}}"
+
+       "(map inc [1 2 3]" "#error {:message \"Could not compile cljs-in\", :data {:tag :cljs/analysis-error}, :cause #error {:message \"EOF while reading, starting at line 1 and column 1\", :data {:type :reader-exception, :line 1, :column 17, :file \"cljs-in\"}}}"))
+
+
+
+
+
+

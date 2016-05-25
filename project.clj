@@ -38,8 +38,8 @@
                                :compiler {
                                     :preamble ["mirror_extensions.js"]
                                           :main "klipse.run.app"
-                                          :output-to "resources/public/app/js/klipse.js"
-                                          :output-dir "resources/public/app/js"
+                                          :output-to "resources/public/dev/js/klipse.js"
+                                          :output-dir "resources/public/dev/js"
                                           :pretty-print false
                                           :optimize-constants true
                                           :static-fns true

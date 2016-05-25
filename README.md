@@ -29,28 +29,15 @@ Press Ctrl-Enter to evaluate.
 
 
 
-## Run Locally
+## Run Locally: figwheel + devcards
 
 ```bash
-rlwrap lein figwheel
+rlwrap lein figwheel devcards figwheel
 ```
 or 
 
-```bash
-lein figwheel
-```
  Open the browser [http://localhost:5014/index-dbg.html](http://localhost:5014/index-dbg.html)
 
- ## Run dev-card
-
- ```bash
-rlwrap lein figwheel devcards
-```
-or 
-
-```bash
-lein figwheel devcards
-```
  Open the browser [http://localhost:5014/cards.html](http://localhost:5014/cards.html)
  
  
@@ -63,8 +50,8 @@ Read [KLIPSE Magic](https://github.com/viebel/klipse/blob/master/tutorial.md) to
 ####1. Build
 
 ```bash
-lein clean
-lein cljsbuild once dev
+rm -rf resources/public/plugin resources/public/dev
+lein cljsbuild once app plugin
 ```
 ####2. Test
 

@@ -9,8 +9,9 @@
 (enable-console-print!)
 (gadjett/settings! :max-function-calls 100)
 
-(def version "0.4.3")
+(def version "0.5.0")
 (println "KLIPSE version:" version)
 
-(plugin/init (dbg js/klipse_settings))
-(app/init)
+(if js/klipse_settings
+  (plugin/init (dbg js/klipse_settings))
+  (app/init))

@@ -6,11 +6,11 @@
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
     [klipse.ui.editors.editor :refer [set-value get-value]] 
-    [klipse.compiler :refer [str-eval-async str-eval str-compile]]))
+    [klipse.compiler :refer [str-eval-async str-eval str-compile-async]]))
 
 (def language->eval-fn 
   {:clojure #(do (str-eval-async %) (str-eval-async %)); ugly workaround 
-   :javascript str-compile})
+   :javascript str-compile-async})
 
 (def editor-options
   {:matchBrackets true 

@@ -1,3 +1,14 @@
+;; core.async
+(ns my.async
+    (:require-macros [cljs.core.async.macros :refer [go]])
+      (:require     [cljs.core.async :refer [timeout <! chan put!]]))
+
+(go
+  (print 8)
+  (print 9999))
+  
+  
+;; cljs-date
 (ns my.date
     (:require [cljs-time.core :as t :refer [interval date-time in-minutes]]))
 
@@ -6,10 +17,10 @@
      (in-minutes (interval (date-time 1986 10 2) (date-time 1986 10 14)))]
 
 (ns my.gadjett
-  (:require-macros [gadjett.core :as gadjett]))
+  (:require-macros [gadjett.core :as gadjett :refer [dbg]]))
 
 (with-out-str
-  (gadjett/dbg (map inc [1 23 ])))
+  (dbg (map inc [1 23 ])))
 
 (ns my.frame
     (:require [viebel.a8a0349b00689c40571b0faaa36a9ae8.raw.foo :refer [square]]))

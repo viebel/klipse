@@ -8,6 +8,7 @@
     [com.rpl.specter :as specter]; make specter available at run time: temp workaround
     [cljs.reader :refer [read-string]]
     [klipse.io :as io]
+    [clojure.string :as s]
     [cljs.core.async :refer [chan put!]]
     [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
     [replumb.core :as replumb]
@@ -21,18 +22,20 @@
 (set! (.. js/window -cljs -user) #js {})
 
 (defn load-inlined [opts cb]
-  (cb {:lang :clj :source ""}))
+  (print "load-inlined: " opts)
+  (cb {:lang :js :source ""}))
 
 (defn repos []
   [ "/fig/js"
+   "https://gist.githubusercontent.com/"
    "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/" 
+   ;"https://raw.githubusercontent.com/viebel/andare/master/src/main/clojure/"
    ;"https://raw.githubusercontent.com/clojure/core.match/master/src/main/clojure/"
    ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
    ;"https://raw.githubusercontent.com/clojure/core.rrb-vector/master/src/main/cljs/"
    ;"https://raw.githubusercontent.com/reagent-project/reagent/master/src/"
-   ;"https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
+   "https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
    ;"https://raw.githubusercontent.com/viebel/gadjett/master/src"
-   "https://gist.githubusercontent.com/"
    ])
 
 (defn repl-opts-noop [] (merge (replumb/options :browser
@@ -42,15 +45,21 @@
                            :context :statement
                            :verbose false}))
 
+(defn special-fetch [file-url src-cb]
+  (-> (s/replace file-url #"gist_" "")
+      (io/fetch-file! src-cb)))
+
 (defn repl-opts-load [] (merge (replumb/options :browser
                                            (repos) 
-                                           io/fetch-file!)
+                                           special-fetch)
                           {:warning-as-error false
                            :context :statement
                            :verbose false}))
 
-(defn repl-opts []
-  (repl-opts-noop))
+(defn repl-opts [deps-load?]
+  (if deps-load?
+    (repl-opts-load)
+    (repl-opts-noop)))
 
 (defn read-string-cond [s]
   (try
@@ -93,18 +102,18 @@
                       #(put! c (convert-compile-res %)))
     c))
 
-(deftrack eval-async [s & {:keys [static-fns] :or {static-fns false}}]
+(deftrack eval-async [s & {:keys [deps-load static-fns] :or {static-fns false deps-load false}}]
   (let [c (chan)
-        opts (merge (repl-opts) {:static-fns static-fns})]
+        opts (merge (repl-opts deps-load) {:static-fns static-fns})]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
     c))
 
-(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
-  (let [opts (merge (repl-opts) {:static-fns static-fns})]
+(deftrack eval [s & {:keys [static-fns deps-load] :or {static-fns false deps-load false}}]
+  (let [opts (merge (repl-opts deps-load) {:static-fns static-fns})]
     (replumb/read-eval-call opts convert-eval-res s)))
 
 
-#_(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
+(deftrack eval-native [s & {:keys [static-fns] :or {static-fns false}}]
     (let [opts {:eval cljs/js-eval
                 :load load-inlined}]
       (cljs/eval-str (cljs/empty-state) s "" opts convert-eval-res)))
@@ -131,3 +140,5 @@
         second
         str)))
 
+(defn eval-file [url]
+  (io/fetch-file! url (comp print eval)))

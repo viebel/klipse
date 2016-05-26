@@ -26,6 +26,7 @@
 (defn repos []
   [ "/fig/js"
    "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/" 
+   "https://raw.githubusercontent.com/viebel/andare/master/src/main/clojure/"
    ;"https://raw.githubusercontent.com/clojure/core.match/master/src/main/clojure/"
    ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
    ;"https://raw.githubusercontent.com/clojure/core.rrb-vector/master/src/main/cljs/"
@@ -50,7 +51,7 @@
                            :verbose false}))
 
 (defn repl-opts []
-  (repl-opts-noop))
+  (repl-opts-load))
 
 (defn read-string-cond [s]
   (try

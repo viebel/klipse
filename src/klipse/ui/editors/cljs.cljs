@@ -32,6 +32,7 @@
                     (debounce on-should-eval idle-msec))
   (editor/set-option editor "extraKeys" 
                      #js {"Ctrl-S" #(create-url-with-input base-url (editor/get-value editor))
+                          "Ctrl-R" #(refresh-with-code base-url (editor/get-value editor))
                           "Ctrl-Enter" on-should-eval}))
 
 (defn init-editor [compiler]

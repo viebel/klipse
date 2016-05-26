@@ -3,7 +3,7 @@ resources/private/
 resources/public/cards
 resources/public/dbg
 resources/public/fig
-resources/public/app
+resources/public/dev
 resources/public/plugin
 target/
 .lein-repl-history

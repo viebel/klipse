@@ -1,4 +1,4 @@
-(defproject klipse "0.4.3"
+(defproject klipse "0.5.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.8.51"]

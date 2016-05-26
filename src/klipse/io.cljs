@@ -14,7 +14,9 @@
       (.send XhrIo (str file-url "?" (rand))
              (fn [e]
                (if (.isSuccess (.-target e))
-                 (src-cb (.. e -target getResponseText))
+                 (do
+                   (print "loading file: " file-url)
+                   (src-cb (.. e -target getResponseText)))
                  (src-cb nil))))
       (catch :default e
         (src-cb nil))))

@@ -31,7 +31,7 @@
    ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
    ;"https://raw.githubusercontent.com/clojure/core.rrb-vector/master/src/main/cljs/"
    ;"https://raw.githubusercontent.com/reagent-project/reagent/master/src/"
-   ;"https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
+   "https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
    ;"https://raw.githubusercontent.com/viebel/gadjett/master/src"
    "https://gist.githubusercontent.com/"
    ])
@@ -50,8 +50,10 @@
                            :context :statement
                            :verbose false}))
 
-(defn repl-opts []
-  (repl-opts-load))
+(defn repl-opts [deps-load?]
+  (if deps-load?
+    (repl-opts-load)
+    (repl-opts-noop)))
 
 (defn read-string-cond [s]
   (try
@@ -94,14 +96,14 @@
                       #(put! c (convert-compile-res %)))
     c))
 
-(deftrack eval-async [s & {:keys [static-fns] :or {static-fns false}}]
+(deftrack eval-async [s & {:keys [deps-load static-fns] :or {static-fns false deps-load false}}]
   (let [c (chan)
-        opts (merge (repl-opts) {:static-fns static-fns})]
+        opts (merge (repl-opts deps-load) {:static-fns static-fns})]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
     c))
 
-(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
-  (let [opts (merge (repl-opts) {:static-fns static-fns})]
+(deftrack eval [s & {:keys [static-fns deps-load] :or {static-fns false deps-load false}}]
+  (let [opts (merge (repl-opts deps-load) {:static-fns static-fns})]
     (replumb/read-eval-call opts convert-eval-res s)))
 
 

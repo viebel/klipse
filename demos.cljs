@@ -1,3 +1,14 @@
+;; core.async
+(ns my.async
+    (:require-macros [cljs.core.async.macros :refer [go]])
+      (:require     [cljs.core.async :refer [timeout <! chan put!]]))
+
+(go
+  (print 8)
+  (print 9999))
+  
+  
+;; cljs-date
 (ns my.date
     (:require [cljs-time.core :as t :refer [interval date-time in-minutes]]))
 

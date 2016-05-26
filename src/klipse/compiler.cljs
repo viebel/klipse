@@ -8,6 +8,7 @@
     [com.rpl.specter :as specter]; make specter available at run time: temp workaround
     [cljs.reader :refer [read-string]]
     [klipse.io :as io]
+    [clojure.string :as s]
     [cljs.core.async :refer [chan put!]]
     [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
     [replumb.core :as replumb]
@@ -21,7 +22,8 @@
 (set! (.. js/window -cljs -user) #js {})
 
 (defn load-inlined [opts cb]
-  (cb {:lang :clj :source ""}))
+  (print "load-inlined: " opts)
+  (cb {:lang :js :source ""}))
 
 (defn repos []
   [ "/fig/js"
@@ -43,9 +45,13 @@
                            :context :statement
                            :verbose false}))
 
+(defn special-fetch [file-url src-cb]
+  (-> (s/replace file-url #"gist_" "")
+      (io/fetch-file! src-cb)))
+
 (defn repl-opts-load [] (merge (replumb/options :browser
                                            (repos) 
-                                           io/fetch-file!)
+                                           special-fetch)
                           {:warning-as-error false
                            :context :statement
                            :verbose false}))
@@ -107,7 +113,7 @@
     (replumb/read-eval-call opts convert-eval-res s)))
 
 
-#_(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
+(deftrack eval-native [s & {:keys [static-fns] :or {static-fns false}}]
     (let [opts {:eval cljs/js-eval
                 :load load-inlined}]
       (cljs/eval-str (cljs/empty-state) s "" opts convert-eval-res)))
@@ -134,3 +140,5 @@
         second
         str)))
 
+(defn eval-file [url]
+  (io/fetch-file! url (comp print eval)))

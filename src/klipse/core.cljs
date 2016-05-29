@@ -3,12 +3,12 @@
     [devtools.core :as devtools]
     [gadjett.core :as gadjett]))
 
-#_(enable-console-print!)
-(set! *print-fn*
+(enable-console-print!)
+#_(set! *print-fn*
       (fn [& args]
         (.apply (.-log js/console) js/console args)))
  
-(devtools/install!)
+#_(devtools/install!)
 
 (gadjett/settings! :max-function-calls 100)
 

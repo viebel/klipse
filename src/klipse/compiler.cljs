@@ -35,7 +35,7 @@
    ;"https://raw.githubusercontent.com/clojure/core.rrb-vector/master/src/main/cljs/"
    ;"https://raw.githubusercontent.com/reagent-project/reagent/master/src/"
    "https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
-   ;"https://raw.githubusercontent.com/viebel/gadjett/master/src"
+   "https://raw.githubusercontent.com/viebel/gadjett/master/src"
    ])
 
 (defn repl-opts-noop [] (merge (replumb/options :browser
@@ -44,6 +44,7 @@
                           {:warning-as-error false
                            :context :statement
                            :verbose false}))
+(def basic-opts (replumb/options :browser [] io/no-op))
 
 (defn special-fetch [file-url src-cb]
   (-> (s/replace file-url #"gist_" "")
@@ -57,7 +58,8 @@
                            :verbose false}))
 
 (defn repl-opts [deps-load?]
-  (if deps-load?
+    (repl-opts-load)
+  #_(if deps-load?
     (repl-opts-load)
     (repl-opts-noop)))
 

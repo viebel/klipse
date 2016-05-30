@@ -113,7 +113,7 @@
             :verbose false})))
 
 (def known-src-paths 
-  {"klipse" "/fig/js"
+  {"klipse" "http://localhost:5014/fig/js"
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
    })
 

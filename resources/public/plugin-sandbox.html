@@ -7,17 +7,40 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-       <div class="clojure">
-           (ns my.ns
-              (:require [clojure.set :as set :refer [intersection]]))
+    <pre class="clojure"  src-paths="klipse,clojurescript">
+    <code>
 
-              (intersection #{1 2})
-              </div>
+    (ns my.spec
+      (:require [cljs.spec :as s])
+          (:require-macros [cljs.spec :as s]))
+
+          </code></pre>
+          <br/>
+       <div class="kkkclojure" src-paths="klipse,clojurescript">
+           (ns my.spec
+             (:require [cljs.spec :as s])
+               (:require-macros [cljs.spec :as s]))
+             </div>
                
                <br/>
        <div class="clojure">
-           (intersection #{1 2} #{2 3 4})
+           (s/valid? integer? 4)
            </div>
+<br/>
+       <div class="clojure">
+           (s/def ::int integer?)
+           </div>
+<br/>
+       <div class="clojure">
+            (s/valid? ::int 9)
+
+           </div>
+<br/>
+       <div class="clojure">
+            (s/explain-str ::int :a)
+
+           </div>
+
         <script>
         window.klipse_settings = {
             selector: '.clojure',

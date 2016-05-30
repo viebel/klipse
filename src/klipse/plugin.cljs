@@ -2,6 +2,7 @@
   (:use-macros
     [cljs.core.async.macros :only [go]])
   (:require 
+    [clojure.string :as string]
     [klipse.ui.editors.cljs :refer [handle-events]]
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
@@ -25,13 +26,18 @@
        <!
        (set-value editor-target))))
 
+(defn src-paths-from-element [element]
+  (dbg (-> (.getAttribute element "src-paths")
+      (string/split ","))))
+
 (defn klipsify [element language]
   (go
     (let [eval-fn (language->eval-fn language)
           my-editor-options (assoc editor-options :mode (name language))]
       (when element
         (let [clj-in (.-textContent element);goog.dom/getTextContent removes new lines
-              clj-out (<! (eval-fn clj-in))
+              src-paths (src-paths-from-element element)
+              clj-out (<! (eval-fn clj-in {:src-paths src-paths}))
               out-editor (create-editor-after-element element clj-out (dbg (assoc my-editor-options :readOnly true)))
               in-editor (replace-element-by-editor element clj-in my-editor-options)]
           (handle-events in-editor
@@ -41,8 +47,9 @@
 
 (defn klipsify-elements [elements language]
   (go
-    (doseq [element elements]
-      (<! (klipsify element language)))))
+    (time
+      (doseq [element elements]
+        (<! (klipsify element language))))))
 
 (defmulti init (fn [settings] (map? settings)))
 

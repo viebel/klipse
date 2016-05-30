@@ -7,6 +7,24 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
+    <div class="clojure">
+        (ns my.ns
+          (:require-macros [cljs.spec :as ss])
+            (:require [cljs.spec :as s]))
+
+            (with-out-str
+              (s/explain #{2} 1))
+
+              (s/def ::num (s/and integer? even?))
+              (s/explain-str ::num 11)
+              </div>
+
+              <div class="clojure">
+                  (s/def ::num (s/and integer? even?))
+                  (s/explain-str ::num :aaa)
+
+                  </div>
+
         <div class="clojure-js">
             (map inc [100000 2 3])
         </div>

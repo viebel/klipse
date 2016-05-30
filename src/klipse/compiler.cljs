@@ -34,8 +34,8 @@
    ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
    ;"https://raw.githubusercontent.com/clojure/core.rrb-vector/master/src/main/cljs/"
    ;"https://raw.githubusercontent.com/reagent-project/reagent/master/src/"
-   "https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
-   "https://raw.githubusercontent.com/viebel/gadjett/master/src"
+   ;"https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
+   ;"https://raw.githubusercontent.com/viebel/gadjett/master/src"
    ])
 
 (defn repl-opts-noop [] (merge (replumb/options :browser
@@ -58,8 +58,7 @@
                            :verbose false}))
 
 (defn repl-opts [deps-load?]
-    (repl-opts-load)
-  #_(if deps-load?
+  (if deps-load?
     (repl-opts-load)
     (repl-opts-noop)))
 
@@ -138,6 +137,7 @@
 
 (defn str-eval-async [exp]
   (go
+    (<! (eval-async exp)); there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
     (-> (<! (eval-async exp))
         second
         str)))

@@ -11,7 +11,7 @@
 (def app-url "http://app.klipse.tech")
 
 (def language->eval-fn 
-  {:clojure #(do (str-eval-async %) (str-eval-async %)); ugly workaround 
+  {:clojure str-eval-async
    :javascript str-compile-async})
 
 (def editor-options
@@ -40,8 +40,9 @@
                           :on-should-eval #(eval-in-editor eval-fn out-editor in-editor)}))))))
 
 (defn klipsify-elements [elements language]
-  (doseq [element elements]
-    (klipsify element language)))
+  (go
+    (doseq [element elements]
+      (<! (klipsify element language)))))
 
 (defmulti init (fn [settings] (map? settings)))
 

@@ -26,9 +26,10 @@
   (cb {:lang :js :source ""}))
 
 (defn repos []
-  [ "/fig/js"
-   "https://gist.githubusercontent.com/"
-   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/" 
+  ["/fig/js"
+   ;"https://gist.githubusercontent.com/"
+   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" 
+   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs" 
    ;"https://raw.githubusercontent.com/viebel/andare/master/src/main/clojure/"
    ;"https://raw.githubusercontent.com/clojure/core.match/master/src/main/clojure/"
    ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
@@ -58,7 +59,8 @@
                            :verbose false}))
 
 (defn repl-opts [deps-load?]
-  (if deps-load?
+    (repl-opts-load)
+  #_(if deps-load?
     (repl-opts-load)
     (repl-opts-noop)))
 

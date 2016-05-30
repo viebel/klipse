@@ -59,8 +59,7 @@
                            :verbose false}))
 
 (defn repl-opts [deps-load?]
-    (repl-opts-load)
-  #_(if deps-load?
+  (if deps-load?
     (repl-opts-load)
     (repl-opts-noop)))
 
@@ -105,9 +104,33 @@
                       #(put! c (convert-compile-res %)))
     c))
 
-(deftrack eval-async [s & {:keys [deps-load static-fns] :or {static-fns false deps-load false}}]
+(defn build-repl-opts [{:keys [static-fns src-paths]}]
+  (let [io-func (if src-paths io/fetch-file! io/no-op)]
+    (merge (replumb/options :browser src-paths io-func)
+           {:warning-as-error false
+            :static-fns static-fns
+            :context :statement
+            :verbose false})))
+
+(def known-src-paths 
+  {"klipse" "/fig/js"
+   "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
+   })
+
+(defn calc-src-path [path]
+  (if-let [p (known-src-paths path)]
+    p
+    path))
+
+(defn calc-src-paths [src-paths]
+  (when (dbg src-paths)
+    (dbg (-> (dbg (map calc-src-path src-paths))
+             flatten))))
+
+(deftrack eval-async [s & {:keys [src-paths static-fns] :or {static-fns false src-paths nil}}]
   (let [c (chan)
-        opts (merge (repl-opts deps-load) {:static-fns static-fns})]
+        opts (build-repl-opts {:static-fns static-fns
+                               :src-paths (calc-src-paths src-paths)})]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
     c))
 
@@ -137,9 +160,9 @@
       second
       str))
 
-(defn str-eval-async [exp]
+(defn str-eval-async [exp {:keys [src-paths] :or {src-paths nil}}]
   (go
-    (<! (eval-async exp)); there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
+    (<! (eval-async exp :src-paths src-paths)); there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
     (-> (<! (eval-async exp))
         second
         str)))

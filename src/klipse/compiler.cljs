@@ -34,7 +34,7 @@
    ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
    ;"https://raw.githubusercontent.com/clojure/core.rrb-vector/master/src/main/cljs/"
    ;"https://raw.githubusercontent.com/reagent-project/reagent/master/src/"
-   "https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
+   ;"https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
    ;"https://raw.githubusercontent.com/viebel/gadjett/master/src"
    ])
 
@@ -44,6 +44,7 @@
                           {:warning-as-error false
                            :context :statement
                            :verbose false}))
+(def basic-opts (replumb/options :browser [] io/no-op))
 
 (defn special-fetch [file-url src-cb]
   (-> (s/replace file-url #"gist_" "")
@@ -136,6 +137,7 @@
 
 (defn str-eval-async [exp]
   (go
+    (<! (eval-async exp)); there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
     (-> (<! (eval-async exp))
         second
         str)))

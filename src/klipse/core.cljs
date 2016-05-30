@@ -12,6 +12,6 @@
 
 (gadjett/settings! :max-function-calls 100)
 
-(def version "0.5.2")
+(def version "0.6.0")
 (println "KLIPSE version:" version)
 

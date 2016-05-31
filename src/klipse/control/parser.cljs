@@ -55,7 +55,7 @@
 
 (defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] 
-             (go
+             #_(go
                (swap! state assoc :evaluation-js (<! (eval-js value)))))})
 
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]

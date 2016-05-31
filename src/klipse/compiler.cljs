@@ -33,8 +33,10 @@
 (defn repos []
   ["/fig/js"
    "https://gist.githubusercontent.com/"
-   ;"https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" 
-   ;"https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs" 
+   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" 
+   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs" 
+   "https://raw.githubusercontent.com/mfikes/planck/master/planck-cljs/src/"
+   "https://raw.githubusercontent.com/clojure/tools.reader/master/src/main/cljs/"
    ;"https://raw.githubusercontent.com/viebel/andare/master/src/main/clojure/"
    ;"https://raw.githubusercontent.com/clojure/core.match/master/src/main/clojure/"
    ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
@@ -97,7 +99,7 @@
 
 (defn build-repl-opts [{:keys [deps-load static-fns src-paths]}]
   (let [io-func (if (or src-paths deps-load) special-fetch io/no-op)
-        src-paths (if deps-load (repos) src-paths)]
+        src-paths (repos) #_(if deps-load (repos) src-paths)]
     (merge (replumb/options :browser src-paths io-func)
            {:warning-as-error false
             :static-fns static-fns
@@ -113,14 +115,24 @@
   (when (dbg src-paths)
     (dbg (-> (dbg (map calc-src-path src-paths))
              flatten))))
-
-(deftrack eval-async [s & {:keys [deps-load src-paths static-fns] :or {static-fns false src-paths nil deps-load false}}]
+(deftrack eval-async-1 [s & {:keys [deps-load src-paths static-fns] :or {static-fns false src-paths nil deps-load false}}]
+  (dbg s)
   (let [c (chan)
-        opts (build-repl-opts {:static-fns static-fns
+        opts (dbg (build-repl-opts {:static-fns static-fns
                                :deps-load deps-load
-                               :src-paths (calc-src-paths src-paths)})]
+                               :src-paths (calc-src-paths src-paths)}))]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
     c))
+
+(defn contains-macro-def? [exp]
+  true
+  #_(re-find #"\$macros" exp))
+
+(deftrack eval-async [s & args]
+  (go 
+    (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
+      (<! (apply eval-async-1 s args)))
+    (<! (apply eval-async-1 s args))))
 
 (deftrack eval [s & {:keys [static-fns] :or {static-fns false deps-load false}}]
   (let [opts (build-repl-opts {:static-fns static-fns})]
@@ -149,7 +161,6 @@
 
 (defn str-eval-async [exp {:keys [src-paths] :or {src-paths nil}}]
   (go
-    (<! (eval-async exp :src-paths src-paths)); there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
     (-> (<! (eval-async exp))
         second
         str)))

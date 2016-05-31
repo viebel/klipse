@@ -117,11 +117,11 @@
     path))
 
 (defn calc-src-paths [src-paths]
-  (when (dbg src-paths)
-    (dbg (-> (dbg (map calc-src-path src-paths))
-             flatten))))
+  (when src-paths
+    (-> (map calc-src-path src-paths)
+        flatten)))
+      
 (deftrack eval-async-1 [s & {:keys [deps-load src-paths static-fns] :or {static-fns false src-paths nil deps-load false}}]
-  (dbg s)
   (let [c (chan)
         opts (dbg (build-repl-opts {:static-fns static-fns
                                :deps-load deps-load
@@ -130,8 +130,7 @@
     c))
 
 (defn contains-macro-def? [exp]
-  true
-  #_(re-find #"\$macros" exp))
+  (re-find #"\$macros" exp))
 
 (deftrack eval-async [s & args]
   (go 

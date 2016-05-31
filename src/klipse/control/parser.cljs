@@ -55,7 +55,8 @@
 
 (defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] 
-             #_(go
+             #_(go ; it's incorrect to evaluate the code twice when the code has side effects
+                   ; for the moment, we leave the js box empty
                (swap! state assoc :evaluation-js (<! (eval-js value)))))})
 
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]

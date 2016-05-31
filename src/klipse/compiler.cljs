@@ -97,9 +97,14 @@
                       #(put! c (convert-compile-res %)))
     c))
 
+(defn src-paths-option [src-paths deps-load]
+  (if-not src-paths
+    ["dummy-path-for-no-op"]
+    (if deps-load (repos) src-paths)))
+
 (defn build-repl-opts [{:keys [deps-load static-fns src-paths]}]
   (let [io-func (if (or src-paths deps-load) special-fetch io/no-op)
-        src-paths (repos) #_(if deps-load (repos) src-paths)]
+        src-paths (src-paths-option src-paths deps-load)]
     (merge (replumb/options :browser src-paths io-func)
            {:warning-as-error false
             :static-fns static-fns

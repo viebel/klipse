@@ -135,7 +135,7 @@
 (deftrack eval-async [s & args]
   (go 
     (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
-      (<! (apply eval-async-1 s args)))
+      (<! (apply eval-async-1 s args))) ; the workaround is to evaluate twice
     (<! (apply eval-async-1 s args))))
 
 (deftrack eval [s & {:keys [static-fns] :or {static-fns false deps-load false}}]

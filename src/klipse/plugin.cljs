@@ -27,8 +27,8 @@
        (set-value editor-target))))
 
 (defn src-paths-from-element [element]
-  (dbg (-> (.getAttribute element "src-paths")
-      (string/split ","))))
+  (dbg (some-> (.getAttribute element "src-paths")
+         (string/split ","))))
 
 (defn klipsify [element language]
   (go

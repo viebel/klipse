@@ -26,7 +26,8 @@
   (cb {:lang :js :source ""}))
 
 (def known-src-paths 
-  {"klipse" "http://localhost:5014/fig/js"
+  {"klipse" "http://app.klipse.tech/fig/js"
+   "gadjett" "https://raw.githubusercontent.com/viebel/gadjett/master/src"
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
    })
 
@@ -98,54 +99,50 @@
     c))
 
 (defn src-paths-option [src-paths deps-load]
-  (if-not src-paths
+  (dbg src-paths)
+  (dbg (if-not src-paths
     ["dummy-path-for-no-op"]
-    (if deps-load (repos) src-paths)))
-
-(defn build-repl-opts [{:keys [deps-load static-fns src-paths]}]
-  (let [io-func (if (or src-paths deps-load) special-fetch io/no-op)
-        src-paths (src-paths-option src-paths deps-load)]
-    (merge (replumb/options :browser src-paths io-func)
-           {:warning-as-error false
-            :static-fns static-fns
-            :context :statement
-            :verbose false})))
+    (if deps-load (repos) src-paths))))
 
 (defn calc-src-path [path]
   (if-let [p (known-src-paths path)]
     p
     path))
 
-(defn calc-src-paths [src-paths]
-  (when src-paths
-    (-> (map calc-src-path src-paths)
-        flatten)))
-      
-(deftrack eval-async-1 [s & {:keys [deps-load src-paths static-fns] :or {static-fns false src-paths nil deps-load false}}]
+(defn calc-src-paths [src-paths deps-load]
+  (->> (src-paths-option src-paths deps-load)
+    (map calc-src-path)
+    flatten))
+ 
+(defn build-repl-opts [{:keys [deps-load static-fns src-paths]}]
+  (let [io-func (if (or src-paths deps-load) special-fetch io/no-op)
+        src-paths (calc-src-paths src-paths deps-load)]
+    (merge (replumb/options :browser src-paths io-func)
+           {:warning-as-error false
+            :static-fns static-fns
+            :context :statement
+            :verbose false})))
+     
+(deftrack eval-async-1 [s {:keys [deps-load src-paths static-fns] :or {static-fns false src-paths nil deps-load false}}]
   (let [c (chan)
         opts (dbg (build-repl-opts {:static-fns static-fns
-                               :deps-load deps-load
-                               :src-paths (calc-src-paths src-paths)}))]
+                                    :deps-load deps-load
+                                    :src-paths src-paths}))]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
     c))
 
 (defn contains-macro-def? [exp]
   (re-find #"\$macros" exp))
 
-(deftrack eval-async [s & args]
+(deftrack eval-async [s args]
   (go 
     (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
-      (<! (apply eval-async-1 s args))) ; the workaround is to evaluate twice
-    (<! (apply eval-async-1 s args))))
+      (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
+    (<! (eval-async-1 s args))))
 
-(deftrack eval [s & {:keys [static-fns] :or {static-fns false deps-load false}}]
+(deftrack eval [s {:keys [static-fns] :or {static-fns false deps-load false}}]
   (let [opts (build-repl-opts {:static-fns static-fns})]
     (replumb/read-eval-call opts convert-eval-res s)))
-
-(deftrack eval-native [s & {:keys [static-fns] :or {static-fns false}}]
-    (let [opts {:eval cljs/js-eval
-                :load load-inlined}]
-      (cljs/eval-str (cljs/empty-state) s "" opts convert-eval-res)))
 
 (defn str-compile [exp]
   (-> (compile exp)
@@ -164,8 +161,9 @@
       str))
 
 (defn str-eval-async [exp {:keys [src-paths] :or {src-paths nil}}]
+  (print "str-eval-async:"  src-paths)
   (go
-    (-> (<! (eval-async exp))
+    (-> (<! (eval-async exp {:src-paths src-paths}))
         second
         str)))
 

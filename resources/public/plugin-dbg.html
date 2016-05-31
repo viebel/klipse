@@ -7,6 +7,23 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
+<span class="clojure"> 
+            (ns my.ns
+              (:require 
+                  [clojure.string :as string]))
+                  (string/blank? "HELLO!!")
+      </span>
+      <br/>
+<span class="clojure" src-paths="klipse, gadjett"> 
+            (ns my.ns
+              (:require [gadjett.collections :as collections :refer [map-object my-replace]]))
+
+      [(map-object inc {:a 1 :b 2})
+       (my-replace '{a (b) c (C C)} '(a c))]
+
+      </span>
+      <br/>
+
         <div class="clojure-js">
             (map inc [100000 2 3])
         </div>
@@ -21,21 +38,13 @@
         <br/>
         <span class="clojure"> (foo 19) </span>
         <br/>
-        <span class="clojure"> 
-            (ns my.ns
-              (:require [gadjett.collections :as collections :refer [map-object my-replace]]))
-
-      [(map-object inc {:a 1 :b 2})
-       (my-replace '{a (b) c (C C)} '(a c))]
-
-      </span>
-            
+                   
         <br/>
-        <span class="clojure">
+        <span class="clojure" src-paths="klipse">
             (ns my.gg
-                (:require [goog.async]))
+                (:require [goog.string :as gstring]))
 
-                (str goog.async.nextTick)
+                (gstring/capitalize "hello")
         </span>
 
             
@@ -46,13 +55,7 @@
         <br/>
         <span class="clojure"> (map inc [1000 2 3]) </span>
         <br/>
-        <span class="clojure"> 
-            (ns my.ns
-              (:require 
-                  [clojure.string :as string]))
-                  (string/blank? "HELLO!!")
-      </span>
-            
+                    
         <br/>
         <div class="clojure">
 

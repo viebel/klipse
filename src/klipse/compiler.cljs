@@ -27,7 +27,7 @@
 
 (def known-src-paths 
   {"klipse" "http://app.klipse.tech/fig/js"
-   "klipse-git" "https://raw.githubusercontent.com/viebel/klipse/master/src"
+   "klipse-git" "https://raw.githubusercontent.com/viebel/klipse/fix-deps/src"
    "devtools" "https://raw.githubusercontent.com/binaryage/cljs-devtools/master/src" 
    "gadjett" "https://raw.githubusercontent.com/viebel/gadjett/master/src"
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]

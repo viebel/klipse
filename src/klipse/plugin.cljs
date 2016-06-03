@@ -37,13 +37,14 @@
       (when element
         (let [clj-in (.-textContent element);goog.dom/getTextContent removes new lines
               src-paths (src-paths-from-element element)
-              clj-out (<! (eval-fn clj-in {:src-paths src-paths}))
+              eval-fn-with-args #(eval-fn % {:src-paths src-paths})
+              clj-out (<! (eval-fn-with-args clj-in))
               out-editor (create-editor-after-element element clj-out (dbg (assoc my-editor-options :readOnly true)))
               in-editor (replace-element-by-editor element clj-in my-editor-options)]
           (handle-events in-editor
                          {:idle-msec 2000
                           :base-url app-url
-                          :on-should-eval #(eval-in-editor eval-fn out-editor in-editor)}))))))
+                          :on-should-eval #(eval-in-editor eval-fn-with-args out-editor in-editor)}))))))
 
 (defn klipsify-elements [elements language]
   (go

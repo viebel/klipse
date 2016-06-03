@@ -21,13 +21,13 @@
 
 (deftrack eval-js [s]
   (go
-    (let [[status res] (<! (eval-async s :deps-load (deps-load?) :static-fns (static-fns?)))]
+    (let [[status res] (<! (eval-async s {:deps-load (deps-load?) :static-fns (static-fns?)}))]
       (.log js/console res)
       [status (.stringify js/JSON res nil 4)])))
 
 (deftrack eval-clj [s]
   (go
-    (let [[status res] (<! (eval-async s :deps-load (deps-load?) :static-fns (static-fns?)))]
+    (let [[status res] (<! (eval-async s {:deps-load (deps-load?) :static-fns (static-fns?)}))]
       [status (if (string? res)
                 res
                 (with-out-str (pprint res)))])))

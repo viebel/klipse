@@ -27,6 +27,8 @@
 
 (def known-src-paths 
   {"klipse" "http://app.klipse.tech/fig/js"
+   "klipse-git" "https://raw.githubusercontent.com/viebel/klipse/master/src"
+   "devtools" "https://raw.githubusercontent.com/binaryage/cljs-devtools/master/src" 
    "gadjett" "https://raw.githubusercontent.com/viebel/gadjett/master/src"
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
    })
@@ -34,8 +36,8 @@
 (defn repos []
   ["/fig/js"
    "https://gist.githubusercontent.com/"
-   ;"https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" 
-   ;"https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs" 
+   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" 
+   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs" 
    ;"https://raw.githubusercontent.com/mfikes/planck/master/planck-cljs/src/"
    ;"https://raw.githubusercontent.com/clojure/tools.reader/master/src/main/cljs/"
    ;"https://raw.githubusercontent.com/viebel/andare/master/src/main/clojure/"
@@ -99,10 +101,12 @@
     c))
 
 (defn src-paths-option [src-paths deps-load]
-  (dbg src-paths)
-  (dbg (if-not src-paths
-    ["dummy-path-for-no-op"]
-    (if deps-load (repos) src-paths))))
+  (dbg 
+    (if (dbg deps-load)
+      (repos)
+      (if-not src-paths
+        ["dummy-path-for-no-op"]
+        src-paths))))
 
 (defn calc-src-path [path]
   (if-let [p (known-src-paths path)]
@@ -124,6 +128,7 @@
             :verbose false})))
      
 (deftrack eval-async-1 [s {:keys [deps-load src-paths static-fns] :or {static-fns false src-paths nil deps-load false}}]
+  (print "eval-async-1: " deps-load)
   (let [c (chan)
         opts (dbg (build-repl-opts {:static-fns static-fns
                                     :deps-load deps-load
@@ -138,7 +143,7 @@
   (go 
     (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
-    (<! (eval-async-1 s args))))
+    (<! (eval-async-1 s (dbg args)))))
 
 (deftrack eval [s {:keys [static-fns] :or {static-fns false deps-load false}}]
   (let [opts (build-repl-opts {:static-fns static-fns})]

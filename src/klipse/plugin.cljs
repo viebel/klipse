@@ -2,7 +2,7 @@
   (:use-macros
     [cljs.core.async.macros :only [go]])
   (:require 
-    [clojure.string :as string]
+    [clojure.string :as string :refer [trim split]]
     [klipse.ui.editors.cljs :refer [handle-events]]
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
@@ -27,8 +27,9 @@
        (set-value editor-target))))
 
 (defn src-paths-from-element [element]
-  (dbg (some-> (.getAttribute element "src-paths")
-         (string/split ","))))
+  (dbg (when-let [paths (.getAttribute element "src-paths")]
+         (->> (split paths ",")
+              (map trim)))))
 
 (defn klipsify [element language]
   (go

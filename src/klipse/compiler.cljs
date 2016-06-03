@@ -101,15 +101,14 @@
     c))
 
 (defn src-paths-option [src-paths deps-load]
-  (dbg 
-    (if (dbg deps-load)
-      (repos)
-      (if-not src-paths
-        ["dummy-path-for-no-op"]
-        src-paths))))
+  (if deps-load
+    (repos)
+    (if-not src-paths
+      ["dummy-path-for-no-op"]
+      src-paths)))
 
 (defn calc-src-path [path]
-  (if-let [p (known-src-paths path)]
+  (if-let [p (dbg (known-src-paths path))]
     p
     path))
 

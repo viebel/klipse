@@ -1,11 +1,8 @@
 (ns klipse.ui.editors.common
   (:require
     [gadjett.core :as gadjett :refer-macros [dbg]]
-    [clojure.string :as string :refer [blank?]]
     [klipse.ui.editors.editor :as editor]
-    [klipse.utils :refer [url-parameters create-url-with-input debounce]] 
-    [om.next :as om :refer-macros [defui]]
-    [om.dom :as dom]))
+    [klipse.utils :refer [url-parameters create-url-with-input debounce]]))
 
 (defn display-url-with-input [base-url value]
   (doto (create-url-with-input base-url value)

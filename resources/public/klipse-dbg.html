@@ -9,15 +9,21 @@
     <body>
 <span class="clojure" src-paths="klipse-git, gadjett, clojurescript, /repository, om, cognitect-transit-cljs, cognitect-transit-js, core.async, cemerick-url, pathetic"> 
     (ns my.klipse
-       (:require [klipse.run.plugin :as k]))
+       (:require [klipse.plugin :as plugin :refer [init]]))
     </span>
      <br/>
     <span class="clojure" src-paths="cemerick-url, pathetic, /repository, clojurescript">
-        (ns my.url
-        (:require [cemerick.url :refer [url]]))
-        (url "http://cnn.com?aa=2")
+        (init {:selector ".klojure"})
         ;playground
         </span>
+     <br/>
+     <span class="klojure">
+     (map inc [1 2 3])
+         </span>
+     <br/>
+      <span class="klipse">
+     (map inc [1 2 3])
+         </span>
      <br/>
        <script>
         window.klipse_settings = {

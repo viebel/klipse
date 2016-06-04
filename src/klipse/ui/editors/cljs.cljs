@@ -4,7 +4,7 @@
     [clojure.string :as string :refer [blank?]]
     [klipse.ui.editors.editor :as editor]
     [klipse.ui.editors.common :refer [handle-events]]
-    [klipse.utils :refer [url-parameters create-url-with-input debounce]] 
+    [klipse.utils :refer [url-parameters]] 
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]))
 

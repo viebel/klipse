@@ -3,7 +3,7 @@
     [cljs.core.async.macros :only [go]])
   (:require 
     [clojure.string :as string :refer [trim split]]
-    [klipse.ui.editors.cljs :refer [handle-events]]
+    [klipse.ui.editors.common :refer [handle-events]]
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value get-value]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
     [klipse.compiler :refer [str-eval-async str-eval str-compile-async]]))

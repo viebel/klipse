@@ -1,6 +1,6 @@
 (ns klipse.compiler
-  (:use-macros
-    [cljs.core.async.macros :only [go]])
+  (:require-macros
+    [cljs.core.async.macros :refer [go]])
   (:require 
     [goog.string.format]; some goog libs must be required manually in order to be available at run time
     [goog.date.Interval]
@@ -37,6 +37,7 @@
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
    "cemerick-url" "https://raw.githubusercontent.com/viebel/url/master/src/"
    "pathetic" "https://raw.githubusercontent.com/viebel/pathetic/develop/src/"
+   "cljs-tools-reader" "https://raw.githubusercontent.com/clojure/tools.reader/master/src/main/cljs/"
    })
 
 (defn repos []

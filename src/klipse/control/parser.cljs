@@ -1,6 +1,6 @@
 (ns klipse.control.parser
-  (:use-macros
-    [cljs.core.async.macros :only [go]])
+  (:require-macros
+    [cljs.core.async.macros :refer [go]])
   (:require 
     [cljs.pprint :refer [pprint]]
     [gadjett.core :as gadjett :refer-macros [dbg]]

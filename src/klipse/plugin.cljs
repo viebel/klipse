@@ -1,6 +1,6 @@
 (ns klipse.plugin
-  (:use-macros
-    [cljs.core.async.macros :only [go]])
+  (:require-macros
+    [cljs.core.async.macros :refer [go]])
   (:require 
     [clojure.string :as string :refer [trim split]]
     [klipse.ui.editors.common :refer [handle-events]]

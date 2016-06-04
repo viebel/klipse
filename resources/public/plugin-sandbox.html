@@ -9,8 +9,8 @@
     <body>
     <div class="clojure"  src-paths="core.async, /repository, clojurescript">
     (ns my.async
-      (:use-macros
-          [cljs.core.async.macros :only [go]]))
+      (:require-macros
+          [cljs.core.async.macros :refer [go]]))
       </div>
 
           <br/>

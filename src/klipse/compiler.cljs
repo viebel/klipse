@@ -37,7 +37,7 @@
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
    "cemerick-url" "https://raw.githubusercontent.com/viebel/url/master/src/"
    "pathetic" "https://raw.githubusercontent.com/viebel/pathetic/develop/src/"
-   "cljs-tools-reader" "https://raw.githubusercontent.com/clojure/tools.reader/master/src/main/cljs/"
+   "tools.reader" "https://raw.githubusercontent.com/clojure/tools.reader/master/src/main/cljs/"
    })
 
 (defn repos []

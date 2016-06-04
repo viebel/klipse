@@ -38,9 +38,9 @@
         (let [clj-in (.-textContent element);goog.dom/getTextContent removes new lines
               src-paths (src-paths-from-element element)
               eval-fn-with-args #(eval-fn % {:src-paths src-paths})
-              clj-out (<! (eval-fn-with-args clj-in))
-              out-editor (create-editor-after-element element clj-out (dbg (assoc my-editor-options :readOnly true)))
+              out-editor (create-editor-after-element element ";the evaluation will appear here (soon)..." (dbg (assoc my-editor-options :readOnly true))); must be called before `element` is replaced
               in-editor (replace-element-by-editor element clj-in my-editor-options)]
+          (set-value out-editor (<! (eval-fn-with-args clj-in)))
           (handle-events in-editor
                          {:idle-msec 2000
                           :base-url app-url

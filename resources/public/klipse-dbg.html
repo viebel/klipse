@@ -7,8 +7,30 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-<span class="clojure" src-paths="klipse-git, gadjett, clojurescript, /repository, om, cognitect-transit-cljs, cognitect-transit-js, core.async, cemerick-url, pathetic, cljs-tools-reader"> 
-    (ns my.klipse
+<span class="clojure" src-paths="klipse-git, gadjett, clojurescript, /repository, om, cognitect-transit-cljs, cognitect-transit-js, core.async, cemerick-url, pathetic, tools.reader"> 
+(ns ^{:doc "A clojure reader in clojure"
+      :author "Bronsa"}
+  cljs.tools.reader
+  (:refer-clojure :exclude [read read-line read-string char
+                            default-data-readers *default-data-reader-fn*
+                            *data-readers* *suppress-read*])
+  (:require-macros [cljs.tools.reader.reader-types :refer [log-source]])
+  (:require [cljs.tools.reader.reader-types :refer
+             [read-char reader-error unread peek-char indexing-reader?
+              get-line-number get-column-number get-file-name
+              string-push-back-reader]]
+            [cljs.tools.reader.impl.utils :refer
+             [char ex-info? whitespace? numeric? desugar-meta next-id
+              ReaderConditional reader-conditional reader-conditional?]]
+            [cljs.tools.reader.impl.commons :refer
+             [number-literal? read-past match-number parse-symbol read-comment throwing-reader]]
+            [clojure.string :as string]
+            #_[goog.array :as garray]
+            #_[goog.string :as gstring])
+  (:import goog.string.StringBuffer))
+   #_(ns my.reader
+     (:require [cljs.tools.reader :as reader]))
+    #_(ns my.klipse
        (:require [klipse.plugin :as plugin :refer [init]]))
     </span>
      <br/>

@@ -7,41 +7,14 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-    <pre class="clojure"  src-paths="klipse,clojurescript">
-    <code>
+    <div class="clojure"  src-paths="core.async, /repository, clojurescript">
+    (ns my.async
+      (:use-macros
+          [cljs.core.async.macros :only [go]]))
+      </div>
 
-    (ns my.spec
-      (:require [cljs.spec :as s])
-          (:require-macros [cljs.spec :as s]))
-
-          </code></pre>
           <br/>
-       <div class="kkkclojure" src-paths="klipse,clojurescript">
-           (ns my.spec
-             (:require [cljs.spec :as s])
-               (:require-macros [cljs.spec :as s]))
-             </div>
-               
-               <br/>
-       <div class="clojure">
-           (s/valid? integer? 4)
-           </div>
-<br/>
-       <div class="clojure">
-           (s/def ::int integer?)
-           </div>
-<br/>
-       <div class="clojure">
-            (s/valid? ::int 9)
-
-           </div>
-<br/>
-       <div class="clojure">
-            (s/explain-str ::int :a)
-
-           </div>
-
-        <script>
+       <script>
         window.klipse_settings = {
             selector: '.clojure',
             selector_js: '.clojure-js'

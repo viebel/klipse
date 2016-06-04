@@ -7,10 +7,17 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-<span class="clojure" src-paths="klipse-git, gadjett, clojurescript"> 
+<span class="clojure" src-paths="klipse-git, gadjett, clojurescript, /repository, om, cognitect-transit-cljs, cognitect-transit-js, core.async, cemerick-url, pathetic"> 
     (ns my.klipse
-       (:require [klipse.run.app :as k]))
+       (:require [klipse.run.plugin :as k]))
     </span>
+     <br/>
+    <span class="clojure" src-paths="cemerick-url, pathetic, /repository, clojurescript">
+        (ns my.url
+        (:require [cemerick.url :refer [url]]))
+        (url "http://cnn.com?aa=2")
+        ;playground
+        </span>
      <br/>
        <script>
         window.klipse_settings = {

@@ -28,9 +28,16 @@
 (def known-src-paths 
   {"klipse" "http://app.klipse.tech/fig/js"
    "klipse-git" "https://raw.githubusercontent.com/viebel/klipse/fix-deps/src"
+   "om" "https://raw.githubusercontent.com/omcljs/om/master/src/main/"
+   "core.async" "https://raw.githubusercontent.com/mfikes/andare/master/src/main/clojure/"
+   "cognitect-transit-cljs" "https://raw.githubusercontent.com/cognitect/transit-cljs/master/src"
+   "cognitect-transit-js" "https://raw.githubusercontent.com/cognitect/transit-js/master/src/"
+   "datascript" "https://raw.githubusercontent.com/viebel/datascript/master/src/";"https://raw.githubusercontent.com/tonsky/datascript/master/src/"
    "devtools" "https://raw.githubusercontent.com/binaryage/cljs-devtools/master/src" 
    "gadjett" "https://raw.githubusercontent.com/viebel/gadjett/master/src"
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
+   "cemerick-url" "https://raw.githubusercontent.com/viebel/url/master/src/"
+   "pathetic" "https://raw.githubusercontent.com/viebel/pathetic/develop/src/"
    })
 
 (defn repos []

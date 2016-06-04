@@ -13,7 +13,7 @@
                  [devcards "0.2.1-7"]
                  [devcards-om-next "0.1.1"]
                  ; following libs only for demo purposes
-                 [com.rpl/specter "0.10.0"]]
+                 ]
   :hooks [leiningen.cljsbuild]
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ["public/js"]

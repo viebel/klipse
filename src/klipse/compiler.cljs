@@ -5,7 +5,6 @@
     [goog.string.format]; some goog libs must be required manually in order to be available at run time
     [goog.date.Interval]
     [goog.date.UtcDateTime]
-    [com.rpl.specter :as specter]; make specter available at run time: temp workaround
     [cljs.reader :refer [read-string]]
     [klipse.io :as io]
     [clojure.string :as s]

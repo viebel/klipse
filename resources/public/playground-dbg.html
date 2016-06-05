@@ -7,14 +7,14 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-    <div class="clojure"  src-paths="core.async, /repository, clojurescript">
-    (ns my.async
-      (:require-macros
-          [cljs.core.async.macros :refer [go]]))
-      </div>
+    <div class="clojure"
+    src-paths="http://app.klipse.tech/fig/js,clojurescript,datascript">
+    (ns my.gadjett
+      (:require-macros [gadjett.core :as gadjett :refer [dbg]]))
 
-          <br/>
-       <script>
+      </div>
+    <br/>
+   <script>
         window.klipse_settings = {
             selector: '.clojure',
             selector_js: '.clojure-js'

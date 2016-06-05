@@ -1,11 +1,10 @@
-(defproject klipse "0.6.0"
+(defproject klipse "0.7.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.8.51"]
+                 [org.clojure/clojurescript "1.9.14"]
                  [org.clojure/core.async "0.2.374"]
                  [im.chit/purnam "0.5.2"]
                  [viebel/gadjett "0.1.13"]
-                 [binaryage/devtools "0.6.1"]
                  [org.omcljs/om "1.0.0-alpha32"]
                  [replumb "0.2.2-SNAPSHOT"]
                  [com.cemerick/url "0.1.1"]
@@ -14,7 +13,7 @@
                  [devcards "0.2.1-7"]
                  [devcards-om-next "0.1.1"]
                  ; following libs only for demo purposes
-                 [com.rpl/specter "0.10.0"]]
+                 ]
   :hooks [leiningen.cljsbuild]
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ["public/js"]

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+<span class="clojure" src-paths="klipse-git, gadjett, clojurescript, /repository, om, cognitect-transit-cljs, cognitect-transit-js, core.async, cemerick-url, pathetic, tools.reader"> 
+  (ns my.reader
+  (:require [goog.array]
+  [cljs.tools.reader :as reader]))
+    #_(ns my.klipse
+       (:require [klipse.plugin :as plugin :refer [init]]))
+    </span>
+     <br/>
+    <span class="clojure">
+        (init {:selector ".klojure"})
+        ;playground
+        </span>
+     <br/>
+     <span class="klojure">
+     (map inc [1 2 3])
+         </span>
+     <br/>
+      <span class="klipse">
+     (map inc [1 2 3])
+         </span>
+     <br/>
+       <script>
+        window.klipse_settings = {
+            selector: '.clojure',
+            selector_js: '.clojure-js'
+        };
+        </script>
+        <script src="lib/mirror_extensions.js"></script>
+        <script src="fig/js/klipse.fig.js"></script>
+    </body>
+</html>

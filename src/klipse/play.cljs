@@ -1,5 +1,5 @@
 (ns klipse.play
-  (:use-macros [gadjett.core :only [deftrack]])
+  (:require-macros [gadjett.core :refer [deftrack]])
   (:require [gadjett.core :as g :include-macros true]))
 
 (defn run []

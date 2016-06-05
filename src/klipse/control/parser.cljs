@@ -1,6 +1,6 @@
 (ns klipse.control.parser
-  (:use-macros
-    [cljs.core.async.macros :only [go]])
+  (:require-macros
+    [cljs.core.async.macros :refer [go]])
   (:require 
     [cljs.pprint :refer [pprint]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
@@ -16,18 +16,15 @@
 (defn static-fns? []
   (boolean (read-string (or (:static-fns (url-parameters) "false")))))
 
-(defn deps-load? []
-  (boolean (read-string (or (:deps-load (url-parameters) "false")))))
-
 (deftrack eval-js [s]
   (go
-    (let [[status res] (<! (eval-async s :deps-load (deps-load?) :static-fns (static-fns?)))]
+    (let [[status res] (<! (eval-async s {:static-fns (static-fns?)}))]
       (.log js/console res)
       [status (.stringify js/JSON res nil 4)])))
 
 (deftrack eval-clj [s]
   (go
-    (let [[status res] (<! (eval-async s :deps-load (deps-load?) :static-fns (static-fns?)))]
+    (let [[status res] (<! (eval-async s {:static-fns (static-fns?)}))]
       [status (if (string? res)
                 res
                 (with-out-str (pprint res)))])))
@@ -55,7 +52,8 @@
 
 (defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] 
-             (go
+             #_(go ; it's incorrect to evaluate the code twice when the code has side effects
+                   ; for the moment, we leave the js box empty
                (swap! state assoc :evaluation-js (<! (eval-js value)))))})
 
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]

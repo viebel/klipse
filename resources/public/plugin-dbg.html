@@ -7,23 +7,22 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-    <div class="clojure">
-        (ns my.ns
-          (:require-macros [cljs.spec :as ss])
-            (:require [cljs.spec :as s]))
+<span class="clojure"> 
+            (ns my.ns
+              (:require 
+                  [clojure.string :as string]))
+                  (string/blank? "HELLO!!")
+      </span>
+      <br/>
+<span class="clojure"> 
+            (ns my.ns
+              (:require [gadjett.collections :as collections :refer [map-object my-replace]]))
 
-            (with-out-str
-              (s/explain #{2} 1))
+      [(map-object inc {:a 1 :b 2})
+       (my-replace '{a (b) c (C C)} '(a c))]
 
-              (s/def ::num (s/and integer? even?))
-              (s/explain-str ::num 11)
-              </div>
-
-              <div class="clojure">
-                  (s/def ::num (s/and integer? even?))
-                  (s/explain-str ::num :aaa)
-
-                  </div>
+      </span>
+      <br/>
 
         <div class="clojure-js">
             (map inc [100000 2 3])
@@ -39,21 +38,13 @@
         <br/>
         <span class="clojure"> (foo 19) </span>
         <br/>
-        <span class="clojure"> 
-            (ns my.ns
-              (:require [gadjett.collections :as collections :refer [map-object my-replace]]))
-
-      [(map-object inc {:a 1 :b 2})
-       (my-replace '{a (b) c (C C)} '(a c))]
-
-      </span>
-            
+                   
         <br/>
         <span class="clojure">
             (ns my.gg
-                (:require [goog.async]))
+                (:require [goog.string :as gstring]))
 
-                (str goog.async.nextTick)
+                (gstring/capitalize "hello")
         </span>
 
             
@@ -64,7 +55,7 @@
         <br/>
         <span class="clojure"> (map inc [1000 2 3]) </span>
         <br/>
-        <span class="clojure"> (map dec [1 2 3]) </span>
+                    
         <br/>
         <div class="clojure">
 

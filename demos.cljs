@@ -7,6 +7,9 @@
   (print 8)
   (print 9999))
   
+;; gist
+(ns my.async
+    (:require [viebel.gist-368d3bec58d3ec47e935ad488bafb600.raw.color])) ; https://gist.github.com/viebel/368d3bec58d3ec47e935ad488bafb600
   
 ;; cljs-date
 (ns my.date

@@ -1,6 +1,6 @@
 (ns klipse.utils
-  (:use-macros 
-    [cljs.core.async.macros :only [go]])
+  (:require-macros 
+    [cljs.core.async.macros :refer [go]])
   (:require 
     [clojure.walk :refer [keywordize-keys]]
     [cljs.core.async :refer [timeout <!]]

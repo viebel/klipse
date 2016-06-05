@@ -13,7 +13,6 @@
 (defn a= [& args]
   (apply = (map remove-chars args)))
 
-
 (defn error->clj [[status error]]
   [status {:message (.. error -message)}])
 
@@ -68,7 +67,8 @@
        (= (do (eval input-clj) (eval input-clj)) [:ok output-clj])
 "(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)" 14
        ))
-(deftest test-eval-3 
+
+#_(deftest test-eval-3 
   "eval with namespaces"
   (are [input-clj output-clj]
        (= (eval input-clj) [:ok output-clj])

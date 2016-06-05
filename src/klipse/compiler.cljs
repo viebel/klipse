@@ -25,36 +25,23 @@
   (cb {:lang :js :source ""}))
 
 (def known-src-paths 
-  {"klipse" "http://app.klipse.tech/fig/js"
-   "klipse-git" "https://raw.githubusercontent.com/viebel/klipse/fix-deps/src"
+  {"cljs-repo" "http://viebel.github.io/cljs-self-host-repository/repository"
    "om" "https://raw.githubusercontent.com/omcljs/om/master/src/main/"
    "core.async" "https://raw.githubusercontent.com/mfikes/andare/master/src/main/clojure/"
    "cognitect-transit-cljs" "https://raw.githubusercontent.com/cognitect/transit-cljs/master/src"
    "cognitect-transit-js" "https://raw.githubusercontent.com/cognitect/transit-js/master/src/"
-   "datascript" "https://raw.githubusercontent.com/viebel/datascript/master/src/";"https://raw.githubusercontent.com/tonsky/datascript/master/src/"
+   "datascript" "https://raw.githubusercontent.com/viebel/datascript/master/src/"
    "devtools" "https://raw.githubusercontent.com/binaryage/cljs-devtools/master/src" 
    "gadjett" "https://raw.githubusercontent.com/viebel/gadjett/master/src"
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
    "cemerick-url" "https://raw.githubusercontent.com/viebel/url/master/src/"
    "pathetic" "https://raw.githubusercontent.com/viebel/pathetic/develop/src/"
-   "tools.reader" "https://raw.githubusercontent.com/clojure/tools.reader/master/src/main/cljs/"
+   "tools.reader" "https://raw.githubusercontent.com/viebel/tools.reader/master/src/main/cljs/"
    })
 
 (defn repos []
-  ["/fig/js"
-   "https://gist.githubusercontent.com/"
-   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" 
-   "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs" 
-   ;"https://raw.githubusercontent.com/mfikes/planck/master/planck-cljs/src/"
-   ;"https://raw.githubusercontent.com/clojure/tools.reader/master/src/main/cljs/"
-   ;"https://raw.githubusercontent.com/viebel/andare/master/src/main/clojure/"
-   ;"https://raw.githubusercontent.com/clojure/core.match/master/src/main/clojure/"
-   ;"https://raw.githubusercontent.com/brandonbloom/fipp/master/src/"
-   ;"https://raw.githubusercontent.com/clojure/core.rrb-vector/master/src/main/cljs/"
-   ;"https://raw.githubusercontent.com/reagent-project/reagent/master/src/"
-   ;"https://raw.githubusercontent.com/andrewmcveigh/cljs-time/master/src/"
-   ;"https://raw.githubusercontent.com/viebel/gadjett/master/src"
-   ])
+  (-> (vals known-src-paths)
+      flatten))
 
 (defn special-fetch [file-url src-cb]
   (-> (s/replace file-url #"gist_" "")
@@ -107,37 +94,16 @@
                       #(put! c (convert-compile-res %)))
     c))
 
-(defn src-paths-option [src-paths deps-load]
-  (if deps-load
-    (repos)
-    (if-not src-paths
-      ["dummy-path-for-no-op"]
-      src-paths)))
-
-(defn calc-src-path [path]
-  (if-let [p (dbg (known-src-paths path))]
-    p
-    path))
-
-(defn calc-src-paths [src-paths deps-load]
-  (->> (src-paths-option src-paths deps-load)
-    (map calc-src-path)
-    flatten))
- 
-(defn build-repl-opts [{:keys [deps-load static-fns src-paths]}]
-  (let [io-func (if (or src-paths deps-load) special-fetch io/no-op)
-        src-paths (calc-src-paths src-paths deps-load)]
-    (merge (replumb/options :browser src-paths io-func)
-           {:warning-as-error false
-            :static-fns static-fns
-            :context :statement
-            :verbose false})))
+(defn build-repl-opts [{:keys [static-fns src-paths]}]
+  (merge (replumb/options :browser (repos) special-fetch)
+         {:warning-as-error false
+          :static-fns static-fns
+          :context :statement
+          :verbose false}))
      
-(deftrack eval-async-1 [s {:keys [deps-load src-paths static-fns] :or {static-fns false src-paths nil deps-load false}}]
-  (print "eval-async-1: " deps-load)
+(deftrack eval-async-1 [s {:keys [src-paths static-fns] :or {static-fns false src-paths nil}}]
   (let [c (chan)
         opts (dbg (build-repl-opts {:static-fns static-fns
-                                    :deps-load deps-load
                                     :src-paths src-paths}))]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
     c))
@@ -151,7 +117,7 @@
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
     (<! (eval-async-1 s (dbg args)))))
 
-(deftrack eval [s {:keys [static-fns] :or {static-fns false deps-load false}}]
+(deftrack eval [s {:keys [static-fns] :or {static-fns false}}]
   (let [opts (build-repl-opts {:static-fns static-fns})]
     (replumb/read-eval-call opts convert-eval-res s)))
 

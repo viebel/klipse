@@ -25,19 +25,13 @@
        <!
        (set-value editor-target))))
 
-(defn src-paths-from-element [element]
-  (dbg (when-let [paths (.getAttribute element "src-paths")]
-         (->> (split paths ",")
-              (map trim)))))
-
 (defn klipsify [element language]
   (go
     (let [eval-fn (language->eval-fn language)
           my-editor-options (assoc editor-options :mode (name language))]
       (when element
         (let [clj-in (.-textContent element);goog.dom/getTextContent removes new lines
-              src-paths (src-paths-from-element element)
-              eval-fn-with-args #(eval-fn % {:src-paths src-paths})
+              eval-fn-with-args #(eval-fn %)
               out-editor (create-editor-after-element element ";the evaluation will appear here (soon)..." (dbg (assoc my-editor-options :readOnly true))); must be called before `element` is replaced
               in-editor (replace-element-by-editor element clj-in my-editor-options)]
           (set-value out-editor (<! (eval-fn-with-args clj-in)))

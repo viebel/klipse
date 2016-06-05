@@ -94,17 +94,16 @@
                       #(put! c (convert-compile-res %)))
     c))
 
-(defn build-repl-opts [{:keys [static-fns src-paths]}]
+(defn build-repl-opts [{:keys [static-fns]}]
   (merge (replumb/options :browser (repos) special-fetch)
          {:warning-as-error false
           :static-fns static-fns
           :context :statement
           :verbose false}))
      
-(deftrack eval-async-1 [s {:keys [src-paths static-fns] :or {static-fns false src-paths nil}}]
+(deftrack eval-async-1 [s {:keys [static-fns] :or {static-fns false}}]
   (let [c (chan)
-        opts (dbg (build-repl-opts {:static-fns static-fns
-                                    :src-paths src-paths}))]
+        opts (dbg (build-repl-opts {:static-fns static-fns }))]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
     c))
 
@@ -137,10 +136,9 @@
       second
       str))
 
-(defn str-eval-async [exp {:keys [src-paths] :or {src-paths nil}}]
-  (print "str-eval-async:"  src-paths)
+(defn str-eval-async [exp {:keys [static-fns] :or {static-fns false}}]
   (go
-    (-> (<! (eval-async exp {:src-paths src-paths}))
+    (-> (<! (eval-async exp {:static-fns static-fns}))
         second
         str)))
 

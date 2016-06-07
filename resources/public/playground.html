@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+    <h1>
+    Code evaluation
+    </h1>
+    <p>
+    Let's see how to create a live code snippet.
+    First a very simple expression:
+    </p>
+    <div class="clojure">
+        (map inc [1 2 3])
+    </div>
+    <p>
+    And now something that requires another namespace:
+    </p>
+    <div class="clojure">
+        (ns my.set 
+        (:require [clojure.set :as set]))
+
+        (set/union #{1 2} #{2 3} #{3 4})
+    </div>
+    <p>
+    And <b>:refer</b> works as well:
+
+    </p>
+    <div class="clojure">
+        (ns my.set 
+          (:require [clojure.set :refer [map-invert]]))
+
+          (map-invert {:cljs "simple" :js "complicated"})
+    </div>
+    <br/>
+    <p>
+    Now it's your turn to play with it:
+    </p>
+    <div class="clojure">
+        ;write the code you want to evaluate
+    </div>
+
+    <h1>
+    Code transpilation to javascript
+    </h1>
+<p>
+    Let's see how to create a live code transpiler.
+    First a very simple expression:
+    </p>
+    <div class="clojure-js">
+        (let [x 42]
+           (+ x 2))
+    </div>
+    <p>
+    Now it's your turn to transpile:
+    </p>
+    <div class="clojure-js">
+        ;write the code you want to transpile
+    </div>
+
+   <script>
+        window.klipse_settings = {
+            selector: '.clojure',
+            selector_js: '.clojure-js'
+        };
+        </script>
+        <script src="http://app.klipse.tech/plugin/js/klipse_plugin.js?v=0.7.0"></script>
+    </body>
+</html>

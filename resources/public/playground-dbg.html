@@ -7,11 +7,13 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-    <div class="clojure"
-    src-paths="http://app.klipse.tech/fig/js,clojurescript,datascript">
-    (ns my.gadjett
-      (:require-macros [gadjett.core :as gadjett :refer [dbg]]))
-
+    <div class="clojure">
+    (ns my.transit
+      (:require [cognitect.transit :as transit]))
+       
+       (def r (transit/reader :json))
+         (def json "{\"foo\":\"bar\", \"baz\" : 123}")
+           (def data (transit/read r json))
       </div>
     <br/>
    <script>

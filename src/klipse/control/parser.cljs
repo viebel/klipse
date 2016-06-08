@@ -48,7 +48,7 @@
 
 (defmethod mutate 'cljs/compile [{:keys [state]} _ {:keys [value]}]
   {:action (fn []
-             (swap! state assoc :compilation (compile value :static-fns (static-fns?))))})
+             (swap! state assoc :compilation (compile value {:static-fns (static-fns?)})))})
 
 (defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] 

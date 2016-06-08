@@ -7,15 +7,19 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-    <div class="clojure">
-    (ns my.transit
-      (:require [cognitect.transit :as transit]))
-       
-       (def r (transit/reader :json))
-         (def json "{\"foo\":\"bar\", \"baz\" : 123}")
-           (def data (transit/read r json))
-      </div>
-    <br/>
+ 
+        <div class="clojure-js" static-fns="true">
+            (map inc [100000 2 3])
+        </div>
+        <br/>
+        <div class="clojure-js">
+            (map inc [100000 2 3])
+        </div>
+
+        <div class="clojure-js" static-fns="false">
+            (map inc [100000 2 3])
+        </div>
+        <br/>
    <script>
         window.klipse_settings = {
             selector: '.clojure',

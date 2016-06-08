@@ -3,6 +3,7 @@
     [cljs.core.async.macros :refer [go]])
   (:require 
     [clojure.string :as string :refer [trim split]]
+    [cljs.reader :refer [read-string]]
     [klipse.ui.editors.common :refer [handle-events]]
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value get-value]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
@@ -27,11 +28,12 @@
 
 (defn klipsify [element language]
   (go
-    (let [eval-fn (language->eval-fn language)
+    (let [static-fns (read-string (or (.getAttribute element "static-fns") "false"))
+          eval-fn (language->eval-fn language)
+          eval-fn-with-args #(eval-fn % {:static-fns static-fns})
           my-editor-options (assoc editor-options :mode (name language))]
       (when element
         (let [clj-in (.-textContent element);goog.dom/getTextContent removes new lines
-              eval-fn-with-args #(eval-fn %)
               out-editor (create-editor-after-element element ";the evaluation will appear here (soon)..." (dbg (assoc my-editor-options :readOnly true))); must be called before `element` is replaced
               in-editor (replace-element-by-editor element clj-in my-editor-options)]
           (set-value out-editor (<! (eval-fn-with-args clj-in)))

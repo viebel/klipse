@@ -83,7 +83,7 @@
                     }
                     convert-compile-res))
 
-(deftrack compile-async [s & {:keys [static-fns] :or {static-fns false}}]
+(deftrack compile-async [s {:keys [static-fns] :or {static-fns false}}]
   (let [c (chan)]
     (cljs/compile-str (cljs/empty-state) s
                       "cljs-in"
@@ -114,7 +114,7 @@
   (go 
     (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
-    (<! (eval-async-1 s (dbg args)))))
+    (<! (eval-async-1 s args))))
 
 (deftrack eval [s {:keys [static-fns] :or {static-fns false}}]
   (let [opts (build-repl-opts {:static-fns static-fns})]
@@ -125,9 +125,9 @@
       second
       str))
 
-(defn str-compile-async [exp]
+(defn str-compile-async [exp {:keys [static-fns] :or {static-fns false}}]
   (go
-  (-> (<! (compile-async exp))
+  (-> (<! (compile-async exp {:static-fns static-fns}))
       second
       str)))
 

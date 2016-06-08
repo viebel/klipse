@@ -13,6 +13,9 @@
   
 ;; gist in url param
 http://localhost:5014/index-dbg.html?cljs_in.gist=viebel/368d3bec58d3ec47e935ad488bafb600&eval_only=1
+
+http://localhost:5014/index-dbg.html?cljs_in.gist=viebel/547e5236f52cf3ba04f9cbc495841769&eval_only=1
+
 ;; cljs-date
 (ns my.date
     (:require [cljs-time.core :as t :refer [interval date-time in-minutes]]))

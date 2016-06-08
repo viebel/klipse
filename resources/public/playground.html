@@ -37,13 +37,6 @@
           (map-invert {:cljs "simple" :js "complicated"})
     </div>
     <br/>
-    <p>
-    Now it's your turn to play with it:
-    </p>
-    <div class="clojure">
-        ;write the code you want to evaluate
-    </div>
-
     <h1>
     Code transpilation to javascript
     </h1>
@@ -56,18 +49,26 @@
            (+ x 2))
     </div>
     <p>
-    Now it's your turn to transpile:
+    Now, let's see the two ways to transpile code that involves function calls. 
+    </p>
+    <p>
+    This is the regular way:
     </p>
     <div class="clojure-js">
-        ;write the code you want to transpile
+        (map inc [1 2 3])
     </div>
-
+    <p>
+    And this is with <b>:static-fns</b> set to true - there is a html attribute <b>static-fns="true"</b>:
+    </p>
+    <div class="clojure-js" static-fns="true">
+        (map inc [1 2 3])
+    </div>
    <script>
         window.klipse_settings = {
             selector: '.clojure',
             selector_js: '.clojure-js'
         };
         </script>
-        <script src="http://app.klipse.tech/plugin/js/klipse_plugin.js?v=0.7.0"></script>
+        <script src="http://app.klipse.tech/plugin/js/klipse_plugin.js?v=0.7.2"></script>
     </body>
 </html>

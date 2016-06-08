@@ -40,6 +40,7 @@
    ;"datascript" "https://raw.githubusercontent.com/viebel/datascript/master/src/"
    ;"devtools" "https://raw.githubusercontent.com/binaryage/cljs-devtools/master/src" 
    ;"gadjett" "https://raw.githubusercontent.com/viebel/gadjett/master/src"
+   "gist" "https://gist.githubusercontent.com"
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
    ;"cemerick-url" "https://raw.githubusercontent.com/viebel/url/master/src/"
    ;"pathetic" "https://raw.githubusercontent.com/viebel/pathetic/develop/src/"

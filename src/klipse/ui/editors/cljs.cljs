@@ -25,8 +25,11 @@
                   [(list 'input/save     {:value s})
                    (list 'cljs/compile   {:value s})
                    (list 'js/eval        {:value s})
-                   (list 'clj/eval       {:value s})
-                   ':input])))
+                   (list 'clj/eval       {:value s})])))
+
+(defn init-input [component s]
+  (om/transact! component
+                  [(list 'input/save     {:value s})]))
 
 (defn init-editor [compiler]
   (as-> (editor/create "code-cljs" config-editor) $

@@ -34,6 +34,7 @@
 ;; Reads
 
 (defn read [{:keys [state]} key params]
+  (print "read:" key)
   {:value (get @state key "")})
 
 

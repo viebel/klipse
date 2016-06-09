@@ -2,7 +2,9 @@
          '[figwheel-sidecar.repl-api :as ra])
 
 (ra/start-figwheel!
-  {:figwheel-options {:server-port 5014}
+  {:figwheel-options {
+                      :open-file-command "emacsclient"
+                      :server-port 5014}
    :build-ids ["figwheel" "devcards"]
    :all-builds
    [{:id "figwheel"

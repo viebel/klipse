@@ -15,7 +15,8 @@
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.4-SNAPSHOT"]] }}  
   :hooks [leiningen.cljsbuild]
   :jvm-opts ["-Xms356M" "-Xmx1G"]
-  :clean-targets ["public/js"]
+  :clean-targets ^{:protect false} ["resources/public/dev/js"
+                                    "resources/public/plugin/js"]
   :plugins [[lein-cljsbuild "1.1.1"]]
   :source-paths ["src"]
   :cljsbuild {

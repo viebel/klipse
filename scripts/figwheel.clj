@@ -9,18 +9,16 @@
    :all-builds
    [{:id "figwheel"
      :figwheel true
-     :source-paths ["src" "resources/public/lib"]
+     :source-paths ["src"]
      :compiler {:main 'klipse.run.all
-                :preamble ["mirror_extensions.js"]
                 :asset-path "fig/js"
                 :output-to "resources/public/fig/js/klipse.fig.js"
                 :output-dir "resources/public/fig/js"
                 :source-map-timestamp true }}
     {:id "devcards"
      :figwheel { :devcards true }
-     :source-paths ["src" "resources/public/lib"]
+     :source-paths ["src"]
      :compiler {:main 'klipse.cards.cards
-                :preamble ["mirror_extensions.js"]
                 :asset-path "cards/js"
                 :output-to "resources/public/cards/js/klipse.js"
                 :output-dir "resources/public/cards/js"

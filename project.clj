@@ -33,9 +33,7 @@
                       :app {
                                :source-paths ["src" "resources/public/lib"]
                                :compiler {
-                                          :parallel-build true
-
-                                          :preamble ["mirror_extensions.js"]
+                                    :preamble ["mirror_extensions.js"]
                                           :main "klipse.run.app"
                                           :output-to "resources/public/dev/js/klipse.js"
                                           :output-dir "resources/public/dev/js"

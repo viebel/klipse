@@ -12,7 +12,7 @@
     [klipse.ui.editors.cljs :as cljs-editor]))
 
 (defn gist-path [gist-id]
-  (str "https://gist.githubusercontent.com/" gist-id "/raw"))
+  (str "https://gist.githubusercontent.com/" gist-id "/raw" "?" (rand)))
 
 (defn read-input-from-url []
   (:cljs_in (url-parameters)))

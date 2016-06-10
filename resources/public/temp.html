@@ -7,20 +7,16 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
- 
-        <div class="clojure-js" data-static-fns="true">
-            (map inc [100000 2 3])
-        </div>
-        <br/>
-        <div class="clojure-js">
-            (map inc [100000 2 3])
-        </div>
+        <span class="clojure"> 
+            (ns my.ns3
+              (:require-macros [gadjett.core :as gadjett]))
 
-        <div class="clojure-js" data-static-fns="false">
-            (map inc [100000 2 3])
-        </div>
-        <br/>
-   <script>
+              (with-out-str
+              (gadjett/dbg (map inc [1 23 ])))
+
+      </span>
+            
+        <script>
         window.klipse_settings = {
             selector: '.clojure',
             selector_js: '.clojure-js'

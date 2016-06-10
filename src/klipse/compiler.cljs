@@ -110,7 +110,6 @@
           :verbose false}))
      
 (deftrack eval-async-1 [s {:keys [static-fns] :or {static-fns false}}]
-  (print "eval-async-1: " s)
   (let [c (chan)
         opts (dbg (build-repl-opts {:static-fns static-fns }))]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)

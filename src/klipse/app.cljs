@@ -12,25 +12,35 @@
     [klipse.ui.editors.cljs :as cljs-editor]))
 
 (defn gist-path [gist-id]
-  (dbg (str "https://gist.githubusercontent.com/" gist-id "/raw")))
+  (str "https://gist.githubusercontent.com/" gist-id "/raw"))
 
-(defn get-first-input []
+(defn read-input-from-url []
+  (:cljs_in (url-parameters)))
+
+(defn read-input-from-gist []
+  (go
+    (when-let [gist-id (:cljs_in.gist (url-parameters))]
+      (let [gist-url (gist-path gist-id)
+          {:keys [status body]} (<! (http/get
+                                      gist-url
+                                      {:with-credentials? false}))]
+      (if-not (= status 200)
+        (str "\""
+             "Wrong gist path: " gist-url "\n"
+             "cljs_in.gist= " gist-id "\n"
+             "http status: " status
+             "\"")
+        body)))))
+
+(defn read-src-input []
   (go 
-    (dbg (cond 
-      (:cljs_in (url-parameters)) (:cljs_in (url-parameters))
-      (:cljs_in.gist (url-parameters)) (let [{:keys [status body]} (dbg (<! (http/get (gist-path (:cljs_in.gist (url-parameters)))  {:with-credentials? false})))]
-                                         (if-not (= status 200)
-                                           status
-                                           body))))))
+    (or
+      (read-input-from-url)
+      (<! (read-input-from-gist)))))
 
 (defn init [element]
   (go
-    (let [input (<! (get-first-input))
+    (let [input (<! (read-src-input))
           reconciler (control/reconciler {:input input})]
-      (om/add-root! 
-        reconciler
-        ui/Layout 
-        element)
-
-      (print "process-input")
+      (om/add-root! reconciler ui/Layout element)
       (cljs-editor/process-input reconciler input))))

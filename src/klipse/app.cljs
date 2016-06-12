@@ -43,5 +43,5 @@
     (let [input (<! (read-src-input))
           reconciler (control/reconciler {:input input})]
       (om/add-root! reconciler ui/Layout element)
-      (<! (timeout 0)) ; ugly workaround - otherwise it breaks when both js-compile and clj-eval components are viewed
+      #_(<! (timeout 0)) ; ugly workaround - otherwise it breaks when both js-compile and clj-eval components are viewed
       (cljs-editor/process-input reconciler input))))

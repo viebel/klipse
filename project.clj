@@ -44,10 +44,9 @@
                                           :optimizations :whitespace
                                           :verbose false}}
                       :plugin {
-                               :source-paths ["src" "resources/public/lib"]
+                               :source-paths ["src/klipse/run/plugin" "resources/public/lib"]
                                :compiler {
                                     :preamble ["mirror_extensions.js"]
-                                          :main "klipse.run.plugin"
                                           :output-to "resources/public/plugin/js/klipse_plugin.js"
                                           :output-dir "resources/public/plugin/js"
                                           :pretty-print false

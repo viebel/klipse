@@ -49,7 +49,7 @@
     (init-editor this))
 
   (render [this]
-    (let [input (or (:input (om/props this) (:cljs_in (url-parameters))))] ;ugly workaround: read the url parameter
+    (let [input (:input (om/props this))]
       (dom/section #js {:className "cljs-editor"}
       (dom/textarea #js {:autoFocus true
                          :value input

@@ -18,7 +18,8 @@ By the way, if you go to [this KLIPSE with clojure code](http://app.klipse.tech/
 
 Have fun!
 
-## Usage
+
+## Usage - App
 
 Here is an introductory blog post: [KLIPSE: why? what? how?](http://raphaelboukara.github.io/clojure/2016/03/17/klipse.html)
 
@@ -27,7 +28,7 @@ Insert your code in the top left area.
 Press Ctrl-Enter to evaluate.
 
 
-
+## Usage - Plugin
 
 ## Run Locally: figwheel + devcards
 

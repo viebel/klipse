@@ -28,7 +28,7 @@
 
 (defn klipsify [element language]
   (go
-    (let [static-fns (read-string (or (.getAttribute element "static-fns") "false"))
+    (let [static-fns (read-string (or (.. element -dataset -staticFns) "false"))
           eval-fn (language->eval-fn language)
           eval-fn-with-args #(eval-fn % {:static-fns static-fns})
           my-editor-options (assoc editor-options :mode (name language))]

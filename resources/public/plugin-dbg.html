@@ -7,7 +7,14 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-        <div class="clojure-js" static-fns="true">
+<span class="clojure"> 
+            (ns my.ns
+              (:require 
+                  [clojure.set :as set ]))
+                  (set/union #{1 2} #{2 3})
+      </span>
+      <br/>
+         <div class="clojure-js" static-fns="true">
             (map inc [100000 2 3])
         </div>
         <div class="clojure-js">

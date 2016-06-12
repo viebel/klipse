@@ -15,7 +15,7 @@
                 :output-to "resources/public/fig/js/klipse.fig.js"
                 :output-dir "resources/public/fig/js"
                 :source-map-timestamp true }}
-    {:id "devcards"
+    #_{:id "devcards"
      :figwheel { :devcards true }
      :source-paths ["src"]
      :compiler {:main 'klipse.cards.cards

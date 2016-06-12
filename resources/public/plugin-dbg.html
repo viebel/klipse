@@ -48,41 +48,10 @@
         <div class="clojure-js">
             (map inc [100000 2 3])
         </div>
-<span class="clojure">
-(ns om.next.spec
-  (:require [cljs.spec :as s]))
+<span class="clojure" data-gist-id="viebel/368d3bec58d3ec47e935ad488bafb600">
 </span>
 <span class="clojure"> 
-    (s/def ::ident (s/and vector? (s/cat :ident keyword? :value #(not (coll? %)))))
-(s/def ::join-key (s/or :prop keyword? :ident ::ident))
-(s/def ::join (s/and (s/map-of ::join-key ::query) #(= (count %) 1)))
-(s/def ::union (s/and (s/map-of keyword? ::query) #(> (count %) 1)))
-
-(s/def ::param-expr
-  (s/cat :query-expr ::query-expr
-         :params map?))
-
-(s/def ::mutation-expr
-  (s/or :no-params (s/cat :mutate-key symbol?)
-        :with-params (s/cat :mutate-key symbol?
-                            :params map?)))
-
-(s/def ::query-expr
-  (s/or :prop keyword?
-        :ident ::ident
-        :mutation-expr ::mutation-expr
-        :union ::union
-        :param-expr ::join))
-
-(s/def ::query
-  (s/or :recursion (s/or :depth number?
-                         :unbounded #(= % '...))
-        :query     (s/and vector?
-                          (s/+ ::query-expr))))
-
-
-  (s/explain-str ::query '[:name {:friend "foo"}])
-            (ns my.ns
+           (ns my.ns
               (:require 
                   [clojure.string :as string]))
                   (string/blank? "HELLO!!")

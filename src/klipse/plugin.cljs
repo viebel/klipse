@@ -2,6 +2,8 @@
   (:require-macros
     [cljs.core.async.macros :refer [go]])
   (:require 
+    [klipse.utils :refer [read-input-from-gist]]
+    [cljs.core.async :refer [<!]]
     [clojure.string :as string :refer [trim split]]
     [cljs.reader :refer [read-string]]
     [klipse.ui.editors.common :refer [handle-events]]
@@ -47,6 +49,14 @@
     (->> (split s ",")
          (map trim))))
 
+(defn content [element]
+  (go
+    (or
+      (let [gist-id (read-string-or-val (.. element -dataset -gistId) "")]
+        (<! (read-input-from-gist gist-id)))
+      (.-textContent element);goog.dom/getTextContent removes new lines
+      )))
+
 (defn klipsify [element language]
   (go
     (let [my-dataset (.. element -dataset)
@@ -57,7 +67,7 @@
           in-editor-options (assoc editor-options :mode (language language->editor-in-mode))
           out-editor-options (assoc editor-options :mode (language language->editor-out-mode) :readOnly true)]
       (when element
-        (let [clj-in (.-textContent element);goog.dom/getTextContent removes new lines
+        (let [clj-in (<! (content element))
               out-editor (create-editor-after-element element ";the evaluation will appear here (soon)..." out-editor-options); must be called before `element` is replaced
               in-editor (replace-element-by-editor element clj-in in-editor-options)]
           (set-value out-editor (dbg (<! (eval-fn-with-args clj-in))))
@@ -65,6 +75,7 @@
                          {:idle-msec 2000
                           :base-url app-url
                           :on-should-eval #(eval-in-editor eval-fn-with-args out-editor in-editor)}))))))
+
 
 (defn klipsify-elements [elements language]
   (go

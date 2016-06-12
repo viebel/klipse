@@ -3,6 +3,7 @@
     [cljs.core.async.macros :refer [go]])
   (:require 
     [clojure.walk :refer [keywordize-keys]]
+    [cljs-http.client :as http]
     [cljs.core.async :refer [timeout <!]]
     [cemerick.url :refer [url]]))
 
@@ -36,3 +37,25 @@
         (swap! counter dec)
         (when (zero? @counter)  
           (func))))))
+
+(defn gist-path-raw [gist-id]
+  (str "https://gist.githubusercontent.com/" gist-id "/raw" "?" (rand)))
+
+(defn gist-path-page [gist-id]
+  (str "https://gist.github.com/" gist-id)) 
+
+(defn read-input-from-gist [gist-id]
+  (go
+    (when gist-id 
+      (let [gist-url (gist-path-raw gist-id)
+            {:keys [status body]} (<! (http/get
+                                        gist-url
+                                        {:with-credentials? false}))]
+        (if-not (= status 200)
+          (str "\""
+               "Wrong gist path: " gist-url "\n"
+               "gist-id= " gist-id "\n"
+               "http status: " status
+               "\"")
+          (str "; loaded from gist: " (gist-path-page gist-id) "\n"
+               body))))))

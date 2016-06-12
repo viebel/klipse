@@ -6,7 +6,7 @@
                  [im.chit/purnam "0.5.2"]
                  [cljs-http "0.1.41"]
                  [viebel/gadjett "0.1.13"]
-                 [org.omcljs/om "1.0.0-alpha32"]
+                 [org.omcljs/om "1.0.0-alpha36"]
                  [replumb "0.2.2"]
                  [com.cemerick/url "0.1.1"]
                  [cljsjs/codemirror "5.11.0-2"]
@@ -31,10 +31,9 @@
                                            :verbose false
                                            :optimizations :whitespace }}
                       :app {
-                               :source-paths ["src" "resources/public/lib"]
+                               :source-paths ["src/klipse/run/app" "resources/public/lib"]
                                :compiler {
                                     :preamble ["mirror_extensions.js"]
-                                          :main "klipse.run.app"
                                           :output-to "resources/public/dev/js/klipse.js"
                                           :output-dir "resources/public/dev/js"
                                           :pretty-print false
@@ -54,8 +53,4 @@
                                           :static-fns true
                                           ;:elide-asserts true
                                           :optimizations :whitespace
-                                          :verbose false}}
-                       
-                       
-                       
-                       }})
+                                          :verbose false}}}})

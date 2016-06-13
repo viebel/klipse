@@ -13,7 +13,6 @@
                  [devcards "0.2.1-7"]
                  [devcards-om-next "0.1.1"]]
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.4-2"]] }}  
-  :hooks [leiningen.cljsbuild]
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ^{:protect false} ["resources/public/dev/js"
                                     "resources/public/plugin/js"]

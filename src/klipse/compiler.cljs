@@ -124,8 +124,8 @@
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
     (<! (eval-async-1 s args))))
 
-(deftrack eval [s {:keys [static-fns] :or {static-fns false}}]
-  (let [opts (build-repl-opts {:static-fns static-fns})]
+(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
+  (let [opts (dbg (build-repl-opts {:static-fns static-fns}))]
     (replumb/read-eval-call opts convert-eval-res s)))
 
 (defn str-compile [exp]

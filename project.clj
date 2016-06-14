@@ -60,6 +60,19 @@
                                           ;:elide-asserts true
                                           :optimizations :whitespace
                                           :verbose false}}
+                      :plugin-prod {
+                               :source-paths ["src" "resources/public/lib"]
+                               :compiler {
+                                    :preamble ["mirror_extensions.js"]
+                                          :main "klipse.run.plugin"
+                                          :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
+                                          :output-dir "resources/public/plugin_prod/js"
+                                          :pretty-print false
+                                          :optimize-constants true
+                                          :static-fns true
+                                          ;:elide-asserts true
+                                          :optimizations :advanced
+                                          :verbose false}}
                        :figwheel {
                                   :figwheel true
                                   :source-paths ["src"]

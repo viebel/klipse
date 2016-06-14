@@ -1,9 +1,10 @@
 (ns klipse.compiler
   (:require-macros
-    [cljs.core.async.macros :refer [go]])
+    [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     [goog.string.format]; some goog libs must be required manually in order to be available at run time
     [goog.date.Interval]
+    [cljs-http.client :as http]
     [goog.date.UtcDateTime]
     [cljs.reader :refer [read-string]]
     [klipse.io :as io]
@@ -23,6 +24,12 @@
 (defn load-inlined [opts cb]
   (print "load-inlined: " opts)
   (cb {:lang :js :source ""}))
+
+(def known-external-lib
+  {
+   "immutable" "https://raw.githubusercontent.com/facebook/immutable-js/master/dist/immutable.min.js"
+   "jQuery" "https://code.jquery.com/jquery-2.2.4.min.js"
+   "underscore" "http://underscorejs.org/underscore-min.js"})
 
 (def known-src-paths 
   {"cljs-repo" "http://viebel.github.io/cljs-self-host-repository/repository"
@@ -141,6 +148,33 @@
     (-> (<! (eval-async exp {:static-fns static-fns}))
         second
         str)))
+
+
+(defn load-scripts [scripts]
+  (go-loop [the-scripts scripts]
+           (if (seq the-scripts)
+             (let [script (first the-scripts)
+                   _ (println "loading:" script)
+                   {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
+               (if (= 200 status)
+                 (do
+                   (println "evaluating:" script)
+                   (js/eval body)
+                   (recur (rest scripts)))
+                 [:error status script]))
+             [:ok])))
+
+(defn str-eval-js-async [exp {:keys [external-libs] :or {external-libs nil}}]
+  (go
+    (let [[status http-status script] (<! (load-scripts (map known-external-lib external-libs)))]
+      (if (= :ok status)
+        (dbg (try (-> exp
+                 js/eval
+                 str)
+              (catch js/Object o
+                (str o))))
+        (str "Cannot load script: " script "\n"
+             "error: " http-status)))))
 
 (defn eval-file [url]
   (io/fetch-file! url (comp print eval)))

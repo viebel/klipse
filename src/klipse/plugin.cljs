@@ -7,13 +7,24 @@
     [klipse.ui.editors.common :refer [handle-events]]
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value get-value]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
-    [klipse.compiler :refer [str-eval-async str-eval str-compile-async]]))
+    [klipse.compiler :refer [str-eval-js-async str-eval-async str-eval str-compile-async]]))
 
 (def app-url "http://app.klipse.tech")
 
 (def language->eval-fn 
-  {:clojure str-eval-async
-   :javascript str-compile-async})
+  {::eval-clojure str-eval-async
+   ::eval-javascript str-eval-js-async
+   ::transpile-javascript str-compile-async})
+
+(def language->editor-in-mode
+  {::eval-clojure "clojure"
+   ::eval-javascript "javascript"
+   ::transpile-javascript "clojure"})
+
+(def language->editor-out-mode
+  {::eval-clojure "clojure"
+   ::eval-javascript "javascript"
+   ::transpile-javascript "javascript"})
 
 (def editor-options
   {:matchBrackets true 
@@ -26,17 +37,30 @@
        <!
        (set-value editor-target))))
 
+(defn read-string-or-val [value not-found]
+  (if value
+    (read-string value)
+    not-found))
+
+(defn string->array [s]
+  (when s
+    (->> (split s ",")
+         (map trim))))
+
 (defn klipsify [element language]
   (go
-    (let [static-fns (read-string (or (.. element -dataset -staticFns) "false"))
+    (let [my-dataset (.. element -dataset)
+          static-fns (read-string-or-val (.. my-dataset -staticFns) false)
+         external-libs (string->array (read-string-or-val (.. my-dataset -externalLibs) nil))
           eval-fn (language->eval-fn language)
-          eval-fn-with-args #(eval-fn % {:static-fns static-fns})
-          my-editor-options (assoc editor-options :mode (name language))]
+          eval-fn-with-args #(eval-fn % {:static-fns static-fns :external-libs external-libs})
+          in-editor-options (assoc editor-options :mode (language language->editor-in-mode))
+          out-editor-options (assoc editor-options :mode (language language->editor-out-mode) :readOnly true)]
       (when element
         (let [clj-in (.-textContent element);goog.dom/getTextContent removes new lines
-              out-editor (create-editor-after-element element ";the evaluation will appear here (soon)..." (dbg (assoc my-editor-options :readOnly true))); must be called before `element` is replaced
-              in-editor (replace-element-by-editor element clj-in my-editor-options)]
-          (set-value out-editor (<! (eval-fn-with-args clj-in)))
+              out-editor (create-editor-after-element element ";the evaluation will appear here (soon)..." out-editor-options); must be called before `element` is replaced
+              in-editor (replace-element-by-editor element clj-in in-editor-options)]
+          (set-value out-editor (dbg (<! (eval-fn-with-args clj-in))))
           (handle-events in-editor
                          {:idle-msec 2000
                           :base-url app-url
@@ -53,7 +77,8 @@
 (defmethod init false [js-settings]
   (init (js->clj js-settings :keywordize-keys true)))
 
-(defmethod init true [{:keys [selector selector_js] :as settings}]
+(defmethod init true [{:keys [selector selector_js selector_eval_js] :as settings}]
   (dbg settings)
-  (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector_js))) :javascript)
-  (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector))) :clojure))
+  (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector_eval_js))) ::eval-javascript)
+  (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector_js))) ::transpile-javascript)
+  (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector))) ::eval-clojure))

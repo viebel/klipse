@@ -7,7 +7,42 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-        <div class="clojure-js" static-fns="true">
+ <div class="eval-js" data-external-libs="immutable">
+     Immutable
+        </div>
+        <br/>
+        <div class="eval-js">
+     var m = Immutable.fromJS({a: 10, c: 40});
+
+     m.map(x => x * x);
+
+        </div>
+        <br/>
+
+        <div class="eval-js">
+            [1, 2, 3].reduce(
+              function(total, num){ return total + num }
+                , 0);
+        </div>
+        <br/>
+        <div class="eval-js" data-external-libs="underscore">
+            _.filter([1, 2, 3, 4, 5, 6], function(num){
+            return num % 2 == 0;
+            });
+        </div>
+        <br/>
+ <div class="eval-js" data-external-libs="jQuery">
+     $
+        </div>
+        <br/>
+ 
+ <div class="eval-js">
+     $('div').length
+        </div>
+        <br/>
+ 
+
+        <div class="clojure-js" data-static-fns="true">
             (map inc [100000 2 3])
         </div>
         <div class="clojure-js">
@@ -68,6 +103,7 @@
         <script>
         window.klipse_settings = {
             selector: '.clojure',
+            selector_eval_js: '.eval-js',
             selector_js: '.clojure-js'
         };
         </script>

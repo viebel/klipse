@@ -31,7 +31,7 @@
             editor-js (om/get-state this :editor)]
         (when editor-js
           (->>
-            (if (= :ok status) result " ")
+            (if (= :ok status) result (str result))
             (editor/set-value editor-js)
             (editor/auto-format)
             (editor/auto-indent)

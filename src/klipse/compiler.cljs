@@ -9,7 +9,7 @@
     [cljs.reader :refer [read-string]]
     [klipse.io :as io]
     [clojure.string :as s]
-    [cljs.core.async :refer [chan put!]]
+    [cljs.core.async :refer [chan put! <!]]
     [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
     [replumb.core :as replumb]
     [cljs.js :as cljs]))
@@ -40,6 +40,7 @@
    ;"datascript" "https://raw.githubusercontent.com/viebel/datascript/master/src/"
    ;"devtools" "https://raw.githubusercontent.com/binaryage/cljs-devtools/master/src" 
    ;"gadjett" "https://raw.githubusercontent.com/viebel/gadjett/master/src"
+   "gist" "https://gist.githubusercontent.com"
    "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
    ;"cemerick-url" "https://raw.githubusercontent.com/viebel/url/master/src/"
    ;"pathetic" "https://raw.githubusercontent.com/viebel/pathetic/develop/src/"
@@ -123,8 +124,8 @@
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
     (<! (eval-async-1 s args))))
 
-(deftrack eval [s {:keys [static-fns] :or {static-fns false}}]
-  (let [opts (build-repl-opts {:static-fns static-fns})]
+(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
+  (let [opts (dbg (build-repl-opts {:static-fns static-fns}))]
     (replumb/read-eval-call opts convert-eval-res s)))
 
 (defn str-compile [exp]

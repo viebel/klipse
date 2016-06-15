@@ -1,4 +1,3 @@
 (ns klipse.run.all
-  (:require klipse.run.app
-            klipse.run.plugin ))
-
+  (:require klipse.run.plugin.plugin
+            klipse.run.app.app))

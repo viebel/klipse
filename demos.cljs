@@ -11,6 +11,13 @@
 (ns my.async
     (:require [viebel.gist-368d3bec58d3ec47e935ad488bafb600.raw.color])) ; https://gist.github.com/viebel/368d3bec58d3ec47e935ad488bafb600
   
+;; gist in url param
+http://localhost:5014/index-dbg.html?cljs_in.gist=viebel/368d3bec58d3ec47e935ad488bafb600&eval_only=1
+
+http://localhost:5014/index-dbg.html?cljs_in.gist=viebel/547e5236f52cf3ba04f9cbc495841769&eval_only=1
+
+;;color-loop
+http://localhost:5014/index-dbg.html?cljs_in.gist=viebel/820f672dd176169fd831c7748e6f3cd3
 ;; cljs-date
 (ns my.date
     (:require [cljs-time.core :as t :refer [interval date-time in-minutes]]))

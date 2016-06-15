@@ -22,17 +22,20 @@
 (defn process-input [component s]
   (when-not (blank? s)
     (om/transact! component 
-                  [(list 'input/save     {:value s})
-                   (list 'cljs/compile   {:value s})
-                   (list 'js/eval        {:value s})
-                   (list 'clj/eval       {:value s})
-                   ':input])))
+                  [`(input/save   {:value ~s})
+                   `(cljs/compile {:value ~s})
+                   `(js/eval      {:value ~s})
+                   `(clj/eval     {:value ~s})])))
+
+(defn init-input [component s]
+  (om/transact! component
+                  [(list 'input/save     {:value s})]))
 
 (defn init-editor [compiler]
-  (as-> (editor/create "code-cljs" config-editor) $
-    (handle-events $
-      {:idle-msec 3000
-       :on-should-eval #(process-input compiler (editor/get-value $))})))
+  (let [my-editor (editor/create "code-cljs" config-editor)]
+    (handle-events my-editor
+                   {:idle-msec 3000
+                    :on-should-eval #(process-input compiler (editor/get-value my-editor))})))
 
 (defui Cljs-editor
   
@@ -46,7 +49,7 @@
     (init-editor this))
 
   (render [this]
-    (let [input (or (:input (om/props this) (:cljs_in (url-parameters))))] ;ugly workaround: read the url parameter
+    (let [input (:input (om/props this))]
       (dom/section #js {:className "cljs-editor"}
       (dom/textarea #js {:autoFocus true
                          :value input

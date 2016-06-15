@@ -11,7 +11,7 @@
   See doc at https://developers.google.com/closure/library/docs/xhrio"
   [file-url src-cb]
     (try
-      (.send XhrIo (str file-url "?" (rand))
+      (.send XhrIo (str file-url)
              (fn [e]
                (if (.isSuccess (.-target e))
                  (do

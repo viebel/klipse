@@ -1,7 +1,7 @@
 (ns ^:figwheel-no-load klipse.control.control
   (:require 
     [klipse.utils :refer [url-parameters]]
-    [klipse.control.parser :refer [read mutate]]
+    [klipse.control.parser :as parser]
     [om.next :as om]))
 
 ;; =============================================================================
@@ -26,12 +26,12 @@
 
 (def parser 
   (om/parser 
-    {:read read 
-     :mutate mutate}))
+    {:read parser/read 
+     :mutate parser/mutate}))
 
-(def reconciler 
+(defn reconciler [initial-state]
   (om/reconciler 
-    {:state app-state 
+    {:state (swap! app-state merge initial-state)
      :parser parser}))
 
 

@@ -1,28 +1,23 @@
-(defproject klipse "0.8.0"
+(defproject klipse "0.9.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.14"]
+                 [org.clojure/clojurescript "1.9.36"]
                  [org.clojure/core.async "0.2.374"]
                  [im.chit/purnam "0.5.2"]
                  [cljs-http "0.1.41"]
                  [viebel/gadjett "0.1.13"]
-                 [org.omcljs/om "1.0.0-alpha32"]
-                 [replumb "0.2.2-SNAPSHOT"]
+                 [org.omcljs/om "1.0.0-alpha36"]
+                 [replumb "0.2.2"]
                  [com.cemerick/url "0.1.1"]
-                 [figwheel-sidecar "0.5.3-1" :scope "test"]
-                 [cljsjs/codemirror "5.11.0-1"]
+                 [cljsjs/codemirror "5.11.0-2"]
                  [devcards "0.2.1-7"]
-                 [devcards-om-next "0.1.1"]
-                 ; following libs only for demo purposes
-                 ]
-  :hooks [leiningen.cljsbuild]
+                 [devcards-om-next "0.1.1"]]
+  :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.4-2"]] }}  
   :jvm-opts ["-Xms356M" "-Xmx1G"]
-  :clean-targets ["public/js"]
-  :plugins [[lein-cljsbuild "1.1.1"]
-            [lein-figwheel "0.5.0-6"]]
+  :clean-targets ^{:protect false} ["resources/public/dev/js"
+                                    "resources/public/plugin/js"]
+  :plugins [[lein-cljsbuild "1.1.1"]]
   :source-paths ["src"]
-  :figwheel {:css-dirs ["resources/public/"]
-             :server-port 5014}
   :cljsbuild {
               :test-commands {"unit" ["phantomjs" "test/phantom/unit-test.js" "test/phantom/unit-test.html"]}
               :builds {
@@ -35,10 +30,9 @@
                                            :verbose false
                                            :optimizations :whitespace }}
                       :app {
-                               :source-paths ["src" "resources/public/lib"]
+                               :source-paths ["src/klipse/run/app" "resources/public/lib"]
                                :compiler {
                                     :preamble ["mirror_extensions.js"]
-                                          :main "klipse.run.app"
                                           :output-to "resources/public/dev/js/klipse.js"
                                           :output-dir "resources/public/dev/js"
                                           :pretty-print false
@@ -48,10 +42,9 @@
                                           :optimizations :whitespace
                                           :verbose false}}
                       :plugin {
-                               :source-paths ["src" "resources/public/lib"]
+                               :source-paths ["src/klipse/run/plugin" "resources/public/lib"]
                                :compiler {
                                     :preamble ["mirror_extensions.js"]
-                                          :main "klipse.run.plugin"
                                           :output-to "resources/public/plugin/js/klipse_plugin.js"
                                           :output-dir "resources/public/plugin/js"
                                           :pretty-print false
@@ -59,27 +52,4 @@
                                           :static-fns true
                                           ;:elide-asserts true
                                           :optimizations :whitespace
-                                          :verbose false}}
-                       :figwheel {
-                                  :figwheel true
-                                  :source-paths ["src"]
-                                  :compiler {:main "klipse.run.all"
-                                             :preamble ["mirror_extensions.js"]
-                                             :asset-path "fig/js"
-                                             :output-to "resources/public/fig/js/klipse.fig.js"
-                                             :output-dir "resources/public/fig/js"
-                                             ;:elide-asserts true
-                                             :verbose false}}
-                       
-                       :devcards {
-                                  :figwheel { :devcards true }
-                                  :source-paths ["src"]
-                                  :compiler {:main "klipse.cards.cards"
-                                             :asset-path "cards/js"
-                                             :output-to "resources/public/cards/js/klipse.js"
-                                             :output-dir "resources/public/cards/js"
-                                             ;:elide-asserts true
-                                             :verbose false}}
-                       
-                       
-                       }})
+                                          :verbose false}}}})

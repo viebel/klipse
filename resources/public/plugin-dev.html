@@ -4,8 +4,54 @@
         <meta charset="UTF-8">
         <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
         <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
+ <div class="eval-js" data-external-libs="immutable">
+     Immutable
+        </div>
+        <br/>
+        <div class="eval-js">
+     var m = Immutable.fromJS({a: 10, c: 40});
+
+     m.map(x => x * x);
+
+        </div>
+        <br/>
+
+        <div class="eval-js">
+            [1, 2, 3].reduce(
+              function(total, num){ return total + num }
+                , 0);
+        </div>
+        <br/>
+ <div class="eval-js" data-external-libs="jQuery">
+     $
+        </div>
+        <br/>
+ 
+ <div class="eval-js">
+     $('div').length
+        </div>
+        <br/>
+ 
+
+        <div class="clojure-js" data-static-fns="true">
+            (map inc [100000 2 3])
+        </div>
+        <div class="clojure-js">
+            (map inc [100000 2 3])
+        </div>
+<span class="clojure" data-gist-id="viebel/368d3bec58d3ec47e935ad488bafb600">
+</span>
+<span class="clojure"> 
+           (ns my.ns
+              (:require 
+                  [clojure.string :as string]))
+                  (string/blank? "HELLO!!")
+      </span>
+      <br/>
+
         <div class="clojure">
         (
         <span>
@@ -14,34 +60,38 @@
         </div>
         <br/>
         <span class="clojure"> (defn foo [x] (* x x)) </span>
+        <br/>
         <span class="clojure"> (foo 19) </span>
-        <span class="clojure"> (ns my.elyahou) (defn bar [x] (* x x)) </span>
-        <span class="clojure"> (ns my.rafi) (my.elyahou/bar 19) </span>
+        <br/>
+                   
+        <br/>
+        <span class="clojure">
+            (ns my.gg
+                (:require [goog.string :as gstring]))
+
+                (gstring/capitalize "hello")
+        </span>
+
+            
+            
         <span class="clojure"> (map inc [1 2 3]) </span>
         <br/>
-        <span class="clojure"> (map inc [100 2 3]) </span>
+        <span class="clojure"> (zipmap '[a b c] [100 2 3]) </span>
         <br/>
         <span class="clojure"> (map inc [1000 2 3]) </span>
         <br/>
-        <span class="clojure"> (map dec [1 2 3]) </span>
+                    
         <br/>
         <div class="clojure">
-            (ns my.best$macros)
-            <br/>
 
-            (defmacro disp [& forms]
-              (cons `str (for [form forms]
-                               `(str (pr-str '~form) " => " (pr-str ~form) "\n"))))
-
-                               (my.best/disp 
-                                 (map inc [1 2 3])
-                                     (+ 4 5 6))
+(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)
         </div>
         <br/>
-        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
         <script>
         window.klipse_settings = {
-            selector: '.clojure'
+            selector: '.clojure',
+            selector_eval_js: '.eval-js',
+            selector_js: '.clojure-js'
         };
         </script>
         <script src="plugin/js/klipse_plugin.js"></script>

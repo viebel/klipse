@@ -6,14 +6,16 @@
   <title>KLIPSE TEST PAGE</title>
 </head>
 <body style="margin: 0 auto; max-width: 750px;">
-    <p> Test page for <b>dev</b> compilation.  </p>
+    <h1> Test page for app and plugin with <b>dev</b> compilation.  </h1>
 
+   <h2> Full layout with no content </h2>
   <iframe frameborder="0" width="100%" height="300px"
     src= 
     "http://localhost:5014/index-dev.html">
   </iframe>
 
   <hr>
+   <h2> Eval-only layout with no content </h2>
   <iframe frameborder="0" width="100%" height="300px"
     src= 
     "http://localhost:5014/index-dev.html?eval_only=1">
@@ -21,15 +23,30 @@
 
   <hr>
 
+   <h2> transpile-only layout with no content </h2>
   <iframe frameborder="0" width="100%" height="300px"
     src= 
-    "http://localhost:5014/index-dev.html?js_only">
+    "http://localhost:5014/index-dev.html?js_only=1">
+  </iframe>
+
+
+  <p> 
+  <h2> a gist with core.async </h2>
+  It takes around 15 seconds to start.
+  It should modify the background color every 2 seconds
+  <br/>
+  The compilation doesn't work (you should see an error message), because :refer is not yet supported
+  </p>
+<iframe frameborder="0" width="100%" height="300px"
+    src= 
+    "http://localhost:5014/index-dbg.html?cljs_in.gist=viebel/820f672dd176169fd831c7748e6f3cd3">
   </iframe>
 
   <hr>
 
 
 
+  <h2> Full layout with <b> (map inc [1 2 3]) </b> </h2>
   <iframe frameborder="0" width="100%" height="300px"
       src= 
   "http://localhost:5014/index-dev.html?cljs_in=(map inc [1 2 3])">
@@ -37,6 +54,7 @@
 
   <hr>
 
+  <h2> defmacro transpilation </h2>
   <iframe frameborder="0" width="100%" height="200px"
       src= 
       "http://localhost:5014/index-dev.html?js_only=1&cljs_in=(defmacro%20hello%0A%20%20%5Bx%5D%0A%20%20%60(inc%20~x))">
@@ -44,6 +62,7 @@
 
   <hr>
   
+  <h2> defmacro evaluation </h2>
   <iframe frameborder="0" width="100%" height="300px"
       src= 
       "http://localhost:5014/index-dev.html?eval_only=1&cljs_in=(ns%20foo.core%24macros)%0A%0A(defmacro%20hello%20%0A%20%20%5Bx%5D%0A%20%20(prn%20%26form)%0A%20%20%60(inc%20~x))%0A%0A(foo.core%2Fhello%2012)">
@@ -51,13 +70,15 @@
 
   <hr>
 
+  <h2> defprotocol transpilation </h2>
 <iframe frameborder="0" width="100%" height="300px"
       src= 
       "http://localhost:5014/index-dev.html?cljs_in=(defprotocol%20Fly%0A%20%20(fly%20%5Bthis%5D))%0A%0A(deftype%20Bird%20%5B%5D%0A%20%20Fly%0A%20%20(fly%20%5Bthis%5D%20%22Bird%20uses%20natural%20wings.%22))%0A%0A(deftype%20Plane%20%5B%5D%0A%20%20Fly%0A%20%20(fly%20%5Bthis%5D%20%22Plane%20uses%20metal%20wings.%22))%0A%0A(def%20a380%20(Plane.))%0A(def%20eagle%20(Bird.))%0A%0A(map%20fly%20%5Ba380%20eagle%5D)&js_only=1">
   </iframe>
 
-  <hr>
-
-
-</body>
+  <iframe frameborder="0" width="100%" height="2000px"
+      src="/plugin-dev.html"
+      >
+    </iframe>
+ </body>
 </html>

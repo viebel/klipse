@@ -57,5 +57,4 @@
                "gist-id= " gist-id "\n"
                "http status: " status
                "\"")
-          (str "; loaded from gist: " (gist-path-page gist-id) "\n"
-               body))))))
+          body)))))

@@ -161,13 +161,16 @@
                  (do
                    (println "evaluating:" script)
                    (js/eval body)
-                   (recur (rest scripts)))
+                   (recur (rest the-scripts)))
                  [:error status script]))
              [:ok])))
 
+(defn external-lib-path [lib-name-or-url]
+  (get known-external-lib lib-name-or-url lib-name-or-url))
+
 (defn str-eval-js-async [exp {:keys [external-libs] :or {external-libs nil}}]
   (go
-    (let [[status http-status script] (<! (load-scripts (map known-external-lib external-libs)))]
+    (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
       (if (= :ok status)
         (dbg (try (-> exp
                  js/eval

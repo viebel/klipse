@@ -54,18 +54,16 @@
                                           :optimizations :whitespace
                                           :verbose false}}
                       :plugin-prod {
-                               :source-paths ["src" "resources/public/lib"]
+                               :source-paths ["src/klipse/run/plugin" "resources/public/lib"]
                                :compiler {
-                                    :preamble ["mirror_extensions.js"]
-                                          :main "klipse.run.plugin"
+                                          :preamble ["mirror_extensions.js"]
+                                          ;:main "klipse.run.plugin"
                                           :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
                                           :output-dir "resources/public/plugin_prod/js"
-                                          :pretty-print false
-                                          :optimize-constants true
-                                          :static-fns true
-                                          ;:elide-asserts true
+                                          :pretty-print true
+                                          :elide-asserts true
                                           :optimizations :advanced
-                                          :verbose false}}
+                                          :verbose true}}
                        :figwheel {
                                   :figwheel true
                                   :source-paths ["src"]

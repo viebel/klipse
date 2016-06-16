@@ -2,10 +2,6 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    [goog.string.format]; some goog libs must be required manually in order to be available at run time
-    [goog.date.Interval]
-    [cljs-http.client :as http]
-    [goog.date.UtcDateTime]
     [cljs.reader :refer [read-string]]
     [klipse.io :as io]
     [clojure.string :as s]
@@ -19,7 +15,10 @@
 ;; Compiler functions
 
 ;; create cljs.user
-(set! (.. js/window -cljs -user) #js {})
+;(set! (.. js/window -cljs -user) #js {})
+; the following code is advanced compilation friendly
+(js* "window.cljs.user = {}")
+
 
 (defn load-inlined [opts cb]
   (print "load-inlined: " opts)
@@ -149,36 +148,6 @@
     (-> (<! (eval-async exp {:static-fns static-fns}))
         second
         str)))
-
-
-(defn load-scripts [scripts]
-  (go-loop [the-scripts scripts]
-           (if (seq the-scripts)
-             (let [script (first the-scripts)
-                   _ (println "loading:" script)
-                   {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
-               (if (= 200 status)
-                 (do
-                   (println "evaluating:" script)
-                   (js/eval body)
-                   (recur (rest the-scripts)))
-                 [:error status script]))
-             [:ok])))
-
-(defn external-lib-path [lib-name-or-url]
-  (get known-external-lib lib-name-or-url lib-name-or-url))
-
-(defn str-eval-js-async [exp {:keys [external-libs] :or {external-libs nil}}]
-  (go
-    (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
-      (if (= :ok status)
-        (dbg (try (-> exp
-                 js/eval
-                 str)
-              (catch js/Object o
-                (str o))))
-        (str "Cannot load script: " script "\n"
-             "error: " http-status)))))
 
 (defn eval-file [url]
   (io/fetch-file! url (comp print eval)))

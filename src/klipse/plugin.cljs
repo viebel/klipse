@@ -9,7 +9,8 @@
     [klipse.ui.editors.common :refer [handle-events]]
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value get-value]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
-    [klipse.compiler :refer [str-eval-js-async str-eval-async str-eval str-compile-async]]))
+    [klipse.compiler :refer [str-eval-async str-eval str-compile-async]]
+    [klipse.js-eval :refer [str-eval-js-async]]))
 
 (def app-url "http://app.klipse.tech")
 

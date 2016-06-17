@@ -8,82 +8,12 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
     </head>
     <body>
-        <div class="eval-js" data-external-libs="https://d3js.org/d3.v3.min.js , https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.min.js">
-            nv
+    <div class="clojure">
+        (def a {:a 1 :b 2})
+               (:a a)
         </div>
         <br/>
-        <div class="eval-js" data-gist-id="viebel/c4ae9d913d68a7f6d208428aa5edcbcf">
-            </div>
-            </br>
-        <div class="no-eval-js">
-            data = function() {
-  var sin = [],
-      cos = [];
-
-  for (var i = 0; i < 100; i++) {
-    sin.push({x: i, y: Math.sin(i/10)});
-    cos.push({x: i, y: .5 * Math.cos(i/10)});
-  }
-
-  return [
-    {
-      values: sin,
-      key: 'Sine Wave',
-      color: '#ff7f0e'
-    },
-    {
-      values: cos,
-      key: 'Cosine Wave',
-      color: '#2ca02c'
-    }
-  ];
-}
-
-nv.addGraph(function() {
-  var chart = nv.models.lineChart()
-    .useInteractiveGuideline(true)
-    ;
-
-  chart.xAxis
-    .axisLabel('Time (ms)')
-    .tickFormat(d3.format(',r'))
-    ;
-
-  chart.yAxis
-    .axisLabel('Voltage (v)')
-    .tickFormat(d3.format('.02f'))
-    ;
-
-  d3.select('#chart svg')
-    .datum(data())
-    .transition().duration(500)
-    .call(chart)
-    ;
-
-  nv.utils.windowResize(chart.update);
-
-  return chart;
-});
-
-        </div>
-        <br/>
-
-
-<style>
-
-#chart svg {
-  height: 400px;
-}
-
-
-</style>
-
-
-<div id="chart">
-  <svg></svg>
-</div>
-
-   <script>
+        <script>
         window.klipse_settings = {
             selector: '.clojure',
             selector_eval_js: '.eval-js',

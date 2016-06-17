@@ -17,7 +17,8 @@
 (def language->eval-fn 
   {::eval-clojure str-eval-async
    ::eval-javascript str-eval-js-async
-   ::transpile-javascript str-compile-async})
+   ::transpile-javascript str-compile-async
+   })
 
 (def language->editor-in-mode
   {::eval-clojure "clojure"
@@ -97,18 +98,20 @@
 
 
 (defn ^:export klipsify-elements [elements language]
+  (print "klipsify-elements: " elements language)
+  (dbg language)
   (go
     (time
       (doseq [element elements]
+        (print "klipsify-elements: " element)
         (<! (klipsify element language))))))
 
-(defmulti init (fn [settings] (map? settings)))
-
-(defmethod init false [js-settings]
-  (init (js->clj js-settings :keywordize-keys true)))
-
-(defmethod ^:export init true [{:keys [selector selector_js selector_eval_js] :as settings}]
+(defn ^:export init-clj [{:keys [selector selector_js selector_eval_js] :as settings}]
   (dbg settings)
   (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector_eval_js))) ::eval-javascript)
   (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector_js))) ::transpile-javascript)
   (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector))) ::eval-clojure))
+
+(defn ^:export init [js-settings]
+  (init-clj (js->clj js-settings :keywordize-keys true)))
+

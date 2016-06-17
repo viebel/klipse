@@ -8,8 +8,11 @@
                  [viebel/gadjett "0.1.13"]
                  [org.omcljs/om "1.0.0-alpha36"]
                  [replumb "0.2.2"]
+                 [fipp "0.6.5"]
+                 [rewrite-cljs "0.4.1"]
                  [com.cemerick/url "0.1.1"]
                  [cljsjs/codemirror "5.11.0-2"]
+                 [cljsjs/js-beautify "1.6.2-0"]
                  [devcards "0.2.1-7"]
                  [devcards-om-next "0.1.1"]]
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.4-2"]] }}  
@@ -56,12 +59,12 @@
                       :plugin-prod {
                                :source-paths ["src/klipse/run/plugin" "resources/public/lib"]
                                :compiler {
-                                          :preamble ["mirror_extensions.js"]
+                                          ;:preamble ["mirror_extensions.js"]
                                           ;:main "klipse.run.plugin"
                                           :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
                                           :output-dir "resources/public/plugin_prod/js"
                                           :pretty-print true
-                                          :elide-asserts true
+                                          :elide-asserts false
                                           :optimizations :advanced
                                           :verbose true}}
                        :figwheel {

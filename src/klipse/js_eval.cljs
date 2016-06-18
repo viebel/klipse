@@ -5,6 +5,7 @@
     [klipse.io :as io]
     [cljs-http.client :as http]
     [cljs.core.async :refer [<!]]
+    [klipse.plugin :refer [register-mode]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 (def known-external-lib
@@ -41,3 +42,11 @@
                 (str o))))
         (str "Cannot load script: " script "\n"
              "error: " http-status)))))
+
+
+(def opts {:editor-in-mode "javascript"
+           :editor-out-mode "javascript"
+           :eval-fn str-eval-js-async
+           :comment-str "//"})
+
+(register-mode "eval-javascript" "selector_eval_js" opts)

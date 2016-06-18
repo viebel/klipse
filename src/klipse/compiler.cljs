@@ -3,6 +3,7 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     [cljs.reader :refer [read-string]]
+    [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
     [clojure.string :as s]
     [cljs.core.async :refer [chan put! <!]]
@@ -151,3 +152,16 @@
 
 (defn eval-file [url]
   (io/fetch-file! url (comp print eval)))
+
+(def eval-opts {:editor-in-mode "clojure"
+                  :editor-out-mode "clojure"
+                  :eval-fn str-eval-async
+                  :comment-str ";"})
+
+(def compile-opts {:editor-in-mode "clojure"
+                  :editor-out-mode "javascript"
+                  :eval-fn str-compile-async
+                  :comment-str ";"})
+
+(register-mode "eval-clojure" "selector" eval-opts)
+(register-mode "transpile-clojurescript" "selector_js" compile-opts)

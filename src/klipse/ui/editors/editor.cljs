@@ -2,8 +2,6 @@
   (:require 
     [goog.dom :as gdom]
     [gadjett.core :as gadjett :refer-macros [dbg]]
-    [rewrite-clj.node :as node]
-    [rewrite-clj.parser :refer [parse-string]]
     cljsjs.js-beautify
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
@@ -15,15 +13,10 @@
 (when js/window.initMirrorCustomExtensions
   (js/window.initMirrorCustomExtensions))
 
-(defn beautify-clj [exps]
-  (-> (parse-string exps)
-      node/string))
-
 (defn create [dom-id config]
     (js/CodeMirror.fromTextArea
         (js/document.getElementById dom-id)
         (clj->js config)))
-
 
 (defn get-value [editor] 
   (.getValue editor))

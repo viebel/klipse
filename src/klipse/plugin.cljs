@@ -9,15 +9,15 @@
     [klipse.ui.editors.common :refer [handle-events]]
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value get-value]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
-    [klipse.compiler :refer [str-eval-async str-eval str-compile-async]]
+    #_[klipse.compiler :refer [str-eval-async str-eval str-compile-async]]
     [klipse.js-eval :refer [str-eval-js-async]]))
 
 (def app-url "http://app.klipse.tech")
 
 (def language->eval-fn 
-  {::eval-clojure str-eval-async
+  {;::eval-clojure str-eval-async
    ::eval-javascript str-eval-js-async
-   ::transpile-javascript str-compile-async
+   ;::transpile-javascript str-compile-async
    })
 
 (def language->editor-in-mode

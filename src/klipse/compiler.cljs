@@ -2,11 +2,8 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    [goog.string.format]; some goog libs must be required manually in order to be available at run time
-    [goog.date.Interval]
-    [cljs-http.client :as http]
-    [goog.date.UtcDateTime]
     [cljs.reader :refer [read-string]]
+    [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
     [clojure.string :as s]
     [cljs.core.async :refer [chan put! <!]]
@@ -19,7 +16,10 @@
 ;; Compiler functions
 
 ;; create cljs.user
-(set! (.. js/window -cljs -user) #js {})
+;(set! (.. js/window -cljs -user) #js {})
+; the following code is advanced compilation friendly
+(js* "window.cljs.user = {}")
+
 
 (defn load-inlined [opts cb]
   (print "load-inlined: " opts)
@@ -150,32 +150,18 @@
         second
         str)))
 
-
-(defn load-scripts [scripts]
-  (go-loop [the-scripts scripts]
-           (if (seq the-scripts)
-             (let [script (first the-scripts)
-                   _ (println "loading:" script)
-                   {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
-               (if (= 200 status)
-                 (do
-                   (println "evaluating:" script)
-                   (js/eval body)
-                   (recur (rest scripts)))
-                 [:error status script]))
-             [:ok])))
-
-(defn str-eval-js-async [exp {:keys [external-libs] :or {external-libs nil}}]
-  (go
-    (let [[status http-status script] (<! (load-scripts (map known-external-lib external-libs)))]
-      (if (= :ok status)
-        (dbg (try (-> exp
-                 js/eval
-                 str)
-              (catch js/Object o
-                (str o))))
-        (str "Cannot load script: " script "\n"
-             "error: " http-status)))))
-
 (defn eval-file [url]
   (io/fetch-file! url (comp print eval)))
+
+(def eval-opts {:editor-in-mode "clojure"
+                  :editor-out-mode "clojure"
+                  :eval-fn str-eval-async
+                  :comment-str ";"})
+
+(def compile-opts {:editor-in-mode "clojure"
+                  :editor-out-mode "javascript"
+                  :eval-fn str-compile-async
+                  :comment-str ";"})
+
+(register-mode "eval-clojure" "selector" eval-opts)
+(register-mode "transpile-clojurescript" "selector_js" compile-opts)

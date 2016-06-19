@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>NVD3 live examples</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
+    </head>
+    <body>
+    <h1> Loading d3 and nvd3 </h1>
+    First, let's load <b>d3.js</b> and <b>nvd3.js</b>:
+    <br/>
+    <br/>
+        <div class="eval-js" data-external-libs="https://d3js.org/d3.v3.min.js , https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.min.js">
+            [d3, nv]
+        </div>
+        <br/>
+
+<h1> Importing code from a gist </h1>
+        Now, let's import our code from a gist <a href="https://gist.github.com/viebel/c4ae9d913d68a7f6d208428aa5edcbcf">
+            nvd3_chart.js
+            </a>:
+    <br/>
+    <br/>
+        <div class="eval-js" data-gist-id="viebel/c4ae9d913d68a7f6d208428aa5edcbcf">
+            </div>
+            </br>
+           <br/>
+
+
+<style>
+
+#chart svg {
+  height: 400px;
+}
+
+
+</style>
+
+<h1> The resulting graph </h1>
+<p>
+And here is the result:
+</p>
+
+<div id="chart">
+  <svg></svg>
+</div>
+
+<h1> Interactivity </h1>
+<p>
+Now, feel free to modify the code and see the graphs updates after 2 seconds of inactivity.
+</p>
+   <script>
+        window.klipse_settings = {
+            selector: '.clojure',
+            selector_eval_js: '.eval-js',
+            selector_js: '.clojure-js'
+        };
+        </script>
+        <script src="plugin_prod/js/klipse_plugin.min.js"></script>
+        <!--script src="fig/js/klipse.fig.js"></script-->
+    </body>
+</html>

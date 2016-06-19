@@ -2,6 +2,7 @@
   (:require 
     [goog.dom :as gdom]
     [gadjett.core :as gadjett :refer-macros [dbg]]
+    cljsjs.js-beautify
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.mode.javascript
@@ -16,7 +17,6 @@
     (js/CodeMirror.fromTextArea
         (js/document.getElementById dom-id)
         (clj->js config)))
-
 
 (defn get-value [editor] 
   (.getValue editor))
@@ -44,11 +44,15 @@
   editor)
 
 (defn auto-format [editor]
-  (select-all editor)
-  (let [from (.getCursor editor true)
-        to (.getCursor editor false)]
-    (.autoFormatRange editor from to))
-  editor)
+  (try
+    (select-all editor)
+    (let [from (.getCursor editor true)
+          to (.getCursor editor false)]
+      (.autoFormatRange editor from to))
+    editor
+    (catch js/Object e
+      (println "klipse.ui.editors.editor/auto-format: " e)
+      editor)))
 
 (defn auto-indent [editor]
   (select-all editor)
@@ -57,16 +61,22 @@
     (.autoIndentRange editor from to))
   editor)
 
-(defn replace-element-by-editor [element value opts]
+(defn beautify [editor language]
+  (case language
+    "javascript" (->> (get-value editor)
+                     js/js_beautify
+                     (set-value editor))
+    (-> editor
+        auto-format
+        auto-indent
+        goto-start)))
+
+(defn replace-element-by-editor [element value {:keys [mode] :as opts}]
   (let [editor (js/CodeMirror (fn [elt]
                                 (goog.dom/replaceNode elt element))
                               (clj->js opts))]
-    (-> editor
-        (set-value value)
-        auto-format
-        auto-indent
-        goto-start
-        )))
+    (-> (set-value editor value)
+        (beautify mode))))
 
 (defn create-div-after [element]
     (let [div (gdom/createDom "div" nil (gdom/createTextNode ""))]

@@ -5,22 +5,26 @@
         <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
         <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
     </head>
     <body>
-    <div class="clojure">
-        (def a {:a 1 :b 2})
-               (:a a)
+ <div class="eval-js" data-external-libs="immutable">
+     Immutable
         </div>
         <br/>
-        <script>
+        <div class="eval-js">
+     var m = Immutable.fromJS({a: 10, c: 40});
+
+     m.map(x => x * x);
+
+        </div>
+        <br/>
+       <script>
         window.klipse_settings = {
-            selector: '.clojure',
-            selector_eval_js: '.eval-js',
-            selector_js: '.clojure-js'
+            selector_eval_js: '.eval-js'
         };
         </script>
         <script src="lib/mirror_extensions.js"></script>
-        <script src="fig/js/klipse.fig.js"></script>
+        <!--script src="fig/js/klipse.fig.js"></script-->
+        <script src="plugin_prod/js/klipse_plugin.min.js"></script>
     </body>
 </html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+    <div class="eval-ruby" data-gist-id="viebel/4659664"></div>
+        <br/>
+        <div class="eval-ruby">
+def letter_frequency(file)
+letters = 'a' .. 'z'
+file .
+split(//) .
+group_by {|letter| letter.downcase} .
+select   {|key, val| letters.include? key} .
+collect  {|key, val| [key, val.length]} 
+end
+
+letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}
+
+            </div>
+<br/>
+<div class="eval-ruby">
+#https://www.rosettacode.org/wiki/Fibonacci_n-step_number_sequences
+    def anynacci(start_sequence, count)
+  n = start_sequence.length    # Get the n-step for the type of fibonacci sequence
+  result = start_sequence.dup  # Create a new result array with the values copied from the array that was passed by reference
+ 
+  (n+1..count).each do         # Loop for the remaining results up to count
+    result << result.last(n).reduce(:+)    # Get the last n element from result and append its total to Array
+  end
+ 
+  result                       # Return result
+end
+ 
+naccis = { lucus:      [2,1],
+           fibonacci:  [1,1],
+           tribonacci: [1,1,2],
+           tetranacci: [1,1,2,4],
+           pentanacci: [1,1,2,4,8],
+           hexanacci:  [1,1,2,4,8,16],
+           heptanacci: [1,1,2,4,8,16,32],
+           octonacci:  [1,1,2,4,8,16,32,64],
+           nonanacci:  [1,1,2,4,8,16,32,64,128],
+           decanacci:  [1,1,2,4,8,16,32,64,128,256] }
+ 
+def nacci(naccis, count=15)
+  naccis.map {|name, seq| "%12s : %p \n" % [name, anynacci(seq, count)]}
+end
+ 
+nacci(naccis)
+    </div>
+        <script>
+        window.klipse_settings = {
+            selector_eval_ruby: '.eval-ruby'
+        };
+        </script>
+        <script src="http://cdn.opalrb.org/opal/current/opal.min.js"></script>
+        <script src="http://cdn.opalrb.org/opal/current/opal-parser.min.js"></script>
+        <script src="/plugin/js/klipse_plugin.js"></script>
+    </body>
+</html>

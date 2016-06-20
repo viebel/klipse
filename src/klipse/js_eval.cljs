@@ -2,7 +2,6 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    [klipse.io :as io]
     [cljs-http.client :as http]
     [cljs.core.async :refer [<!]]
     [klipse.plugin :refer [register-mode]]

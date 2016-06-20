@@ -7,13 +7,22 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
     </head>
+    <style>
+    .eval-markdown {
+    white-space:pre;
+    }
+    </style>
     <body>
     <div class="eval-ruby" data-external-libs="http://cdn.opalrb.org/opal/current/opal.min.js, http://cdn.opalrb.org/opal/current/opal-parser.min.js">
+    <div class="eval-markdown">
+# This is a title
+`clojure` rocks!
         </div>
-        <br/>
+       <br/>
         <script>
         window.klipse_settings = {
             selector: '.clojure',
+            selector_eval_markdown: '.eval-markdown',
             selector_eval_js: '.eval-js',
             selector_js: '.clojure-js'
         };

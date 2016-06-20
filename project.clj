@@ -4,6 +4,7 @@
                  [org.clojure/clojurescript "1.9.36"]
                  [org.clojure/core.async "0.2.374"]
                  [im.chit/purnam "0.5.2"]
+                 [cljsjs/markdown "0.6.0-beta1-0"]
                  [cljs-http "0.1.41"]
                  [viebel/gadjett "0.1.13"]
                  [org.omcljs/om "1.0.0-alpha36"]

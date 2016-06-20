@@ -1,6 +1,7 @@
 (ns klipse.run.plugin.plugin
   (:require klipse.core
             klipse.js-eval
+            klipse.ruby
             klipse.compiler
             [gadjett.core :as gadjett :refer-macros [dbg]]
             [klipse.plugin :as plugin]))

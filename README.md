@@ -7,19 +7,23 @@ The klipse plugin is a javascript tag that transforms static code snippets of an
 2. **Interactive**: You can modify the code and it is evaluated after 2 seconds of inactivity
 
 
+The code evaluation is done in the browser: no server is involved at all!
+The code editing is done with [CodeMirror](http://codemirror.net/).
+
+
 
 # Supported languages
 
-- javascript
-- clojure[script]
-- ruby
+- javascript: evaluation is done with the javascript function `eval`
+- clojure[script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
+- ruby: evaluation is done with [Opal](http://opalrb.org/)
 
 
-# Live Examples
+# How does it work?
 
-- [A new way of blogging about javascript](http://blog.klipse.tech/javascript/2016/06/20/blog-javascript.html)
-- [A new way of blogging about ruby](http://blog.klipse.tech/ruby/2016/06/20/blog-ruby.html)
-- [How to klipsify a clojure[script] blog post] (http://blog.klipse.tech/clojure/2016/06/07/klipse-plugin-tuto.html)
+- javascript: [A new way of blogging about javascript](http://blog.klipse.tech/javascript/2016/06/20/blog-javascript.html)
+- ruby: [A new way of blogging about ruby](http://blog.klipse.tech/ruby/2016/06/20/blog-ruby.html)
+- clojure[script]: [How to klipsify a clojure[script] blog post] (http://blog.klipse.tech/clojure/2016/06/07/klipse-plugin-tuto.html)
 
 
 # Integration

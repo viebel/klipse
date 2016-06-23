@@ -75,10 +75,10 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 
 Here are a couple of examples of blogs using the klipse plugin:
 
-- clojurescript transpiled, [More about protocols in ClojureScript](http://blog.ducky.io/clojurescript/2016/06/08/more-defprotocol/)
-- ruby, [jessewaites.com](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)
-- clojure, [live documentation with klipse](http://z.caudate.me/klipse-demo/)
-- ruby, javascript, clojure, [klipse](blog.klipse.tech)
+- clojurescript transpiled: [More about protocols in ClojureScript](http://blog.ducky.io/clojurescript/2016/06/08/more-defprotocol/)
+- ruby: [jessewaites.com](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)
+- clojure: [live documentation with klipse](http://z.caudate.me/klipse-demo/)
+- ruby javascript, clojure: [klipse](blog.klipse.tech)
 
 
 

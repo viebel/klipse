@@ -71,6 +71,11 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 <script src="http://app.klipse.tech/plugin/js/klipse_plugin.js"></script>
 ```
 
+## Community
+
+- ruby, [jessewaites.com](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)
+- clojure, [live documentation with klipse](http://z.caudate.me/klipse-demo/)
+- ruby, javascript, clojure, [klipse](blog.klipse.tech)
 
 
 

@@ -4,17 +4,11 @@
   (:require 
     cljsjs.codemirror.mode.ruby
     [klipse.io :as io]
+    [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<!]]
     [klipse.plugin :refer [register-mode]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
-
-(defn runonce [f]
-  (let [ran (atom false)]
-    (fn [& args]
-      (when-not @ran
-        (reset! ran true)
-        (apply f args)))))
 
 (defn load-opal-parser []
   (.load js/Opal "opal-parser"))

@@ -9,6 +9,7 @@ The klipse plugin is a javascript tag that transforms static code snippets of an
 
 
 The code evaluation is done in the browser: no server is involved at all!
+
 The code editing is done with [CodeMirror](http://codemirror.net/).
 
 

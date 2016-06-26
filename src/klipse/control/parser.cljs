@@ -14,8 +14,10 @@
 ;; Utils
 
 (defn static-fns? []
-  (boolean (read-string (or (:static-fns (url-parameters) "false")))))
+  (boolean (read-string (or (:static-fns (url-parameters)) "false"))))
 
+(defn eval-context? []
+  (keyword (read-string (or (:eval-context (url-parameters)) "nil"))))
 (deftrack eval-js [s]
   (go
     (let [[status res] (<! (eval-async s {:static-fns (static-fns?)}))]
@@ -24,7 +26,8 @@
 
 (deftrack eval-clj [s]
   (go
-    (let [[status res] (<! (eval-async s {:static-fns (static-fns?)}))]
+    (let [[status res] (<! (eval-async s {:static-fns (static-fns?)
+                                          :context (dbg (eval-context?))}))]
       [status (if (string? res)
                 res
                 (with-out-str (pprint res)))])))

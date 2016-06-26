@@ -7,50 +7,9 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
- <div class="eval-js" data-external-libs="immutable">
-     Immutable
-        </div>
-        <br/>
-        <div class="eval-js">
-     var m = Immutable.fromJS({a: 10, c: 40});
-
-     m.map(x => x * x);
-
-        </div>
-        <br/>
-
-        <div class="eval-js">
-            [1, 2, 3].reduce(
-              function(total, num){ return total + num }
-                , 0);
-        </div>
-        <br/>
- <div class="eval-js" data-external-libs="jQuery">
-     $
-        </div>
-        <br/>
- 
- <div class="eval-js">
-     $('div').length
-        </div>
-        <br/>
- 
-
-        <div class="clojure-js" data-static-fns="true">
-            (map inc [100000 2 3])
-        </div>
-        <div class="clojure-js">
-            (map inc [100000 2 3])
-        </div>
-<span class="clojure" data-gist-id="viebel/368d3bec58d3ec47e935ad488bafb600">
-</span>
-<span class="clojure"> 
-           (ns my.ns
-              (:require 
-                  [clojure.string :as string]))
-                  (string/blank? "HELLO!!")
-      </span>
-      <br/>
+    <p>
+    <h1> clojure evaluation</h1>
+    <h2> The basics </h2>
 
         <div class="clojure">
         (
@@ -63,7 +22,29 @@
         <br/>
         <span class="clojure"> (foo 19) </span>
         <br/>
-                   
+         
+        <h2>data-eval-context </h2>
+        <h2>data-eval-context not set</h2>
+        <p> by default, the evaluation context is <b>statement</b>: it allows to evaluate several expressions. But it is sometimes buggy for single expressions. For instance, `(if 1 2 3)` is evaluated as nil: </p>
+ <div class="clojure">
+     (if 1 2 3)
+     </div>
+        <h3>data-eval-context set to <b>expr</b> </h3>
+ <div class="clojure" data-eval-context="expr">
+     (if 1 2 3)
+     </div>
+
+     <h2> load code from a gist </h2>
+        <span class="clojure" data-gist-id="viebel/368d3bec58d3ec47e935ad488bafb600"> </span>
+            <h2> requiring a namespace </h2>
+<span class="clojure"> 
+           (ns my.ns
+              (:require 
+                  [clojure.string :as string]))
+                  (string/blank? "HELLO!!")
+      </span>
+      <br/>
+          
         <br/>
         <span class="clojure">
             (ns my.gg
@@ -74,19 +55,54 @@
 
             
             
-        <span class="clojure"> (map inc [1 2 3]) </span>
-        <br/>
-        <span class="clojure"> (zipmap '[a b c] [100 2 3]) </span>
-        <br/>
-        <span class="clojure"> (map inc [1000 2 3]) </span>
-        <br/>
-                    
-        <br/>
+        <h2> defining a macro </h2>
         <div class="clojure">
 
 (ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)
         </div>
         <br/>
+
+     <h1> clojurescript transpilation </h1>
+       <div class="clojure-js">
+            (map inc [100000 2 3])
+        </div>
+    <h2> data-static-fns=true </h2>
+<div class="clojure-js" data-static-fns="true">
+            (map inc [100000 2 3])
+        </div>
+      
+     <h1> javascript </h1>
+    <h2> immutable.js </h2>
+ <div class="eval-js" data-external-libs="immutable">
+     Immutable
+        </div>
+        <br/>
+        <div class="eval-js">
+     var m = Immutable.fromJS({a: 10, c: 40});
+
+     m.map(x => x * x);
+
+        </div>
+        <br/>
+
+        <h2> native javascript </h2>
+        <div class="eval-js">
+            [1, 2, 3].reduce(
+              function(total, num){ return total + num }
+                , 0);
+        </div>
+        <br/>
+        <h2> jQuery </h2>
+ <div class="eval-js" data-external-libs="jQuery">
+     $
+        </div>
+        <br/>
+ 
+ <div class="eval-js">
+     $('div').length
+        </div>
+        <br/>
+ 
         <script>
         window.klipse_settings = {
             selector: '.clojure',

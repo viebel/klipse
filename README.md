@@ -82,4 +82,5 @@ Here are a couple of examples of blogs using the klipse plugin:
 - ruby, javascript, clojure: [blog.klipse.tech](blog.klipse.tech)
 
 
-
+## Klipse App
+Here is the [information about the Klipse app](https://github.com/viebel/klipse/blob/master/contributing.md)

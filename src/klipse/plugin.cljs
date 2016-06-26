@@ -64,14 +64,15 @@
     (when element
       (let [my-dataset (aget element "dataset")
             static-fns (read-string-or-val (aget my-dataset "staticFns") false)
+            eval-context (read-string-or-val (aget my-dataset "evalContext") false)
             external-libs (dbg (string->array (or (aget my-dataset "externalLibs") nil)))
-            eval-fn-with-args #(eval-fn % (dbg {:static-fns static-fns :external-libs external-libs}))
+            eval-fn-with-args #(eval-fn % (dbg {:static-fns static-fns :external-libs external-libs :context eval-context}))
             in-editor-options (assoc editor-options :mode editor-in-mode)
             out-editor-options (assoc editor-options :mode editor-out-mode :readOnly true)
             clj-in (dbg (<! (content element comment-str)))
             out-editor (create-editor-after-element element ";the evaluation will appear here (soon)..." out-editor-options); must be called before `element` is replaced
             in-editor (replace-element-by-editor element clj-in in-editor-options)]
-        (set-value out-editor (dbg (<! (eval-fn-with-args clj-in))))
+        (set-value out-editor (dbg (str (<! (eval-fn-with-args clj-in)))))
         (handle-events in-editor
                        {:idle-msec 2000
                         :base-url app-url

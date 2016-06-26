@@ -102,16 +102,17 @@
                       #(put! c (convert-compile-res %)))
     c))
 
-(defn build-repl-opts [{:keys [static-fns]}]
+(defn build-repl-opts [{:keys [static-fns context]}]
   (merge (replumb/options :browser (repos) special-fetch)
          {:warning-as-error false
           :static-fns static-fns
-          :context :statement
+          :context (or context :statement)
           :verbose false}))
      
-(deftrack eval-async-1 [s {:keys [static-fns] :or {static-fns false}}]
+(deftrack eval-async-1 [s {:keys [static-fns context] :or {static-fns false context nil}}]
   (let [c (chan)
-        opts (dbg (build-repl-opts {:static-fns static-fns }))]
+        opts (dbg (build-repl-opts {:static-fns static-fns
+                                    :context (keyword context)}))]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
     c))
 
@@ -144,11 +145,16 @@
       second
       str))
 
-(defn str-eval-async [exp {:keys [static-fns] :or {static-fns false}}]
+(defn my-str [x]
+  (if (nil? x)
+    "nil"
+    (str x)))
+
+(defn str-eval-async [exp {:keys [static-fns context] :or {static-fns false}}]
   (go
-    (-> (<! (eval-async exp {:static-fns static-fns}))
+    (-> (<! (eval-async exp {:static-fns static-fns :context context}))
         second
-        str)))
+        my-str)))
 
 (defn eval-file [url]
   (io/fetch-file! url (comp print eval)))

@@ -64,7 +64,7 @@
     (when element
       (let [my-dataset (aget element "dataset")
             static-fns (read-string-or-val (aget my-dataset "staticFns") false)
-            eval-context (read-string-or-val (aget my-dataset "evalContext") false)
+            eval-context (read-string-or-val (aget my-dataset "evalContext") nil)
             external-libs (dbg (string->array (or (aget my-dataset "externalLibs") nil)))
             eval-fn-with-args #(eval-fn % (dbg {:static-fns static-fns :external-libs external-libs :context eval-context}))
             in-editor-options (assoc editor-options :mode editor-in-mode)

@@ -75,6 +75,12 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 <script src="http://app.klipse.tech/plugin/js/klipse_plugin.js"></script>
 ```
 
+## https
+
+If your site runs under `https`, you need to load the klipse plugin from `https://storage.googleapis.com/app.klipse.tech` instead of `http://app.klipse.tech`.
+
+The reason is that the klipse plugin is hosted on [Google Cloud Storage](https://cloud.google.com/storage/) and for the moment [SSL is not supported for custom domains](https://cloud.google.com/storage/docs/hosting-static-website#creating_a_cname_alias).
+
 ## Community
 
 Here are a couple of examples of blogs using the klipse plugin:

@@ -18,6 +18,7 @@
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.4-2"]] }}  
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ^{:protect false} ["resources/public/dev/js"
+                                    "resources/public/plugin_prod/js"
                                     "resources/public/plugin/js"]
   :plugins [[lein-cljsbuild "1.1.1"]]
   :source-paths ["src"]

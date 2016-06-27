@@ -66,7 +66,7 @@
   (try
     (read-string s)
     (catch js/Object e
-      s)))
+      e)))
 
 (defn convert-eval-res [{:keys [form warning error value success?]}]
   (let [status (if error :error :ok)

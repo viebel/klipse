@@ -81,6 +81,39 @@ If your site runs under `https`, you need to load the klipse plugin from `https:
 
 The reason is that the klipse plugin is hosted on [Google Cloud Storage](https://cloud.google.com/storage/) and for the moment [SSL is not supported for custom domains](https://cloud.google.com/storage/docs/hosting-static-website#creating_a_cname_alias).
 
+## Configuration
+
+The klipse plugin is configurable both at the level of the page and at the level of the snippet.
+
+### Page level configuration
+
+~~~javascript
+window.klipse_settings = {
+          eval_idle_msec: 20, // idle time in msec before the snippet is evaluated
+          selector_js: '.language-klipse-js', // selector for javascript evaluation snippets
+          selector: '.language-klipse', //selector for clojure evaluation snippets
+          selector_eval_js: '.language-klipse-eval-js', // selector for clojure transpilation snippets
+          selector_eval_ruby: '.language-klipse-eval-ruby' //selector for ruby evaluation snippets
+};
+
+~~~
+
+### Snippet level configuration
+
+The following attributes can be added to the DOM element of the snippet:
+
+* `data-eval-idle-msec`: (default 20) idle time in msec before the snippet is evaluated
+
+### Javascript only
+
+* `data-external-libs`: comma separated list of javascript libraries to load before snippet evaluation
+
+#### Clojure only
+
+* `data-static-fns`: (default `false`) set to true for using [static dispatch](http://blog.klipse.tech/clojurescript/2016/04/13/static-fns.html)
+* `data-eval-context`: (default `statement`) indicates the evaluation context that will be passed to cljs/eval-str. One in `expr`, `statement`, `return`.  
+
+
 ## Community
 
 Here are a couple of examples of blogs using the klipse plugin:

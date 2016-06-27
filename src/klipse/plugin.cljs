@@ -66,7 +66,8 @@
       (let [my-dataset (aget element "dataset")
             static-fns (read-string-or-val (aget my-dataset "staticFns") false)
             eval-context (read-string-or-val (aget my-dataset "evalContext") nil)
-            external-libs (dbg (string->array (or (aget my-dataset "externalLibs") nil)))
+            external-libs (string->array (or (aget my-dataset "externalLibs") nil))
+            idle-msec (read-string-or-val (aget my-dataset "evalIdleMsec") eval_idle_msec)
             eval-fn-with-args #(eval-fn % (dbg {:static-fns static-fns :external-libs external-libs :context eval-context}))
             in-editor-options (assoc editor-options :mode editor-in-mode)
             out-editor-options (assoc editor-options :mode editor-out-mode :readOnly true)
@@ -75,7 +76,7 @@
             in-editor (replace-element-by-editor element clj-in in-editor-options)]
         (set-value out-editor (dbg (str (<! (eval-fn-with-args clj-in)))))
         (handle-events in-editor
-                       {:idle-msec eval_idle_msec
+                       {:idle-msec idle-msec
                         :base-url app-url
                         :on-should-eval #(eval-in-editor eval-fn-with-args out-editor in-editor)})))))
 

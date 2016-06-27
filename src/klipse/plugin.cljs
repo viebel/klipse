@@ -3,6 +3,7 @@
     [cljs.core.async.macros :refer [go]])
   (:require 
     [cljs.spec :as s]
+    [clojure.walk :refer [keywordize-keys]]
     [goog.dom :refer [isElement]]
     [klipse.utils :refer [gist-path-page read-input-from-gist]]
     [cljs.core.async :refer [<!]]
@@ -59,13 +60,14 @@
       (aget element "textContent");goog.dom/getTextContent removes new lines
       )))
 
-(defn klipsify-with-opts [element {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
+(defn klipsify-with-opts [element {:keys [eval_idle_msec] :or {eval_idle_msec 20}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
   (go
     (when element
       (let [my-dataset (aget element "dataset")
             static-fns (read-string-or-val (aget my-dataset "staticFns") false)
             eval-context (read-string-or-val (aget my-dataset "evalContext") nil)
-            external-libs (dbg (string->array (or (aget my-dataset "externalLibs") nil)))
+            external-libs (string->array (or (aget my-dataset "externalLibs") nil))
+            idle-msec (read-string-or-val (aget my-dataset "evalIdleMsec") eval_idle_msec)
             eval-fn-with-args #(eval-fn % (dbg {:static-fns static-fns :external-libs external-libs :context eval-context}))
             in-editor-options (assoc editor-options :mode editor-in-mode)
             out-editor-options (assoc editor-options :mode editor-out-mode :readOnly true)
@@ -74,7 +76,7 @@
             in-editor (replace-element-by-editor element clj-in in-editor-options)]
         (set-value out-editor (dbg (str (<! (eval-fn-with-args clj-in)))))
         (handle-events in-editor
-                       {:idle-msec 2000
+                       {:idle-msec idle-msec
                         :base-url app-url
                         :on-should-eval #(eval-in-editor eval-fn-with-args out-editor in-editor)})))))
 
@@ -85,31 +87,34 @@
 (s/def ::comment-str string?)
 
 (s/def ::options (s/keys :req-un [::editor-in-mode ::editor-out-mode ::eval-fn ::comment-str])) 
+(s/def ::klipse-settings (s/keys :opt-un [::eval_idle_msec]))
 
 (s/fdef klipsify-with-opts 
         :args (s/cat :element ::dom-element
+                     :settings ::klipse-settings
                      :opts ::options))
 
 (s/instrument #'klipsify-with-opts)
-(defn ^:export klipsify [element mode]
+(defn ^:export klipsify [element general-settings mode]
   (if-let [opts (@mode-options mode)]
-    (klipsify-with-opts element opts)
+    (klipsify-with-opts element (dbg general-settings) opts)
     (go (print "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
 
-(defn ^:export klipsify-elements [elements mode]
-  (print "klipsify-elements: " elements mode)
+(defn ^:export klipsify-elements [elements general-settings mode]
+  (print "klipsify-elements: " elements general-settings mode)
   (go
     (time
       (doseq [element elements]
         (print "klipsify-elements: " element)
-        (<! (klipsify element mode))))))
+        (<! (klipsify element general-settings mode))))))
 
 (defn ^:export init-clj [settings]
   (dbg settings)
-  (doseq [selector-name (dbg (keys @selector->mode))]
-    (when-let [selector (settings selector-name)]
-      (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector))) (@selector->mode selector-name)))))
+  (let [keywordized-settings (keywordize-keys settings)]
+    (doseq [selector-name (dbg (keys @selector->mode))]
+      (when-let [selector (settings selector-name)]
+        (klipsify-elements (dbg (array-seq (js/document.querySelectorAll selector))) keywordized-settings (@selector->mode selector-name))))))
 
 (defn ^:export init [js-settings]
-  (init-clj (js->clj js-settings :keywordize-keys false)))
+  (init-clj (js->clj js-settings :keywordize-keys false))); we cannot keywordize the keys as the modules might be written in javascript
 

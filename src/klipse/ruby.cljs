@@ -24,7 +24,10 @@
 (defn str-eval-async [exp _]
   (go
     (load-opal-parser-once)
-    (str (.eval js/Opal exp))))
+    (try
+      (str (.eval js/Opal exp))
+      (catch js/Object e
+        (str e)))))
 
 
 (def opts {:editor-in-mode "ruby"

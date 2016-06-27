@@ -1,9 +1,10 @@
-(defproject klipse "1.3.0"
+(defproject klipse "1.4.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.36"]
                  [org.clojure/core.async "0.2.374"]
                  [im.chit/purnam "0.5.2"]
+                 [cljsjs/markdown "0.6.0-beta1-0"]
                  [cljs-http "0.1.41"]
                  [viebel/gadjett "0.1.13"]
                  [org.omcljs/om "1.0.0-alpha36"]
@@ -18,6 +19,7 @@
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.4-2"]] }}  
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ^{:protect false} ["resources/public/dev/js"
+                                    "resources/public/plugin_prod/js"
                                     "resources/public/plugin/js"]
   :plugins [[lein-cljsbuild "1.1.1"]]
   :source-paths ["src"]

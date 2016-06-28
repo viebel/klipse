@@ -59,7 +59,7 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 </script>
 <script src="http://cdn.opalrb.org/opal/current/opal.min.js"></script>
 <script src="http://cdn.opalrb.org/opal/current/opal-parser.min.js"></script>
-<script src="http://app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
 ## clojure

@@ -22,17 +22,20 @@
   (.execute engine input))
 
 (defn str-eval-async [exp _]
-  (let [c (chan)]
+  (let [c (chan)
+        php-exp (str "<?php" exp) ]
     (go
       (let [php-engine  (dbg (load-php-engine))]
+        (-> (.getStderr php-engine)
+            (.on "data" #(put! c (dbg (str %)))))
         (-> (.getStdout php-engine)
             (.on "data" #(put! c (dbg (str %)))))
         (<! (timeout 5))
-        (execute php-engine (dbg (or exp "//aaa")))))
+        (execute php-engine php-exp)))
     c))
 
-(def opts {:editor-in-mode "php"
-           :editor-out-mode "php"
+(def opts {:editor-in-mode "text/x-php"
+           :editor-out-mode "text/x-php"
            :eval-fn str-eval-async
            :comment-str "//"})
 

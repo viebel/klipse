@@ -21,6 +21,7 @@ The code editing is done with [CodeMirror](http://codemirror.net/).
 - javascript: evaluation is done with the javascript function `eval`
 - clojure[script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
 - ruby: evaluation is done with [Opal](http://opalrb.org/)
+- PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
 
 
 # How does it work?
@@ -61,6 +62,21 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 <script src="http://cdn.opalrb.org/opal/current/opal-parser.min.js"></script>
 <script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
+
+## PHP
+
+```html
+<link rel="stylesheet" type="text/css" href="http://app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_eval_php: '.language-klipse-eval-php', // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://asmblah.github.io/uniter/dist/uniter.js"></script>
+<script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
+
 
 ## clojure
 

@@ -32,7 +32,7 @@ The code editing is done with [CodeMirror](http://codemirror.net/).
 
 # Integration
 
-In order to integrate the klipse plugin on a blog, library documentation or any other web page, add the following `javascript` tag according to the language of the code snippets:
+In order to integrate the klipse plugin on a blog, library documentation or any other web page, add the following `javascript` tag **at the end of the page body** according to the language of the code snippets:
 
 ## javascript
 

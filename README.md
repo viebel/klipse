@@ -1,9 +1,5 @@
 # KLIPSE [![Circle CI](https://circleci.com/gh/viebel/klipse/tree/master.svg?style=svg)](https://circleci.com/gh/viebel/klipse/tree/master) [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  [![Codewake](https://www.codewake.com/badges/contribute.svg)](https://www.codewake.com/p/klipse)
 
-Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-We need your support to make blogging about languages a much better experience [![Codewake](https://www.codewake.com/badges/contribute.svg)](https://www.codewake.com/p/klipse)
-
 The klipse plugin is a javascript tag that transforms static code snippets of an html page to live and interactive snippets:
 
 1. **Live**: The code is executed in your browser
@@ -21,6 +17,7 @@ The code editing is done with [CodeMirror](http://codemirror.net/).
 - javascript: evaluation is done with the javascript function `eval`
 - clojure[script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
 - ruby: evaluation is done with [Opal](http://opalrb.org/)
+- PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
 
 
 # How does it work?
@@ -59,8 +56,23 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 </script>
 <script src="http://cdn.opalrb.org/opal/current/opal.min.js"></script>
 <script src="http://cdn.opalrb.org/opal/current/opal-parser.min.js"></script>
-<script src="http://app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
+
+## PHP
+
+```html
+<link rel="stylesheet" type="text/css" href="http://app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_eval_php: '.language-klipse-eval-php', // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://asmblah.github.io/uniter/dist/uniter.js"></script>
+<script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
+
 
 ## clojure
 
@@ -122,6 +134,10 @@ Here are a couple of examples of blogs using the klipse plugin:
 - ruby: [jessewaites.com - interactive ruby snippets](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)
 - clojure: [z.caudate.me - live documentation with klipse](http://z.caudate.me/klipse-demo/)
 - ruby, javascript, clojure: [blog.klipse.tech](blog.klipse.tech)
+
+Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+We need your support to make blogging about languages a much better experience [![Codewake](https://www.codewake.com/badges/contribute.svg)](https://www.codewake.com/p/klipse)
 
 
 ## Klipse App

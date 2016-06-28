@@ -50,15 +50,14 @@ Read [KLIPSE Magic](https://github.com/viebel/klipse/blob/master/tutorial.md) to
 ####1. Build
 
 ```bash
-rm -rf resources/public/plugin resources/public/dev
-lein cljsbuild once app plugin
+lein clean
+lein cljsbuild once app plugin plugin-prod
 ```
 ####2. Test
 
 Test that `dev` build works properly => 
 
-- Open the browser [http://localhost:5014/index-dev.html](http://localhost:5014/index-dev.html)
-- Open the browser [http://localhost:5014/test.html](http://localhost:5014/test.html)
+Open the browser [http://localhost:5014/test.html](http://localhost:5014/test.html)
  
 
 ####3. Deploy to Google Storage

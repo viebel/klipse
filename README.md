@@ -1,9 +1,5 @@
 # KLIPSE [![Circle CI](https://circleci.com/gh/viebel/klipse/tree/master.svg?style=svg)](https://circleci.com/gh/viebel/klipse/tree/master) [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  [![Codewake](https://www.codewake.com/badges/contribute.svg)](https://www.codewake.com/p/klipse)
 
-Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-We need your support to make blogging about languages a much better experience [![Codewake](https://www.codewake.com/badges/contribute.svg)](https://www.codewake.com/p/klipse)
-
 The klipse plugin is a javascript tag that transforms static code snippets of an html page to live and interactive snippets:
 
 1. **Live**: The code is executed in your browser
@@ -138,6 +134,10 @@ Here are a couple of examples of blogs using the klipse plugin:
 - ruby: [jessewaites.com - interactive ruby snippets](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)
 - clojure: [z.caudate.me - live documentation with klipse](http://z.caudate.me/klipse-demo/)
 - ruby, javascript, clojure: [blog.klipse.tech](blog.klipse.tech)
+
+Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+We need your support to make blogging about languages a much better experience [![Codewake](https://www.codewake.com/badges/contribute.svg)](https://www.codewake.com/p/klipse)
 
 
 ## Klipse App

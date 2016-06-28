@@ -3,5 +3,5 @@
             klipse.compiler
             klipse.js_eval
             klipse.ruby
-            klipse.markdown
+            klipse.php
             klipse.run.app.app))

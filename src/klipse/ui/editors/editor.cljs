@@ -1,4 +1,5 @@
 (ns klipse.ui.editors.editor
+  (:use-macros [purnam.core :only [? ! !>]])
   (:require 
     [goog.dom :as gdom]
     [gadjett.core :as gadjett :refer-macros [dbg]]
@@ -10,8 +11,10 @@
     cljsjs.codemirror.addon.display.placeholder
     cljsjs.codemirror.addon.scroll.simplescrollbars))
 
-(when js/window.initMirrorCustomExtensions
-  (js/window.initMirrorCustomExtensions))
+(when (? js/window.initMirrorCustomExtensions)
+  (!> js/window.initMirrorCustomExtensions))
+
+(def code-mirror js/CodeMirror)
 
 (defn create [dom-id config]
     (js/CodeMirror.fromTextArea
@@ -32,15 +35,15 @@
   (.setOption editor option value))
 
 (defn select-all [editor]
-  (->
-    (.-commands js/CodeMirror)
-    (.selectAll editor))
+  (as->
+    (? code-mirror.commands) $
+    (!> $.selectAll editor))
   editor)
 
 (defn goto-start [editor]
-  (->
-    (.-commands js/CodeMirror)
-    (.goDocStart editor))
+  (as->
+    (? code-mirror.commands) $
+    (!> $.goDocStart editor))
   editor)
 
 (defn auto-format [editor]
@@ -48,7 +51,7 @@
     (select-all editor)
     (let [from (.getCursor editor true)
           to (.getCursor editor false)]
-      (.autoFormatRange editor from to))
+      (!> editor.autoFormatRange from to))
     editor
     (catch js/Object e
       (println "klipse.ui.editors.editor/auto-format: " e)
@@ -58,7 +61,7 @@
   (select-all editor)
   (let [from (.getCursor editor true)
         to (.getCursor editor false)]
-    (.autoIndentRange editor from to))
+    (!> editor.autoIndentRange from to))
   editor)
 
 (defn beautify [editor language]

@@ -1,4 +1,4 @@
-(defproject klipse "1.4.0"
+(defproject klipse "1.5.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.36"]
@@ -59,9 +59,9 @@
                                           :optimizations :whitespace
                                           :verbose false}}
                       :plugin-prod {
-                               :source-paths ["src/klipse/run/js_eval"]
+                               :source-paths ["src/klipse/run/plugin_prod" "resources/public/lib"]
                                :compiler {
-                                          ;:preamble ["mirror_extensions.js"]
+                                          :preamble ["mirror_extensions.js"]
                                           :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
                                           :output-dir "resources/public/plugin_prod/js"
                                           :pretty-print true

@@ -1,10 +1,9 @@
-(ns klipse.run.plugin.plugin
+(ns klipse.run.plugin-prod.plugin
   (:require klipse.core
             klipse.js-eval
             klipse.ruby
             klipse.php
             klipse.markdown
-            klipse.compiler
             [gadjett.core :as gadjett :refer-macros [dbg]]
             [klipse.plugin :as plugin]))
 

@@ -58,3 +58,10 @@
                "http status: " status
                "\"")
           body)))))
+
+(defn runonce [f]
+  (let [ran (atom false)]
+    (fn [& args]
+      (when-not @ran
+        (reset! ran true)
+        (apply f args)))))

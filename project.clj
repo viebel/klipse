@@ -59,9 +59,9 @@
                                           :optimizations :whitespace
                                           :verbose false}}
                       :plugin-prod {
-                               :source-paths ["src/klipse/run/js_eval"]
+                               :source-paths ["src/klipse/run/plugin_prod" "resources/public/lib"]
                                :compiler {
-                                          ;:preamble ["mirror_extensions.js"]
+                                          :preamble ["mirror_extensions.js"]
                                           :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
                                           :output-dir "resources/public/plugin_prod/js"
                                           :pretty-print true

@@ -1,4 +1,5 @@
 (ns klipse.ruby
+  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
@@ -11,7 +12,7 @@
 
 
 (defn load-opal-parser []
-  (.load js/Opal "opal-parser"))
+  (!> js/Opal.load "opal-parser"))
 
 (def load-opal-parser-once (runonce load-opal-parser))
 
@@ -19,10 +20,9 @@
   (go
     (load-opal-parser-once)
     (try
-      (str (.eval js/Opal exp))
+      (str (!> js/Opal.eval exp))
       (catch js/Object e
         (str e)))))
-
 
 (def opts {:editor-in-mode "ruby"
            :editor-out-mode "ruby"

@@ -1,4 +1,5 @@
 (ns klipse.php
+  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
@@ -16,21 +17,20 @@
 
 (def load-php-engine
     (fn []
-      (.createEngine js/uniter "PHP")))
+      (!> js/uniter.createEngine "PHP")))
 
 (defn execute [engine input]
-  (.execute engine input))
+  (!> engine.execute input))
 
 (defn str-eval-async [exp _]
   (let [c (chan)
         php-exp (str "<?php" exp) ]
     (go
       (let [php-engine  (dbg (load-php-engine))]
-        (-> (.getStderr php-engine)
-            (.on "data" #(put! c (dbg (str %)))))
-        (-> (.getStdout php-engine)
-            (.on "data" #(put! c (dbg (str %)))))
-        (<! (timeout 5))
+        (as-> (!> php-engine.getStderr) $
+            (!> $.on "data" #(put! c (dbg (str %)))))
+        (as-> (!> php-engine.getStdout) $
+            (!> $.on "data" #(put! c (dbg (str %)))))
         (execute php-engine php-exp)))
     c))
 

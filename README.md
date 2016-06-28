@@ -10,6 +10,19 @@ The code evaluation is done in the browser: no server is involved at all!
 
 The code editing is done with [CodeMirror](http://codemirror.net/).
 
+# Live demo
+
+With the klipse plugin, the code is evaluated as you type...
+
+|Javascript | Ruby |
+|-------------------------|-------------------------|
+|![abc](https://raw.githubusercontent.com/viebel/klipse/master/images/javascript-snippet.gif) |  ![abc](https://raw.githubusercontent.com/viebel/klipse/master/images/ruby-snippet.gif)|
+
+|PHP | Clojure |
+|-------------------------|-------------------------|
+|![abc](https://raw.githubusercontent.com/viebel/klipse/master/images/php-snippet.gif) |  ![abc](https://raw.githubusercontent.com/viebel/klipse/master/images/clojure-snippet.gif?cachebuster1)|
+
+
 
 
 # Supported languages

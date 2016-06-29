@@ -11,6 +11,15 @@
     <code class="clojure" >
         (map inc [1 2 3])
 </code>
+    <div class="eval-ruby" data-external-libs="http://cdn.opalrb.org/opal/current/opal.min.js, http://cdn.opalrb.org/opal/current/opal-parser.min.js">
+        <style>
+            textarea {
+                width: 500px;
+            }
+        </style>
+<textarea class="eval-js">
+    [1,2,3].map ( x => x + 1)
+</textarea>
        <br/>
         <script>
         window.klipse_settings = {
@@ -25,6 +34,7 @@
                 lineNumbers: true
             },
             selector: '.clojure',
+            minimalistic_ui: true,
             selector_eval_markdown: '.eval-markdown',
             selector_eval_js: '.eval-js',
             selector_js: '.clojure-js'

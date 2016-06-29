@@ -2,6 +2,7 @@
   (:use-macros [purnam.core :only [? ! !>]])
   (:require 
     [goog.dom :as gdom]
+    [klipse.dom-utils :refer [create-div-after]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
     cljsjs.js-beautify
     cljsjs.codemirror
@@ -77,15 +78,11 @@
 
 (defn replace-element-by-editor [element value {:keys [mode] :as opts}]
   (let [editor (js/CodeMirror (fn [elt]
-                                (goog.dom/replaceNode elt element))
+                                (gdom/replaceNode elt element))
                               (clj->js opts))]
     (-> (set-value editor value)
         (beautify mode))))
 
-(defn create-div-after [element]
-    (let [div (gdom/createDom "div" nil (gdom/createTextNode ""))]
-      (gdom/insertSiblingAfter div element)
-      div))
 
 (defn create-editor-after-element [element value opts]
   (-> (create-div-after element)

@@ -2,6 +2,8 @@
   (:require-macros
     [cljs.core.async.macros :refer [go]])
   (:require 
+    [goog.dom :as gdom]
+    [klipse.dom-utils :refer [create-div-after value add-event-listener]]
     [cljs.spec :as s]
     [cljs.spec.impl.gen :as gen]
     [clojure.walk :refer [keywordize-keys]]
@@ -30,10 +32,17 @@
 
 (defn eval-in-editor [eval-fn editor-target editor-source]
   (go
-  (->> (get-value editor-source)
-       eval-fn
-       <!
-       (set-value editor-target))))
+    (->> (get-value editor-source)
+         eval-fn
+         <!
+         (set-value editor-target))))
+
+(defn eval-in-dom-editor [eval-fn target source]
+  (go
+    (->> (value source)
+         eval-fn
+         <!
+         (gdom/setTextContent target))))
 
 (defn read-string-or-val [value not-found]
   (if value
@@ -86,9 +95,15 @@
                      {:idle-msec idle-msec
                       :on-should-eval #(eval-in-editor eval-fn out-editor in-editor)}))))
 
+(defn create-dom-editor [{:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec]}]
+  (go
+    (let [out-editor (create-div-after element)]
+      (gdom/setTextContent out-editor default-txt)
+      (gdom/setTextContent out-editor (dbg (str (<! (eval-fn source-code)))))
+      (add-event-listener element "input" #(eval-in-dom-editor eval-fn out-editor element)))))
 
 
-(defn klipsify-with-opts [element {:keys [eval_idle_msec codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
+(defn klipsify-with-opts [element {:keys [eval_idle_msec minimalistic_ui codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
   (go
     (when element
       (let [my-dataset (aget element "dataset")
@@ -98,23 +113,26 @@
             idle-msec (read-string-or-val (aget my-dataset "evalIdleMsec") eval_idle_msec)
             eval-fn-with-args #(eval-fn % (dbg {:static-fns static-fns :external-libs external-libs :context eval-context}))
             [in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror_options_in codemirror_options_out)
-            source-code (dbg (<! (content element comment-str)))]
-        (<! (create-code-mirror-editor {:element element
-                                        :out-editor-options out-editor-options
-                                        :in-editor-options in-editor-options
-                                        :eval-fn eval-fn-with-args
-                                        :source-code source-code
-                                        :default-txt out-placeholder
-                                        :idle-msec idle-msec}))))))
+            source-code (dbg (<! (content element comment-str)))
+            create-editor (if minimalistic_ui create-dom-editor create-code-mirror-editor)]
+        (<! (create-editor {:element element
+                            :out-editor-options out-editor-options
+                            :in-editor-options in-editor-options
+                            :eval-fn eval-fn-with-args
+                            :source-code source-code
+                            :default-txt out-placeholder
+                            :idle-msec idle-msec}))))))
 
 (s/def ::dom-element isElement)
 (s/def ::editor-in-mode string?)
 (s/def ::editor-out-mode string?)
 (s/def ::eval-fn fn?)
 (s/def ::comment-str string?)
+(s/def ::eval_idle_msec integer?)
+(s/def ::minimalistic_ui #(or (= % true) (= % false)))
 
 (s/def ::options (s/keys :req-un [::editor-in-mode ::editor-out-mode ::eval-fn ::comment-str])) 
-(s/def ::klipse-settings (s/keys :opt-un [::eval_idle_msec]))
+(s/def ::klipse-settings (s/keys :opt-un [::eval_idle_msec ::minimalistic_ui]))
 
 (s/fdef klipsify-with-opts 
         :args (s/cat :element ::dom-element

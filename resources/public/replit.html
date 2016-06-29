@@ -1,0 +1,33 @@
+<head>
+<script src="https://repl.it/lib/api.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+    var repl = new ReplitClient('api.repl.it', 80, 'python3', {"msg_mac":"klaeGeLPnIbYbXlhRJvoEI7AkgSrlOnLixZJ9OgiruQ=","time_created":1467139700000});
+    repl.evaluateOnce(
+"import time\nnow = time.localtime()\nprint(now)\n2 + 3"
+
+, {
+   stdout: function(output) {
+     // output from the ruby process: hello world
+     console.log(output);
+   }
+ }).then(
+   function success(result) {
+     // The evaluation succeeded. Result will contain `data` or `error`
+     // depending on whether the code compiled and ran or if there was an
+     // error.
+     if (result.error) {
+       console.log('Error:', result.error);
+     } else {
+       console.log('Result', result.data);
+     }
+   },
+   function error(error) {
+     // There was an error connecting to the service :(
+     console.error('Error connecting to repl.it');
+   }
+ );
+     </script>
+</head>
+
+<body>
+</body>

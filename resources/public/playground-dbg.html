@@ -8,10 +8,17 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
     </head>
     <body>
-    <div class="eval-ruby" data-external-libs="http://cdn.opalrb.org/opal/current/opal.min.js, http://cdn.opalrb.org/opal/current/opal-parser.min.js">
-<code class="eval-markdown">
-# This is a title
-`clojure` rocks!
+<code class="eval-js" data-external-libs="https://raw.githubusercontent.com/leebyron/testcheck-js/master/dist/testcheck.js">
+    var gen = testcheck.gen;
+    testcheck.check(
+    testcheck.property(
+    [gen.int],    // the arguments generator
+    function (x) {  // the property function to test
+    return x - x === 8;
+    }
+    ),
+    { times: 1000 }
+    );
 </code>
        <br/>
         <script>

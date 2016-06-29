@@ -15,9 +15,9 @@
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 (enable-console-print!)
-(def app-url "http://app.klipse.tech")
 (def selector->mode (atom {}))
 (def mode-options (atom {}))
+(def out-placeholder ";the evaluation will appear here (soon)...")
 
 (defn register-mode [mode selector opts]
   (print "register-mode: " mode selector)
@@ -77,6 +77,17 @@
        (merge codemirror-options-out))])
 
 
+(defn create-code-mirror-editor [{:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec]}]
+  (go
+    (let [out-editor (create-editor-after-element element default-txt out-editor-options); must be called before `element` is replaced
+          in-editor (replace-element-by-editor element source-code in-editor-options)]
+      (set-value out-editor (dbg (str (<! (eval-fn source-code)))))
+      (handle-events in-editor
+                     {:idle-msec idle-msec
+                      :on-should-eval #(eval-in-editor eval-fn out-editor in-editor)}))))
+
+
+
 (defn klipsify-with-opts [element {:keys [eval_idle_msec codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
   (go
     (when element
@@ -87,14 +98,14 @@
             idle-msec (read-string-or-val (aget my-dataset "evalIdleMsec") eval_idle_msec)
             eval-fn-with-args #(eval-fn % (dbg {:static-fns static-fns :external-libs external-libs :context eval-context}))
             [in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror_options_in codemirror_options_out)
-            clj-in (dbg (<! (content element comment-str)))
-            out-editor (create-editor-after-element element ";the evaluation will appear here (soon)..." out-editor-options); must be called before `element` is replaced
-            in-editor (replace-element-by-editor element clj-in in-editor-options)]
-        (set-value out-editor (dbg (str (<! (eval-fn-with-args clj-in)))))
-        (handle-events in-editor
-                       {:idle-msec idle-msec
-                        :base-url app-url
-                        :on-should-eval #(eval-in-editor eval-fn-with-args out-editor in-editor)})))))
+            source-code (dbg (<! (content element comment-str)))]
+        (<! (create-code-mirror-editor {:element element
+                                        :out-editor-options out-editor-options
+                                        :in-editor-options in-editor-options
+                                        :eval-fn eval-fn-with-args
+                                        :source-code source-code
+                                        :default-txt out-placeholder
+                                        :idle-msec idle-msec}))))))
 
 (s/def ::dom-element isElement)
 (s/def ::editor-in-mode string?)

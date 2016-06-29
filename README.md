@@ -57,6 +57,8 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 <script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
+Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/viebel/50oLnykk/2/).
+
 ## ruby
 
 ```html

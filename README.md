@@ -3,8 +3,7 @@
 The klipse plugin is a javascript tag that transforms static code snippets of an html page to live and interactive snippets:
 
 1. **Live**: The code is executed in your browser
-2. **Interactive**: You can modify the code and it is evaluated after 2 seconds of inactivity
-
+2. **Interactive**: You can modify the code and it is evaluated as you type
 
 The code evaluation is done in the browser: no server is involved at all!
 

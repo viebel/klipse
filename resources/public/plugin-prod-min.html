@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+    <p>
+     
+     <h1> javascript </h1>
+    <h2> immutable.js </h2>
+ <textarea class="eval-js" data-external-libs="immutable">
+     Immutable
+        </textarea>
+        <br/>
+        <textarea class="eval-js">
+     var m = Immutable.fromJS({a: 10, c: 40});
+
+     m.map(x => x * x);
+
+        </textarea>
+        <br/>
+
+        <h2> native javascript </h2>
+        <textarea class="eval-js">
+            [1, 2, 3].reduce(
+              function(total, num){ return total + num }
+                , 0);
+        </textarea>
+        <br/>
+        <h2> jQuery </h2>
+ <textarea class="eval-js" data-external-libs="jQuery">
+     $
+        </textarea>
+        <br/>
+ 
+ <textarea class="eval-js">
+     $('textarea').length
+        </textarea>
+        <br/>
+     <body>
+ <h1> PHP </h1>
+    <textarea class="eval-php">
+        print "Hello from PHP!";</textarea>
+<br/>
+<textarea class="eval-php">
+    $var = ["a" => 1];
+    var_dump($var);
+</textarea>
+
+    <textarea class="eval-php" data-gist-id="viebel/6d6e23270e65dd9a4849c507dba4f712"></textarea>
+        <br/>
+ 
+<h1> ruby</h1>
+    <textarea class="eval-ruby" data-gist-id="viebel/4659664"></textarea>
+        <br/>
+        <textarea class="eval-ruby">
+def letter_frequency(file)
+letters = 'a' .. 'z'
+file .
+split(//) .
+group_by {|letter| letter.downcase} .
+select   {|key, val| letters.include? key} .
+collect  {|key, val| [key, val.length]} 
+end
+
+letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}
+
+            </textarea>
+<br/>
+
+<h1> Markdown </h1>
+<code class="eval-markdown">
+# This is a title
+`clojure` rocks!
+</code>
+       <br/>
+ 
+        <script>
+        window.klipse_settings = {
+            minimalistic_ui: true,
+            selector_eval_js: 'textarea',
+            selector_eval_markdown: '.eval-markdown',
+            selector_eval_php: '.eval-php',
+            selector_eval_ruby: '.eval-ruby'
+        };
+        </script>
+        <script src="http://cdn.opalrb.org/opal/current/opal.min.js"></script>
+        <script src="http://cdn.opalrb.org/opal/current/opal-parser.min.js"></script>
+        <script src="https://asmblah.github.io/uniter/dist/uniter.js"></script>
+        <script src="plugin_prod/js/klipse_plugin.min.js"></script>
+    </body>
+</html>

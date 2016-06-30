@@ -2,6 +2,7 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
+    cljsjs.js-beautify
     [cljs.reader :refer [read-string]]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
@@ -74,6 +75,15 @@
               (read-string-cond value)
               error)]
     [status res]))
+
+(defn beautify [js-exp]
+  (try 
+    (-> js-exp
+        js/JSON.stringify
+        js/js_beautify)
+    (catch js/Object o
+      (str js-exp))))
+
 
 (defn convert-compile-res [{:keys [value error]}]
   (let [status (if error :error :ok)

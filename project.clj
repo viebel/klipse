@@ -1,4 +1,4 @@
-(defproject klipse "1.7.0"
+(defproject klipse "1.8.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.36"]
@@ -21,14 +21,13 @@
   :clean-targets ^{:protect false} ["resources/public/dev/js"
                                     "resources/public/plugin_prod/js"
                                     "resources/public/plugin/js"]
-  :plugins [[lein-cljsbuild "1.1.1"]]
+  :plugins [[lein-cljsbuild "1.1.1"]
+            [lein-doo "0.1.6"]]
   :source-paths ["src"]
   :cljsbuild {
-              :test-commands {"unit" ["phantomjs" "test/phantom/unit-test.js" "test/phantom/unit-test.html"]}
               :builds {
                        :test {
                                 :source-paths ["test" "src/klipse/cards/test"]
-                                :notify-command ["phantomjs" "test/phantom/unit-test.js" "test/phantom/unit-test.html"]
                                 :compiler {
                                            :output-to "resources/private/test/klipse.testable.js"
                                            :output-dir "resources/private/test"

@@ -16,6 +16,7 @@
 (defn error->clj [[status error]]
   [status {:message (.. error -message)}])
 
+
 (deftest test-eval
   "eval with expected failures"
   (are [input-clj message]
@@ -80,3 +81,25 @@
   (are [input-clj output-clj]
        (a= (remove-chars (second (eval input-clj))) output-clj)
        "(type 1)" "#object[Number \"function Number() {\n    [native code]\n}\"]"))
+
+
+
+(deftest test-eval-functions 
+  "eval with functions"
+  (are [input-clj output-clj]
+       (a= (remove-chars (second (eval input-clj))) output-clj)
+       "(ns my.func) (defn foo [] 1) foo" "#'my.func/foo"
+       "(ns my.func) (defn foo [] 2) [foo]" "[#object[my$func$foo\"functionmy$func$foo(){return(2);}\"]]" 
+       ))
+
+
+(deftest test-eval-vars 
+  "eval with vars"
+  (are [input-clj output-clj]
+       (= (second (eval input-clj)) output-clj)
+       "(ns my.vars) (def a 1)" "#'my.vars/a"
+       "(ns my.vars) (def b 1) b" "#'my.vars/b"
+       "(ns my.vars) (def c 1) [c]" [1]
+       ))
+
+

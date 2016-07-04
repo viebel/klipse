@@ -2,6 +2,7 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
+    cljsjs.js-beautify
     [cljs-http.client :as http]
     [cljs.core.async :refer [<!]]
     [klipse.plugin :refer [register-mode]]
@@ -31,13 +32,21 @@
 (defn external-lib-path [lib-name-or-url]
   (get known-external-libs lib-name-or-url lib-name-or-url))
 
+(defn beautify [js-exp]
+  (try 
+    (-> js-exp
+        js/JSON.stringify
+        js/js_beautify)
+    (catch js/Object o
+      (str js-exp))))
+
 (defn str-eval-js-async [exp {:keys [external-libs] :or {external-libs nil}}]
   (go
     (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
       (if (= :ok status)
         (dbg (try (-> exp
                       eval-in-global-scope
-                      str)
+                      beautify)
                   (catch js/Object o
                     (str o))))
         (str "Cannot load script: " script "\n"

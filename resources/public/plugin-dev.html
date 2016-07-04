@@ -11,7 +11,7 @@
     <h1> clojure evaluation</h1>
     <h2> The basics </h2>
 
-        <div class="clojure">
+         class="clojure">
         (
         <span>
         map inc [1 2 3]
@@ -23,6 +23,20 @@
         <span class="clojure"> (foo 19) </span>
         <br/>
          
+        <p>
+        Functions should be evaluated to their code.
+        </p>
+        <span class="clojure"> 
+            (defn foo [])
+            [foo]
+             </span>
+
+        <p>
+        Variables should be evaluated to their names.
+        </p>
+        <span class="clojure"> 
+            (def my-var "cool")
+             </span>
         <h2>data-eval-context </h2>
         <h2>data-eval-context not set</h2>
         <p> by default, the evaluation context is <b>statement</b>: it allows to evaluate several expressions. But it is sometimes buggy for single expressions. For instance, `(if 1 2 3)` is evaluated as nil: </p>

@@ -21,14 +21,13 @@
   :clean-targets ^{:protect false} ["resources/public/dev/js"
                                     "resources/public/plugin_prod/js"
                                     "resources/public/plugin/js"]
-  :plugins [[lein-cljsbuild "1.1.1"]]
+  :plugins [[lein-cljsbuild "1.1.1"]
+            [lein-doo "0.1.6"]]
   :source-paths ["src"]
   :cljsbuild {
-              :test-commands {"unit" ["phantomjs" "test/phantom/unit-test.js" "test/phantom/unit-test.html"]}
               :builds {
                        :test {
                                 :source-paths ["test" "src/klipse/cards/test"]
-                                :notify-command ["phantomjs" "test/phantom/unit-test.js" "test/phantom/unit-test.html"]
                                 :compiler {
                                            :output-to "resources/private/test/klipse.testable.js"
                                            :output-dir "resources/private/test"

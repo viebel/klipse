@@ -3,6 +3,7 @@
     [cljs.core.async.macros :refer [go]])
   (:require 
     [cljs.spec :as s]
+    [cljs.spec.impl.gen :as gen]
     [clojure.walk :refer [keywordize-keys]]
     [goog.dom :refer [isElement]]
     [klipse.utils :refer [gist-path-page read-input-from-gist]]
@@ -23,7 +24,7 @@
   (swap! selector->mode assoc selector mode)
   (swap! mode-options assoc mode opts))
 
-(def editor-options
+(def default-editor-options
   {:matchBrackets true 
    :scrollbarStyle "overlay"})
 
@@ -60,7 +61,23 @@
       (aget element "textContent");goog.dom/getTextContent removes new lines
       )))
 
-(defn klipsify-with-opts [element {:keys [eval_idle_msec] :or {eval_idle_msec 20}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
+(s/def ::codemirror-options map?)
+(s/def ::editor-mode string?)
+
+(s/fdef editor-options 
+        :args (s/cat :in-mode ::editor-mode
+                     :out-mode ::editor-mode
+                     :options-in ::codemirror-options
+                     :options-out ::codemirror-options))
+
+(defn editor-options [editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out]
+  [(-> (assoc default-editor-options :mode editor-in-mode)
+       (merge codemirror-options-in))
+   (-> (assoc default-editor-options :mode editor-out-mode :readOnly true)
+       (merge codemirror-options-out))])
+
+
+(defn klipsify-with-opts [element {:keys [eval_idle_msec codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
   (go
     (when element
       (let [my-dataset (aget element "dataset")
@@ -69,8 +86,7 @@
             external-libs (string->array (or (aget my-dataset "externalLibs") nil))
             idle-msec (read-string-or-val (aget my-dataset "evalIdleMsec") eval_idle_msec)
             eval-fn-with-args #(eval-fn % (dbg {:static-fns static-fns :external-libs external-libs :context eval-context}))
-            in-editor-options (assoc editor-options :mode editor-in-mode)
-            out-editor-options (assoc editor-options :mode editor-out-mode :readOnly true)
+            [in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror_options_in codemirror_options_out)
             clj-in (dbg (<! (content element comment-str)))
             out-editor (create-editor-after-element element ";the evaluation will appear here (soon)..." out-editor-options); must be called before `element` is replaced
             in-editor (replace-element-by-editor element clj-in in-editor-options)]
@@ -94,7 +110,6 @@
                      :settings ::klipse-settings
                      :opts ::options))
 
-(s/instrument #'klipsify-with-opts)
 (defn ^:export klipsify [element general-settings mode]
   (if-let [opts (@mode-options mode)]
     (klipsify-with-opts element (dbg general-settings) opts)
@@ -118,3 +133,6 @@
 (defn ^:export init [js-settings]
   (init-clj (js->clj js-settings :keywordize-keys false))); we cannot keywordize the keys as the modules might be written in javascript
 
+(comment
+(s/instrument #'klipsify-with-opts)
+(s/instrument #'editor-options))

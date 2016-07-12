@@ -8,21 +8,22 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
     </head>
     <body>
-<code class="eval-js" data-external-libs="https://raw.githubusercontent.com/leebyron/testcheck-js/master/dist/testcheck.js">
-    var gen = testcheck.gen;
-    testcheck.check(
-    testcheck.property(
-    [gen.int],    // the arguments generator
-    function (x) {  // the property function to test
-    return x - x === 8;
-    }
-    ),
-    { times: 1000 }
-    );
+    <code class="clojure" >
+        (map inc [1 2 3])
 </code>
        <br/>
         <script>
         window.klipse_settings = {
+            codemirror_options_in: {
+                indentUnit: 18,
+                lineWrapping: true,
+                lineNumbers: true,
+               autoCloseBrackets: true
+            },
+            codemirror_options_out: {
+                lineWrapping: true,
+                lineNumbers: true
+            },
             selector: '.clojure',
             selector_eval_markdown: '.eval-markdown',
             selector_eval_js: '.eval-js',

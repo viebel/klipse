@@ -1,1 +1,2 @@
-gsutil -m cp -r gs://klipse-access-logs .
+#gsutil -m cp -r gs://klipse-access-logs .
+gsutil -m rsync -R gs://klipse-access-logs klipse-access-logs

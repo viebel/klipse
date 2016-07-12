@@ -1,1 +1,1 @@
-cat AccessLog_usage_* | awk -F"," '{print $12}' |  grep -v "klipse.tech" | grep -v localhost | sort | uniq | awk -F"?" '{print $1}' | less
+cat klipse-access-logs/AccessLog_usage_* | awk -F"," '{print $12}' |  grep -v "klipse.tech" | grep -v localhost | sort | uniq | awk -F"?" '{print $1}' | less

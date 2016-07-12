@@ -1,0 +1,2 @@
+./scripts/check-access-logs |
+awk -F"?" '{print $1}' | awk -F "/" '{print $3}' | sort | uniq | less

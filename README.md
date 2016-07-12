@@ -130,21 +130,22 @@ window.klipse_settings = {
 
 Additionaly, you can configure CodeMirror input (snippet source code) and output (snippet evaluation) by setting `codemirror_options_in` and `codemirror_options_out`:
 
-Currently, we support all the settings (CodeMirror Configuration settings)[http://codemirror.net/doc/manual.html#config] and part of the (Addons settings)[http://codemirror.net/doc/manual.html#addons]:  `matchBrackets` and `autoCloseBrackets`.
+Currently, we support all the settings [CodeMirror Configuration settings](http://codemirror.net/doc/manual.html#config) and part of the [Addons settings](http://codemirror.net/doc/manual.html#addons):  `matchBrackets` and `autoCloseBrackets`.
 
 For instance, you can modify the `identUnit`, `lineWrapping`, `lineNumbers` and `autoCloseBrackets` like this:
 ~~~javascript
-        window.klipse_settings = {
-            codemirror_options_in: {
-                indentUnit: 8,
-                lineWrapping: true,
-                lineNumbers: true,
-               autoCloseBrackets: true
-            },
-            codemirror_options_out: {
-                lineWrapping: true,
-                lineNumbers: true
-            },
+window.klipse_settings = {
+    codemirror_options_in: {
+        indentUnit: 8,
+        lineWrapping: true,
+        lineNumbers: true,
+       autoCloseBrackets: true
+    },
+    codemirror_options_out: {
+        lineWrapping: true,
+        lineNumbers: true
+    }
+}
 ~~~
 
 ### Snippet level configuration

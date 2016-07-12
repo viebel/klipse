@@ -114,6 +114,9 @@ The klipse plugin is configurable both at the level of the page and at the level
 
 ### Page level configuration
 
+
+Here are the settings for the klipse plugin a page level:
+
 ~~~javascript
 window.klipse_settings = {
           eval_idle_msec: 20, // idle time in msec before the snippet is evaluated
@@ -123,6 +126,25 @@ window.klipse_settings = {
           selector_eval_ruby: '.language-klipse-eval-ruby' //selector for ruby evaluation snippets
 };
 
+~~~
+
+Additionaly, you can configure CodeMirror input (snippet source code) and output (snippet evaluation) by setting `codemirror_options_in` and `codemirror_options_out`:
+
+Currently, we support all the settings (CodeMirror Configuration settings)[http://codemirror.net/doc/manual.html#config] and part of the (Addons settings)[http://codemirror.net/doc/manual.html#addons]:  `matchBrackets` and `autoCloseBrackets`.
+
+For instance, you can modify the `identUnit`, `lineWrapping`, `lineNumbers` and `autoCloseBrackets` like this:
+~~~javascript
+        window.klipse_settings = {
+            codemirror_options_in: {
+                indentUnit: 8,
+                lineWrapping: true,
+                lineNumbers: true,
+               autoCloseBrackets: true
+            },
+            codemirror_options_out: {
+                lineWrapping: true,
+                lineNumbers: true
+            },
 ~~~
 
 ### Snippet level configuration

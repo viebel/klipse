@@ -25,6 +25,7 @@
 
 (def editor-options
   {:matchBrackets true 
+   :autoCloseBrackets true
    :scrollbarStyle "overlay"})
 
 (defn eval-in-editor [eval-fn editor-target editor-source]

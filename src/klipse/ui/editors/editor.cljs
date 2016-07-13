@@ -2,6 +2,7 @@
   (:use-macros [purnam.core :only [? ! !>]])
   (:require 
     [goog.dom :as gdom]
+    [goog.dom.classes :as gclasses]
     [gadjett.core :as gadjett :refer-macros [dbg]]
     cljsjs.js-beautify
     cljsjs.codemirror
@@ -76,9 +77,14 @@
         goto-start)))
 
 (defn replace-element-by-editor [element value {:keys [mode] :as opts}]
-  (let [editor (js/CodeMirror (fn [elt]
-                                (goog.dom/replaceNode elt element))
-                              (clj->js opts))]
+  (let [editor (js/CodeMirror
+                 (fn [elt]
+                   (let [wrapper (gdom/createElement "div")]
+                     (gclasses/add wrapper "klipse-reset-css")
+                     (gdom/appendChild wrapper elt)
+
+                     (gdom/replaceNode wrapper element))
+                   (clj->js opts)))]
     (-> (set-value editor value)
         (beautify mode))))
 

@@ -11,4 +11,4 @@
 (defn ^:export settings []
   (aget js/window "klipse_settings"))
 
-(plugin/init (dbg (settings)))
+(plugin/init (settings))

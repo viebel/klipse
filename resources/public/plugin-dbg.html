@@ -9,7 +9,17 @@
     <body>
  <div class="clojure" data-eval-idle-msec="2000">
      (if 1 2 3)
-     </div>
+</div>
+    <br/>
+      <code class="eval-python">
+def factorial(n):
+  if n == 0:
+    return 1
+  else:
+    return n * factorial(n - 1)
+print(factorial(5))
+</code>
+    <br/>
     <code class="eval-markdown">
 # This is a title
 `clojure` rocks!
@@ -102,6 +112,7 @@
             selector: '.clojure',
             selector_eval_markdown: '.eval-markdown',
             selector_eval_js: '.eval-js',
+            selector_eval_python: '.eval-python',
             selector_js: '.clojure-js'
         };
         </script>

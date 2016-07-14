@@ -2,8 +2,7 @@
   (:require-macros
     [cljs.core.async.macros :refer [go]])
   (:require 
-    [goog.dom :as gdom]
-    [klipse.dom-utils :refer [create-div-after value add-event-listener]]
+    [klipse.klipse-editors :refer [create-editor]]
     [cljs.spec :as s]
     [cljs.spec.impl.gen :as gen]
     [clojure.walk :refer [keywordize-keys]]
@@ -12,8 +11,6 @@
     [cljs.core.async :refer [<!]]
     [clojure.string :as string :refer [trim split]]
     [cljs.reader :refer [read-string]]
-    [klipse.ui.editors.common :refer [handle-events]]
-    [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value get-value]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 (enable-console-print!)
@@ -29,20 +26,6 @@
 (def default-editor-options
   {:matchBrackets true 
    :scrollbarStyle "overlay"})
-
-(defn eval-in-editor [eval-fn editor-target editor-source]
-  (go
-    (->> (get-value editor-source)
-         eval-fn
-         <!
-         (set-value editor-target))))
-
-(defn eval-in-dom-editor [eval-fn target source]
-  (go
-    (->> (value source)
-         eval-fn
-         <!
-         (gdom/setTextContent target))))
 
 (defn read-string-or-val [value not-found]
   (if value
@@ -86,22 +69,6 @@
        (merge codemirror-options-out))])
 
 
-(defn create-code-mirror-editor [{:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec]}]
-  (go
-    (let [out-editor (create-editor-after-element element default-txt out-editor-options); must be called before `element` is replaced
-          in-editor (replace-element-by-editor element source-code in-editor-options)]
-      (set-value out-editor (dbg (str (<! (eval-fn source-code)))))
-      (handle-events in-editor
-                     {:idle-msec idle-msec
-                      :on-should-eval #(eval-in-editor eval-fn out-editor in-editor)}))))
-
-(defn create-dom-editor [{:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec]}]
-  (go
-    (let [out-editor (create-div-after element)]
-      (gdom/setTextContent out-editor default-txt)
-      (gdom/setTextContent out-editor (dbg (str (<! (eval-fn source-code)))))
-      (add-event-listener element "input" #(eval-in-dom-editor eval-fn out-editor element)))))
-
 
 (defn klipsify-with-opts [element {:keys [eval_idle_msec minimalistic_ui codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
   (go
@@ -114,8 +81,8 @@
             eval-fn-with-args #(eval-fn % (dbg {:static-fns static-fns :external-libs external-libs :context eval-context}))
             [in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror_options_in codemirror_options_out)
             source-code (dbg (<! (content element comment-str)))
-            create-editor (if minimalistic_ui create-dom-editor create-code-mirror-editor)]
-        (<! (create-editor {:element element
+            editor-type (if minimalistic_ui :dom :code-mirror)]
+        (<! (create-editor editor-type {:element element
                             :out-editor-options out-editor-options
                             :in-editor-options in-editor-options
                             :eval-fn eval-fn-with-args

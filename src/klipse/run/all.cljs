@@ -3,6 +3,7 @@
             klipse.compiler
             klipse.js_eval
             klipse.ruby
+            klipse.cpp
             klipse.python
             klipse.php
             klipse.run.app.app))

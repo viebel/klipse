@@ -7,23 +7,20 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-        <br/>
+    <br/>
 <pre>
-<code class="eval-python">
-def factorial(n):
-  if n == 0:
-    return 1
-  else:
-    return n * factorial(n - 1)
+<code class="eval-cpp">
+#include &lt;iostream&gt;
 
-
-print(factorial(5))
+int main() {
+        std::cout &lt;&lt; "Hello World!\n";
+} 
 </code>
 </pre>
     <br/>
        <script>
         window.klipse_settings = {
-            selector_eval_python: '.eval-python'
+            selector_eval_cpp: '.eval-cpp'
         };
         </script>
         <script src="https://repl.it/lib/api.js" type="text/javascript" charset="utf-8"></script>

@@ -1,9 +1,9 @@
-(ns klipse.python
+(ns klipse.cpp
   (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    cljsjs.codemirror.mode.python
+    cljsjs.codemirror.mode.clike
     [klipse.io :as io]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan <! >! put!]]
@@ -24,16 +24,16 @@
                  (put! c (str "Error: " (? result.error)))
                  (put! c (str "Result: " (? result.data)))))
              (fn [error]
-               (put! c "Error connecting to repl.it:"))))
+               (put! c error))))
     c))
 
 (defn str-eval-async [exp _]
   (go
-    (<! (replit "python3" exp))))
+    (<! (replit "c" exp))))
 
-(def opts {:editor-in-mode "python"
-           :editor-out-mode "python"
+(def opts {:editor-in-mode "clike"
+           :editor-out-mode "clike"
            :eval-fn str-eval-async
            :comment-str "#"})
 
-(register-mode "eval-python" "selector_eval_python" opts)
+(register-mode "eval-cpp" "selector_eval_cpp" opts)

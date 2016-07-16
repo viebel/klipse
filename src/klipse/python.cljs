@@ -13,19 +13,31 @@
 (def token #js {:msg_mac "RoyDczufgCsZycN3VFWJwm66e/eL4pSK19spUhmuzBU="
                 :time_created 1468499323000})
 
+
+(defn *init-repl* [language]
+  (js/ReplitClient. "api.repl.it" 80 language token))
+
+(def init-repl (memoize *init-repl*))
+(defn evaluate [repl c exp]
+  (->
+    (!> repl.evaluate exp #js {:stdout (fn [output]
+                                         (put! c output))})
+    (.then (fn [result] 
+             (if (? result.error) 
+               (put! c (str "Error: " (? result.error)))
+               (put! c (str "Result: " (? result.data)))))
+           (fn [error]
+             (put! c error)))))
+    
+
 (defn replit [language exp]
   (let [c (chan)
-        repl (js/ReplitClient. "api.repl.it" 80 language token)]
+        repl (init-repl language)]
     (-> 
-      (!> repl.evaluateOnce exp #js {:stdout (fn [output]
-                                               (put! c output))})
-      (.then (fn [result] 
-               (if (? result.error) 
-                 (put! c (str "Error: " (? result.error)))
-                 (put! c (str "Result: " (? result.data)))))
-             (fn [error]
-               (put! c "Error connecting to repl.it:"))))
-    c))
+      (!> repl.connect)
+      (.then (partial evaluate repl c exp)))
+      c))
+
 
 (defn str-eval-async [exp _]
   (go

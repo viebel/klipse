@@ -10,17 +10,48 @@
     <br/>
 <pre>
 <code class="eval-cpp">
-#include &lt;iostream&gt;
+#include "stdio.h"
+#include "stdlib.h"
+
+#define LIMIT 100 /*size of integers array*/
+
+int foo(){
+    unsigned long long int i,j;
+    int *primes;
+    int z = 1;
+   
+      setvbuf(stdout, NULL, _IONBF, 0);
+
+
+    primes = (int*)malloc(sizeof(int)*LIMIT);
+
+    for (i=2;i<LIMIT;i++)
+      primes[i]=1;
+
+    for (i=2;i<LIMIT;i++)
+      if (primes[i])
+        for (j=i;i*j<LIMIT;j++)
+          primes[i*j]=0;
+
+    for (i=2;i<LIMIT;i++)
+      if (primes[i])
+        printf("%dth prime = %d\n",z++,i);
+
+    return 0;
+}
 
 int main() {
-        std::cout &lt;&lt; "Hello World!\n";
-} 
+  return foo();
+}
+
 </code>
 </pre>
     <br/>
        <script>
         window.klipse_settings = {
+            eval_idle_msec: 200000, 
             selector_eval_cpp: '.eval-cpp'
+
         };
         </script>
         <script src="https://repl.it/lib/api.js" type="text/javascript" charset="utf-8"></script>

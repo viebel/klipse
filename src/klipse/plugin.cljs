@@ -2,14 +2,12 @@
   (:require-macros
     [cljs.core.async.macros :refer [go]])
   (:require 
+    [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
     [cljs.spec :as s]
     [clojure.walk :refer [keywordize-keys]]
     [goog.dom :refer [isElement]]
-    [klipse.utils :refer [gist-path-page read-input-from-gist]]
     [cljs.core.async :refer [<!]]
-    [clojure.string :as string :refer [trim split]]
-    [cljs.reader :refer [read-string]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 (enable-console-print!)
@@ -22,42 +20,13 @@
   (swap! selector->mode assoc selector mode)
   (swap! mode-options assoc mode opts))
 
-(defn read-string-or-val [value not-found]
-  (if value
-    (read-string value)
-    not-found))
-
-(defn string->array [s]
-  (when s
-    (->> (split s ",")
-         (map trim))))
-
-(defn content-from-gist [element comment-str]
-  (go
-    (when-let [gist-id (or
-                         (-> (aget element "dataset")
-                             (aget "gistId")) nil)]
-      (let [gist-content (<! (read-input-from-gist gist-id))
-            gist-intro (str "loaded from gist: " (gist-path-page gist-id))]
-        (str comment-str gist-intro "\n" gist-content)))))
-
-(defn content [element comment-str]
-  (go
-    (or
-      (<! (content-from-gist element comment-str))
-      (aget element "textContent");goog.dom/getTextContent removes new lines
-      )))
-
 (defn klipsify-with-opts [element {:keys [eval_idle_msec minimalistic_ui codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
   (go
     (when element
-      (let [my-dataset (aget element "dataset")
-            static-fns (read-string-or-val (aget my-dataset "staticFns") false)
-            eval-context (read-string-or-val (aget my-dataset "evalContext") nil)
-            external-libs (string->array (or (aget my-dataset "externalLibs") nil))
-            idle-msec (read-string-or-val (aget my-dataset "evalIdleMsec") eval_idle_msec)
-            eval-fn-with-args #(eval-fn % {:static-fns static-fns :external-libs external-libs :context eval-context})
+      (let [eval-args (eval-args-from-element element)
+            eval-fn-with-args #(eval-fn % eval-args)
             source-code (<! (content element comment-str))
+            {:keys [idle-msec] :or {idle-msec eval_idle_msec}} (editor-args-from-element element)
             editor-type (if minimalistic_ui :dom :code-mirror)]
         (<! (create-editor editor-type {:element element
                                         :editor-in-mode editor-in-mode

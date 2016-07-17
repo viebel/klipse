@@ -1,13 +1,9 @@
-(ns klipse.python
+(ns klipse.replit
   (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    cljsjs.codemirror.mode.python
-    [klipse.io :as io]
-    [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan <! >! put!]]
-    [klipse.plugin :refer [register-mode]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 (def token #js {:msg_mac "RoyDczufgCsZycN3VFWJwm66e/eL4pSK19spUhmuzBU="
@@ -32,7 +28,7 @@
              (put! c error)))))
     
 
-(defn replit [language exp]
+(defn connect-and-evaluate [language exp]
   (let [c (chan)
         repl (init-repl language)]
     (-> 
@@ -40,13 +36,3 @@
       (.then (partial evaluate repl c exp)))
     c))
 
-
-(defn str-eval-async [exp _]
-  (replit "python3" exp))
-
-(def opts {:editor-in-mode "python"
-           :editor-out-mode "python"
-           :eval-fn str-eval-async
-           :comment-str "#"})
-
-(register-mode "eval-python" "selector_eval_python" opts)

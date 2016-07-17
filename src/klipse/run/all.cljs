@@ -4,6 +4,6 @@
             klipse.js_eval
             klipse.ruby
             klipse.cpp
-            klipse.python
+            klipse.server-eval
             klipse.php
             klipse.run.app.app))

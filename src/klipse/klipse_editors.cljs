@@ -1,6 +1,6 @@
 (ns klipse.klipse-editors
   (:require-macros
-    [cljs.core.async.macros :refer [go]])
+    [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     [goog.dom :as gdom]
     [cljs.spec :as s]
@@ -10,21 +10,26 @@
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value get-value]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
-(defn eval-in-editor [eval-fn editor-target editor-source]
+(defn eval-in-editor [eval-fn value setter]
   (go
-    (->> (get-value editor-source)
-         eval-fn
-         <!
-         (set-value editor-target))))
+    (let [c (eval-fn value)
+          first-value (<! c)]
+      (setter first-value)
+      (go-loop [previous-values first-value]
+               (let [value (<! c)
+                     values (str previous-values value)]
+                 (setter values)
+                 (recur values))))))
+
+(defn eval-in-codemirror-editor [eval-fn editor-target editor-source]
+  (eval-in-editor eval-fn
+                  (get-value editor-source)
+                  (partial set-value editor-target)))
 
 (defn eval-in-dom-editor [eval-fn target source]
-  (go
-    (->> (value source)
-         eval-fn
-         <!
-         (gdom/setTextContent target))))
-
-
+  (eval-in-editor eval-fn
+                  (value source)
+                  (partial gdom/setTextContent target)))
 
 (s/def ::codemirror-options map?)
 (s/def ::editor-mode string?)
@@ -53,16 +58,16 @@
     (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
           out-editor (create-editor-after-element element default-txt out-editor-options); must be called before `element` is replaced
           in-editor (replace-element-by-editor element source-code in-editor-options)]
-      (set-value out-editor (dbg (str (<! (eval-fn source-code)))))
+      (<! (eval-in-codemirror-editor eval-fn out-editor in-editor))
       (handle-events in-editor
                      {:idle-msec idle-msec
-                      :on-should-eval #(eval-in-editor eval-fn out-editor in-editor)}))))
+                      :on-should-eval #(eval-in-codemirror-editor eval-fn out-editor in-editor)}))))
 
 (defmethod create-editor :dom [_ {:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec]}]
   (go
     (let [out-editor (create-div-after element)]
       (gdom/setTextContent out-editor default-txt)
-      (gdom/setTextContent out-editor (dbg (str (<! (eval-fn source-code)))))
+      (<! (eval-in-dom-editor eval-fn out-editor element))
       (add-event-listener element "input" #(eval-in-dom-editor eval-fn out-editor element)))))
 
 (comment

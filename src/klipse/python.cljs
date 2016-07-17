@@ -20,12 +20,14 @@
 (def init-repl (memoize *init-repl*))
 (defn evaluate [repl c exp]
   (->
-    (!> repl.evaluate exp #js {:stdout (fn [output]
-                                         (put! c output))})
+    (!> repl.evaluate exp 
+        #js {:stdout (fn [output]
+                       (put! c output))})
     (.then (fn [result] 
-             (if (? result.error) 
-               (put! c (str "Error: " (? result.error)))
-               (put! c (str "Result: " (? result.data)))))
+             ;(js/console.log result)
+             (if (empty? (? result.error))
+               (put! c (str "Result: " (? result.data) "\n"))
+               (put! c (str "Error: " (? result.error) "\n"))))
            (fn [error]
              (put! c error)))))
     
@@ -36,12 +38,11 @@
     (-> 
       (!> repl.connect)
       (.then (partial evaluate repl c exp)))
-      c))
+    c))
 
 
 (defn str-eval-async [exp _]
-  (go
-    (<! (replit "python3" exp))))
+  (replit "python3" exp))
 
 (def opts {:editor-in-mode "python"
            :editor-out-mode "python"

@@ -6,6 +6,7 @@
     [cljs.core.async :refer [<!]]
     [clojure.string :as string :refer [trim split]]
     [cljs.reader :refer [read-string]]
+    [gadjett.collections :refer [compactize-map]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 (defn read-string-or-val [value not-found]
@@ -44,6 +45,6 @@
 (defn editor-args-from-element [element]
   (let [my-dataset (aget element "dataset")
         idle-msec (read-string-or-val (aget my-dataset "evalIdleMsec") nil)]
-    {:idle-msec idle-msec}))
+    (compactize-map {:idle-msec idle-msec})))
        
 

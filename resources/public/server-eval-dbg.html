@@ -7,6 +7,12 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
+    <h1> Go </h1>
+<div class="eval-go" data-gist-id="viebel/851e37d44deea67aea849e81de38ea3f">
+</div>
+</br>
+
+<h1> C# </h1>
 <pre>
 <code class="eval-csharp">
 using System;
@@ -34,12 +40,7 @@ class MainClass {
 </pre>
         <br/>
 
-<pre>
-<code class="eval-python">
-print(2+3)
-</code>
-</pre>
-        <br/>
+<h1> Python </h1>
 <pre>
 <code class="eval-python">
 def factorial(n):
@@ -48,23 +49,20 @@ def factorial(n):
   else:
     return n * factorial(n - 1)
 
-
 print(factorial(5))
 </code>
 </pre>
     <br/>
 <pre>
-<code class="eval-python">
-
-print(factorial(6))
-print(factorial(3))
-</code>
+<code class="eval-python">print(factorial(6))
+print(factorial(3))</code>
 </pre>
     </br>
     
     <script>
         window.klipse_settings = {
             eval_idle_msec: 200000, 
+            selector_eval_go: '.eval-go',
             selector_eval_csharp: '.eval-csharp',
             selector_eval_python: '.eval-python'
         };

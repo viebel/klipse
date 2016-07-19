@@ -18,8 +18,9 @@
       (go-loop [previous-values first-value]
                (let [value (<! c)
                      values (str previous-values value)]
-                 (setter values)
-                 (recur values))))))
+                 (when value ;exit if the channel is closed
+                   (setter values)
+                   (recur values)))))))
 
 (defn eval-in-codemirror-editor [eval-fn editor-target editor-source]
   (eval-in-editor eval-fn

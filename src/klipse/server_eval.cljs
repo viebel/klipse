@@ -5,6 +5,7 @@
   (:require 
     cljsjs.codemirror.mode.python
     cljsjs.codemirror.mode.clike
+    cljsjs.codemirror.mode.go
     [klipse.replit :refer [connect-and-evaluate]]
     [klipse.io :as io]
     [klipse.utils :refer [runonce]]
@@ -12,22 +13,31 @@
     [klipse.plugin :refer [register-mode]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
-(def python
-  {:selector "selector_eval_python"
-   :name "eval-python"
-   :opts {:editor-in-mode "python"
-          :editor-out-mode "python"
-          :replit-language "python3"
-          :comment-str "#"}})
+(when (? js/window.ReplitClient)
+  (def python
+    {:selector "selector_eval_python"
+     :name "eval-python"
+     :opts {:editor-in-mode "python"
+            :editor-out-mode "python"
+            :replit-language "python3"
+            :comment-str "#"}})
 
-(def csharp
-  {:selector "selector_eval_csharp"
-   :name "eval-csharp"
-   :opts {:editor-in-mode "text/x-csharp"
-          :editor-out-mode "text/x-csharp"
-          :replit-language "csharp"
-          :comment-str "#"}})
+  (def csharp
+    {:selector "selector_eval_csharp"
+     :name "eval-csharp"
+     :opts {:editor-in-mode "text/x-csharp"
+            :editor-out-mode "text/x-csharp"
+            :replit-language "csharp"
+            :comment-str "#"}})
 
-(doseq [{:keys [selector name opts]} [python csharp]]
-  (let [enriched-opts (assoc opts :eval-fn (partial connect-and-evaluate (:replit-language opts)))]
-  (register-mode name selector enriched-opts)))
+  (def go
+    {:selector "selector_eval_go"
+     :name "eval-go"
+     :opts {:editor-in-mode "go"
+            :editor-out-mode "go"
+            :replit-language "go"
+            :comment-str "//"}})
+
+  (doseq [{:keys [selector name opts]} [python csharp go]]
+    (let [enriched-opts (assoc opts :eval-fn (partial connect-and-evaluate (:replit-language opts)))]
+      (register-mode name selector enriched-opts))))

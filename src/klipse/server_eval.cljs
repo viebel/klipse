@@ -14,6 +14,7 @@
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 (when (? js/window.ReplitClient)
+  (def min-eval-idle-msec 3000); throttle to protect the server
   (def python
     {:selector "selector_eval_python"
      :name "eval-python"
@@ -40,5 +41,8 @@
             :comment-str "//"}})
 
   (doseq [{:keys [selector name opts]} [python csharp go]]
-    (let [enriched-opts (assoc opts :eval-fn (partial connect-and-evaluate (:replit-language opts)))]
+    (let [enriched-opts
+          (-> (assoc opts :eval-fn (partial connect-and-evaluate (:replit-language opts)))
+              (dissoc :replit-language)
+              (assoc :min-eval-idle-msec min-eval-idle-msec))]
       (register-mode name selector enriched-opts))))

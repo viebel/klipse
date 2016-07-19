@@ -76,12 +76,15 @@
         auto-indent
         goto-start)))
 
-(defn replace-element-by-editor [element value {:keys [mode] :as opts}]
+(defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [beautify?] :or {beautify? true}}]
   (let [editor (js/CodeMirror (fn [elt]
                                 (gdom/replaceNode elt element))
                               (clj->js opts))]
-    (-> (set-value editor value)
-        (beautify mode))))
+    (as->
+      (set-value editor value) $
+      (if beautify?
+        (beautify $ mode)
+        $))))
 
 
 (defn create-editor-after-element [element value opts]

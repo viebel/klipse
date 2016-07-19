@@ -20,7 +20,7 @@
   (swap! selector->mode assoc selector mode)
   (swap! mode-options assoc mode opts))
 
-(defn klipsify-with-opts [element {:keys [eval_idle_msec minimalistic_ui codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str]}]
+(defn klipsify-with-opts [element {:keys [eval_idle_msec minimalistic_ui codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify?] :or {beautify? true}}]
   (go
     (when element
       (let [eval-args (eval-args-from-element element)
@@ -29,6 +29,7 @@
             {:keys [idle-msec] :or {idle-msec eval_idle_msec}} (editor-args-from-element element)
             editor-type (if minimalistic_ui :dom :code-mirror)]
         (<! (create-editor editor-type {:element element
+                                        :beautify? beautify?
                                         :editor-in-mode editor-in-mode
                                         :editor-out-mode editor-out-mode
                                         :codemirror-options-in codemirror_options_in

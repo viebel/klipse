@@ -20,7 +20,8 @@
      :opts {:editor-in-mode "python"
             :editor-out-mode "python"
             :replit-language "python3"
-            :comment-str "#"}})
+            :comment-str "#"
+            :beautify? false}})
 
   (def csharp
     {:selector "selector_eval_csharp"

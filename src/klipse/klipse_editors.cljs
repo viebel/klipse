@@ -10,17 +10,26 @@
     [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value get-value]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
-(defn eval-in-editor [eval-fn value setter]
+(defn eval-in-editor
+  "
+  Evaluates the `value` and call `setter` with the result of the evaluation.
+  Block until the first evaluation.
+  Call `setter` with subsequent evaluations asynchronously.
+  (Subsequent evaluations occur with `server-eval` where printing results are written on the channel, one after the other.
+  In the case of client side evaluation, the channel is closed after the first message on the channel (this is done implicitly by `go`).
+  "
+  [eval-fn src-code setter]
   (go
-    (let [c (eval-fn value)
-          first-value (<! c)]
-      (setter first-value)
-      (go-loop [previous-values first-value]
-               (let [value (<! c)
-                     values (str previous-values value)]
-                 (when value ;exit if the channel is closed
-                   (setter values)
-                   (recur values)))))))
+    ; it is important to block until the first evaluation because other klipse snippets might depend on this evaluation. E.g. when a snippet uses a function defined in a previous snippet.
+    (let [evaluation-chan (eval-fn src-code)
+          first-result (<! evaluation-chan)]
+      (setter first-result)
+      (go-loop [previous-results first-result]
+               (let [result (<! evaluation-chan)
+                     results (str previous-results result)]
+                 (when (some? result) ;exit if the channel is closed
+                   (setter results)
+                   (recur results)))))))
 
 (defn eval-in-codemirror-editor [eval-fn editor-target editor-source]
   (eval-in-editor eval-fn

@@ -6,8 +6,8 @@
     [cljs.core.async :refer [chan <! >! put!]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
-(def token #js {:msg_mac "RoyDczufgCsZycN3VFWJwm66e/eL4pSK19spUhmuzBU="
-                :time_created 1468499323000})
+(def token #js {:msg_mac "6GpVqi640U22dcEhfB5C58m0oqAWXuVZr+SQ4sBoTMQ="
+                :time_created 1468951584000 })
 
 
 (defn *init-repl* [language]

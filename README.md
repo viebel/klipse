@@ -163,6 +163,20 @@ The following attributes can be added to the DOM element of the snippet:
 * `data-static-fns`: (default `false`) set to true for using [static dispatch](http://blog.klipse.tech/clojurescript/2016/04/13/static-fns.html)
 * `data-eval-context`: (default `statement`) indicates the evaluation context that will be passed to cljs/eval-str. One in `expr`, `statement`, `return`.  
 
+## Styling
+The Klipse plugin can be easily styled with CSS, which can be applied both to the Klipse plugin's own elements, and to the CodeMirror editor's elements. Much of the styling you'll apply will be to CodeMirror, as it contains all the CSS classes to style the code itself. Surrounding CodeMirror is the Klipse plugin, the styles of which control the plugin's borders, and the executed code's output.
+
+### Changing the style of CodeMirror
+You can change the theme of the CodeMirror editor simply by modifying its [CSS](http://codemirror.net/doc/manual.html#styling). If you don't want to create your own theme, Farhad Gayour has an awesome [list of ready-made themes](http://farhadg.github.io/code-mirror-themes/) you can select from. Have a look at the different themes by selecting them from the drop-down. Once you've found one you like, head to the [theme repo](https://github.com/FarhadG/code-mirror-themes/tree/master/themes) to copy the CSS, paste it into a CSS file, and link to it from the HTML page containing your Klipse plugin.
+
+### Changing the style of the Klipse plugin
+To change the style of the Klipse plugin's borders and the console output, you'll need to add a few extra style rules to your CSS file. These are:
+
+- `.CodeMirror` - modify the plugin's borders and CodeMirror's containing `div`
+- `.CodeMirror:last-child::before` - modify the console's title (i.e. the bit that says _Output:_)
+- `.CodeMirror:last-child` - modify the console area (i.e. the area beneath _Output:_)
+
+You can see an example of styling Klipse in `demos/styling`.
 
 ## Community
 
@@ -173,6 +187,7 @@ Here are a couple of examples of blogs using the klipse plugin:
 - clojure: [z.caudate.me - live documentation with klipse](http://z.caudate.me/klipse-demo/)
 - ruby, javascript, clojure: [blog.klipse.tech](blog.klipse.tech)
 - clojure documentation: [Anonymous functions in clojure](http://clojurebridge.github.io/community-docs/docs/clojure/anonymous-function/)
+- javascript: [Untangled.io - Advanced ES6 destructuring techniques with live examples](http://untangled.io/in-depth-es6-destructuring-with-assembled-avengers/)
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 

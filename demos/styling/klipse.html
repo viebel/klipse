@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <link rel="stylesheet" type="text/css" href="http://app.klipse.tech/css/codemirror.css">
+  
+  <!-- Your custom CSS styles -->
+  <link rel="stylesheet" type="text/css" href="theme.css">
+	
+	<title>Klipse Theme Example</title>
+
+</style>
+</head>
+
+<body>
+	<!-- KLIPSE PLUGIN -->
+  <pre>
+    <code class="language-klipse-eval-js">
+    [1, 2, 3].map(function(x) {
+      return x + 1;
+    })
+    </code>
+  </pre>
+
+<!-- CONFIGURE KLIPSE -->
+<script>
+    window.klipse_settings = {
+        selector_eval_js: '.language-klipse-eval-js', // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+
+</body>
+</html>

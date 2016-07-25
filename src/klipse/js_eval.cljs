@@ -44,11 +44,11 @@
   (go
     (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
       (if (= :ok status)
-        (dbg (try (-> exp
-                      eval-in-global-scope
-                      beautify)
-                  (catch js/Object o
-                    (str o))))
+        (try (-> exp
+                 eval-in-global-scope
+                 beautify)
+             (catch js/Object o
+               (str o)))
         (str "Cannot load script: " script "\n"
              "error: " http-status)))))
 

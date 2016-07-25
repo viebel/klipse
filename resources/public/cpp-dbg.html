@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+    <br/>
+<pre>
+<code class="eval-cpp">
+#include "stdio.h"
+#include "stdlib.h"
+
+#define LIMIT 100 /*size of integers array*/
+
+int foo(){
+    unsigned long long int i,j;
+    int *primes;
+    int z = 1;
+   
+      setvbuf(stdout, NULL, _IONBF, 0);
+
+
+    primes = (int*)malloc(sizeof(int)*LIMIT);
+
+    for (i=2;i<LIMIT;i++)
+      primes[i]=1;
+
+    for (i=2;i<LIMIT;i++)
+      if (primes[i])
+        for (j=i;i*j<LIMIT;j++)
+          primes[i*j]=0;
+
+    for (i=2;i<LIMIT;i++)
+      if (primes[i])
+        printf("%dth prime = %d\n",z++,i);
+
+    return 0;
+}
+
+int main() {
+  return foo();
+}
+
+</code>
+</pre>
+    <br/>
+       <script>
+        window.klipse_settings = {
+            eval_idle_msec: 200000, 
+            selector_eval_cpp: '.eval-cpp'
+
+        };
+        </script>
+        <script src="https://repl.it/lib/api.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/lib/mirror_extensions.js"></script>
+        <script src="/fig/js/klipse.fig.js"></script>
+    </body>
+</html>

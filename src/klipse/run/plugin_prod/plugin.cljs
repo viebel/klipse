@@ -3,6 +3,7 @@
             klipse.js-eval
             klipse.ruby
             klipse.php
+            klipse.server-eval
             klipse.markdown
             [gadjett.core :as gadjett :refer-macros [dbg]]
             [klipse.plugin :as plugin]))

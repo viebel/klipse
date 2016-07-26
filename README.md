@@ -176,7 +176,7 @@ To change the style of the Klipse plugin's borders and the console output, you'l
 - `.CodeMirror:last-child::before` - modify the console's title (i.e. the bit that says _Output:_)
 - `.CodeMirror:last-child` - modify the console area (i.e. the area beneath _Output:_)
 
-You can see an example of styling Klipse in `demos/styling`.
+You can see an example of styling Klipse in `demos/styling`. And here is a [live demo](http://htmlpreview.github.io/?https://raw.githubusercontent.com/viebel/klipse/master/demos/styling/klipse.html)
 
 ## Community
 

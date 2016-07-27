@@ -18,6 +18,10 @@
 
 (defn eval-context? []
   (keyword (read-string (or (:eval-context (url-parameters)) "nil"))))
+
+(defn external-libs []
+  (map str (read-string (or (:external-libs (url-parameters)) "[]"))))
+
 (deftrack eval-js [s]
   (go
     (let [[status res] (<! (eval-async s {:static-fns (static-fns?)}))]
@@ -27,7 +31,8 @@
 (deftrack eval-clj [s]
   (go
     (let [[status res] (<! (eval-async s {:static-fns (static-fns?)
-                                          :context (dbg (eval-context?))}))]
+                                          :external-libs (external-libs)
+                                          :context (eval-context?)}))]
       [status (if (string? res)
                 res
                 (with-out-str (pprint res)))])))

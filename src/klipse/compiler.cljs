@@ -48,20 +48,14 @@
    ;"tools.reader" "https://raw.githubusercontent.com/viebel/tools.reader/master/src/main/cljs/"
    })
 
-(defn repos []
+(defn repos [additional-libs]
   (-> (vals known-src-paths)
-      flatten))
+      flatten
+      (concat additional-libs)))
 
 (defn special-fetch [file-url src-cb]
   (-> (s/replace file-url #"gist_" "")
       (io/fetch-file! src-cb)))
-
-(defn repl-opts-load [] (merge (replumb/options :browser
-                                           (repos) 
-                                           special-fetch)
-                          {:warning-as-error false
-                           :context :statement
-                           :verbose false}))
 
 (defn read-string-cond [s]
   (try
@@ -112,16 +106,17 @@
                       #(put! c (convert-compile-res %)))
     c))
 
-(defn build-repl-opts [{:keys [static-fns context]}]
-  (merge (replumb/options :browser (repos) special-fetch)
+(defn build-repl-opts [{:keys [static-fns context external-libs]}]
+  (merge (replumb/options :browser (repos external-libs) special-fetch)
          {:warning-as-error false
           :static-fns static-fns
           :context (or context :statement)
           :verbose false}))
      
-(deftrack eval-async-1 [s {:keys [static-fns context] :or {static-fns false context nil}}]
+(deftrack eval-async-1 [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs '()}}]
   (let [c (chan)
         opts (dbg (build-repl-opts {:static-fns static-fns
+                                    :external-libs external-libs
                                     :context (keyword context)}))]
     (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
     c))
@@ -135,8 +130,10 @@
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
     (<! (eval-async-1 s args))))
 
-(deftrack eval [s & {:keys [static-fns] :or {static-fns false}}]
-  (let [opts (dbg (build-repl-opts {:static-fns static-fns}))]
+(deftrack eval [s & {:keys [static-fns external-libs context] :or {static-fns false external-libs '() context nil}}]
+  (let [opts (build-repl-opts {:static-fns static-fns
+                               :external-libs external-libs
+                               :context (keyword context)})]
     (replumb/read-eval-call opts convert-eval-res s)))
 
 (defn str-compile [exp]
@@ -160,9 +157,11 @@
     "nil"
     (str x)))
 
-(defn str-eval-async [exp {:keys [static-fns context] :or {static-fns false}}]
+(defn str-eval-async [exp {:keys [static-fns context external-libs] :or {static-fns false external-libs '()} :as the-args}]
   (go
-    (-> (<! (eval-async exp {:static-fns static-fns :context context}))
+    (-> (<! (eval-async exp {:static-fns static-fns
+                             :external-libs external-libs
+                             :context context}))
         second
         my-str)))
 

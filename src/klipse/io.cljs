@@ -11,7 +11,9 @@
   See doc at https://developers.google.com/closure/library/docs/xhrio"
   [file-url src-cb]
     (try
-      (.send XhrIo (str file-url)
+      ; disable caching to support updates in source files
+      ; might consider to make it configurable to disable caching
+      (.send XhrIo (str file-url "?" (rand))
              (fn [e]
                (if (.isSuccess (.-target e))
                  (do

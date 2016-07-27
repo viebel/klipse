@@ -8,23 +8,22 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
     </head>
     <body>
-    <code class="clojure" >
-        (map inc [1 2 3])
-</code>
-    <div class="eval-ruby" data-external-libs="http://cdn.opalrb.org/opal/current/opal.min.js, http://cdn.opalrb.org/opal/current/opal-parser.min.js">
-        <style>
-            textarea {
-                width: 500px;
-            }
-        </style>
-<textarea class="eval-js">
-    [1,2,3].map ( x => x + 1)
-</textarea>
+<div class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/lambda-calculus/master/src/">
+    ;https://github.com/viebel/lambda-calculus
+    (ns my.me 
+      (:refer-clojure :exclude [+ - * inc dec])
+        (:require-macros [lambda-calculus.macros :refer [lambda]])
+          (:require
+              [lambda-calculus.numerals :refer [num + inc dec - * **]]))
+              </div>
        <br/>
+<div class="clojure">
+    (num 8)
+    </div>
+    <br/>
         <script>
         window.klipse_settings = {
             codemirror_options_in: {
-                indentUnit: 18,
                 lineWrapping: true,
                 lineNumbers: true,
                autoCloseBrackets: true
@@ -34,7 +33,6 @@
                 lineNumbers: true
             },
             selector: '.clojure',
-            minimalistic_ui: true,
             selector_eval_markdown: '.eval-markdown',
             selector_eval_js: '.eval-js',
             selector_js: '.clojure-js'

@@ -1,7 +1,7 @@
 # KLIPSE [![Circle CI](https://circleci.com/gh/viebel/klipse/tree/master.svg?style=svg)](https://circleci.com/gh/viebel/klipse/tree/master) [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/klipse-67458228-ba92-4d52-9511-bfde20964896)
 
 
-The klipse plugin is a javascript tag that transforms static code snippets of an html page to live and interactive snippets:
+The klipse plugin is a javascript tag that transforms static code snippets of an html page into live and interactive snippets:
 
 1. **Live**: The code is executed in your browser
 2. **Interactive**: You can modify the code and it is evaluated as you type

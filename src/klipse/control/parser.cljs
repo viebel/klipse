@@ -2,7 +2,6 @@
   (:require-macros
     [cljs.core.async.macros :refer [go]])
   (:require 
-    [cljs.pprint :refer [pprint]]
     [gadjett.core :as gadjett :refer-macros [dbg]]
     [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters]]
@@ -33,9 +32,7 @@
     (let [[status res] (<! (eval-async s {:static-fns (static-fns?)
                                           :external-libs (external-libs)
                                           :context (eval-context?)}))]
-      [status (if (string? res)
-                res
-                (with-out-str (pprint res)))])))
+      [status res])))
 
 
 ;; =============================================================================

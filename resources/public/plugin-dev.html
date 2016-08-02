@@ -22,7 +22,14 @@
         <br/>
         <span class="clojure"> (foo 19) </span>
         <br/>
-         
+         <p>
+        Strings should be evaluated to their value - with the quote.
+        </p>
+        <span class="clojure"> 
+            (str "abc")
+             </span>
+
+ 
         <p>
         Functions should be evaluated to their code.
         </p>
@@ -48,6 +55,12 @@
      (if 1 2 3)
      </div>
 
+     <p>
+     Strings should be evaluated to their value - with the quote.
+     </p>
+ <div class="clojure" data-eval-context="expr">
+     "abc"
+     </div>
      <h2> load code from a gist </h2>
         <span class="clojure" data-gist-id="viebel/368d3bec58d3ec47e935ad488bafb600"> </span>
             <h2> requiring a namespace </h2>

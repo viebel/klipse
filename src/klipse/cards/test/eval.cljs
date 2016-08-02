@@ -24,6 +24,13 @@
        "(+ 1 2" "EOF while reading" 
        "(a)" "ERROR"))
 
+(deftest test-eval-context-expr
+  "eval with several expressions"
+  (are [input-clj output-clj]
+       (= (eval input-clj {:context :expr}) [:ok output-clj])
+       "(if (> 100 10) 1 2)" 1
+       "\"abc\"" "abc"))
+ 
 (deftest test-eval-2
   "eval with several expressions"
   (are [input-clj output-clj]

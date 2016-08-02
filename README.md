@@ -195,8 +195,6 @@ Here are a couple of examples of blogs using the klipse plugin:
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-We need your support to make blogging about languages a much better experience [![Codewake](https://www.codewake.com/badges/contribute.svg)](https://www.codewake.com/p/klipse)
-
 
 ## Klipse App
 Here is the [information about the Klipse app](https://github.com/viebel/klipse/blob/master/contributing.md)

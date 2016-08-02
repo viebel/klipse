@@ -5,6 +5,6 @@
 (enable-console-print!)
 (gadjett/settings! :max-function-calls 100)
 
-(def version "2.0.2")
+(def version "2.0.3")
 (println "KLIPSE version:" version)
 

@@ -4,6 +4,7 @@
   (:require 
     cljsjs.js-beautify
     [cljs.reader :refer [read-string]]
+    [cljs.pprint :refer [pprint]]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
     [clojure.string :as s]
@@ -63,6 +64,13 @@
     (catch js/Object e
       s)))
 
+(defn convert-eval-res-pprint [{:keys [form warning error value success?]}]
+  (let [status (if error :error :ok)
+        res (if value
+              (with-out-str (pprint (read-string-cond value)))
+              error)]
+    [status res]))
+
 (defn convert-eval-res [{:keys [form warning error value success?]}]
   (let [status (if error :error :ok)
         res (if value 
@@ -121,10 +129,11 @@
 
 (deftrack eval-async-1 [s opts]
   (let [c (chan)]
-    (core-eval s opts #(put! c (convert-eval-res %)))
+    (core-eval s opts #(put! c (convert-eval-res-pprint %)))
     c))
 
-(deftrack eval
+(defn eval
+  "used for testing and exporting to javascript"
   ([s] (eval s {}))
   ([s opts] (core-eval s opts convert-eval-res)))
 

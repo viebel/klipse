@@ -4,7 +4,7 @@
   (:require 
     [clojure.string :as string]
     [gadjett.core :as gadjett :refer-macros [dbg]]
-    [klipse.compiler :refer [eval str-eval]]
+    [klipse.compiler :refer [eval result-as-is str-eval]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 
 (defn remove-chars [s]
@@ -108,5 +108,19 @@
        "(ns my.vars) (def b 1) b" "#'my.vars/b"
        "(ns my.vars) (def c 1) [c]" [1]
        ))
+
+(deftest test-str-eval
+  "evaluates a string to a string"
+  (are [in out]
+       (= (str-eval in) out)
+       "(map inc [1 2 3])" "(2 3 4)"
+       ))
+
+(deftest display-evaluation
+  "displays evaluation properly"
+  (are [in out]
+       (= (second (result-as-is {:value in})) out)
+       "abc" "abc"
+       "abc\n123" "abc\n123"))
 
 

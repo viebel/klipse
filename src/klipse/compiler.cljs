@@ -4,7 +4,6 @@
   (:require 
     cljsjs.js-beautify
     [cljs.reader :refer [read-string]]
-    [cljs.pprint :refer [pprint]]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
     [clojure.string :as s]
@@ -64,14 +63,15 @@
     (catch js/Object e
       s)))
 
-(defn convert-eval-res-pprint [{:keys [form warning error value success?]}]
+(defn result-as-is [{:keys [form warning error value success?]}]
   (let [status (if error :error :ok)
         res (if value
-              (with-out-str (pprint (read-string-cond value)))
+              value ; we cannot use read-string - as it
+                    ; evaluates only a single expression
               error)]
     [status res]))
 
-(defn convert-eval-res [{:keys [form warning error value success?]}]
+(defn read-result [{:keys [form warning error value success?]}]
   (let [status (if error :error :ok)
         res (if value 
               (read-string-cond value)
@@ -129,13 +129,13 @@
 
 (deftrack eval-async-1 [s opts]
   (let [c (chan)]
-    (core-eval s opts #(put! c (convert-eval-res-pprint %)))
+    (core-eval s opts #(put! c (result-as-is %)))
     c))
 
 (defn eval
   "used for testing and exporting to javascript"
   ([s] (eval s {}))
-  ([s opts] (core-eval s opts convert-eval-res)))
+  ([s opts] (core-eval s opts read-result)))
 
 (defn contains-macro-def? [exp]
   (re-find #"\$macros" exp))

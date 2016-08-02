@@ -113,13 +113,20 @@
           :context (or context :statement)
           :verbose false}))
      
-(deftrack eval-async-1 [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs '()}}]
-  (let [c (chan)
-        opts (dbg (build-repl-opts {:static-fns static-fns
-                                    :external-libs external-libs
-                                    :context (keyword context)}))]
-    (replumb/read-eval-call opts #(put! c (convert-eval-res %)) s)
+(defn core-eval [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs '()}} cb]
+  (let [opts (build-repl-opts {:static-fns static-fns
+                               :external-libs external-libs
+                               :context (keyword context)})]
+    (replumb/read-eval-call opts cb s)))
+
+(deftrack eval-async-1 [s opts]
+  (let [c (chan)]
+    (core-eval s opts #(put! c (convert-eval-res %)))
     c))
+
+(deftrack eval
+  ([s] (eval s {}))
+  ([s opts] (core-eval s opts convert-eval-res)))
 
 (defn contains-macro-def? [exp]
   (re-find #"\$macros" exp))
@@ -129,12 +136,6 @@
     (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
     (<! (eval-async-1 s args))))
-
-(deftrack eval [s & {:keys [static-fns external-libs context] :or {static-fns false external-libs '() context nil}}]
-  (let [opts (build-repl-opts {:static-fns static-fns
-                               :external-libs external-libs
-                               :context (keyword context)})]
-    (replumb/read-eval-call opts convert-eval-res s)))
 
 (defn str-compile [exp]
   (-> (compile exp)
@@ -147,7 +148,9 @@
       second
       str)))
 
-(defn str-eval [exp]
+(defn ^:export str-eval
+  "It is convenient to have a javascript function that evaluates clojure expressions"
+  [exp]
   (-> (eval exp)
       second
       str))

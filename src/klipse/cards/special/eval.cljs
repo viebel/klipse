@@ -19,7 +19,8 @@
 (deftest static-fn-failure
   "expected failures with static dispatch"
   (are [input-clj message]
-       (= (error->clj (eval input-clj :static-fns true)) [:error {:message message}])
+       (= (error->clj (eval input-clj {:static-fns true})) [:error {:message message}])
+
        "(defn f ([a] a) ([a b] [a b])) (defn g [] (f 1 2)) (defn f [& args] :args) (g)" "ERROR"))
 
 (deftest test-eval-macros

@@ -196,5 +196,5 @@ Here are a couple of examples of blogs using the klipse plugin:
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-## Klipse App
+## Klipse App - Clojure Web Repl
 Here is the [information about the Klipse app](https://github.com/viebel/klipse/blob/master/contributing.md)

@@ -25,7 +25,8 @@
                   [`(input/save   {:value ~s})
                    `(cljs/compile {:value ~s})
                    `(js/eval      {:value ~s})
-                   `(clj/eval     {:value ~s})])))
+                   `(clj/eval     {:value ~s})
+                   ':input])))
 
 (defn init-input [component s]
   (om/transact! component

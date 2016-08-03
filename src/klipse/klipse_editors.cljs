@@ -1,7 +1,10 @@
 (ns klipse.klipse-editors
   (:require-macros
+    [purnam.core :refer [!]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
+    [goog.dom :as gdom]
+    [goog.dom.safe :as gsafe]
     [goog.dom :as gdom]
     [cljs.spec :as s]
     [klipse.dom-utils :refer [create-div-after value add-event-listener]]
@@ -38,8 +41,13 @@
 
 (defn eval-in-dom-editor [eval-fn target source]
   (eval-in-editor eval-fn
-                  (value source)
+                  (dbg (value source))
                   (partial gdom/setTextContent target)))
+
+(defn eval-in-html-editor [eval-fn target editor-source]
+  (eval-in-editor eval-fn
+                  (get-value editor-source)
+                  #(! target.innerHTML %)))
 
 (s/def ::codemirror-options map?)
 (s/def ::editor-mode string?)
@@ -62,6 +70,16 @@
 
 
 (defmulti create-editor (fn [type _] type))
+
+(defmethod create-editor :html [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out ]}]
+  (go
+    (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
+          out-editor (create-div-after element)
+          in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)]
+      (<! (eval-in-html-editor eval-fn out-editor in-editor))
+      (handle-events in-editor
+                     {:idle-msec idle-msec
+                      :on-should-eval #(eval-in-html-editor eval-fn out-editor in-editor)}))))
 
 (defmethod create-editor :code-mirror [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out ]}]
   (go

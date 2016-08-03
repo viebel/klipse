@@ -24,14 +24,23 @@
   (let [{:keys [idle-msec] :or {idle-msec global-idle-msec}} (editor-args-from-element element)]
     {:idle-msec (max min-idle-msec idle-msec)}))
 
-(defn klipsify-with-opts [element {:keys [eval_idle_msec minimalistic_ui codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? min-eval-idle-msec] :or {min-eval-idle-msec 0 beautify? true}}]
+(defn editor-type [minimalistic_ui? the-type]
+  (if minimalistic_ui?
+    :dom
+    (case the-type
+      "code-mirror" :code-mirror
+      "dom" :dom
+      "html" :html)))
+
+(defn klipsify-with-opts [element {:keys [eval_idle_msec minimalistic_ui editor_type codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? min-eval-idle-msec] :or {min-eval-idle-msec 0 beautify? true}}]
   (go
     (when element
       (let [eval-args (eval-args-from-element element)
             eval-fn-with-args #(eval-fn % eval-args)
             source-code (<! (content element comment-str))
             {:keys [idle-msec]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec)
-            editor-type (if minimalistic_ui :dom :code-mirror)]
+            editor-type (dbg (editor-type minimalistic_ui editor_type))]
+        (print "create-editor")
 
         (<! (create-editor editor-type {:element element
                                         :beautify? beautify?

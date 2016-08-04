@@ -8,6 +8,7 @@
     [clojure.walk :refer [keywordize-keys]]
     [goog.dom :refer [isElement]]
     [cljs.core.async :refer [<!]]
+    [gadjett.collections :refer [compactize-map]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 (enable-console-print!)
@@ -20,17 +21,19 @@
   (swap! selector->mode assoc selector mode)
   (swap! mode-options assoc mode opts))
 
-(defn calc-editor-args-from-element [element global-idle-msec min-idle-msec]
-  (let [{:keys [idle-msec] :or {idle-msec global-idle-msec}} (editor-args-from-element element)]
-    {:idle-msec (max min-idle-msec idle-msec)}))
+(defn calc-editor-args-from-element [element global-idle-msec min-idle-msec global-editor-type]
+  (let [{:keys [idle-msec editor-type] :or {idle-msec global-idle-msec editor-type global-editor-type}} (editor-args-from-element element)]
+    (compactize-map {:idle-msec (max min-idle-msec idle-msec)
+                     :editor-type editor-type})))
 
-(defn editor-type [minimalistic_ui? the-type]
+(defn calc-editor-type [minimalistic_ui? the-type]
   (if minimalistic_ui?
     :dom
     (case the-type
       "code-mirror" :code-mirror
       "dom" :dom
-      "html" :html)))
+      "html" :html
+      :code-mirror)))
 
 (defn klipsify-with-opts [element {:keys [eval_idle_msec minimalistic_ui editor_type codemirror_options_in codemirror_options_out] :or {eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? min-eval-idle-msec] :or {min-eval-idle-msec 0 beautify? true}}]
   (go
@@ -38,8 +41,8 @@
       (let [eval-args (eval-args-from-element element)
             eval-fn-with-args #(eval-fn % eval-args)
             source-code (<! (content element comment-str))
-            {:keys [idle-msec]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec)
-            editor-type (editor-type minimalistic_ui editor_type)]
+            {:keys [idle-msec editor-type]} (dbg (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type))
+            editor-type (dbg (calc-editor-type minimalistic_ui editor-type))]
         (<! (create-editor editor-type {:element element
                                         :beautify? beautify?
                                         :editor-in-mode editor-in-mode

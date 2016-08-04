@@ -43,8 +43,11 @@
     {:static-fns static-fns :external-libs external-libs :context eval-context}))
 
 (defn editor-args-from-element [element]
+
   (let [my-dataset (aget element "dataset")
+        editor-type (aget my-dataset "editorType")
         idle-msec (read-string-or-val (aget my-dataset "evalIdleMsec") nil)]
-    (compactize-map {:idle-msec idle-msec})))
+    (compactize-map {:idle-msec idle-msec
+                     :editor-type editor-type})))
        
 

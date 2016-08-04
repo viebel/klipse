@@ -8,14 +8,44 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
     </head>
     <body>
-<div class="clojure">
-    (str "adsad")
+<div class="lambda">
+    {+ 1 2 3}
     </div>
     <br/>
-<div class="clojure">
-    (map inc [1 2 3])
+
+
+<div class="lambda">
+    {div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}
     </div>
     <br/>
+<div class="lambda">
+    {def amélie {img 
+     {@ id="amelie"
+         src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
+             height="150"
+                 title="Amélie Poulain"
+                     style="box-shadow:0 0 8px black;
+                                border:1px solid white;
+                                           -webkit-transform:rotate(-5deg);
+                                                         -moz-transform:rotate(-5deg);
+                                                                            transform:rotate(-5deg);"}}}
+                                                                            {amélie}
+    </div>
+    <br/>
+    <pre>
+    <code class="eval-html" data-editor-type="html">
+        &lt;h1&gt; Title &lt;/h1&gt;
+        &lt;b&gt; bold &lt;/b&gt;
+        </code>
+        </pre>
+
+
+    <div class="eval-html" data-editor-type="html">
+    &lt;img id="amelie" src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" height="150" title="Amélie Poulain" style="box-shadow:0 0 8px black; border:1px solid white; -webkit-transform:rotate(-5deg); -moz-transform:rotate(-5deg); transform:rotate(-5deg);"&gt;&lt;/img&gt;
+    </div>
+
+    
+    <script src="https://viebel.github.io/klipse/examples/lambdaway_eval.js"></script>
         <script>
         window.klipse_settings = {
             codemirror_options_in: {
@@ -27,8 +57,11 @@
                 lineWrapping: true,
                 lineNumbers: true
             },
+            editor_type: 'html',
             selector: '.clojure',
             selector_eval_markdown: '.eval-markdown',
+            selector_eval_html: '.eval-html',
+            selector_eval_lambdaway: '.lambda',
             selector_eval_js: '.eval-js',
             selector_js: '.clojure-js'
         };

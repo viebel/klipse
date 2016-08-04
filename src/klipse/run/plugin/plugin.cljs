@@ -4,6 +4,8 @@
             klipse.ruby
             klipse.php
             klipse.markdown
+            klipse.lambdaway
+            klipse.html
             klipse.server-eval
             klipse.compiler
             [gadjett.core :as gadjett :refer-macros [dbg]]

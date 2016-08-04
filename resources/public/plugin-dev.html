@@ -161,17 +161,60 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
 <br/>
 
 <h1> Markdown </h1>
+<h2> HTML transpilation</h2>
 <code class="eval-markdown">
 # This is a title
 `clojure` rocks!
 </code>
        <br/>
+
+<h2> HTML rendering</h2>
+<code class="eval-markdown" data-editor-type="html">
+# This is a title
+`clojure` rocks!
+</code>
+<br/>
+
+
+ <h1> Lambdaway</h2>
+<div class="lambda" data-editor-type="html">
+    {+ 1 2 3}
+    </div>
+    <br/>
+
+
+<div class="lambda" data-editor-type="html">
+    {div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}
+    </div>
+    <br/>
+<div class="lambda" data-editor-type="html">
+    {def amélie {img 
+     {@ id="amelie"
+         src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
+             height="150"
+                 title="Amélie Poulain"
+                     style="box-shadow:0 0 8px black;
+                                border:1px solid white;
+                                           -webkit-transform:rotate(-5deg);
+                                                         -moz-transform:rotate(-5deg);
+                                                                            transform:rotate(-5deg);"}}}
+                                                                            {amélie}
+    </div>
+    <br/>
+ <h1> HTML rendering </h1>
+   <div class="eval-html" data-editor-type="html">
+    &lt;img id="amelie" src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" height="150" title="Amélie Poulain" style="box-shadow:0 0 8px black; border:1px solid white; -webkit-transform:rotate(-5deg); -moz-transform:rotate(-5deg); transform:rotate(-5deg);"&gt;&lt;/img&gt;
+    </div>
+
+
+    <script src="https://viebel.github.io/klipse/examples/lambdaway_eval.js"></script>
  
         <script>
         window.klipse_settings = {
             selector: '.clojure',
             selector_eval_js: '.eval-js',
             selector_eval_markdown: '.eval-markdown',
+            selector_eval_html: '.eval-html',
             selector_eval_php: '.eval-php',
             selector_eval_ruby: '.eval-ruby',
             selector_js: '.clojure-js'

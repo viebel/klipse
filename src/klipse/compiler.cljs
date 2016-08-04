@@ -3,6 +3,7 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     cljsjs.js-beautify
+    cljsjs.codemirror.mode.clojure
     [cljs.reader :refer [read-string]]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]

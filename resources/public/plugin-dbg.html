@@ -11,21 +11,18 @@
      (if 1 2 3)
 </div>
     <br/>
-      <code class="eval-python">
-def factorial(n):
-  if n == 0:
-    return 1
-  else:
-    return n * factorial(n - 1)
-print(factorial(5))
-</code>
-    <br/>
-    <code class="eval-markdown">
+      <code class="eval-markdown">
 # This is a title
 `clojure` rocks!
 </code>
 
-    <br/>
+<h2> HTML rendering in markdown</h2>
+<code class="eval-markdown" data-editor-type="html">
+# This is a title
+`clojure` rocks!
+</code>
+       <br/>
+
 
  <div class="eval-js" data-external-libs="immutable">
      Immutable
@@ -107,12 +104,46 @@ print(factorial(5))
 (ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)
         </div>
         <br/>
+
+<h2> Lambdaway</h2>
+<div class="lambda" data-editor-type="html">
+    {+ 1 2 3}
+    </div>
+    <br/>
+
+
+<div class="lambda" data-editor-type="html">
+    {div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}
+    </div>
+    <br/>
+<div class="lambda" data-editor-type="html">
+    {def amélie {img 
+     {@ id="amelie"
+         src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
+             height="150"
+                 title="Amélie Poulain"
+                     style="box-shadow:0 0 8px black;
+                                border:1px solid white;
+                                           -webkit-transform:rotate(-5deg);
+                                                         -moz-transform:rotate(-5deg);
+                                                                            transform:rotate(-5deg);"}}}
+                                                                            {amélie}
+    </div>
+    <br/>
+    <h1> HTML rendering </h1>
+   <div class="eval-html" data-editor-type="html">
+    &lt;img id="amelie" src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" height="150" title="Amélie Poulain" style="box-shadow:0 0 8px black; border:1px solid white; -webkit-transform:rotate(-5deg); -moz-transform:rotate(-5deg); transform:rotate(-5deg);"&gt;&lt;/img&gt;
+    </div>
+
+   
+    <script src="https://viebel.github.io/klipse/examples/lambdaway_eval.js"></script>
         <script>
         window.klipse_settings = {
             selector: '.clojure',
             selector_eval_markdown: '.eval-markdown',
+            selector_eval_html: '.eval-html',
+            selector_eval_lambdaway: '.lambda',
             selector_eval_js: '.eval-js',
-            selector_eval_python: '.eval-python',
             selector_js: '.clojure-js'
         };
         </script>

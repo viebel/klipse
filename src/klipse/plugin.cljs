@@ -39,9 +39,7 @@
             eval-fn-with-args #(eval-fn % eval-args)
             source-code (<! (content element comment-str))
             {:keys [idle-msec]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec)
-            editor-type (dbg (editor-type minimalistic_ui editor_type))]
-        (print "create-editor")
-
+            editor-type (editor-type minimalistic_ui editor_type)]
         (<! (create-editor editor-type {:element element
                                         :beautify? beautify?
                                         :editor-in-mode editor-in-mode

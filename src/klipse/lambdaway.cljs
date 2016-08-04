@@ -2,7 +2,7 @@
   (:require-macros
     [purnam.core :refer [? !>]]
     [cljs.core.async.macros :refer [go go-loop]])
-  (:require 
+  (:require
     [klipse.plugin :refer [register-mode]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 

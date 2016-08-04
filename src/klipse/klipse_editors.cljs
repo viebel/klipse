@@ -4,7 +4,6 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     [goog.dom :as gdom]
-    [goog.dom.safe :as gsafe]
     [goog.dom :as gdom]
     [cljs.spec :as s]
     [klipse.dom-utils :refer [create-div-after value add-event-listener]]
@@ -41,7 +40,7 @@
 
 (defn eval-in-dom-editor [eval-fn target source]
   (eval-in-editor eval-fn
-                  (dbg (value source))
+                  (or (value source) (aget source "textContent"))
                   (partial gdom/setTextContent target)))
 
 (defn eval-in-html-editor [eval-fn target editor-source]

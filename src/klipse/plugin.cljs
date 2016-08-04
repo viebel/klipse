@@ -41,8 +41,8 @@
       (let [eval-args (eval-args-from-element element)
             eval-fn-with-args #(eval-fn % eval-args)
             source-code (<! (content element comment-str))
-            {:keys [idle-msec editor-type]} (dbg (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type))
-            editor-type (dbg (calc-editor-type minimalistic_ui editor-type))]
+            {:keys [idle-msec editor-type]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
+            editor-type (calc-editor-type minimalistic_ui editor-type)]
         (<! (create-editor editor-type {:element element
                                         :beautify? beautify?
                                         :editor-in-mode editor-in-mode

@@ -1,21 +1,21 @@
-(ns klipse.lambdaway
+(ns klipse.html
   (:require-macros
     [purnam.core :refer [? !>]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    cljsjs.codemirror.mode.clojure
+    cljsjs.codemirror.mode.xml
+    cljsjs.codemirror.mode.htmlmixed
     [klipse.plugin :refer [register-mode]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 
 (defn my-eval [exp _]
-  (print "my-val" exp)
   (go
-    (aget (!> js/LAMBDATALK.evaluate exp) "val")))
+    exp))
 
-(def opts {:editor-in-mode "clojure"
+(def opts {:editor-in-mode "text/html"
            :editor-out-mode "text"
            :eval-fn my-eval
-           :comment-str "[comment]: "})
+           :comment-str "; "})
 
-(register-mode "eval-lambdaway" "selector_eval_lambdaway" opts)
+(register-mode "eval-html" "selector_eval_html" opts)

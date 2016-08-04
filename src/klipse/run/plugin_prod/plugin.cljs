@@ -6,6 +6,7 @@
             klipse.server-eval
             klipse.markdown
             klipse.lambdaway
+            klipse.html
             [gadjett.core :as gadjett :refer-macros [dbg]]
             [klipse.plugin :as plugin]))
 

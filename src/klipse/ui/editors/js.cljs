@@ -7,6 +7,7 @@
 (def config-editor 
   {:lineNumbers true
    :matchBrackets true 
+   :lineWrapping true
    :autoCloseBrackets true
    :mode "javascript"
    :readOnly true

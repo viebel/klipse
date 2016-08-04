@@ -10,6 +10,7 @@
 
 (def config-editor 
   {:lineNumbers true
+   :lineWrapping true
    :matchBrackets true 
    :mode "clojure"
    :scrollbarStyle "overlay"})

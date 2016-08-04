@@ -143,13 +143,6 @@ section.js-textarea textarea {
 }
 
 section.js-textarea textarea {
-  background-image: url(../../img/js-base.png);
+  background-image: url(../../img/printer.png);
 }
 
-section.js-textarea textarea.ok {
-  background-image: url(../../img/js-ok.png);
-}
-
-section.js-textarea textarea.error {
-  background-image: url(../../img/js-error.png);
-}

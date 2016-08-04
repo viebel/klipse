@@ -1,5 +1,6 @@
 (ns klipse.control.parser
   (:require-macros
+    [klipse.macros :refer [with-redefs-safe]]
     [cljs.core.async.macros :refer [go]])
   (:require 
     [gadjett.core :as gadjett :refer-macros [dbg]]
@@ -61,7 +62,16 @@
                    ; for the moment, we leave the js box empty
                (swap! state assoc :evaluation-js (<! (eval-js value)))))})
 
+(defn clean-print-box [state]
+  (swap! state assoc :evaluation-js ""))
+
+(defn append-print-box [state & args]
+  (swap! state update :evaluation-js #(str % (apply str args))))
+
 (defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] 
              (go
-               (swap! state assoc :evaluation-clj (<! (eval-clj value)))))})
+               (clean-print-box state)
+               (with-redefs-safe [*print-newline* true
+                                  *print-fn* (partial append-print-box state)]
+                 (swap! state assoc :evaluation-clj (<! (eval-clj value))))))})

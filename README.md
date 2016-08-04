@@ -198,3 +198,8 @@ Ask us any question about the klipse plugin (integration, feature requests...) o
 
 ## Klipse App - Clojure Web Repl
 Here is the [information about the Klipse app](https://github.com/viebel/klipse/blob/master/contributing.md)
+
+# License
+
+See the [LICENSE](https://github.com/viebel/klipse/blob/master/LICENSE.txt) file for license rights and limitations (GNU General Public License v3.0).
+

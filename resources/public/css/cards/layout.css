@@ -94,7 +94,7 @@ section.cljs-editor .CodeMirror {
   background-position: right 5px bottom 5px;
   background-size: 40px;
   background-repeat: no-repeat;
-  background-image: url(../../img/cljs.png);
+  background-image: url(../../img/clojure.png);
 }
 
 
@@ -108,7 +108,7 @@ section.js-editor .CodeMirror {
   background-position: right 5px bottom 5px;
   background-size: 40px;
   background-repeat: no-repeat;
-  background-image: url(../../img/js.png);
+  background-image: url(../../img/cljs.png);
 }
 
 
@@ -123,15 +123,16 @@ section.cljs-textarea textarea {
 }
 
 section.cljs-textarea textarea {
-  background-image: url(../../img/cljs-base.png);
+  background-image: url(../../img/eval.png);
 }
 
 section.cljs-textarea textarea.ok {
-  background-image: url(../../img/cljs-ok.png);
+  background-image: url(../../img/eval.png);
 }
 
 section.cljs-textarea textarea.error {
-  background-image: url(../../img/cljs-error.png);
+  background-image: url(../../img/eval-error.png);
+  color: red;
 }
 
 

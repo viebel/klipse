@@ -3,8 +3,7 @@
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]))
 
-(def placeholder-textarea
-  ";; Press Ctrl-Enter or wait for 3 sec to eval in javascript...")
+(def placeholder-textarea ";; Here you will see what your print in your code...")
 
 (defui Js-textarea
   
@@ -15,12 +14,11 @@
   Object
 
   (render [this]
-    (let [[status result] (:evaluation-js (om/props this))
-          status-class (when status (name status))]
+    (let [value (:evaluation-js (om/props this))]
       (dom/section #js {:className "js-textarea"}
-        (dom/textarea #js {:value (or result "")
-                           :className status-class
+        (dom/textarea #js {:value (or value "")
                            :placeholder placeholder-textarea
+                           :className "ok"
                            :readOnly true})))))
 
 (def js-textarea (om/factory Js-textarea))

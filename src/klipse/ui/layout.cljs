@@ -23,10 +23,12 @@
       (case code-layout
         :eval-only
         (dom/div #js {:className "klipse-layout klipse-layout-eval-only"}
-          (dom/div #js {:className "klipse-item"}
-            (cljs-editor (om/props this)))
-          (dom/div #js {:className "klipse-item"}
-            (cljs-textarea (om/props this))))
+                 (dom/div #js {:className "klipse-item"}
+                          (cljs-editor (om/props this)))
+                 (dom/div #js {:className "klipse-item"}
+                          (cljs-textarea (om/props this)))
+                 (dom/div #js {:className "klipse-item"}
+                          (js-textarea (om/props this))))
         
         :js-only
         (dom/div #js {:className "klipse-layout klipse-layout-js-only"}

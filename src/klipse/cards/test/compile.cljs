@@ -28,5 +28,5 @@
 (deftest static-fn 
   "compile with static dispatch (:static-fns true)"
   (are [input output]
-       (a= (second (compile input :static-fns true)) output)
+       (a= (second (compile input {:static-fns true})) output)
   "(= 1 2)" "cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2((1),(2));"))

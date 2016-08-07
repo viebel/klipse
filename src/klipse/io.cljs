@@ -2,7 +2,7 @@
     (:import goog.net.XhrIo))
 
 (defn no-op [file-url src-cb]
-  (print "no-op: " file-url)
+  (js/console.info "no-op: " file-url)
   (src-cb ""))
 
 (defn fetch-file!
@@ -17,7 +17,7 @@
              (fn [e]
                (if (.isSuccess (.-target e))
                  (do
-                   (print "loading file: " file-url)
+                   (js/console.info "loading file: " file-url)
                    (src-cb (.. e -target getResponseText)))
                  (src-cb nil))))
       (catch :default e

@@ -24,7 +24,6 @@
 
 
 (defn load-inlined [opts cb]
-  (print "load-inlined: " opts)
   (cb {:lang :js :source ""}))
 
 (def known-external-lib
@@ -95,7 +94,7 @@
               value)]
     [status res]))
 
-(deftrack compile [s & {:keys [static-fns] :or {static-fns false}}]
+(deftrack compile [s {:keys [static-fns] :or {static-fns false}}]
   (cljs/compile-str (cljs/empty-state) s
                     "cljs-in"
                     {

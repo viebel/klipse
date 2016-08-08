@@ -59,15 +59,17 @@
 .klipse-layout-eval-only .klipse-item {
   padding: 5px;
   width:100%;
-  height: 60%;
+  height: 70%;
 }
 
 .klipse-layout-eval-only .klipse-item:nth-child(2) {
-  height: 20%;
+  width:50%;
+  height: 30%;
 }
 
 .klipse-layout-eval-only .klipse-item:nth-child(3) {
-  height: 20%;
+  width:50%;
+  height: 30%;
 }
 .klipse-layout-js-only .klipse-item {
   padding: 5px;

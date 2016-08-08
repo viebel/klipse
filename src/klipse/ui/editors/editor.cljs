@@ -56,7 +56,7 @@
       (!> editor.autoFormatRange from to))
     editor
     (catch js/Object e
-      (println "klipse.ui.editors.editor/auto-format: " e)
+      (js/console.debug "klipse.ui.editors.editor/auto-format: " e)
       editor)))
 
 (defn auto-indent [editor]

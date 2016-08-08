@@ -17,7 +17,7 @@
 (def out-placeholder ";the evaluation will appear here (soon)...")
 
 (defn register-mode [mode selector opts]
-  (print "register-mode: " mode selector)
+  (js/console.info "register-mode: " mode selector)
   (swap! selector->mode assoc selector mode)
   (swap! mode-options assoc mode opts))
 
@@ -73,16 +73,14 @@
 (defn ^:export klipsify [element general-settings mode]
   (if-let [opts (@mode-options mode)]
     (klipsify-with-opts element general-settings opts)
-    (go (print "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
+    (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
 
 (defn ^:export klipsify-elements [elements general-settings mode]
   (go
-    (time
-      (doseq [element elements]
-        (<! (klipsify element general-settings mode))))))
+    (doseq [element elements]
+      (<! (klipsify element general-settings mode)))))
 
 (defn ^:export init-clj [settings]
-  (dbg settings)
   (let [keywordized-settings (keywordize-keys settings)]
     (doseq [selector-name (keys @selector->mode)]
       (when-let [selector (settings selector-name)]

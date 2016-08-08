@@ -26,11 +26,11 @@
   (let [c (chan)
         php-exp (str "<?php" exp) ]
     (go
-      (let [php-engine  (dbg (load-php-engine))]
+      (let [php-engine  (load-php-engine)]
         (as-> (!> php-engine.getStderr) $
-            (!> $.on "data" #(put! c (dbg (str %)))))
+            (!> $.on "data" #(put! c (str %))))
         (as-> (!> php-engine.getStdout) $
-            (!> $.on "data" #(put! c (dbg (str %)))))
+            (!> $.on "data" #(put! c (str %))))
         (execute php-engine php-exp)))
     c))
 

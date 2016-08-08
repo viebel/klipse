@@ -11,7 +11,7 @@
             [gadjett.core :as gadjett :refer-macros [dbg]]
             [klipse.plugin :as plugin]))
 
-(print "settings: " (aget js/window "klipse_settings"))
+(js/console.info "settings: " (aget js/window "klipse_settings"))
 (defn ^:export settings []
   (aget js/window "klipse_settings"))
 

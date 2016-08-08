@@ -9,7 +9,6 @@
 
 
 (defn my-eval [exp _]
-  (print "my-val" exp)
   (go
     (aget (!> js/LAMBDATALK.evaluate exp) "val")))
 

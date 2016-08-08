@@ -19,11 +19,11 @@
   (go-loop [the-scripts scripts]
            (if (seq the-scripts)
              (let [script (first the-scripts)
-                   _ (println "loading:" script)
+                   _ (js/console.info "loading:" script)
                    {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
                (if (= 200 status)
                  (do
-                   (println "evaluating:" script)
+                   (js/console.info "evaluating:" script)
                    (eval-in-global-scope body)
                    (recur (rest the-scripts)))
                  [:error status script]))

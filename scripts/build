@@ -1,0 +1,2 @@
+lein clean
+lein cljsbuild once app plugin plugin-prod

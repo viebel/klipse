@@ -1,6 +1,5 @@
 (ns klipse.control.parser
   (:require-macros
-    [klipse.macros :refer [with-redefs-safe]]
     [cljs.core.async.macros :refer [go]])
   (:require 
     [gadjett.core :as gadjett :refer-macros [dbg]]
@@ -72,6 +71,6 @@
   {:action (fn [] 
              (go
                (clean-print-box state)
-               (with-redefs-safe [*print-newline* true
+               (with-redefs [*print-newline* true
                                   *print-fn* (partial append-print-box state)]
                  (swap! state assoc :evaluation-clj (<! (eval-clj value))))))})

@@ -3,6 +3,7 @@
             klipse.compiler
             klipse.js_eval
             klipse.ruby
+            klipse.python
             klipse.cpp
             klipse.server-eval
             klipse.php

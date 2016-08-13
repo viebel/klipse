@@ -7,37 +7,23 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-<pre>
-<code class="eval-python">
-print(2+3)
-</code>
-</pre>
-        <br/>
-<pre>
-<code class="eval-python">
-def factorial(n):
+<pre><code class="eval-python">print(2+3)</code></pre>
+<br/>
+<pre><code class="eval-python">def factorial(n):
   if n == 0:
     return 1
   else:
     return n * factorial(n - 1)
 
-
-print(factorial(5))
-</code>
-</pre>
+print(factorial(5))</code></pre>
     <br/>
-<pre>
-<code class="eval-python">
-
-print(factorial(6))
-print(factorial(3))
-</code>
-</pre>
+<pre><code class="eval-python">print(factorial(6))
+print(factorial(3))</code></pre>
     </br>
     
     <script>
         window.klipse_settings = {
-            eval_idle_msec: 200000, 
+            eval_idle_msec: 100, 
             selector_eval_python_client: '.eval-python'
         };
         </script>

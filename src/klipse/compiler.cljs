@@ -33,7 +33,7 @@
    "underscore" "http://underscorejs.org/underscore-min.js"})
 
 (def known-src-paths 
-  {"cljs-repo" "http://viebel.github.io/cljs-self-host-repository/repository"
+  {"cljs-repo" "https://viebel.github.io/cljs-self-host-repository/repository"
    ;"om" "https://raw.githubusercontent.com/omcljs/om/master/src/main/"
    "core.async" "https://raw.githubusercontent.com/mfikes/andare/master/src/main/clojure/"
    ;"cognitect-transit-cljs" "https://raw.githubusercontent.com/cognitect/transit-cljs/master/src"

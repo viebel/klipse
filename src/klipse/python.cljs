@@ -7,8 +7,7 @@
     [klipse.io :as io]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<! put! chan]]
-    [klipse.plugin :refer [register-mode]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [klipse.plugin :refer [register-mode]]))
 
 (defn builtin-read [x]
   (when (or (nil? (? js/Sk.builtinFiles))
@@ -25,7 +24,7 @@
           (fn []
             (!> js/Sk.importMainWithBody "<stdin>" false exp true)))
       (.then (fn [mod]
-               (print "success to eval skulpt: " exp))
+               (!> js/console.info "success to eval skulpt: " exp))
              (fn [err]
                (put! c (str "error: " err)))))
     c))

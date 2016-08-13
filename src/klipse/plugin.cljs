@@ -1,5 +1,6 @@
 (ns klipse.plugin
   (:require-macros
+    [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go]])
   (:require 
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]

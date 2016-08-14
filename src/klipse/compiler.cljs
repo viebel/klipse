@@ -33,16 +33,15 @@
    "underscore" "http://underscorejs.org/underscore-min.js"})
 
 (def known-src-paths 
-  {"cljs-repo" "https://viebel.github.io/cljs-self-host-repository/repository"
+  {"goog-closure" "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"
    ;"om" "https://raw.githubusercontent.com/omcljs/om/master/src/main/"
-   "core.async" "https://raw.githubusercontent.com/mfikes/andare/master/src/main/clojure/"
+   ;"core.async" "https://raw.githubusercontent.com/mfikes/andare/master/src/main/clojure/"
    ;"cognitect-transit-cljs" "https://raw.githubusercontent.com/cognitect/transit-cljs/master/src"
    ;"cognitect-transit-js" "https://raw.githubusercontent.com/cognitect/transit-js/master/src/"
    ;"datascript" "https://raw.githubusercontent.com/viebel/datascript/master/src/"
    ;"devtools" "https://raw.githubusercontent.com/binaryage/cljs-devtools/master/src" 
    ;"gadjett" "https://raw.githubusercontent.com/viebel/gadjett/master/src"
-   "gist" "https://gist.githubusercontent.com"
-   "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs"]
+   "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/r1.9.89/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.89/src/main/cljs"]
    ;"cemerick-url" "https://raw.githubusercontent.com/viebel/url/master/src/"
    ;"pathetic" "https://raw.githubusercontent.com/viebel/pathetic/develop/src/"
    ;"tools.reader" "https://raw.githubusercontent.com/viebel/tools.reader/master/src/main/cljs/"

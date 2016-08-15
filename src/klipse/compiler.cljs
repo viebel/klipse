@@ -26,25 +26,10 @@
 (defn load-inlined [opts cb]
   (cb {:lang :js :source ""}))
 
-(def known-external-lib
-  {
-   "immutable" "https://raw.githubusercontent.com/facebook/immutable-js/master/dist/immutable.min.js"
-   "jQuery" "https://code.jquery.com/jquery-2.2.4.min.js"
-   "underscore" "http://underscorejs.org/underscore-min.js"})
-
 (def known-src-paths 
   {"goog-closure" "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"
-   ;"om" "https://raw.githubusercontent.com/omcljs/om/master/src/main/"
-   ;"core.async" "https://raw.githubusercontent.com/mfikes/andare/master/src/main/clojure/"
-   ;"cognitect-transit-cljs" "https://raw.githubusercontent.com/cognitect/transit-cljs/master/src"
-   ;"cognitect-transit-js" "https://raw.githubusercontent.com/cognitect/transit-js/master/src/"
-   ;"datascript" "https://raw.githubusercontent.com/viebel/datascript/master/src/"
-   ;"devtools" "https://raw.githubusercontent.com/binaryage/cljs-devtools/master/src" 
-   ;"gadjett" "https://raw.githubusercontent.com/viebel/gadjett/master/src"
-   "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/r1.9.89/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.89/src/main/cljs"]
-   ;"cemerick-url" "https://raw.githubusercontent.com/viebel/url/master/src/"
-   ;"pathetic" "https://raw.githubusercontent.com/viebel/pathetic/develop/src/"
-   ;"tools.reader" "https://raw.githubusercontent.com/viebel/tools.reader/master/src/main/cljs/"
+   "gist" "https://gist.githubusercontent.com"
+  "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/r1.9.89/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.89/src/main/cljs"]
    })
 
 (defn repos [additional-libs]
@@ -124,6 +109,7 @@
   (let [opts (build-repl-opts {:static-fns static-fns
                                :external-libs external-libs
                                :context (keyword context)})]
+    (set! js/COMPILED true)
     (replumb/read-eval-call opts cb s)))
 
 (deftrack eval-async-1 [s opts]

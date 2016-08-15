@@ -71,8 +71,21 @@
                   (string/blank? "HELLO!!")
       </span>
       <br/>
-          
+
+          <h2> requiring a namespace  using :rename</h2>
+ <span class="clojure"> 
+           (ns my.ns
+              (:require 
+                  [clojure.string :as string]
+                  [clojure.set :refer [union intersection] :rename {union UNION}]))
+                  [(intersection #{1 2 3} #{2 3 4})
+                  (UNION #{1 2 3} #{2 3 4 5})]
+      </span>
+      <br/>
+           
+
         <br/>
+        <h2> requiring a goog namespace </h2>
         <span class="clojure">
             (ns my.gg
                 (:require [goog.string :as gstring]))
@@ -80,8 +93,16 @@
                 (gstring/capitalize "hello")
         </span>
 
-            
-            
+(def sort-idempotent-prop
+  (prop/for-all [v (gen/vector gen/int)]
+    (= (sort v) (sort (sort v)))))
+
+(tc/quick-check 100 sort-idempotent-prop)
+
+        </span>
+
+
+                        
         <h2> defining a macro </h2>
         <div class="clojure">
 

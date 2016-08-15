@@ -16,6 +16,10 @@ http://localhost:5014/index-dbg.html?cljs_in.gist=viebel/368d3bec58d3ec47e935ad4
 
 http://localhost:5014/index-dbg.html?cljs_in.gist=viebel/547e5236f52cf3ba04f9cbc495841769&eval_only=1
 
+;; test.check
+
+http://localhost:5014/index-dbg.html?cljs_in=(ns%20my.user%0A%20%20(%3Arequire%20%5Bclojure.test.check%20%3Aas%20tc%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Bclojure.test.check.generators%20%3Aas%20gen%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Bclojure.test.check.properties%20%3Aas%20prop%20%3Ainclude-macros%20true%5D))%0A%0A(def%20sort-idempotent-prop%0A%20%20(prop%2Ffor-all%20%5Bv%20(gen%2Fvector%20gen%2Fint)%5D%0A%20%20%20%20(%3D%20(sort%20v)%20(sort%20(sort%20v)))))%0A%0A(tc%2Fquick-check%20100%20sort-idempotent-prop)%0A&eval_only=1&external-libs=%5Bhttps%3A%2F%2Fraw.githubusercontent.com%2Fviebel%2Ftest.check%2Fmaster%2Fsrc%2Fmain%2Fclojure%2F%5D
+
 ;; print emoji - klipse first contact
 http://localhost:5014/index-dbg.html?cljs_in.gist=viebel/98451d9c3ee2a5cf70fcce52e67e574d
 

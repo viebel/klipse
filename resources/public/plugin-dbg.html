@@ -64,8 +64,10 @@
 <span class="clojure"> 
            (ns my.ns
               (:require 
-                  [clojure.string :as string]))
-                  (string/blank? "HELLO!!")
+              [clojure.string :as string :refer [capitalize] :rename {capitalize CAPITALIZE }]))
+                  [(string/blank? "HELLO!!")
+                  (CAPITALIZE "klipse")
+                  ]
       </span>
       <br/>
 
@@ -139,6 +141,10 @@
     <script src="https://viebel.github.io/klipse/examples/lambdaway_eval.js"></script>
         <script>
         window.klipse_settings = {
+            codemirror_options_in: {
+                lineWrapping: true},
+            codemirror_options_out: {
+                lineWrapping: true},
             selector: '.clojure',
             selector_eval_markdown: '.eval-markdown',
             selector_eval_html: '.eval-html',

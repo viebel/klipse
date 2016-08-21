@@ -29,7 +29,7 @@
 (def known-src-paths 
   {"goog-closure" "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"
    "gist" "https://gist.githubusercontent.com"
-  "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/r1.9.89/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.89/src/main/cljs"]
+  "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/r1.9.225/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.225/src/main/cljs"]
    })
 
 (defn repos [additional-libs]

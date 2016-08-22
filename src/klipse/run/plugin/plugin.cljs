@@ -15,4 +15,7 @@
 (defn ^:export settings []
   (aget js/window "klipse_settings"))
 
+(defn ^:export klipsify [element mode]
+  (plugin/klipsify-js element (settings) mode))
+
 (plugin/init (settings))

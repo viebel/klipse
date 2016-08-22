@@ -1,7 +1,7 @@
 (defproject klipse "2.4.0"
   :description "Cljs compiler in cljs"
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.198"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha10"]
+                 [org.clojure/clojurescript "1.9.211"]
                  [org.clojure/core.async "0.2.385"]
                  [im.chit/purnam "0.5.2"]
                  [cljsjs/markdown "0.6.0-beta1-0"]

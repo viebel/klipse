@@ -4,7 +4,8 @@
   (:require 
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
-    [cljs.spec :as s]
+    [clojure.spec :as s]
+    [clojure.spec.test :as stest]
     [clojure.walk :refer [keywordize-keys]]
     [goog.dom :refer [isElement]]
     [cljs.core.async :refer [<!]]
@@ -70,10 +71,24 @@
                      :settings ::klipse-settings
                      :opts ::options))
 
+(s/def ::mode string?)
+
+(s/fdef klipsify
+        :args (s/cat :element ::dom-element
+                     :settings ::klipse-settings
+                     :mode ::mode))
+
+(defn ->clj [settings]
+; we cannot keywordize the keys as the modules might be written in javascript
+  (js->clj settings :keywordize-keys false))
+
 (defn ^:export klipsify [element general-settings mode]
   (if-let [opts (@mode-options mode)]
     (klipsify-with-opts element general-settings opts)
-    (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
+    (go (js/console.error "cannot find options for mode: " mode ". Supported modes are: " (clj->js (keys @mode-options))))))
+
+(defn klipsify-js [element js-general-settings mode]
+  (klipsify element (->clj js-general-settings) mode))
 
 (defn ^:export klipsify-elements [elements general-settings mode]
   (go
@@ -87,7 +102,7 @@
         (klipsify-elements (array-seq (js/document.querySelectorAll selector)) keywordized-settings (@selector->mode selector-name))))))
 
 (defn ^:export init [js-settings]
-  (init-clj (js->clj js-settings :keywordize-keys false))); we cannot keywordize the keys as the modules might be written in javascript
+  (init-clj (->clj js-settings)))
 
-(comment
-  (s/instrument #'klipsify-with-opts))
+(stest/instrument `klipsify)
+(stest/instrument `klipsify-with-opts)

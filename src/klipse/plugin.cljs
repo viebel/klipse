@@ -81,10 +81,14 @@
       (<! (klipsify element general-settings mode)))))
 
 (defn ^:export init-clj [settings]
-  (let [keywordized-settings (keywordize-keys settings)]
-    (doseq [selector-name (keys @selector->mode)]
-      (when-let [selector (settings selector-name)]
-        (klipsify-elements (array-seq (js/document.querySelectorAll selector)) keywordized-settings (@selector->mode selector-name))))))
+  (let [keywordized-settings (keywordize-keys settings)
+        {:keys [onCompleted]} keywordized-settings]
+    (go
+      (doseq [selector-name (keys @selector->mode)]
+        (when-let [selector (settings selector-name)]
+          (<! (klipsify-elements (array-seq (js/document.querySelectorAll selector)) keywordized-settings (@selector->mode selector-name)))))
+      (when onCompleted
+        (onCompleted)))))
 
 (defn ^:export init [js-settings]
   (init-clj (js->clj js-settings :keywordize-keys false))); we cannot keywordize the keys as the modules might be written in javascript

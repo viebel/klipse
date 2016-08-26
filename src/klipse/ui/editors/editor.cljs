@@ -48,17 +48,6 @@
     (!> $.goDocStart editor))
   editor)
 
-(defn auto-format [editor]
-  (try
-    (select-all editor)
-    (let [from (.getCursor editor true)
-          to (.getCursor editor false)]
-      (!> editor.autoFormatRange from to))
-    editor
-    (catch js/Object e
-      (js/console.debug "klipse.ui.editors.editor/auto-format: " e)
-      editor)))
-
 (defn auto-indent [editor]
   (select-all editor)
   (let [from (.getCursor editor true)
@@ -72,7 +61,6 @@
                      js/js_beautify
                      (set-value editor))
     (-> editor
-        auto-format
         auto-indent
         goto-start)))
 

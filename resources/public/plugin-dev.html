@@ -11,12 +11,7 @@
     <h1> clojure evaluation</h1>
     <h2> The basics </h2>
 
-    <div class="clojure">
-        (
-        <span>
-        map inc [1 2 3]
-        </span>)
-        </div>
+    <div class="clojure">(map inc [1 2 3])</div>
         <br/>
         <span class="clojure"> (defn foo [x] (* x x)) </span>
         <br/>
@@ -25,99 +20,64 @@
          <p>
         Strings should be evaluated to their value - with the quote.
         </p>
-        <span class="clojure"> 
-            (str "abc")
-             </span>
+        <span class="clojure">(str "abc")</span>
 
  
         <p>
         Functions should be evaluated to their code.
         </p>
-        <span class="clojure"> 
-            (defn foo [])
-            [foo]
-             </span>
+        <span class="clojure">(defn foo [])
+            [foo]</span>
 
         <p>
         Variables should be evaluated to their names.
         </p>
-        <span class="clojure"> 
-            (def my-var "cool")
-             </span>
+        <span class="clojure">(def my-var "cool")</span>
         <h2>data-eval-context </h2>
         <h2>data-eval-context not set</h2>
         <p> by default, the evaluation context is <b>statement</b>: it allows to evaluate several expressions. But it is sometimes buggy for single expressions. For instance, `(if 1 2 3)` is evaluated as nil: </p>
- <div class="clojure">
-     (if 1 2 3)
-     </div>
+ <div class="clojure">(if 1 2 3)</div>
         <h3>data-eval-context set to <b>expr</b> </h3>
- <div class="clojure" data-eval-context="expr">
-     (if 1 2 3)
-     </div>
+ <div class="clojure" data-eval-context="expr">(if 1 2 3)</div>
 
      <p>
      Strings should be evaluated to their value - with the quote.
      </p>
- <div class="clojure" data-eval-context="expr">
-     "abc"
-     </div>
+ <div class="clojure" data-eval-context="expr">"abc"</div>
      <h2> load code from a gist </h2>
         <span class="clojure" data-gist-id="viebel/368d3bec58d3ec47e935ad488bafb600"> </span>
             <h2> requiring a namespace </h2>
-<span class="clojure"> 
-           (ns my.ns
+<span class="clojure">(ns my.ns
               (:require 
                   [clojure.string :as string]))
-                  (string/blank? "HELLO!!")
-      </span>
+                  (string/blank? "HELLO!!")</span>
       <br/>
 
           <h2> requiring a namespace  using :rename</h2>
- <span class="clojure"> 
-           (ns my.ns
+ <span class="clojure">(ns my.ns
               (:require 
                   [clojure.string :as string]
                   [clojure.set :refer [union intersection] :rename {union UNION}]))
                   [(intersection #{1 2 3} #{2 3 4})
-                  (UNION #{1 2 3} #{2 3 4 5})]
-      </span>
+                  (UNION #{1 2 3} #{2 3 4 5})]</span>
       <br/>
            
 
         <br/>
         <h2> requiring a goog namespace </h2>
-        <span class="clojure">
-            (ns my.gg
+        <span class="clojure">(ns my.gg
                 (:require [goog.string :as gstring]))
 
-                (gstring/capitalize "hello")
-        </span>
-
-(def sort-idempotent-prop
-  (prop/for-all [v (gen/vector gen/int)]
-    (= (sort v) (sort (sort v)))))
-
-(tc/quick-check 100 sort-idempotent-prop)
-
-        </span>
-
+                (gstring/capitalize "hello")</span>
 
                         
         <h2> defining a macro </h2>
-        <div class="clojure">
-
-(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)
-        </div>
-        <br/>
+        <div class="clojure">(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)</div> <br/>
 
      <h1> clojurescript transpilation </h1>
-       <div class="clojure-js">
-            (map inc [100000 2 3])
-        </div>
+       <div class="clojure-js">(map inc [100000 2 3])</div>
     <h2> data-static-fns=true </h2>
-<div class="clojure-js" data-static-fns="true">
-            (map inc [100000 2 3])
-        </div>
+<div class="clojure-js" data-static-fns="true">(map inc [100000 2 3])</div>
       
      <h1> javascript </h1>
     <h2> immutable.js </h2>
@@ -152,8 +112,7 @@
         <br/>
      <body>
  <h1> PHP </h1>
-    <div class="eval-php">
-        print "Hello from PHP!";</div>
+    <div class="eval-php">print "Hello from PHP!";</div>
 <br/>
 <div class="eval-php">
     $var = ["a" => 1];
@@ -166,8 +125,7 @@
 <h1> ruby</h1>
     <div class="eval-ruby" data-gist-id="viebel/4659664"></div>
         <br/>
-        <div class="eval-ruby">
-def letter_frequency(file)
+        <div class="eval-ruby">def letter_frequency(file)
 letters = 'a' .. 'z'
 file .
 split(//) .
@@ -176,9 +134,7 @@ select   {|key, val| letters.include? key} .
 collect  {|key, val| [key, val.length]} 
 end
 
-letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}
-
-            </div>
+letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}</div>
 <br/>
 
 <h1> Markdown </h1>
@@ -198,18 +154,13 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
 
 
  <h1> Lambdaway</h2>
-<div class="lambda" data-editor-type="html">
-    {+ 1 2 3}
-    </div>
+<div class="lambda" data-editor-type="html">{+ 1 2 3}</div>
     <br/>
 
 
-<div class="lambda" data-editor-type="html">
-    {div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}
-    </div>
+<div class="lambda" data-editor-type="html">{div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}</div>
     <br/>
-<div class="lambda" data-editor-type="html">
-    {def amélie {img 
+<div class="lambda" data-editor-type="html">{def amélie {img 
      {@ id="amelie"
          src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
              height="150"
@@ -219,8 +170,7 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
                                            -webkit-transform:rotate(-5deg);
                                                          -moz-transform:rotate(-5deg);
                                                                             transform:rotate(-5deg);"}}}
-                                                                            {amélie}
-    </div>
+                                                                            {amélie}</div>
     <br/>
  <h1> HTML rendering </h1>
    <div class="eval-html" data-editor-type="html">

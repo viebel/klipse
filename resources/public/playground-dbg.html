@@ -5,11 +5,13 @@
         <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
         <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
     </head>
     <body>
-    <pre><code class="clojure">(map inc [1 2 3])</code></pre>
+    <pre><code class="clojure">(js/Date)</code></pre>
+    <pre><code class="clojure" data-loop-msec="1000">(js/Date)</code></pre>
+    <pre><code class="clojure" data-loop-msec="5000">(js/Date)</code></pre>
 
+    <pre><code class="eval-js" data-loop-msec="1000">Date()</code></pre>
     <pre><code class="clojure">(defn foo [x y]
                     (+ x y))</code></pre>
 

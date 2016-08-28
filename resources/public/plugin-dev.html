@@ -80,6 +80,13 @@
 <div class="clojure-js" data-static-fns="true">(map inc [100000 2 3])</div>
       
      <h1> javascript </h1>
+     <h2> evaluate snippet in a loop </h2>
+     <p>This snippet should be evaluated only once</p>
+    <pre><code class="eval-js">Date()</code></pre>
+     <p>This snippet should be evaluated every second</p>
+    <pre><code class="eval-js" data-loop-msec="1000">Date()</code></pre>
+     <p>This snippet should be evaluated every 5 seconds</p>
+    <pre><code class="eval-js" data-loop-msec="5000">Date()</code></pre>
     <h2> immutable.js </h2>
  <div class="eval-js" data-external-libs="immutable">
      Immutable

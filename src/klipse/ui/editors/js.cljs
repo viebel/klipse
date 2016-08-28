@@ -34,7 +34,6 @@
           (->>
             (if (= :ok status) result (str result))
             (editor/set-value editor-js)
-            (editor/auto-format)
             (editor/auto-indent)
             (editor/goto-start)))))
 

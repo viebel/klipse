@@ -154,6 +154,7 @@ window.klipse_settings = {
 The following attributes can be added to the DOM element of the snippet:
 
 * `data-eval-idle-msec`: (default 20) idle time in msec before the snippet is evaluated
+* `data-loop-msec`: (default `undefined`) the code is run in a loop every `data-loop-msec` msec
 
 ### Javascript only
 

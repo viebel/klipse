@@ -22,8 +22,9 @@
   (swap! mode-options assoc mode opts))
 
 (defn calc-editor-args-from-element [element global-idle-msec min-idle-msec global-editor-type]
-  (let [{:keys [idle-msec editor-type] :or {idle-msec global-idle-msec editor-type global-editor-type}} (editor-args-from-element element)]
+  (let [{:keys [idle-msec editor-type loop-msec] :or {idle-msec global-idle-msec editor-type global-editor-type loop-msec nil}} (editor-args-from-element element)]
     (compactize-map {:idle-msec (max min-idle-msec idle-msec)
+                     :loop-msec loop-msec
                      :editor-type editor-type})))
 
 (defn calc-editor-type [minimalistic_ui? the-type]
@@ -41,9 +42,10 @@
       (let [eval-args (eval-args-from-element element)
             eval-fn-with-args #(eval-fn % eval-args)
             source-code (<! (content element comment-str))
-            {:keys [idle-msec editor-type]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
+            {:keys [idle-msec editor-type loop-msec]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
             editor-type (calc-editor-type minimalistic_ui editor-type)]
         (<! (create-editor editor-type {:element element
+                                        :loop-msec loop-msec
                                         :beautify? beautify?
                                         :editor-in-mode editor-in-mode
                                         :editor-out-mode editor-out-mode

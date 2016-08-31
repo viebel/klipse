@@ -8,6 +8,12 @@
     </head>
     <body>
     <p>
+    <h1>Snippets evaluation - in order </h1>
+    The snippets should be evaluated in the order they appear in the DOM, no matter what language the snippets are:
+     <pre><code class="eval-js" >foo = () => 1</code></pre>
+      <pre><code class="clojure">(js/foo)</code></pre>
+      <pre><code class="eval-js" >bar = () => "bar"</code></pre>
+       <pre><code class="clojure">(js/bar)</code></pre>
     <h1> clojure evaluation</h1>
     <h2> The basics </h2>
 
@@ -45,7 +51,9 @@
      </p>
  <div class="clojure" data-eval-context="expr">"abc"</div>
      <h2> load code from a gist </h2>
-        <span class="clojure" data-gist-id="viebel/368d3bec58d3ec47e935ad488bafb600"> </span>
+        <div class="clojure" data-loop-msec="3000" data-gist-id="viebel/08a311453c9d31378b357ced54221fb4"></div>
+        <p> The below div should be colorized every 3 seconds</p>
+        <div id="klipse-color" style="width:100px; height: 50px; background-color: black;"></div>
             <h2> requiring a namespace </h2>
 <span class="clojure">(ns my.ns
               (:require 
@@ -189,7 +197,14 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
  
         <script>
         window.klipse_settings = {
-            selector: '.clojure',
+            codemirror_options_in: {
+                lineWrapping: true,
+                autoCloseBrackets: true
+            },
+            codemirror_options_out: {
+                lineWrapping: true
+            },
+             selector: '.clojure',
             selector_eval_js: '.eval-js',
             selector_eval_markdown: '.eval-markdown',
             selector_eval_lambdaway: '.lambda',

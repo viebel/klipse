@@ -6,10 +6,11 @@
     [klipse.klipse-editors :refer [create-editor]]
     [cljs.spec :as s]
     [clojure.walk :refer [keywordize-keys]]
+    [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
     [cljs.core.async :refer [<!]]
     [gadjett.collections :refer [compactize-map]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [gadjett.core :as gadjett :refer-macros [breakpoint dbg]]))
 
 (enable-console-print!)
 (def selector->mode (atom {}))
@@ -77,16 +78,34 @@
     (klipsify-with-opts element general-settings opts)
     (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
 
-(defn ^:export klipsify-elements [elements general-settings mode]
+(defn klipsify-elements [elements general-settings modes]
   (go
     (doseq [element elements]
-      (<! (klipsify element general-settings mode)))))
+      (when-let [mode (modes element)]
+        (<! (klipsify element general-settings mode))))))
+
+(defn snippets-selector [settings selector-names]
+  (->> (map settings selector-names)
+       (remove nil?)
+       (join "," )))
+
+(defn seq-from-selector [selector]
+  (-> (js/document.querySelectorAll selector)
+      array-seq))
+
+(defn elements->mode [settings]
+  (into {}
+        (for [selector-name (keys @selector->mode)
+              :let [selector (settings selector-name)]
+              :when selector
+              element (seq-from-selector selector)]
+          [element (@selector->mode selector-name)])))
 
 (defn ^:export init-clj [settings]
-  (let [keywordized-settings (keywordize-keys settings)]
-    (doseq [selector-name (keys @selector->mode)]
-      (when-let [selector (settings selector-name)]
-        (klipsify-elements (array-seq (js/document.querySelectorAll selector)) keywordized-settings (@selector->mode selector-name))))))
+  (let [keywordized-settings (keywordize-keys settings)
+        modes (elements->mode settings)
+        elements (seq-from-selector (snippets-selector settings (keys @selector->mode)))]
+    (klipsify-elements elements keywordized-settings modes)))
 
 (defn ^:export init [js-settings]
   (init-clj (js->clj js-settings :keywordize-keys false))); we cannot keywordize the keys as the modules might be written in javascript

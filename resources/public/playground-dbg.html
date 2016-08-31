@@ -7,14 +7,10 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-    <pre><code class="clojure">(js/Date)</code></pre>
-    <pre><code class="clojure" data-loop-msec="1000">(js/Date)</code></pre>
-    <pre><code class="clojure" data-loop-msec="5000">(js/Date)</code></pre>
-
-    <pre><code class="eval-js" data-loop-msec="1000">Date()</code></pre>
-    <pre><code class="clojure">(defn foo [x y]
-                    (+ x y))</code></pre>
-
+    <pre><code class="eval-js" >foo = () => 1</code></pre>
+    <pre><code class="clojure">(js/foo)</code></pre>
+    <pre><code class="eval-js" >bar = () => "bar"</code></pre>
+    <pre><code class="clojure">(js/bar)</code></pre>
 
     
         <script>
@@ -25,8 +21,7 @@
                autoCloseBrackets: true
             },
             codemirror_options_out: {
-                lineWrapping: true,
-                lineNumbers: true
+                lineWrapping: true
             },
             selector: '.clojure',
             selector_eval_markdown: '.eval-markdown',

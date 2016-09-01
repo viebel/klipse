@@ -9,7 +9,7 @@
     [klipse.dom-utils :refer [create-div-after value add-event-listener]]
     [cljs.core.async :refer [put! <! chan timeout alts!]]
     [klipse.ui.editors.common :refer [handle-events]]
-    [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value get-value]]
+    [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value-and-beautify get-value]]
     [gadjett.core :as gadjett :refer-macros [dbg]]))
 
 (defn create-state []
@@ -49,10 +49,10 @@
                      (setter results)
                      (recur results))))))))
 
-(defn eval-in-codemirror-editor [eval-fn editor-target editor-source loop-msec state]
+(defn eval-in-codemirror-editor [eval-fn editor-target editor-source loop-msec mode state]
   (eval-in-editor eval-fn
                   (get-value editor-source)
-                  (partial set-value editor-target)
+                  (partial set-value-and-beautify editor-target mode)
                   loop-msec
                   state))
 
@@ -109,10 +109,10 @@
           out-editor (create-editor-after-element element default-txt out-editor-options); must be called before `element` is replaced
           in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
           state (create-state)]
-      (<! (eval-in-codemirror-editor eval-fn out-editor in-editor loop-msec state))
+      (<! (eval-in-codemirror-editor eval-fn out-editor in-editor loop-msec editor-out-mode state))
       (handle-events in-editor
                      {:idle-msec idle-msec
-                      :on-should-eval #(eval-in-codemirror-editor eval-fn out-editor in-editor loop-msec state)}))))
+                      :on-should-eval #(eval-in-codemirror-editor eval-fn out-editor in-editor loop-msec editor-out-mode state)}))))
 
 (defmethod create-editor :dom [_ {:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec loop-msec]}]
   (go

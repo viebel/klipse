@@ -11,8 +11,7 @@
     [klipse.io :as io]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<! timeout chan put!]]
-    [klipse.plugin :refer [register-mode]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [klipse.plugin :refer [register-mode]]))
 
 
 (def load-php-engine

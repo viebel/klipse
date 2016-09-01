@@ -3,7 +3,6 @@
     [cljs.test :refer [is are]])
   (:require 
     [clojure.string :as string]
-    [gadjett.core :as gadjett :refer-macros [dbg]]
     [klipse.compiler :refer [eval compile str-eval str-compile]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 

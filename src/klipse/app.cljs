@@ -7,7 +7,6 @@
     [klipse.ui.layout :as ui]
     [klipse.utils :refer [read-input-from-gist url-parameters]]
     [klipse.control.control :as control]
-    [gadjett.core :as gadjett :refer-macros [dbg]]
     [klipse.ui.editors.cljs :as cljs-editor]))
 
 (defn read-input-from-url []

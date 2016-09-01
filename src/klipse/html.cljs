@@ -5,8 +5,7 @@
   (:require
     cljsjs.codemirror.mode.xml
     cljsjs.codemirror.mode.htmlmixed
-    [klipse.plugin :refer [register-mode]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [klipse.plugin :refer [register-mode]]))
 
 
 (defn my-eval [exp _]

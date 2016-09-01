@@ -1,6 +1,5 @@
 (ns klipse.ui.editors.cljs
   (:require
-    [gadjett.core :as gadjett :refer-macros [dbg]]
     [clojure.string :as string :refer [blank?]]
     [klipse.ui.editors.editor :as editor]
     [klipse.ui.editors.common :refer [handle-events]]

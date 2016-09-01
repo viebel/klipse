@@ -1,13 +1,13 @@
 (ns klipse.args-from-element
   (:require-macros
+    [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go]])
   (:require 
     [klipse.utils :refer [gist-path-page read-input-from-gist]]
     [cljs.core.async :refer [<!]]
     [clojure.string :as string :refer [trim split]]
     [cljs.reader :refer [read-string]]
-    [gadjett.collections :refer [compactize-map]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [gadjett.collections :refer [compactize-map]]))
 
 (defn read-string-or-val [value not-found]
   (if value

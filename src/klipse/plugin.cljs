@@ -9,8 +9,7 @@
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
     [cljs.core.async :refer [<!]]
-    [gadjett.collections :refer [compactize-map]]
-    [gadjett.core :as gadjett :refer-macros [breakpoint dbg]]))
+    [gadjett.collections :refer [compactize-map]]))
 
 (enable-console-print!)
 (def selector->mode (atom {}))

@@ -1,12 +1,11 @@
 (ns klipse.control.parser
   (:require-macros
+    [gadjett.core :as gadjett :refer [deftrack]]
     [cljs.core.async.macros :refer [go]])
   (:require 
-    [gadjett.core :as gadjett :refer-macros [dbg]]
     [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters]]
     [klipse.compiler :refer [eval-async compile]]
-    [gadjett.core :as gadjett :refer-macros [deftrack]]
     [om.next :as om]))
 
 ;; =============================================================================

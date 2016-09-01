@@ -1,9 +1,12 @@
 (ns klipse.ui.editors.editor
-  (:use-macros [purnam.core :only [? ! !>]])
+  (:use-macros 
+    [gadjett.core :only [dbg]]
+    [purnam.core :only [? ! !>]])
   (:require 
     [goog.dom :as gdom]
     [klipse.dom-utils :refer [create-div-after]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]
+    [gadjett.collections :as gadjett]
+    [clojure.string :refer [split join]]
     cljsjs.js-beautify
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
@@ -55,6 +58,11 @@
     (!> editor.autoIndentRange from to))
   editor)
 
+(defn fix-blank-lines [editor]
+  (->> (get-value editor)
+      gadjett/fix-blank-lines
+      (set-value editor)))
+
 (defn beautify [editor language]
   (case language
     "javascript" (->> (get-value editor)
@@ -62,11 +70,14 @@
                      (set-value editor))
     (-> editor
         auto-indent
-        goto-start)))
+        goto-start
+        fix-blank-lines)))
 
 (defn set-value-and-beautify [editor mode value]
   (-> (set-value editor value)
       (beautify mode)))
+
+
 
 (defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [beautify?] :or {beautify? true}}]
   (let [editor (js/CodeMirror (fn [elt]

@@ -1,6 +1,6 @@
 (ns ^:figwheel-no-load klipse.core
   (:require 
-    [gadjett.core :as gadjett]))
+    [gadjett.core-fn :as gadjett]))
 
 (enable-console-print!)
 (gadjett/settings! :max-function-calls 100)

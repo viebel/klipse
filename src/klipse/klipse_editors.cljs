@@ -9,8 +9,7 @@
     [klipse.dom-utils :refer [create-div-after value add-event-listener]]
     [cljs.core.async :refer [put! <! chan timeout alts!]]
     [klipse.ui.editors.common :refer [handle-events]]
-    [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value-and-beautify get-value]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value-and-beautify get-value]]))
 
 (defn create-state []
   (atom {:eval-counter 0

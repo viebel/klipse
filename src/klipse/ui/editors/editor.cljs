@@ -6,7 +6,6 @@
     [goog.dom :as gdom]
     [klipse.dom-utils :refer [create-div-after]]
     [gadjett.collections :as gadjett]
-    [clojure.string :refer [split join]]
     cljsjs.js-beautify
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure

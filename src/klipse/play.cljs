@@ -1,6 +1,6 @@
 (ns klipse.play
   (:require-macros [gadjett.core :refer [deftrack]])
-  (:require [gadjett.core :as g :include-macros true]))
+  (:require gadjett.core-fn))
 
 (defn run []
   (assert (= 1 3) "blah blah")

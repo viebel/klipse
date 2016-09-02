@@ -4,8 +4,7 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
     cljsjs.codemirror.mode.clojure
-    [klipse.plugin :refer [register-mode]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [klipse.plugin :refer [register-mode]]))
 
 
 (defn my-eval [exp _]

@@ -1,6 +1,7 @@
 (ns klipse.ui.editors.common
+  (:require-macros 
+    [gadjett.core :as gadjett :refer [dbg]])
   (:require
-    [gadjett.core :as gadjett :refer-macros [dbg]]
     [klipse.ui.editors.editor :as editor]
     [klipse.utils :refer [url-parameters create-url-with-input debounce]]))
 

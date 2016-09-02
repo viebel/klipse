@@ -7,8 +7,7 @@
     [klipse.io :as io]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan <! >! put!]]
-    [klipse.plugin :refer [register-mode]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [klipse.plugin :refer [register-mode]]))
 
 (def token #js {:msg_mac "RoyDczufgCsZycN3VFWJwm66e/eL4pSK19spUhmuzBU="
                 :time_created 1468499323000})

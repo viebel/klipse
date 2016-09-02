@@ -87,6 +87,34 @@
     <h2> data-static-fns=true </h2>
 <div class="clojure-js" data-static-fns="true">(map inc [100000 2 3])</div>
       
+    <h1> styling </h1>
+    <p> Leading and trailing blank lines should be removed. Other empty lines should be kept.</p>
+<pre
+<code class="eval-js">
+
+
+
+function foo(){
+    var x = 4;
+    return x;
+}
+
+</code>
+</pre>
+<pre>
+<code class="clojure">
+
+    (defn foo
+
+    ([] "aa")
+
+
+
+    ([x] x))
+
+    </code>
+    </pre>
+
      <h1> javascript </h1>
      <h2> evaluate snippet in a loop </h2>
      <p>This snippet should be evaluated only once</p>

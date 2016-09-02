@@ -10,8 +10,7 @@
     [klipse.io :as io]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan <! >! put!]]
-    [klipse.plugin :refer [register-mode]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [klipse.plugin :refer [register-mode]]))
 
 (when (? js/window.ReplitClient)
   (def min-eval-idle-msec 3000); throttle to protect the server

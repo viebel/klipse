@@ -8,8 +8,7 @@
     cljsjs.codemirror.mode.css
     cljsjs.codemirror.mode.htmlmixed
     cljsjs.markdown
-    [klipse.plugin :refer [register-mode]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [klipse.plugin :refer [register-mode]]))
 
 
 (defn str-eval-async [exp _]

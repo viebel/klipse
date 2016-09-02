@@ -3,8 +3,7 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    [cljs.core.async :refer [chan <! >! put!]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [cljs.core.async :refer [chan <! >! put!]]))
 
 (def token #js {:msg_mac "6GpVqi640U22dcEhfB5C58m0oqAWXuVZr+SQ4sBoTMQ="
                 :time_created 1468951584000 })

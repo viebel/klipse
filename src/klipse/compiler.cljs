@@ -1,7 +1,9 @@
 (ns klipse.compiler
   (:require-macros
+    [gadjett.core :as gadjett :refer [deftrack dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
+    gadjett.core-fn
     cljsjs.js-beautify
     cljsjs.codemirror.mode.clojure
     [cljs.reader :refer [read-string]]
@@ -9,7 +11,6 @@
     [klipse.io :as io]
     [clojure.string :as s]
     [cljs.core.async :refer [chan put! <!]]
-    [gadjett.core :as gadjett :refer-macros [deftrack dbg]]
     [replumb.core :as replumb]
     [cljs.js :as cljs]))
 

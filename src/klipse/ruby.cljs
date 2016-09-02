@@ -7,8 +7,7 @@
     [klipse.io :as io]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<!]]
-    [klipse.plugin :refer [register-mode]]
-    [gadjett.core :as gadjett :refer-macros [dbg]]))
+    [klipse.plugin :refer [register-mode]]))
 
 
 (defn load-opal-parser []

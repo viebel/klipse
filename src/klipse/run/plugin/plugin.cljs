@@ -8,7 +8,6 @@
             klipse.html
             klipse.server-eval
             klipse.compiler
-            [gadjett.core :as gadjett :refer-macros [dbg]]
             [klipse.plugin :as plugin]))
 
 (js/console.info "settings: " (aget js/window "klipse_settings"))

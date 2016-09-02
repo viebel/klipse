@@ -7,7 +7,6 @@
             klipse.markdown
             klipse.lambdaway
             klipse.html
-            [gadjett.core :as gadjett :refer-macros [dbg]]
             [klipse.plugin :as plugin]))
 
 (print "settings: " (aget js/window "klipse_settings"))

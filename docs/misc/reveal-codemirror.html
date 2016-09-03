@@ -1,0 +1,41 @@
+
+<head>
+<!-- Create a simple CodeMirror instance -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/mode/clojure/clojure.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.3.0/css/reveal.css">
+
+  <style type="text/css">
+  .reveal .CodeMirror-lines {
+    text-align: left !important;
+}
+ </style>
+</head>
+<body>
+    <div class="reveal">
+      <div class="slides">
+ 
+<section>
+<textarea id="code">
+    (map inc [1 2 3 4])
+</textarea>
+</section>
+</div>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.3.0/js/reveal.js"></script>
+
+    <script>
+      Reveal.initialize({});
+    </script>
+
+<script>
+  var elem = document.getElementById('code');
+  var editor = CodeMirror.fromTextArea(elem, {
+    lineNumbers: true,
+    mode: 'clojure'
+  });
+</script>
+</body>

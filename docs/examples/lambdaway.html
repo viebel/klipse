@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> Lambdaway interactive documentation</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+</head>
+
+<body>
+
+<h1> Lambdaway interactive documentaion</h1>
+
+This documentation is live and interactive. It is powered by <a href="https://github.com/viebel/klipse">klipse</a>.
+<p>
+  The basic arithmetic operations are available in the language. For insance, <b>+</b>:
+</p>
+<div class="lambda">
+    {+ 1 2 3}
+    </div>
+    <br/>
+
+<p>
+  You can use the html tags. For instance `img`:
+</p>
+<div class="lambda">
+{img 
+     {@ id="amelie"
+      src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
+      height="150"
+      title="Amélie Poulain"
+      style="box-shadow:0 0 8px black;
+      border:1px solid white;
+      -webkit-transform:rotate(-5deg);
+      -moz-transform:rotate(-5deg);
+      transform:rotate(-5deg);"}}
+   </div>
+    <br/>
+
+
+<div class="lambda">
+    {div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}
+    </div>
+    <br/>
+
+<div class="lambda">
+{pre
+{def castel.interpol {lambda {:p0 :p1 :t}
+ {cons {+ {* {car :p0} {- 1 :t}} {* {car :p1} :t}} 
+       {+ {* {cdr :p0} {- 1 :t}} {* {cdr :p1} :t}}}}}
+{def castel.sub {lambda {:l :t}
+ {if {equal? {cdr :l} nil}
+  then nil
+  else {cons {castel.interpol {car :l} {car {cdr :l}} :t} 
+             {castel.sub {cdr :l} :t}}}}}
+{def castel.point {lambda {:l :t}
+ {if {equal? {cdr :l} nil}
+  then {car :l}
+  else {castel.point {castel.sub :l :t} :t}}}}
+{def castel.build 
+ {lambda {:p :t0 :t1 :dt}
+  {list.new {map 
+   {{lambda {:q} {castel.point :q}} :p} 
+    {serie :t0 :t1 :dt}}}}}
+{def castel.split 
+ {def last {lambda {:l} 
+  {if {equal? {cdr :l} nil}
+   then {car :l}
+   else {last {cdr :l}}}}}
+ {def split_g {lambda {:l :g :t}
+  {if {equal? :l nil}
+   then :g
+   else {cons {car :l} 
+              {split_g {castel.sub :l :t} :g :t}} }}}
+ {def split_d {lambda {:l :d :t}
+  {if {equal? :l nil}
+   then :d
+   else {cons {last :l} 
+        {split_d {castel.sub :l :t} :d :t}} }}}
+ {lambda {:l :t0 :t1}
+  {split_d {split_g :l nil :t1} nil :t0} }}
+
+{def svg.frame {lambda {:w :h}
+  svg {@ width=":wpx" height=":hpx" 
+         style="border:1px solid #888; box-shadow:0 0 8px;"}}}
+{def svg.dot {lambda {:p}
+ {circle {@ cx="{car :p}" cy="{cdr :p}" r="5" 
+            stroke="black" stroke-width="3"
+            fill="rgba(255,0,0,0.5)"}}
+}}
+{def svg.poly
+ {def svg.list2xy {lambda {:l}  
+  {if {equal? :l nil}
+   then else {car {car :l}} {cdr {car :l}} 
+             {svg.list2xy {cdr :l}}}}}
+ {lambda {:p :c :w}
+  {polyline {@ points="{svg.list2xy :p}" 
+    stroke=":c" fill="transparent" stroke-width=":w"
+}}}}
+
+{def p0 {cons 80 20}} = {cons.disp {p0}}
+{def p1 {cons 280 100}} = {cons.disp {p1}}
+{def p2 {cons 60 150}} = {cons.disp {p2}}
+{def p3 {cons 200 190}} = {cons.disp {p3}}
+{def p4 {cons 280 30}} = {cons.disp {p4}}
+{def p5 {cons 160 150}} = {cons.disp {p5}}
+{def L6  {list.new {p0} {p1} {p2} {p3} {p4} {p5}}}
+{def sL6 {castel.split {L6} 0.25 0.75}}
+}
+
+{{svg.frame 350 200}  
+ {svg.dot {p0}}
+ {svg.dot {p1}}
+ {svg.dot {p2}}
+ {svg.dot {p3}}
+ {svg.dot {p4}}
+ {svg.dot {p5}}
+ {svg.poly {L6} grey 1}          
+ {svg.poly {castel.build {L6} -0.025 1.05 0.02} black 2}
+ {svg.poly {sL6} grey 1}
+ {svg.poly {castel.build {sL6} 0 1 0.05} red 4}
+} 
+
+    </div>
+    <br/>
+
+
+    
+    <script src="https://viebel.github.io/klipse/repo/js/lambdaway_eval.js"></script>
+ 
+<script>
+    window.klipse_settings = {
+            codemirror_options_in: {
+               lineWrapping: true,
+               autoCloseBrackets: true
+            },
+            editor_type: 'html',
+            selector_eval_lambdaway: '.lambda'
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+</body>
+
+</html>

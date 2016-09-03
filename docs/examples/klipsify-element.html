@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> Clojure demo</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/css/main.css">
+
+</head>
+
+<body class="container">
+
+<h1> Clojure demo</h1>
+
+
+<p>This page is <strong>live</strong> and <strong>interactive</strong>
+powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
+
+<ol>
+  <li><strong>Live</strong>: The code is executed in your browser</li>
+  <li><strong>Interactive</strong>: You can modify the code and it is evaluated as you type</li>
+</ol>
+
+
+<h2>  Code snippet klipsified on page load </h2>
+
+<pre><code class="clojure">(map inc [1 2 3])</code></pre>
+
+<h2>  Empty Code snippet klipsified on button click</h2>
+
+<button onclick="
+    var e = document.getElementById('clojure-later-empty');
+    klipse.plugin.klipsify(e, window.klipse_settings, 'eval-clojure');
+  "
+>Klipsify</button>
+<br/>
+<pre><code class="clojure-later" id="clojure-later-empty"></code></pre>
+
+
+<h2>  Non-empty Code snippet klipsified on button click</h2>
+
+<button onclick="
+    var e = document.getElementById('clojure-later-map-inc');
+    klipse.plugin.klipsify(e, window.klipse_settings, 'eval-clojure');
+  "
+>Klipsify</button>
+<br/>
+<pre><code class="clojure-later" id="clojure-later-map-inc">(map inc [1 2 3 4])</code></pre>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<script>
+    window.klipse_settings = {
+       selector: '.clojure'
+    };
+</script>
+
+
+
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+</body>
+
+</html>

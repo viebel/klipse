@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> superstring interactive documentaion</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+</head>
+
+<body>
+
+<h1> superstring interactive documentaion</h1>
+
+This documentation is live and interactive. It is powered by <a href="https://github.com/viebel/klipse">klipse</a>.
+
+<h2> Setup </h2>
+First let's load <b>superstring</b> from the superstring github repository (It might take a couple of seconds...):
+
+<br/>
+<br/>
+
+<div class="clojure" data-external-libs="https://raw.githubusercontent.com/expez/superstring/master/src">
+  (ns my.str
+  (:require [superstring.core :as str]))
+</div>
+
+<h2>slice</h2>
+<b>slice</b> returns a slice of s beginning at index and of the given length, or 1.
+  If index is negative the starting index is relative to the end of the string.
+  If the requested slice ends outside the string boundaries, we return
+  the substring of s starting at index.
+  Returns nil if index falls outside the string boundaries or if
+  length is negative.
+
+<div class="clojure">
+(str/slice "0123456789" 2 5)
+</div>
+
+<br/>
+
+<div class="clojure">
+(str/slice "0123456789" 2 1)
+</div>
+<br/>
+
+
+<div class="clojure">
+(str/slice "0123456789" -3 2)
+</div>
+
+<h2>swap-case</h2>
+
+<b>swap-case</b> changes lower case characters to upper case and vice versa.
+   
+<div class="clojure">
+(str/swap-case "AbCdEFgh")
+</div>
+
+<h2> includes?</h2>
+<div class="clojure">
+(str/includes? "Developer" "developer" :ignore-case)
+</div>
+<br/>
+
+<div class="clojure">
+(str/includes? "Developer" "developer")
+</div>
+<h2> includes-all?</h2>
+<div class="clojure">
+(str/includes-all? "Java and XML and Clojure" ["java" "xml"] :ignore-case)
+</div>
+<br/>
+
+<div class="clojure">
+(str/includes-all? "Java and XML and Clojure"  ["java" "xml"])
+</div>
+
+<h2> includes-any?</h2>
+<div class="clojure">
+(str/includes-any? "Java and Clojure" ["java" "xml"] :ignore-case)
+</div>
+<br/>
+
+<div class="clojure">
+(str/includes-any? "Java and XML and Clojure"  ["java" "xml"])
+</div>
+
+<script>
+    window.klipse_settings = {
+        selector: '.clojure'
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+</body>
+
+</html>

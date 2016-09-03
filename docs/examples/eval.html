@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+</head>
+
+<body>
+    <h1> Eval </h1>
+<div class="clojure">
+  (def one 1)
+  (def two 2)
+  (def three 3)
+(map inc [one two three])
+</div>
+<br/>
+
+
+    
+    
+<script>
+    window.klipse_settings = {
+        selector: '.clojure'
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+console.log(window.cljs);
+console.log(window.klipse);
+ eval_clj = window.klipse.compiler.str_eval;
+
+console.log("(map inc [1 2 3]):" , eval_clj("(map inc [1 2 3])"));
+</script>
+</body>
+
+</html>

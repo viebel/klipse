@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> Clojure demo</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/css/main.css">
+
+</head>
+
+<body class="container">
+
+<h1> Clojure demo</h1>
+
+
+<p>Ths page is <strong>live</strong> and <strong>interactive</strong>
+powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
+
+<ol>
+  <li><strong>Live</strong>: The code is executed in your browser</li>
+  <li><strong>Interactive</strong>: You can modify the code and it is evaluated as you type</li>
+</ol>
+
+
+<h2>  Require a namespace </h2>
+
+<pre><code class="clojure">
+(ns my.first-ns
+  (:require
+    [clojure.string :as string]))
+
+(string/capitalize "klipse")
+</code></pre>
+
+
+<h2>  Require a namespace and rename some variables </h2>
+
+<pre><code class="clojure">
+(ns my.ns
+  (:require
+      [clojure.set :refer [union intersection] :rename {union UNION}]))
+      
+  [(intersection #{1 2 3} #{2 3 4})
+   (UNION #{1 2 3} #{2 3 4 5})]
+</code></pre>
+
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<script>
+    window.klipse_settings = {
+       selector: '.clojure'
+    };
+</script>
+
+
+
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+</body>
+
+</html>

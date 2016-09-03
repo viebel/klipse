@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> JS documentation</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
+
+</head>
+
+<body class="container">
+
+<h1> JS interactive documentation</h1>
+
+This documentation is live and interactive. It is powered by <a href="https://github.com/viebel/klipse">klipse</a>.
+
+<h1> Setup </h1>
+First let's load <code>js</code> from the js github repository (It might take a couple of seconds...):
+
+<br/>
+<br/>
+<div class="js" data-external-libs="https://raw.githubusercontent.com/viebel/javascript-toolbelt/master/lib/core.js">
+  JST
+</div>
+
+<h1> System Time</h1>
+
+<p>
+  <code>system_time</code> returns highest resolution time offered by host in milliseconds.
+</p>
+<div class="js">
+ JST.system_time()  
+</div>
+<script>
+    window.klipse_settings = {
+       selector_eval_js: '.js'
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+</body>
+
+</html>

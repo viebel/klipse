@@ -35,11 +35,11 @@
       (aget element "textContent");goog.dom/getTextContent removes new lines
       )))
 
-(defn eval-args-from-element [element]
+(defn eval-args-from-element [element general-external-libs]
   (let [my-dataset (aget element "dataset")
         static-fns (read-string-or-val (aget my-dataset "staticFns") false)
         eval-context (read-string-or-val (aget my-dataset "evalContext") nil)
-        external-libs (string->array (or (aget my-dataset "externalLibs") nil))]
+        external-libs (concat general-external-libs (string->array (or (aget my-dataset "externalLibs") nil)))]
     {:static-fns static-fns :external-libs external-libs :context eval-context}))
 
 (defn editor-args-from-element [element]

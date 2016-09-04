@@ -7,36 +7,18 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-<pre
-<code class="eval-js">
-
-
-
-function foo(){
-    var x = 4;
-    return x;
-}
-</code>
-</pre>
+<div>
 <pre>
 <code class="clojure">
-    (defn foo
+    (ns test.gadjett 
+    (:require [gadjett.collections :refer [map-object]]))
 
-    ([] "aa")
-
-
-
-    ([x] x))
+    (map-object #(* 100 %) {:a 1 :b 2 :c 3})
 
     </code>
     </pre>
-<div>
-<pre><code class="clojure-js" >(defn foo 
-    ([] "aa")
-    ([x] x))
-    </code></pre>
-    </div>
-    <script>
+</div>
+<script>
     window.klipse_settings = {
     codemirror_options_in: {
     lineWrapping: true,
@@ -46,6 +28,7 @@ function foo(){
     codemirror_options_out: {
     lineWrapping: true
     },
+    external_libs: ["https://raw.githubusercontent.com/viebel/gadjett/master/src/"],
     selector: '.clojure',
     selector_eval_markdown: '.eval-markdown',
     selector_eval_html: '.eval-html',

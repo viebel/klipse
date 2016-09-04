@@ -38,7 +38,7 @@ rlwrap lein run -m clojure.main scripts/figwheel.clj
 
  Open the browser [http://localhost:5014/cards.html](http://localhost:5014/cards.html)
 
-Currenlty, `cards` is broken :(
+Currently, `cards` is broken :(
  
  
 ## Tutorial

@@ -21,6 +21,9 @@
 (defn external-libs []
   (map str (read-string (or (:external-libs (url-parameters)) "[]"))))
 
+(defn print-length []
+  (read-string (or (:print-length (url-parameters)) "1000")))
+
 (deftrack eval-js [s]
   (go
     (let [[status res] (<! (eval-async s {:static-fns (static-fns?)}))]
@@ -31,6 +34,7 @@
   (go
     (let [[status res] (<! (eval-async s {:static-fns (static-fns?)
                                           :external-libs (external-libs)
+                                          :print-length (print-length)
                                           :context (eval-context?)}))]
       [status res])))
 
@@ -72,5 +76,6 @@
              (go
                (clean-print-box state)
                (with-redefs [*print-newline* true
-                                  *print-fn* (partial append-print-box state)]
+                             *print-length* (print-length)
+                             *print-fn* (partial append-print-box state)]
                  (swap! state assoc :evaluation-clj (<! (eval-clj value))))))})

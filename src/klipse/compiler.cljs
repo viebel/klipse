@@ -4,6 +4,7 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     gadjett.core-fn
+    [gadjett.collections :refer [compact]]
     cljsjs.js-beautify
     cljsjs.codemirror.mode.clojure
     [cljs.reader :refer [read-string]]
@@ -48,11 +49,14 @@
     (catch js/Object e
       s)))
 
-(defn result-as-is [{:keys [form warning error value success?]}]
+(defn my-compact [value print-length]
+  (with-redefs [*print-length* print-length]
+    (pr-str value)))
+
+(defn result-as-is [{:keys [form warning error value success?]} print-length]
   (let [status (if error :error :ok)
         res (if value
-              value ; we cannot use read-string - as it
-                    ; evaluates only a single expression
+              (my-compact value print-length)
               error)]
     [status res]))
 
@@ -103,9 +107,10 @@
   (merge (replumb/options :browser (repos external-libs) special-fetch)
          {:warning-as-error false
           :static-fns static-fns
+          :no-pr-str-on-value true
           :context (or context :statement)
           :verbose false}))
-     
+
 (defn core-eval [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs '()}} cb]
   (let [opts (build-repl-opts {:static-fns static-fns
                                :external-libs external-libs
@@ -113,9 +118,9 @@
     (set! js/COMPILED true)
     (replumb/read-eval-call opts cb s)))
 
-(deftrack eval-async-1 [s opts]
+(deftrack eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]
-    (core-eval s opts #(put! c (result-as-is %)))
+    (core-eval s opts #(put! c (result-as-is % print-length)))
     c))
 
 (defn eval

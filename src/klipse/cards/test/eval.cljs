@@ -118,8 +118,13 @@
 (deftest display-evaluation
   "displays evaluation properly"
   (are [in out]
-       (= (second (result-as-is {:value in})) out)
-       "abc" "abc"
-       "abc\n123" "abc\n123"))
+       (= (second (result-as-is {:value in} 1000)) out)
+       "abc" "\"abc\""
+       "abc\n123" "\"abc\\n123\""))
 
-
+(deftest display-evaluation-and-crop
+  "displays evaluation properly and crop it"
+  (are [in out]
+       (= (second (result-as-is {:value in} 2)) out)
+       "abcdef" "\"abcdef\""; strings are not cropped
+       (range) "(0 1 ...)"))

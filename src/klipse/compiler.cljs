@@ -42,35 +42,21 @@
   (-> (s/replace file-url #"gist_" "")
       (io/fetch-file! src-cb)))
 
-(defn read-string-cond [s]
-  (try
-    (read-string s)
-    (catch js/Object e
-      s)))
 
-(defn result-as-is [{:keys [form warning error value success?]}]
+(defn result-as-str [{:keys [form warning error value success?]} print-length]
   (let [status (if error :error :ok)
-        res (if value
-              value ; we cannot use read-string - as it
-                    ; evaluates only a single expression
+        res (if success?
+              (with-redefs [*print-length* print-length]
+                (pr-str value))
               error)]
     [status res]))
 
 (defn read-result [{:keys [form warning error value success?]}]
   (let [status (if error :error :ok)
-        res (if value 
-              (read-string-cond value)
+        res (if success?
+              value
               error)]
     [status res]))
-
-(defn beautify [js-exp]
-  (try 
-    (-> js-exp
-        js/JSON.stringify
-        js/js_beautify)
-    (catch js/Object o
-      (str js-exp))))
-
 
 (defn convert-compile-res [{:keys [value error]}]
   (let [status (if error :error :ok)
@@ -103,9 +89,10 @@
   (merge (replumb/options :browser (repos external-libs) special-fetch)
          {:warning-as-error false
           :static-fns static-fns
+          :no-pr-str-on-value true
           :context (or context :statement)
           :verbose false}))
-     
+
 (defn core-eval [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs '()}} cb]
   (let [opts (build-repl-opts {:static-fns static-fns
                                :external-libs external-libs
@@ -113,9 +100,9 @@
     (set! js/COMPILED true)
     (replumb/read-eval-call opts cb s)))
 
-(deftrack eval-async-1 [s opts]
+(deftrack eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]
-    (core-eval s opts #(put! c (result-as-is %)))
+    (core-eval s opts #(put! c (result-as-str % print-length)))
     c))
 
 (defn eval
@@ -127,7 +114,7 @@
   (re-find #"\$macros" exp))
 
 (deftrack eval-async [s args]
-  (go 
+  (go
     (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
     (<! (eval-async-1 s args))))
@@ -155,13 +142,10 @@
     "nil"
     (str x)))
 
-(defn str-eval-async [exp {:keys [static-fns context external-libs] :or {static-fns false external-libs '()} :as the-args}]
+(defn str-eval-async [exp opts]
   (go
-    (-> (<! (eval-async exp {:static-fns static-fns
-                             :external-libs external-libs
-                             :context context}))
-        second
-        my-str)))
+    (-> (<! (eval-async exp opts))
+        second)))
 
 (defn eval-file [url]
   (io/fetch-file! url (comp print eval)))

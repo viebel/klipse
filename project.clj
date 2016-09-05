@@ -1,7 +1,7 @@
-(defproject klipse "2.8.0"
+(defproject klipse "2.9.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.198"]
+                 [org.clojure/clojurescript "1.9.225"]
                  [org.clojure/core.async "0.2.385"]
                  [im.chit/purnam "0.5.2"]
                  [cljsjs/markdown "0.6.0-beta1-0"]
@@ -9,7 +9,7 @@
                  [viebel/gadjett "0.2.1"]
                  [org.omcljs/om "1.0.0-alpha41"]
                  [replumb "0.2.4-SNAPSHOT"]
-                 [fipp "0.6.5"]
+                 [fipp "0.6.6"]
                  [rewrite-cljs "0.4.1"]
                  [com.cemerick/url "0.1.1"]
                  [cljsjs/codemirror "5.11.0-2"]

@@ -1,4 +1,5 @@
 (ns klipse.ui.outputs.cljs
+  (:require-macros [gadjett.core :refer [dbg]])
   (:require
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]))
@@ -7,11 +8,11 @@
   ";; Press Ctrl-Enter or wait for 3 sec to eval in clojure...")
 
 (defui Cljs-textarea
-  
+
     static om/IQuery
-    (query [this] 
+    (query [this]
       '[:evaluation-clj])
-    
+
     Object
 
     (render [this]

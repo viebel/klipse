@@ -10,7 +10,7 @@
 (defui ^:once Output-cljs-computed
   
   static om/IQuery
-  (query [this] 
+  (query [this]
     '[:evaluation-clj])
   
   Object
@@ -49,20 +49,20 @@
 (defmulti mutate om/dispatch)
 
 (defmethod mutate 'output-cljs/default [{:keys [state]} _ _]
-  {:action (fn [] 
-             (swap! state dissoc 
+  {:action (fn []
+             (swap! state dissoc
                     :evaluation-clj))})
 
 (defmethod mutate 'output-cljs/error [{:keys [state]} _ _]
-  {:action (fn [] 
-             (swap! state assoc 
-                    :evaluation-clj 
+  {:action (fn []
+             (swap! state assoc
+                    :evaluation-clj
                     [:error "ERROR"]))})
 
 (defmethod mutate 'output-cljs/success [{:keys [state]} _ _]
-  {:action (fn [] 
-             (swap! state assoc 
-                    :evaluation-clj 
+  {:action (fn []
+             (swap! state assoc
+                    :evaluation-clj
                     [:ok "[:a :b :c]"]))})
 
 (defmethod mutate 'output-js/default [{:keys [state]} _ _]

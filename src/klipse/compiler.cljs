@@ -45,7 +45,7 @@
 
 (defn result-as-str [{:keys [form warning error value success?]} print-length]
   (let [status (if error :error :ok)
-        res (if value
+        res (if success?
               (with-redefs [*print-length* print-length]
                 (pr-str value))
               error)]
@@ -102,7 +102,7 @@
 
 (deftrack eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]
-    (core-eval s opts #(put! c (result-as-str % (dbg print-length))))
+    (core-eval s opts #(put! c (result-as-str % print-length)))
     c))
 
 (defn eval
@@ -117,7 +117,7 @@
   (go
     (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
-    (<! (eval-async-1 s (dbg args)))))
+    (<! (eval-async-1 s args))))
 
 (defn str-compile [exp]
   (-> (compile exp)

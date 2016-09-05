@@ -2,6 +2,7 @@
   (:require klipse.core
             klipse.js-eval
             klipse.ruby
+            klipse.python
             klipse.php
             klipse.markdown
             klipse.lambdaway

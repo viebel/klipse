@@ -165,6 +165,13 @@ function foo(){
     <div class="eval-php" data-gist-id="viebel/6d6e23270e65dd9a4849c507dba4f712"></div>
         <br/>
  
+<h1> python </h1>
+<p> In python, code is not automatically indented, as the CodeMirror indentation for python doesn't work well. I've opened an <a href="https://github.com/codemirror/CodeMirror/issues/4119">issue about it on github</a>.
+</p>
+<pre><code class="eval-python">print [x + 1 for x in range(10)]</code></pre>
+    </br>
+
+
 <h1> ruby</h1>
     <div class="eval-ruby" data-gist-id="viebel/4659664"></div>
         <br/>
@@ -232,10 +239,11 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
             codemirror_options_out: {
                 lineWrapping: true
             },
-             selector: '.clojure',
+            selector: '.clojure',
             selector_eval_js: '.eval-js',
             selector_eval_markdown: '.eval-markdown',
             selector_eval_lambdaway: '.lambda',
+            selector_eval_python_client: '.eval-python'
             selector_eval_html: '.eval-html',
             selector_eval_php: '.eval-php',
             selector_eval_ruby: '.eval-ruby',

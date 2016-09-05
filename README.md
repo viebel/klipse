@@ -1,6 +1,7 @@
 # KLIPSE [![Circle CI](https://circleci.com/gh/viebel/klipse/tree/master.svg?style=svg)](https://circleci.com/gh/viebel/klipse/tree/master) [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/klipse-67458228-ba92-4d52-9511-bfde20964896)
 
 
+
 The klipse plugin is a javascript tag that transforms static code snippets of an html page into live and interactive snippets:
 
 1. **Live**: The code is executed in your browser
@@ -9,6 +10,8 @@ The klipse plugin is a javascript tag that transforms static code snippets of an
 The code evaluation is done in the browser: no server is involved at all!
 
 The code editing is done with [CodeMirror](http://codemirror.net/).
+
+Here is [the manual for the KLIPSE web repl](https://github.com/viebel/klipse/blob/master/repl.md).
 
 # Live demo
 
@@ -148,6 +151,11 @@ window.klipse_settings = {
     }
 }
 ~~~
+
+#### Clojure only
+
+* `print_length`: (default 1000) max number of items in collections to display - useful to prevent browser stuck when evaluating infinite sequences like `(range)`
+
 
 ### Snippet level configuration
 

@@ -7,26 +7,16 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-<pre
-<code class="eval-js">
+<pre>
+<code class="clojure" data-print-length="5">
+(range 10000)
 
+    </code>
+    </pre>
 
-
-function foo(){
-    var x = 4;
-    return x;
-}
-</code>
-</pre>
 <pre>
 <code class="clojure">
-    (defn foo
-
-    ([] "aa")
-
-
-
-    ([x] x))
+(range 10000)
 
     </code>
     </pre>
@@ -46,6 +36,7 @@ function foo(){
     codemirror_options_out: {
     lineWrapping: true
     },
+    print_length: 18,
     selector: '.clojure',
     selector_eval_markdown: '.eval-markdown',
     selector_eval_html: '.eval-html',

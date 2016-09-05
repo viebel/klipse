@@ -15,6 +15,17 @@
       <pre><code class="eval-js" >bar = () => "bar"</code></pre>
        <pre><code class="clojure">(js/bar)</code></pre>
     <h1> clojure evaluation</h1>
+    <h2> Dealing with infinite sequences </h2>
+    <p>Sequences are cropped. At most we print 1000 elements.<br>
+    This number is configurable at the snippet level. E.g. data-print-length="5"
+    </p>
+   <pre>
+<code class="clojure" data-print-length="5">
+(range)
+
+    </code>
+    </pre>
+
     <h2> The basics </h2>
 
     <div class="clojure">(map inc [1 2 3])</div>

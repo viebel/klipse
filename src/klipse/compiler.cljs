@@ -102,7 +102,7 @@
 
 (deftrack eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]
-    (core-eval s opts #(put! c (result-as-str % print-length)))
+    (core-eval s opts #(put! c (result-as-str % (dbg print-length))))
     c))
 
 (defn eval
@@ -114,10 +114,10 @@
   (re-find #"\$macros" exp))
 
 (deftrack eval-async [s args]
-  (go 
+  (go
     (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
-    (<! (eval-async-1 s args))))
+    (<! (eval-async-1 s (dbg args)))))
 
 (defn str-compile [exp]
   (-> (compile exp)
@@ -142,13 +142,10 @@
     "nil"
     (str x)))
 
-(defn str-eval-async [exp {:keys [static-fns context external-libs] :or {static-fns false external-libs '()} :as the-args}]
+(defn str-eval-async [exp opts]
   (go
-    (-> (<! (eval-async exp {:static-fns static-fns
-                             :external-libs external-libs
-                             :context context}))
-        second
-        my-str)))
+    (-> (<! (eval-async exp opts))
+        second)))
 
 (defn eval-file [url]
   (io/fetch-file! url (comp print eval)))

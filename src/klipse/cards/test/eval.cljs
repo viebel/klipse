@@ -3,7 +3,7 @@
     [cljs.test :refer [is are]])
   (:require 
     [clojure.string :as string]
-    [klipse.compiler :refer [eval result-as-is str-eval]]
+    [klipse.compiler :refer [eval result-as-str str-eval]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 
 (defn remove-chars [s]
@@ -85,27 +85,26 @@
 (deftest test-eval-4 
   "eval with types"
   (are [input-clj output-clj]
-       (a= (remove-chars (second (eval input-clj))) output-clj)
-       "(type 1)" "#object[Number \"function Number() {\n    [native code]\n}\"]"))
+       (a= (str (second (eval input-clj))) output-clj)
+       "(type 1)" "function Number() {[native code]}"))
 
 
 
-(deftest test-eval-functions 
+(deftest test-eval-functions
   "eval with functions"
   (are [input-clj output-clj]
-       (a= (remove-chars (second (eval input-clj))) output-clj)
+       (a= (str (second (eval input-clj))) output-clj)
        "(ns my.func) (defn foo [] 1) foo" "#'my.func/foo"
-       "(ns my.func) (defn foo [] 2) [foo]" "[#object[my$func$foo\"functionmy$func$foo(){return(2);}\"]]" 
+       "(ns my.func) (defn foo [] 2) [foo]" "[#object[my$func$foo\"functionmy$func$foo(){return(2);}\"]]"
        ))
 
 
-(deftest test-eval-vars 
+(deftest test-eval-vars
   "eval with vars"
   (are [input-clj output-clj]
-       (= (second (eval input-clj)) output-clj)
+       (= (str (second (eval input-clj))) output-clj)
        "(ns my.vars) (def a 1)" "#'my.vars/a"
        "(ns my.vars) (def b 1) b" "#'my.vars/b"
-       "(ns my.vars) (def c 1) [c]" [1]
        ))
 
 (deftest test-str-eval
@@ -115,16 +114,13 @@
        "(map inc [1 2 3])" "(2 3 4)"
        ))
 
-(deftest display-evaluation
-  "displays evaluation properly"
-  (are [in out]
-       (= (second (result-as-is {:value in} 1000)) out)
-       "abc" "\"abc\""
-       "abc\n123" "\"abc\\n123\""))
-
 (deftest display-evaluation-and-crop
   "displays evaluation properly and crop it"
   (are [in out]
-       (= (second (result-as-is {:value in} 2)) out)
+       (= (second (result-as-str {:value in} 2)) out)
+       "\n1" "\"\\n1\""
+       "ab" "\"ab\""
+       [1 2] "[1 2]"
+       [1 2 3 4 5] "[1 2 ...]"
        "abcdef" "\"abcdef\""; strings are not cropped
        (range) "(0 1 ...)"))

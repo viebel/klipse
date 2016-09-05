@@ -1,6 +1,6 @@
 (ns klipse.control.parser
   (:require-macros
-    [gadjett.core :as gadjett :refer [deftrack]]
+    [gadjett.core :as gadjett :refer [deftrack dbg]]
     [cljs.core.async.macros :refer [go]])
   (:require 
     gadjett.core-fn
@@ -76,6 +76,5 @@
              (go
                (clean-print-box state)
                (with-redefs [*print-newline* true
-                             *print-length* (print-length)
                              *print-fn* (partial append-print-box state)]
-                 (swap! state assoc :evaluation-clj (<! (eval-clj value))))))})
+                 (swap! state assoc :evaluation-clj (dbg (<! (eval-clj value)))))))})

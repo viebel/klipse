@@ -4,7 +4,6 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     gadjett.core-fn
-    [gadjett.collections :refer [compact]]
     cljsjs.js-beautify
     cljsjs.codemirror.mode.clojure
     [cljs.reader :refer [read-string]]
@@ -43,38 +42,21 @@
   (-> (s/replace file-url #"gist_" "")
       (io/fetch-file! src-cb)))
 
-(defn read-string-cond [s]
-  (try
-    (read-string s)
-    (catch js/Object e
-      s)))
 
-(defn my-compact [value print-length]
-  (with-redefs [*print-length* print-length]
-    (pr-str value)))
-
-(defn result-as-is [{:keys [form warning error value success?]} print-length]
+(defn result-as-str [{:keys [form warning error value success?]} print-length]
   (let [status (if error :error :ok)
         res (if value
-              (my-compact value print-length)
+              (with-redefs [*print-length* print-length]
+                (pr-str value))
               error)]
     [status res]))
 
 (defn read-result [{:keys [form warning error value success?]}]
   (let [status (if error :error :ok)
-        res (if value 
-              (read-string-cond value)
+        res (if success?
+              value
               error)]
     [status res]))
-
-(defn beautify [js-exp]
-  (try 
-    (-> js-exp
-        js/JSON.stringify
-        js/js_beautify)
-    (catch js/Object o
-      (str js-exp))))
-
 
 (defn convert-compile-res [{:keys [value error]}]
   (let [status (if error :error :ok)
@@ -120,7 +102,7 @@
 
 (deftrack eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]
-    (core-eval s opts #(put! c (result-as-is % print-length)))
+    (core-eval s opts #(put! c (result-as-str % print-length)))
     c))
 
 (defn eval

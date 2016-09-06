@@ -117,7 +117,8 @@
 (deftest display-evaluation-and-crop
   "displays evaluation properly and crop it"
   (are [in out]
-       (= (second (result-as-str {:value in} 2)) out)
+       (= (second (result-as-str {:success? true :value in} 2)) out)
+       nil "nil"
        "\n1" "\"\\n1\""
        "ab" "\"ab\""
        [1 2] "[1 2]"

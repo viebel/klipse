@@ -5,6 +5,8 @@
         <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
         <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
+
     </head>
     <body>
     <p>
@@ -15,16 +17,22 @@
       <pre><code class="eval-js" >bar = () => "bar"</code></pre>
        <pre><code class="clojure">(js/bar)</code></pre>
     <h1> clojure evaluation</h1>
+    <h2> Dealing with errors </h2>
+    When there is an error, it should be displayed
+<pre>
+<code class="clojure">
+(range
+
+    </code></pre>
+
+
     <h2> Dealing with infinite sequences </h2>
     <p>Sequences are cropped. At most we print 1000 elements.<br>
     This number is configurable at the snippet level. E.g. data-print-length="5"
     </p>
-   <pre>
 <code class="clojure" data-print-length="5">
 (range)
-
     </code>
-    </pre>
 
     <h2> The basics </h2>
 
@@ -100,7 +108,7 @@
       
     <h1> styling </h1>
     <p> Leading and trailing blank lines should be removed. Other empty lines should be kept.</p>
-<pre
+    <pre>
 <code class="eval-js">
 
 
@@ -110,8 +118,7 @@ function foo(){
     return x;
 }
 
-</code>
-</pre>
+</code></pre>
 <pre>
 <code class="clojure">
 
@@ -123,8 +130,7 @@ function foo(){
 
     ([x] x))
 
-    </code>
-    </pre>
+    </code></pre>
 
      <h1> javascript </h1>
      <h2> evaluate snippet in a loop </h2>

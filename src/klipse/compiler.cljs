@@ -48,7 +48,7 @@
         res (if success?
               (with-redefs [*print-length* print-length]
                 (pr-str value))
-              error)]
+              (pr-str error))]
     [status res]))
 
 (defn read-result [{:keys [form warning error value success?]}]

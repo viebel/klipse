@@ -114,6 +114,15 @@
        "(map inc [1 2 3])" "(2 3 4)"
        ))
 
+(deftest display-evaluation-with-errors
+  "displays evaluation when an error occurs"
+  (are [in out]
+       (= (second (result-as-str {:success? false :error in} 2)) out)
+       nil "nil"
+       (str "ab") "\"ab\""
+       1 "1"
+       [1 2] "[1 2]"))
+
 (deftest display-evaluation-and-crop
   "displays evaluation properly and crop it"
   (are [in out]

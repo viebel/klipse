@@ -59,7 +59,8 @@
     [status res]))
 
 (defn advanced-compile [code]
-   (let [flags  (clj->js {:jsCode [{:src code}]
+  code
+   #_(let [flags  (clj->js {:jsCode [{:src code}]
                           :compilationLevel "ADVANCED"})
          _ (js/console.log flags)
          result (aget (js/compile flags) "compiledCode")]

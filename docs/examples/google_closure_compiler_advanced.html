@@ -6,18 +6,28 @@
   <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
     <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
 </head>
-<body>
+<body class="container">
 <h1> Google Closure Compiler Advanced Compilation - Live Demo</h1>
 <p>
-The code snippets are live and interactive, powered by <a href="https://github.com/viebel/klipse">the KLIPSE plugin</a>.
+Google Closure Compiler has been <a href="https://github.com/google/closure-compiler-js">ported to javascript</a>.<br>
+    As a consequence, it is now possible to advanced compile javascript code in the browser!
+</p>
+<p>
+The code snippets are live and interactive, powered by <a href="https://github.com/viebel/klipse">the KLIPSE plugin</a>:
     <ul>
-    <li>The code is evaluated in the browser</li>
-    <li> Edit the code and press <code>Ctrl-Enter</code> to evaluate (or wait for 5 seconds).
+    <li>1. Live: The code is evaluated in the browser</li>
+    <li>2. Interactive: Edit the code and press <code>Ctrl-Enter</code> to evaluate (or wait for 5 seconds).
     </ul>
 
     </p>
 
-    <h2> An example from https://developers.google.com/closure/compiler/docs/api-tutorial3</h2>
+    <p>
+    The page may freeze for a couple of seconds, while the compiler is doing is job...
+
+    </p>
+    <h2> An example from Google blog</h2>
+    <p>This example is take from <a href="https://developers.google.com/closure/compiler/docs/api-tutorial3">https://developers.google.com/closure/compiler/docs/api-tutorial3</a>.</p>
+
     <pre><code class="compile_js">
         function unusedFunction(note) {
         alert(note['text']);

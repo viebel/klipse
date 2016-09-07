@@ -7,11 +7,42 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-<code class="compile_js">
-    function foo(x) { return x;}
-    console.log(foo(1+2));
-    </code>
-    </pre>
+<h1> Google Closure Compiler Advanced Compilation - Live Demo</h1>
+<p>
+The code snippets are live and interactive, powered by <a href="https://github.com/viebel/klipse">the KLIPSE plugin</a>.
+    <ul>
+    <li>The code is evaluated in the browser</li>
+    <li> Edit the code and press <code>Ctrl-Enter</code> to evaluate (or wait for 5 seconds).
+    </ul>
+
+</p>
+
+<h2> An example from https://developers.google.com/closure/compiler/docs/api-tutorial3</h2>
+<pre><code class="compile_js">
+    function unusedFunction(note) {
+      alert(note['text']);
+      }
+
+      function displayNoteTitle(note) {
+        alert(note['title']);
+        }
+
+        var flowerNote = {};
+        flowerNote['title'] = "Flowers";
+        displayNoteTitle(flowerNote);
+        </code></pre>
+
+<h2>An example that shows how smart is the compiler</h2>
+<pre><code class="compile_js">
+    function foo(x) {
+      if(x > 19) {
+          return x * 100;
+            }
+              return x * 10000;
+              }
+
+              console.log([foo(2), foo(111), foo(window.y)]);
+    </code></pre>
 <script>
     window.klipse_settings = {
     codemirror_options_in: {

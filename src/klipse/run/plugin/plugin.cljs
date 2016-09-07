@@ -1,6 +1,7 @@
 (ns klipse.run.plugin.plugin
   (:require klipse.core
             klipse.js-eval
+            klipse.js-compile
             klipse.ruby
             klipse.python
             klipse.php

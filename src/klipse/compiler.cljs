@@ -58,11 +58,18 @@
               error)]
     [status res]))
 
+(defn advanced-compile [code]
+   (let [flags  (clj->js {:jsCode [{:src code}]
+                          :compilationLevel "ADVANCED"})
+         _ (js/console.log flags)
+         result (aget (js/compile flags) "compiledCode")]
+     result))
+
 (defn convert-compile-res [{:keys [value error]}]
   (let [status (if error :error :ok)
         res (if error
               error
-              value)]
+              (advanced-compile value))]
     [status res]))
 
 (deftrack compile [s {:keys [static-fns] :or {static-fns false}}]

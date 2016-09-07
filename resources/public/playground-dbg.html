@@ -7,26 +7,12 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-<pre>
-<code class="clojure" data-print-length="5">
-(range 10000)
-
+<code class="compile_js">
+    function foo(x) { return x;}
+    console.log(foo(1+2));
     </code>
     </pre>
-
-<pre>
-<code class="clojure">
-(range 10000)
-
-    </code>
-    </pre>
-<div>
-<pre><code class="clojure-js" >(defn foo 
-    ([] "aa")
-    ([x] x))
-    </code></pre>
-    </div>
-    <script>
+<script>
     window.klipse_settings = {
     codemirror_options_in: {
     lineWrapping: true,
@@ -36,15 +22,17 @@
     codemirror_options_out: {
     lineWrapping: true
     },
-    print_length: 18,
+    eval_idle_msec: 5000,
     selector: '.clojure',
     selector_eval_markdown: '.eval-markdown',
     selector_eval_html: '.eval-html',
     selector_eval_lambdaway: '.lambda',
     selector_eval_js: '.eval-js',
+    selector_compile_js: '.compile_js',
     selector_js: '.clojure-js'
     };
     </script>
+    <script src="http://viebel.github.io/klipse/repo/js/closure_compiler/jscomp.js"></script>
     <script src="lib/mirror_extensions.js"></script>
 <script src="fig/js/klipse.fig.js"></script>
     </body>

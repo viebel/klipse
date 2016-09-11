@@ -9,13 +9,17 @@
     [cljs.core.async :refer [<! put! chan]]
     [klipse.plugin :refer [register-mode]]))
 
+(defn display [result]
+  (if (aget result "inspect")
+    (!> result.inspect)
+    (str result)))
+
 (defn str-eval-async [exp _]
   (let [c (chan)
-        _ (dbg js/BiwaScheme)
         interpreter (dbg (new js/BiwaScheme.Interpreter (fn [err] (put! c (str err)))))]
     (set! js/window.exp exp)
     (put! c (-> (!> interpreter.evaluate exp)
-                str))
+                display))
     c))
 
 (def opts {:editor-in-mode "scheme"

@@ -14,9 +14,13 @@
     (!> result.inspect)
     (str result)))
 
+(defn create-interpreter [on-error]
+  (let [klass (? js/BiwaScheme.Interpreter)]
+    (new klass on-error)))
+
 (defn str-eval-async [exp _]
   (let [c (chan)
-        interpreter (dbg (new js/BiwaScheme.Interpreter (fn [err] (put! c (str err)))))]
+        interpreter (create-interpreter (fn [err] (put! c (str err))))]
     (set! js/window.exp exp)
     (put! c (-> (!> interpreter.evaluate exp)
                 display))

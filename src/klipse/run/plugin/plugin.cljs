@@ -3,6 +3,7 @@
             klipse.js-eval
             klipse.js-compile
             klipse.ruby
+            klipse.scheme
             klipse.python
             klipse.php
             klipse.markdown

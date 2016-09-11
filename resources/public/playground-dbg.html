@@ -7,42 +7,13 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-<h1> Google Closure Compiler Advanced Compilation - Live Demo</h1>
-<p>
-The code snippets are live and interactive, powered by <a href="https://github.com/viebel/klipse">the KLIPSE plugin</a>.
-    <ul>
-    <li>The code is evaluated in the browser</li>
-    <li> Edit the code and press <code>Ctrl-Enter</code> to evaluate (or wait for 5 seconds).
-    </ul>
-
-</p>
-
-<h2> An example from https://developers.google.com/closure/compiler/docs/api-tutorial3</h2>
-<pre><code class="compile_js">
-    function unusedFunction(note) {
-      alert(note['text']);
-      }
-
-      function displayNoteTitle(note) {
-        alert(note['title']);
-        }
-
-        var flowerNote = {};
-        flowerNote['title'] = "Flowers";
-        displayNoteTitle(flowerNote);
-        </code></pre>
-
-<h2>An example that shows how smart is the compiler</h2>
-<pre><code class="compile_js">
-    function foo(x) {
-      if(x > 19) {
-          return x * 100;
-            }
-              return x * 10000;
-              }
-
-              console.log([foo(2), foo(111), foo(window.y)]);
+<pre><code class="scheme">
+    (define x 89)
     </code></pre>
+<pre><code class="scheme">
+    (* x 100)
+    </code></pre>
+
 <script>
     window.klipse_settings = {
     codemirror_options_in: {
@@ -59,11 +30,12 @@ The code snippets are live and interactive, powered by <a href="https://github.c
     selector_eval_lambdaway: '.lambda',
     selector_eval_js: '.eval-js',
     selector_compile_js: '.compile_js',
+    selector_eval_scheme: '.scheme',
     selector_js: '.clojure-js'
     };
     </script>
-    <script src="http://viebel.github.io/klipse/repo/js/closure_compiler/jscomp.js"></script>
+    <script src="http://www.biwascheme.org/release/biwascheme-0.6.4.js"></script>
     <script src="lib/mirror_extensions.js"></script>
-<script src="fig/js/klipse.fig.js"></script>
+    <script src="fig/js/klipse.fig.js"></script>
     </body>
     </html>

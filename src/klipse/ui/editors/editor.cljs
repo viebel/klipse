@@ -6,7 +6,6 @@
     [goog.dom :as gdom]
     [klipse.dom-utils :refer [create-div-after]]
     [gadjett.collections :as gadjett]
-    cljsjs.js-beautify
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.mode.javascript
@@ -62,15 +61,11 @@
       gadjett/fix-blank-lines
       (set-value editor)))
 
-(defn beautify [editor language]
-  (case language
-    "javascript" (->> (get-value editor)
-                     js/js_beautify
-                     (set-value editor))
-    (-> editor
-        auto-indent
-        goto-start
-        fix-blank-lines)))
+(defn beautify [editor _]
+  (-> editor
+      auto-indent
+      goto-start
+      fix-blank-lines))
 
 (defn set-value-and-beautify [editor mode value]
   (-> (set-value editor value)

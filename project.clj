@@ -1,4 +1,4 @@
-(defproject klipse "2.12.0"
+(defproject klipse "2.12.1"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.225"]
@@ -13,7 +13,6 @@
                  [rewrite-cljs "0.4.1"]
                  [com.cemerick/url "0.1.1"]
                  [cljsjs/codemirror "5.11.0-2"]
-                 [cljsjs/js-beautify "1.6.2-0"]
                  [devcards "0.2.1-7"]
                  [devcards-om-next "0.2.0"]]
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.4-7"]] }}  

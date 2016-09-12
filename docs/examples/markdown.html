@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> Markdown demo </title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
+
+</head>
+
+<body class="container">
+<h1> Markdown demo </h1>
+
+<div>
+The markdown is translated into HTML and the HTML is set with `innerHTML` of the dom element after the code snippet:
+
+<code class="eval-markdown" data-editor-type="html">
+# This is a title
+`clojure` rocks!
+</code>
+</div>
+
+<script>
+    window.klipse_settings = {
+       selector_eval_markdown: '.eval-markdown',
+       editor_type: 'html'
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+</body>
+
+</html>

@@ -7,17 +7,13 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-<pre><code class="javascript">
-    function foo (x) {
-    return x + 1;
-    }
-    </code></pre>
-<pre><code class="javascript">
-    bar = (x, y) => {
-    x + y
-    }
+<pre><code class="clojure_js" data-static-fns="true">
+    (map inc [1 2 3])
+    (defn foo [x y] (+ x y))
+    (print (+ 19 (foo 12 13)))
     </code></pre>
 
+<script src="https://viebel.github.io/klipse/repo/js/closure_compiler/jscomp.js"></script>
 <script>
     window.klipse_settings = {
     codemirror_options_in: {
@@ -28,6 +24,7 @@
     codemirror_options_out: {
     lineWrapping: true
     },
+    eval_idle_msec: 1000000,
     selector: '.clojure',
     selector_eval_markdown: '.eval-markdown',
     selector_eval_html: '.eval-html',
@@ -35,7 +32,7 @@
     selector_eval_js: '.javascript',
     selector_compile_js: '.compile_js',
     selector_eval_scheme: '.scheme',
-    selector_js: '.clojure-js'
+    selector_js: '.clojure_js'
     };
     </script>
     <script src="lib/mirror_extensions.js"></script>

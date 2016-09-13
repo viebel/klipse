@@ -1,20 +1,12 @@
 (ns klipse.js-compile
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
-  (:require 
+  (:require
+    [klipse.closure-compiler :refer [advanced-compile]]
     [cljs-http.client :as http]
     [cljs.core.async :refer [timeout <! >! chan]]
     [klipse.plugin :refer [register-mode]]))
 
-(defn advanced-compile [code]
-  (let [flags  (clj->js {:jsCode [{:src code}]
-                         :compilationLevel "ADVANCED"})
-        _ (js/console.log flags)
-        {:keys [compiledCode errors warnings]} (js->clj (js/compile flags) :keywordize-keys true)]
-    (if (seq errors)
-      (str "//errors during compilation:\n"
-        (js/JSON.stringify (clj->js errors)))
-      compiledCode)))
 
 (defn str-compile-js-async [exp _]
   (let [c (chan)]

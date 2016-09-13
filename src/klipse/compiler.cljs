@@ -4,12 +4,14 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     gadjett.core-fn
+    [cljs-http.client :as http]
+    [klipse.closure-compiler :refer [advanced-compile]]
     cljsjs.codemirror.mode.clojure
     [cljs.reader :refer [read-string]]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
     [clojure.string :as s]
-    [cljs.core.async :refer [chan put! <!]]
+    [cljs.core.async :refer [timeout chan put! <!]]
     [replumb.core :as replumb]
     [cljs.js :as cljs]))
 
@@ -57,20 +59,27 @@
               error)]
     [status res]))
 
-(defn advanced-compile [code]
-  code
-   #_(let [flags  (clj->js {:jsCode [{:src code}]
-                          :compilationLevel "ADVANCED"})
-         _ (js/console.log flags)
-         result (aget (js/compile flags) "compiledCode")]
-     result))
+(defn cljs-core-externs []
+  (go
+    (let [script "http://viebel.github.io/klipse/repo/js/minimal_cljs/1.9.225/minimal_cljs.externs.js"
+          {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
+      (println "externs: " (subs body 0 100))
+      (if (= 200 status)
+        [:ok body]
+        [:error status]))))
+
+(defn closure-compile [code]
+  (go
+    (let [[ok? externs] (<! (cljs-core-externs))]
+      (if (= :error ok?)
+        [:error externs]
+        [:ok (advanced-compile (str "goog.provide('cljs.user');" code) :externs externs #_(str "cljs.user = function(){};" externs))]))))
 
 (defn convert-compile-res [{:keys [value error]}]
-  (let [status (if error :error :ok)
-        res (if error
-              error
-              (advanced-compile value))]
-    [status res]))
+  (go
+    (if error
+      [:error error]
+      (<! (closure-compile value)))))
 
 (deftrack compile [s {:keys [static-fns] :or {static-fns false}}]
   (cljs/compile-str (cljs/empty-state) s
@@ -89,7 +98,8 @@
                        :static-fns static-fns
                        :load load-inlined
                        }
-                      #(put! c (convert-compile-res %)))
+                      #(go
+                         (put! c (<! (convert-compile-res %)))))
     c))
 
 (defn build-repl-opts [{:keys [static-fns context external-libs]}]
@@ -132,10 +142,14 @@
       str))
 
 (defn str-compile-async [exp {:keys [static-fns] :or {static-fns false}}]
-  (go
-  (-> (<! (compile-async exp {:static-fns static-fns}))
-      second
-      str)))
+  (let [c (chan)]
+    (put! c ";compiling...\n")
+    (go
+      (<! (timeout 0))
+      (put! c (-> (<! (compile-async exp {:static-fns static-fns}))
+                  second
+                  str)))
+    c))
 
 (defn ^:export str-eval
   "It is convenient to have a javascript function that evaluates clojure expressions"

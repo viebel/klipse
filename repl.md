@@ -16,7 +16,7 @@ KLIPSE configuration is done with the url parameters:
 * `js_only=1` - display only `input` and `js` boxes
 * `eval_only=1` - display only `input`, `eval` and `print` boxes
 * `static-fns=true` - eval and transpile js code with [static dispatch](https://github.com/clojure/clojurescript/wiki/Compiler-Options#static-fns)
-* `eval-context` - (default `statement`) indicates the evaluation context that will be passed to `cljs/eval-str`. One in `expr`, `statement`, `return`.
+* `eval-context` - (default `statement`) indicates the evaluation context that will be passed to `cljs/eval-str`. One in `expr`, `statement`, `return`. Use `expr` if you want to evaluate only one expression.
 * `external-libs` - array of external libs to resolve the namespace dependencies. Here is an [example with the gadjett library](http://app.klipse.tech/?cljs_in.gist=viebel/56695ae0360b8692255cc84115d37c6b&external-libs=[https://raw.githubusercontent.com/viebel/gadjett/master/src/]).
 * `print-length`: (default 1000) max number of items in collections to display - useful to prevent browser stuck when evaluating infinite sequences like `(range)`
 

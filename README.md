@@ -1,6 +1,10 @@
 # KLIPSE [![Circle CI](https://circleci.com/gh/viebel/klipse/tree/master.svg?style=svg)](https://circleci.com/gh/viebel/klipse/tree/master) [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/klipse-67458228-ba92-4d52-9511-bfde20964896)
 
+KLIPSE is a simple client-side code evaluator pluggable on any web page.
 
+KLIPSE is both a web REPL and a plugin. 
+
+## Plugin
 
 The klipse plugin is a javascript tag that transforms static code snippets of an html page into live and interactive snippets:
 
@@ -11,7 +15,13 @@ The code evaluation is done in the browser: no server is involved at all!
 
 The code editing is done with [CodeMirror](http://codemirror.net/).
 
+## Web REPL
+
+The Web REPL is live at http://app.klipse.tech
+
 Here is [the manual for the KLIPSE web repl](https://github.com/viebel/klipse/blob/master/repl.md).
+
+Languages supported in the REPL: `clojure` and `clojurescript`.
 
 # Live demo
 
@@ -26,14 +36,14 @@ With the klipse plugin, the code is evaluated as you type...
 |![abc](https://raw.githubusercontent.com/viebel/klipse/master/images/php-snippet.gif) |  ![abc](https://raw.githubusercontent.com/viebel/klipse/master/images/clojure-snippet.gif?cachebuster1)|
 
 
-
-
 # Supported languages
 
 - javascript: evaluation is done with the javascript function `eval`
 - clojure[script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
 - ruby: evaluation is done with [Opal](http://opalrb.org/)
 - PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
+- python: evaluation is done with [Skulpt](http://www.skulpt.org/)
+- scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)
 
 
 # How does it work?
@@ -105,6 +115,7 @@ Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/
 </script>
 <script src="http://app.klipse.tech/plugin/js/klipse_plugin.js"></script>
 ```
+
 
 ## https
 

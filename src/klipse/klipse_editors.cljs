@@ -92,34 +92,31 @@
 (defmulti create-editor (fn [type _] type))
 
 (defmethod create-editor :html [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec]}]
-  (go
-    (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
-          out-editor (create-div-after element)
-          in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
-          state (create-state)]
-      (<! (eval-in-html-editor eval-fn out-editor in-editor loop-msec state))
-      (handle-events in-editor
-                     {:idle-msec idle-msec
-                      :on-should-eval #(eval-in-html-editor eval-fn out-editor in-editor loop-msec state)}))))
+  (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
+        out-editor (create-div-after element)
+        in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
+        state (create-state)]
+    (handle-events in-editor
+                   {:idle-msec idle-msec
+                    :on-should-eval #(eval-in-html-editor eval-fn out-editor in-editor loop-msec state)})
+    #(<! (eval-in-html-editor eval-fn out-editor in-editor loop-msec state))))
 
 (defmethod create-editor :code-mirror [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec]}]
-  (go
-    (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
-          out-editor (create-editor-after-element element default-txt out-editor-options); must be called before `element` is replaced
-          in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
-          state (create-state)]
-      (<! (eval-in-codemirror-editor eval-fn out-editor in-editor loop-msec editor-out-mode state))
-      (handle-events in-editor
-                     {:idle-msec idle-msec
-                      :on-should-eval #(eval-in-codemirror-editor eval-fn out-editor in-editor loop-msec editor-out-mode state)}))))
+  (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
+        out-editor (create-editor-after-element element default-txt out-editor-options); must be called before `element` is replaced
+        in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
+        state (create-state)]
+    (handle-events in-editor
+                   {:idle-msec idle-msec
+                    :on-should-eval #(eval-in-codemirror-editor eval-fn out-editor in-editor loop-msec editor-out-mode state)})
+    #(eval-in-codemirror-editor eval-fn out-editor in-editor loop-msec editor-out-mode state)))
 
 (defmethod create-editor :dom [_ {:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec loop-msec]}]
-  (go
-    (let [out-editor (create-div-after element)
-          state (create-state)]
-      (gdom/setTextContent out-editor default-txt)
-      (<! (eval-in-dom-editor eval-fn out-editor element loop-msec state))
-      (add-event-listener element "input" #(eval-in-dom-editor eval-fn out-editor element loop-msec state)))))
+  (let [out-editor (create-div-after element)
+        state (create-state)]
+    (gdom/setTextContent out-editor default-txt)
+    (add-event-listener element "input" #(eval-in-dom-editor eval-fn out-editor element loop-msec state))
+    #(<! (eval-in-dom-editor eval-fn out-editor element loop-msec state))))
 
 (comment
   (s/instrument #'editor-options))

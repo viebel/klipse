@@ -63,7 +63,6 @@
   (go
     (let [script "http://viebel.github.io/klipse/repo/js/minimal_cljs/1.9.225/minimal_cljs.externs.js"
           {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
-      (println "externs: " (subs body 0 100))
       (if (= 200 status)
         [:ok body]
         [:error status]))))
@@ -73,7 +72,7 @@
     (let [[ok? externs] (<! (cljs-core-externs))]
       (if (= :error ok?)
         [:error externs]
-        [:ok (advanced-compile (str "goog.provide('cljs.user');" code) :externs externs #_(str "cljs.user = function(){};" externs))]))))
+        [:ok (advanced-compile code)]))))
 
 (defn convert-compile-res [{:keys [value error]}]
   (go

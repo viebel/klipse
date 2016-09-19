@@ -19,7 +19,8 @@
   (go
     (load-opal-parser-once)
     (try
-      (js/JSON.stringify (!> js/Opal.eval exp))
+      (let [res (!> js/Opal.eval exp)]
+        (!> res.$inspect))
       (catch js/Object e
         (str e)))))
 

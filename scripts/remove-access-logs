@@ -1,1 +1,2 @@
 gsutil -m rm gs://klipse-access-logs/*
+rm ./klipse-access-logs/*

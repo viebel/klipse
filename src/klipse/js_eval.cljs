@@ -33,8 +33,7 @@
 (defn beautify [js-exp]
   (try 
     (-> js-exp
-        js/JSON.stringify
-        js/js_beautify)
+        js/JSON.stringify)
     (catch js/Object o
       (str js-exp))))
 

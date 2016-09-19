@@ -7,16 +7,16 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-<pre><code class="javascript">
-    function foo (x) {
-    return x + 1;
-    }
+<pre><code class="ruby">
+    def foo x
+       x = x + 1
+    end
     </code></pre>
-<pre><code class="javascript">
-    bar = (x, y) => {
-    x + y
-    }
+<pre><code class="ruby">
+    bar = 1
     </code></pre>
+<script src="http://cdn.opalrb.org/opal/current/opal.min.js"></script>
+<script src="http://cdn.opalrb.org/opal/current/opal-parser.min.js"></script>
 
 <script>
     window.klipse_settings = {
@@ -33,6 +33,7 @@
     selector_eval_html: '.eval-html',
     selector_eval_lambdaway: '.lambda',
     selector_eval_js: '.javascript',
+    selector_eval_ruby: '.ruby',
     selector_compile_js: '.compile_js',
     selector_eval_scheme: '.scheme',
     selector_js: '.clojure-js'

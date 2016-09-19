@@ -9,7 +9,7 @@
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
-    [cljs.core.async :refer [<!]]
+    [cljs.core.async :refer [<! timeout]]
     [gadjett.collections :refer [compactize-map]]))
 
 (enable-console-print!)
@@ -37,25 +37,27 @@
       "html" :html
       :code-mirror)))
 
-(defn klipsify-with-opts [element {:keys [eval_idle_msec minimalistic_ui editor_type print_length codemirror_options_in codemirror_options_out] :or {print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? min-eval-idle-msec] :or {min-eval-idle-msec 0 beautify? true}}]
-  (go
-    (when element
-      (let [eval-args (eval-args-from-element element {:print-length print_length})
-            eval-fn-with-args #(eval-fn % eval-args)
-            source-code (<! (content element comment-str))
-            {:keys [idle-msec editor-type loop-msec]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
-            editor-type (calc-editor-type minimalistic_ui editor-type)]
-        (<! (create-editor editor-type {:element element
-                                        :loop-msec loop-msec
-                                        :beautify? beautify?
-                                        :editor-in-mode editor-in-mode
-                                        :editor-out-mode editor-out-mode
-                                        :codemirror-options-in codemirror_options_in
-                                        :codemirror-options-out codemirror_options_out
-                                        :eval-fn eval-fn-with-args
-                                        :source-code source-code
-                                        :default-txt out-placeholder
-                                        :idle-msec idle-msec}))))))
+(defn klipsify-with-opts
+  "returns a channel c with a function f.
+  f returns a channel that will be ready to read when the snippet is evaluated."
+  [element {:keys [eval_idle_msec minimalistic_ui editor_type print_length codemirror_options_in codemirror_options_out] :or {print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? min-eval-idle-msec] :or {min-eval-idle-msec 0 beautify? true}}]
+  (go (when element
+        (let [eval-args (eval-args-from-element element {:print-length print_length})
+              eval-fn-with-args #(eval-fn % eval-args)
+              source-code (<! (content element comment-str))
+              {:keys [idle-msec editor-type loop-msec]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
+              editor-type (calc-editor-type minimalistic_ui editor-type)]
+          (create-editor editor-type {:element element
+                                      :loop-msec loop-msec
+                                      :beautify? beautify?
+                                      :editor-in-mode editor-in-mode
+                                      :editor-out-mode editor-out-mode
+                                      :codemirror-options-in codemirror_options_in
+                                      :codemirror-options-out codemirror_options_out
+                                      :eval-fn eval-fn-with-args
+                                      :source-code source-code
+                                      :default-txt out-placeholder
+                                      :idle-msec idle-msec})))))
 
 (s/def ::dom-element isElement)
 (s/def ::editor-in-mode string?)
@@ -68,21 +70,42 @@
 (s/def ::options (s/keys :req-un [::editor-in-mode ::editor-out-mode ::eval-fn ::comment-str])) 
 (s/def ::klipse-settings (s/keys :opt-un [::eval_idle_msec ::minimalistic_ui]))
 
-(s/fdef klipsify-with-opts 
+(s/fdef klipsify-with-opts
         :args (s/cat :element ::dom-element
                      :settings ::klipse-settings
                      :opts ::options))
 
-(defn ^:export klipsify [element general-settings mode]
+(defn ^:export klipsify
+  "To be called from outside.
+  Klipsifies a snippet.
+  Returns a channel that will be ready when the snippet is evaluated."
+  [element general-settings mode]
+  (if-let [opts (@mode-options mode)]
+    ;; weird piece of code - see klipsify-with-opts docstring
+    (go (<! ((<! (klipsify-with-opts element general-settings opts)))))
+    (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
+
+(defn ^:export klipsify-no-eval [element general-settings mode]
   (if-let [opts (@mode-options mode)]
     (klipsify-with-opts element general-settings opts)
-    (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
+    (go #(go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options))))))
+
+(defn edit-elements [elements general-settings modes]
+  (go
+    (loop [elements elements eval-fns []]
+      (if (seq elements)
+        (let [element (first elements)]
+          (if-let [mode (modes element)]
+            (let [eval-fn (<! (klipsify-no-eval element general-settings mode))]
+              (recur (rest elements) (conj eval-fns eval-fn)))
+            (recur (rest elements) eval-fns)))
+        eval-fns))))
 
 (defn klipsify-elements [elements general-settings modes]
   (go
-    (doseq [element elements]
-      (when-let [mode (modes element)]
-        (<! (klipsify element general-settings mode))))))
+    (let [eval-fns (<! (edit-elements elements general-settings modes))]
+      (doseq [eval-fn eval-fns]
+        (<! (eval-fn))))))
 
 (defn snippets-selector [settings selector-names]
   (->> (map settings selector-names)

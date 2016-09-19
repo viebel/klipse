@@ -16,7 +16,7 @@
 (defn load-scripts [scripts]
   (go-loop [the-scripts scripts]
            (if (seq the-scripts)
-             (let [script (first the-scripts)
+             (let [script (str (first the-scripts) "?" (rand))
                    _ (js/console.info "loading:" script)
                    {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
                (if (= 200 status)

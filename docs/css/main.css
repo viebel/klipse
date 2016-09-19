@@ -7,9 +7,8 @@ blockquote,q{quotes:none;}
 blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
 table{border-collapse:collapse;border-spacing:0;}
 .clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0;}
-.clearfix:after{clear:both;}
+.clearfix:after{clear:both;}si
 .lead{font-size:28px;}
-body{font-family:"Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB";}
 .container{width:940px;display:block;margin:auto;}
 .row{margin-left:-20px;*zoom:1;}.row:before,.row:after{display:table;content:"";line-height:0;}
 .row:after{clear:both;}
@@ -26,7 +25,8 @@ body{font-family:"Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB";}
 .span3{width:220px;}
 .span2{width:140px;}
 .span1{width:60px;}
-body{font:13px "Helvetica Neue",Helvetica,Arial;line-height:1.35em;}
+body{font-family:"Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB";line-height:1.35em;font-size:1.4em;}
+
 h1,h2,h3,h4,h5,h6,legend{margin-bottom:0.3em;font-weight:bold;line-height:2em;opacity:0.85;}
 h1{font-size:52px;line-height:1.2em;margin:26px 0 13px;}
 h2{font-size:36.4px;}

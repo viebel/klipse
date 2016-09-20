@@ -122,7 +122,7 @@
 
 (deftrack eval-async [s args]
   (go
-    (when (contains-macro-def? s) ; there is a bug with expressions that contain macro definition and evaluation - see https://github.com/Lambda-X/replumb/issues/185
+    (when (contains-macro-def? s) ; By design in bootstraped cljs. David Nolen and Mike Fikes told a couple of times: Macros should be defined in a previous compilation stage than their execution - see https://github.com/Lambda-X/replumb/issues/185
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
     (<! (eval-async-1 s args))))
 

@@ -1,5 +1,6 @@
 (ns klipse.js-eval
   (:require-macros
+    [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     [cljs-http.client :as http]
@@ -33,7 +34,8 @@
 (defn beautify [js-exp]
   (try 
     (-> js-exp
-        js/JSON.stringify)
+        js/JSON.stringify
+        str)
     (catch js/Object o
       (str js-exp))))
 

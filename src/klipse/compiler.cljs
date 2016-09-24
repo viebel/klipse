@@ -53,7 +53,7 @@
   (let [status (if error :error :ok)
         res (if success?
                 (display value opts)
-              (pr-str error))]
+             (pr-str error))]
     [status res]))
 
 (defn read-result [{:keys [form warning error value success?]}]
@@ -99,7 +99,7 @@
     c))
 
 (defn build-repl-opts [{:keys [static-fns context external-libs]}]
-  (merge (replumb/options :browser (repos external-libs) special-fetch)
+  (merge (replumb/options :browser #_(repos external-libs) io/no-op)
          {:warning-as-error false
           :static-fns static-fns
           :no-pr-str-on-value true
@@ -113,7 +113,11 @@
     (set! js/COMPILED true)
     (replumb/read-eval-call opts cb s)))
 
-(deftrack eval-async-1 [s opts]
+(defn core-eval-js [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs '()}} cb]
+  (let [st (cljs/empty-state)]
+    (cljs/eval-str st s  "aaa" {:eval cljs/js-eval :load io/no-op} cb) ))
+
+(deftrack eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]
     (core-eval s opts #(put! c (result-as-str % opts)))
     c))

@@ -69,12 +69,11 @@
                                           :optimizations :advanced
                                           :verbose true}}
                        :cache {
-                               :source-paths ["src"]
-                               :compiler {:main "klipse.run.all"
+                               :source-paths ["cache-src"]
+                               :compiler {;:main "klipse.run.all"
                                           :asset-path "cache/js"
                                           :output-to "resources/public/cache/js/klipse.cache.js"
                                           :output-dir "resources/public/cache/js"
-                                          :cache-analysis true
                                           :verbose true
                                           :optimizations :none
                                           }}

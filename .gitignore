@@ -12,3 +12,4 @@ target/
 .lein-repl-history
 *-init.clj
 *.swp
+.cljs_node_repl/

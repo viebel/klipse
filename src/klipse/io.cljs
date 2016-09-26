@@ -32,7 +32,7 @@
       (transit-decode :json nil)))
 
 (defn no-op [{:keys [name macros path]} src-cb]
-  (print "no-op: " path)
+  (print "no-op: " [name macros path])
 
   (if macros
     (go
@@ -53,5 +53,11 @@
         (if (= 200 status)
           (do (println "success load: " filename)
               (src-cb {:lang :js :source "" :cache (edn body)}))
-          (src-cb nil))))))
+(let [filename (str "/cache/js/" path ".cljc.cache.json")
+            {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
+        (if (= 200 status)
+          (do (println "success load: " filename)
+              (src-cb {:lang :js :source "" :cache (edn body)}))
+          (src-cb nil)))
+          )))))
 

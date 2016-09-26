@@ -42,11 +42,17 @@
       (io/fetch-file! src-cb)))
 
 
-(defn result-as-str [{:keys [form warning error value success?]} print-length]
+(defn display [value {:keys [print-length beautify-strings]}]
+  (with-redefs [*print-length* print-length]
+    (pr-str (if (and (string? value) beautify-strings)
+              (symbol value)
+              value))))
+
+
+(defn result-as-str [{:keys [form warning error value success?]} opts]
   (let [status (if error :error :ok)
         res (if success?
-              (with-redefs [*print-length* print-length]
-                (pr-str value))
+                (display value opts)
               (pr-str error))]
     [status res]))
 
@@ -107,9 +113,9 @@
     (set! js/COMPILED true)
     (replumb/read-eval-call opts cb s)))
 
-(deftrack eval-async-1 [s {:keys [print-length] :as opts}]
+(deftrack eval-async-1 [s opts]
   (let [c (chan)]
-    (core-eval s opts #(put! c (result-as-str % print-length)))
+    (core-eval s opts #(put! c (result-as-str % opts)))
     c))
 
 (defn eval

@@ -35,13 +35,14 @@
       (aget element "textContent");goog.dom/getTextContent removes new lines
       )))
 
-(defn eval-args-from-element [element {:keys [print-length]}]
+(defn eval-args-from-element [element {:keys [print-length beautify-strings]}]
   (let [my-dataset (aget element "dataset")
         static-fns (read-string-or-val (aget my-dataset "staticFns") false)
         eval-context (read-string-or-val (aget my-dataset "evalContext") nil)
         print-length (read-string-or-val (aget my-dataset "printLength") print-length)
+        beautify-strings (read-string-or-val (aget my-dataset "beautifyStrings") beautify-strings)
         external-libs (string->array (or (aget my-dataset "externalLibs") nil))]
-    {:static-fns static-fns :print-length print-length :external-libs external-libs :context eval-context}))
+    {:static-fns static-fns :print-length print-length :external-libs external-libs :context eval-context :beautify-strings beautify-strings}))
 
 (defn editor-args-from-element [element]
   (let [my-dataset (aget element "dataset")

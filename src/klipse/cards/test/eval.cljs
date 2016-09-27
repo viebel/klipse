@@ -123,10 +123,22 @@
        1 "1"
        [1 2] "[1 2]"))
 
+(deftest display-evaluation-and-beautify
+  "displays evaluation properly and beautify it"
+  (are [in out]
+       (= (second (result-as-str {:success? true :value in} {:beautify-strings true})) out)
+       nil "nil"
+       "\n1" "\"\\n1\""
+       "ab" "\"ab\""
+       [1 2] "[1 2]"
+       [1 2 3 4 5] "[1 2 ...]"
+       "abcdef" "abcdef"
+       (range) "(0 1 ...)"))
+
 (deftest display-evaluation-and-crop
   "displays evaluation properly and crop it"
   (are [in out]
-       (= (second (result-as-str {:success? true :value in} 2)) out)
+       (= (second (result-as-str {:success? true :value in} {:print-length 2})) out)
        nil "nil"
        "\n1" "\"\\n1\""
        "ab" "\"ab\""

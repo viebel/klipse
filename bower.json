@@ -1,0 +1,51 @@
+{
+  "name": "klipse",
+  "homepage": "https://github.com/viebel/klipse",
+  "authors": [
+    "(Yehonathan Sharvit <viebel@gmail.com>)"
+  ],
+  "description": "a simple client-side code evaluator pluggable on any web page.",
+  "main": "resources/public/plugin_prod/js/klipse_plugin.min.js",
+  "keywords": [
+    "clojure",
+    "clojurescript",
+    "ruby",
+    "python",
+    "evaluator"
+  ],
+  "license": "GNU GPL",
+  "ignore": [
+      "**/.*",
+      "circle.yml",
+      "demos",
+      "demo.cljs",
+      "images",
+      "**/*.html",
+      "project.clj",
+      "pullapprove.yml",
+      "repl.md",
+      "scripts",
+      "src",
+      "test",
+      "tutorial.md",
+      "resources/public/dev",
+      "resources/public/img",
+      "resources/public/lib",
+      "resources/public/plugin",
+      "resources/public/css/cards",
+      "resources/public/css/layout.css",
+      "resources/public/css/simplescrollbars.css",
+      "resources/public/plugin_prod/js/cemerick",
+      "resources/public/plugin_prod/js/cljs",
+      "resources/public/plugin_prod/js/cljs_http",
+      "resources/public/plugin_prod/js/clojure",
+      "resources/public/plugin_prod/js/cognitect",
+      "resources/public/plugin_prod/js/constant_table.js",
+      "resources/public/plugin_prod/js/gadjett",
+      "resources/public/plugin_prod/js/klipse",
+      "resources/public/plugin_prod/js/no",
+      "resources/public/plugin_prod/js/pathetic",
+      "node_modules",
+      "bower_components"
+  ]
+}

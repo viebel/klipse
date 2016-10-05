@@ -17,7 +17,6 @@
   "moduleType": "globals",
   "license": "GNU GPL",
   "ignore": [
-      "*.*",
       "demos",
       "docs",
       "images",

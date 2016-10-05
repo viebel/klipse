@@ -22,7 +22,7 @@
       "demos",
       "docs",
       "images",
-      "resources/,
+      "resources",
       "scripts",
       "src",
       "test"

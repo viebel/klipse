@@ -1,28 +1,33 @@
 {
-  "name": "klipse",
-  "homepage": "https://github.com/viebel/klipse",
-  "authors": [
-    "(Yehonathan Sharvit <viebel@gmail.com>)"
-  ],
-  "description": "a simple client-side code evaluator pluggable on any web page.",
-  "main": ["dist/klipse_plugin.min.js",
-           "dist/codemirror.css"],
-  "keywords": [
-    "clojure",
+    "name": "klipse",
+    "homepage": "https://github.com/viebel/klipse",
+    "authors": [
+        "(Yehonathan Sharvit <viebel@gmail.com>)"
+        ],
+    "description": "a simple client-side code evaluator pluggable on any web page.",
+    "main": ["dist/klipse_plugin.min.js",
+    "dist/codemirror.css"],
+    "keywords": [
+        "clojure",
     "clojurescript",
     "ruby",
     "python",
     "evaluator"
-  ],
-  "moduleType": "globals",
-  "license": "GNU GPL",
-  "ignore": [
-      "demos",
-      "docs",
-      "images",
-      "resources",
-      "scripts",
-      "src",
-      "test"
-  ]
+        ],
+    "moduleType": "globals",
+    "license": "GNU GPL",
+    "ignore": [
+        "*.txt",
+    "*.md ",
+    "*.clj*",
+    "*.yml",
+    "*.html",
+    "demos",
+    "docs",
+    "images",
+    "resources",
+    "scripts",
+    "src",
+    "test"
+        ]
 }

@@ -22,7 +22,8 @@
   (go
     (or
       (read-input-from-url)
-      (<! (gist-content (:cljs_in.gist (url-parameters)))))))
+      (when-let [gist-id (:cljs_in.gist (url-parameters))]
+        (<! (gist-content gist-id))))))
 
 (defn init [element]
   (go

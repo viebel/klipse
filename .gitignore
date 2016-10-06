@@ -1,3 +1,4 @@
+.cljs_node_repl
 figwheel_server.log
 klipse-access-logs/
 resources/private/

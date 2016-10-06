@@ -97,7 +97,7 @@ Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/
         selector_eval_scheme: '.language-klipse-eval-ruby', // css selector for the html elements you want to klipsify
     };
 </script>
-<script src="http://www.biwascheme.org/release/biwascheme-0.6.6.min.js"></script>
+<script src="http://www.biwascheme.org/release/biwascheme-0.6.6-min.js"></script>
 <script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 

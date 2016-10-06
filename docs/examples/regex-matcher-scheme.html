@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+ <title>Pattern-matching regular expressions in Scheme using derivatives</title>
+
+ <link rel="alternate" type="application/rss+xml" title="RSS" href="http://matt.might.net/articles/feed.rss" />
+
+ <link rel="stylesheet" href="../../css/raised-paper-2.css" /> 
+
+
+ <meta name="viewport" content="width=480, initial-scale=1" />
+ <link rel="stylesheet" media="screen and (max-device-width: 480px)" href="../../css/raised-paper-2-handheld.css" />
+
+ <script type="text/javascript" src="../../matt.might.js"></script>
+ <script type="text/javascript">
+  var ArticleVersion = 2 ;
+ </script>
+ <script>
+ <!--
+  include("article-style.js");
+ //-->
+ </script>
+ <script type="text/javascript" src="../manifest.js"></script>
+ <script type="text/javascript" src="../index-manifest.js"></script>
+
+ <script type="text/javascript">
+ <!--
+//  var Key = "[an error occurred while processing the directive]";
+ var Pathname = location.pathname ;
+ var PathParts = Pathname.split(/\//) ;
+ var Key = PathParts[PathParts.length-1] ;
+ if (Key == "")
+  Key = PathParts[PathParts.length-2] ;
+ //-->
+ </script>
+
+</head>
+
+
+
+<body>
+
+<div id="body">
+
+
+
+
+
+
+
+<div id="abstract-container" class="module">
+<div id="abstract-content" class="fat-content">
+
+ <h1>A regular expression matcher in Scheme using derivatives</h1>
+
+ <div>
+ [<a href="../">article index</a>]
+ [<script>
+       var emailMatt = '<a href="mai'+'lto:matt-blog'+'@'+'migh'+'t.net">email me</a>'
+document.write(emailMatt);
+ //-->
+</script>] 
+ [<a href="http://twitter.com/mattmight">@mattmight</a>]
+ [<a href="http://gplus.to/mattmight">+mattmight</a>]
+ [<a href="../feed.rss">rss</a>]
+ </div>
+
+ <p>
+Many assume that pattern-matching a regular expression requires NFA
+conversion followed by back-tracking search or DFA conversion.
+
+Using the derivative of regular expressions, it's possible to
+write a simple pattern-matcher without NFA conversion or back-tracking.
+</p>
+
+<p> The derivative of a regular expression is an algebraic
+manipulation of the regular expression that calculates its "partially
+matched" tail with respect to a particular character.  </p>
+
+<p>
+Read on to see how it's done, with examples in Scheme.
+</p>
+
+ 
+
+
+
+
+  
+</div> <!-- /#content -->
+</div> <!-- /#content-container -->
+
+
+
+<div class="module fat-container">
+<div class="fat-content">
+
+<center>
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-4400645483943138";
+/* Header ad unit */
+google_ad_slot = "8276008011";
+google_ad_width = 468;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+</center>
+  
+</div>
+</div>
+
+
+
+
+  
+<div id="content-container" class="module">
+<div id="article-content">
+
+  <h2>More resources</h2>
+
+<p>
+Related blog articles:
+ <ul>
+   <li>
+   <a href="../implementation-of-nfas-and-regular-expressions-in-java/">NFA-based regex matching in Java</a>.
+   </li>
+   <li>
+   <a href="../nonblocking-lexing-toolkit-based-on-regex-derivatives/">A lexing toolkit based on derivatives in Scala</a>.
+   </li>
+ </ul>
+</p>
+
+ <p>Papers:</p>
+ <ul>
+   <li>Brzozozwksi's original paper, <a href="http://portal.acm.org/citation.cfm?id=321249">"Derivatives of Regular Expressions."</a></li>
+   <li>Owens, Reppy and Turon's, <a href="http://www.ccs.neu.edu/home/turon/re-deriv.pdf">"Regular-expression derivatives re-examined."</a></li>
+ </ul>
+
+ <p>Books:</p>
+ <ul>
+   <li>
+   MIT prof Michael Sipser's <a href="http://www.amazon.com/gp/product/0534950973?ie=UTF8&tag=ucmbread-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0534950973">Theory of Computation</a><img src="http://www.assoc-amazon.com/e/ir?t=ucmbread-20&l=as2&o=1&a=0534950973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+   covers regular languages and automata in exhaustive detail in the very first chapter.
+   </li>
+ </ul>
+ 
+
+<h2>Derivatives of regular expressions</h2>
+ 
+<p> The derivative of a regular expression with respect to a character
+computes a new regular expression that matches what the original expression
+would match, assuming it had just matched the character.
+</p>
+
+
+<p>
+For example, the derivative of the expression <code>(foo|frak)*</code>
+with respect to the character <code>f</code> is the expression
+<code>(oo|rak)(foo|frak)*</code>.
+</p>
+
+
+<p> On the other hand, the derivative of the expression
+<code>(foo|frak)*</code> with respect to the character <code>c</code>
+is the null pattern &empty;.  The null pattern is not allowed in most
+regular expression implementations, but it is necessary in order to
+make the derivative a total function.  By definition, no string can
+match the null pattern.</p>
+
+
+<p>
+The matching strategy with derivatives is straightforward:
+
+<ol>
+  <li>If the string to match is empty and the current pattern matches empty,
+  then the match succeeds.  </li>
+  
+  <li> If the string to match is non-empty, the new pattern is the
+  derivative of the current pattern with respect to the first
+  character of the current string, and the new string to match is the
+  remainder of the current string.  </li> </ol>
+
+</p>
+
+
+<p> To define the derivative, we first need a function <i>&delta;</i> that
+returns the empty string &epsilon; if its argument accepts the empty
+string, and the null pattern &empty; otherwise:
+</p>
+<ul>
+  <li>
+  <i>&delta;</i>(&empty;) = &empty;
+  </li>
+
+  <li>
+  <i>&delta;</i>(&epsilon;) = &epsilon;
+  </li>
+
+  <li>
+  <i>&delta;</i>(c) = &empty;
+  </li>
+
+  <li>
+  <i>&delta;</i>(<i>re</i><sub>1</sub> <i>re</i><sub>2</sub>) =
+   <i>&delta;</i>(<i>re</i><sub>1</sub>)   <i>&delta;</i>(<i>re</i><sub>2</sub>)
+  </li>
+
+  <li>
+  <i>&delta;</i>(<i>re</i><sub>1</sub> | <i>re</i><sub>2</sub>) =
+   <i>&delta;</i>(<i>re</i><sub>1</sub>) | <i>&delta;</i>(<i>re</i><sub>2</sub>)
+  </li>
+
+  <li>
+  <i>&delta;</i>(<i>re</i><sup>*</sup>) = &epsilon;
+  </li>      
+</ul>
+  
+  
+</p>  
+  Let <i>D<sub>c</sub></i>(<i>re</i>) denote the derivative of the
+regular expression <i>re</i> with respect to the character <i>c</i>;
+then the derivative can be defined recursively:
+</p>
+
+  <ul>
+    <li>
+    <i>D<sub>c</sub></i>(&empty;) = &empty;
+    </li>
+
+    <li>
+    <i>D<sub>c</sub></i>(&epsilon;) = &empty;
+    </li>    
+
+    <li>
+    <i>D<sub>c</sub></i>(<i>c</i>) = &epsilon;
+    </li>
+
+    <li>
+    <i>D<sub>c</sub></i>(<i>c'</i>) = &empty;  if  <i>c</i> &ne; <i>c'</i>.
+    </li>
+    
+    <li><i>D<sub>c</sub></i>(<i>re</i><sub>1</sub> <i>re</i><sub>2</sub>)
+    =
+    <i>&delta;</i>(<i>re</i><sub>1</sub>)  <i>D<sub>c</sub></i>(<i>re</i><sub>2</sub>)
+    | <i>D<sub>c</sub></i>(<i>re</i><sub>1</sub>) <i>re</i><sub>2</sub>
+    </li>
+
+    <li><i>D<sub>c</sub></i>(<i>re</i><sub>1</sub> | <i>re</i><sub>2</sub>)
+    =
+      <i>D<sub>c</sub></i>(<i>re</i><sub>1</sub>) 
+    | <i>D<sub>c</sub></i>(<i>re</i><sub>2</sub>) 
+    </li>
+
+    <li>
+    <i>D<sub>c</sub></i>(<i>re</i><sup>*</sup>) =
+    <i>D<sub>c</sub></i>(<i>re</i>) <i>re</i><sup>*</sup>
+    </li>
+  </ul>
+
+  </p>
+
+
+<h2>Code</h2>
+
+<p>
+I've implemented the derivative in Scheme as a quick demonstration.
+
+Without much code, you can actually create a functioning regular-expression matcher:
+</p>
+ 
+<div class="klipse-scheme" data-gist-id="viebel/df7a6f5ad50793252917c593da934e39">
+</div>
+
+ <hr />
+
+ <div id="footer-links">
+ [<a href="../">article index</a>]
+ [<script>
+       var emailMatt = '<a href="mai'+'lto:matt-blog'+'@'+'migh'+'t.net">email me</a>'
+document.write(emailMatt);
+ //-->
+</script>] 
+ [<a href="http://twitter.com/mattmight">@mattmight</a>]
+ [<a href="http://gplus.to/mattmight">+mattmight</a>]
+ [<a href="../feed.rss">rss</a>]
+ </div>
+
+
+  
+</div> <!-- /#content -->
+</div> <!-- /#content-container -->
+ <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector_scheme: '.klipse-scheme'
+    };
+</script>
+<script src="http://www.biwascheme.org/release/biwascheme-0.6.6.min.js"></script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+
+
+
+
+
+
+<div id="footer-ad" class="module fat-container">
+ <div class="fat-content">
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4400645483943138";
+/* Article footer banner */
+google_ad_slot = "3531754286";
+google_ad_width = 468;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+   </center>
+ </div> <!-- /footer-ad -->
+</div> <!-- /footer-ad-container -->
+
+
+
+
+
+<div id="footer-linode" class="module fat-container">
+ <div class="fat-content"> 
+ <center>
+ matt.might.net is powered by <b><a href="http://www.linode.com/?r=bf5d4e7c8a1af61855b5227279a6744c3bde8a8a">linode</a></b> | 
+   <a href="../legal/">legal information</a>
+ </center>
+ </div>
+</div>
+
+
+
+
+
+
+</div> <!-- /#body -->
+
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3661244-1");
+pageTracker._trackPageview();
+</script>
+
+
+
+
+</body>
+
+</html>

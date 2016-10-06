@@ -291,16 +291,15 @@ And it works!
 
 <div class="klipse-scheme">
 (d/dc '(alt (seq foo bar) (seq foo (rep baz))) 'foo)
-              '(alt bar (rep baz)))
 </div>
 
 <div class="klipse-scheme">
-(regex-match '(seq foo (rep bar))·
+(regex-match '(seq foo (rep bar))
                            '(foo bar bar bar))
 </div>
 
 <div class="klipse-scheme">
-(regex-match '(seq foo (rep bar))·
+(regex-match '(seq foo (rep bar))
                            '(foo bar baz bar bar))
 </div>
 

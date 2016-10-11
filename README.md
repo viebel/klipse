@@ -72,6 +72,7 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 ```
 
 Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/viebel/50oLnykk/).
+And here are detailed explanations about [a javascript live code editor in a blog post](http://untangled.io/how-to-use-the-live-code-editor/).
 
 ## ruby
 

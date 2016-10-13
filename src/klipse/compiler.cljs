@@ -103,7 +103,7 @@
     c))
 
 (defn build-repl-opts [{:keys [static-fns context external-libs]}]
-  (merge (replumb/options :browser #_(repos external-libs) io/no-op)
+  (merge (replumb/options :browser #_(repos external-libs) (partial io/no-op external-libs))
          {:warning-as-error false
           :static-fns static-fns
           :no-pr-str-on-value true

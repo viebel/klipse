@@ -45,15 +45,19 @@
 ;                                          technical issues).
 
 (def skip-ns-macros #{'cljs.core
-                       'cljs.pprint
-                       'cljs.env.macros
-                       'cljs.analyzer.macros
-                       'cljs.compiler.macros})
+                      'cljs.pprint
+                      'cljs.env.macros
+                      'cljs.analyzer.macros
+                      'cljs.js
+                      'cljs.compiler.macros})
+
+(def ns-macros-map '{cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/cljs/spec/impl/gen.cljc"
+                      cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/cljs/spec.cljc"})
 
 (def skip-ns-cljs #{'cljs.core
-         'cljs.env
-         'cljs.pprint
-         'cljs.tools.reader})
+                    'cljs.env
+                    'cljs.pprint
+                    'cljs.tools.reader})
 
 (def skip-ns-goog #{'goog.object
                     'goog.string
@@ -64,9 +68,16 @@
 
 (defmethod no-op :macro [{:keys [name path]} src-cb]
   (go
-    (if (contains? skip-ns-macros name)
-      (src-cb {:lang :clj :source ""})
-      (let [filename (str "/cache/js/" path ".clj")
+    (cond (contains? skip-ns-macros name)
+          (src-cb {:lang :clj :source ""})
+          (find ns-macros-map name)
+          (let [filename (get ns-macros-map name)
+                {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
+            (if (= 200 status)
+              (do (println "success load: " filename)
+                  (src-cb {:lang :clj :source body :file "core.clj"}))
+              (src-cb nil)))
+          :else (let [filename (str "/cache/js/" path ".clj")
             {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
         (if (= 200 status)
           (do (println "success load: " filename)

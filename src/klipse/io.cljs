@@ -57,6 +57,8 @@
 (def skip-ns-cljs #{'cljs.core
                     'cljs.env
                     'cljs.pprint
+                    'cljs.source-map
+                    'cljs.tools.reader.reader-types
                     'cljs.tools.reader})
 
 (def skip-ns-goog #{'goog.object
@@ -66,10 +68,11 @@
 
 (def cached-ns '#{cljs.analyzer.api
                   cljs.analyzer
+                  cljs.core
+                  cljs.core$macros
+                  cljs.tagged-literals
                   cljs.compiler
                   cljs.core.match
-                  cljs.core$macros
-                  cljs.core
                   cljs.env
                   cljs.js
                   cljs.reader
@@ -113,16 +116,19 @@
 
 (defmethod no-op :macro [external-libs {:keys [name path]} src-cb]
   (cond
-    (contains? skip-ns-macros name) (src-cb {:lang :clj :source ""})
+    (skip-ns-macros name) (src-cb {:lang :clj :source ""})
     (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
                                  filenames (dbg (map (partial str prefix) macro-suffixes))]
                              (try-to-load-ns filenames :clj :source src-cb))
     :else (let [filenames (dbg (external-libs-files external-libs macro-suffixes path))]
             (try-to-load-ns filenames :clj :source src-cb))))
 
+(def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
+#_(def cache-url "/cache/js/")
+
 (defmethod no-op :cljs [external-libs {:keys [name path]} src-cb]
-  (cond (contains? skip-ns-cljs name) (src-cb {:lang :js :source ""})
-        (contains? cached-ns name) (let [filenames (map #(str "/cache/js/" path % ".cache.json") [".cljs" ".cljc"])]
+  (cond (skip-ns-cljs name) (src-cb {:lang :js :source ""})
+        (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") [".cljs" ".cljc"])]
                                      (try-to-load-ns filenames :js :cache src-cb edn))
         (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
                                      filenames (dbg (map (partial str prefix) [".cljc" ".cljs"]))]

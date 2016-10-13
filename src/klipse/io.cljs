@@ -2,6 +2,7 @@
   (:require-macros [gadjett.core :refer [dbg]]
                    [cljs.core.async.macros :refer [go]])
   (:require
+    [clojure.string :refer [join split lower-case]]
     [cljs-http.client :as http]
     [cljs-http.util :refer [transit-decode]]
     [cljs.core.async :refer [<!]])
@@ -31,11 +32,40 @@
       js/JSON.stringify
       (transit-decode :json nil)))
 
-(defn no-op [{:keys [name macros path]} src-cb]
+(defmulti no-op (fn [{:keys [name macros path]} src-cb]
   (print "no-op: " [name macros path])
+                  (dbg (cond
+                    macros :macro
+                    (re-matches #"^goog/.*" path) :goog
+                    :default :cljs))))
 
-  (if macros
-    (go
+;https://github.com/clojure/clojurescript/blob/master/src/test/self/self_parity/test.cljs#L166
+;Indicates namespaces that we either don't need to load,
+;shouldn't load, or cannot load (owing to unresolved
+;                                          technical issues).
+
+(def skip-ns-macros #{'cljs.core
+                       'cljs.pprint
+                       'cljs.env.macros
+                       'cljs.analyzer.macros
+                       'cljs.compiler.macros})
+
+(def skip-ns-cljs #{'cljs.core
+         'cljs.env
+         'cljs.pprint
+         'cljs.tools.reader})
+
+(def skip-ns-goog #{'goog.object
+                    'goog.string
+                    'goog.string.StringBuffer
+                    'goog.array})
+
+
+
+(defmethod no-op :macro [{:keys [name path]} src-cb]
+  (go
+    (if (contains? skip-ns-macros name)
+      (src-cb {:lang :clj :source ""})
       (let [filename (str "/cache/js/" path ".clj")
             {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
         (if (= 200 status)
@@ -46,18 +76,45 @@
             (if (= 200 status)
               (do (println "success load: " filename)
                   (src-cb {:lang :clj :source body :file "core.clj"}))
-              (src-cb nil))))))
-    (go
+              (src-cb nil))))))))
+
+(defmethod no-op :cljs [{:keys [name path]} src-cb]
+  (go
+    (if (contains? skip-ns-cljs name)
+      (src-cb {:lang :js :source ""})
       (let [filename (str "/cache/js/" path ".cljs.cache.json")
             {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
         (if (= 200 status)
           (do (println "success load: " filename)
               (src-cb {:lang :js :source "" :cache (edn body)}))
-(let [filename (str "/cache/js/" path ".cljc.cache.json")
-            {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
-        (if (= 200 status)
-          (do (println "success load: " filename)
-              (src-cb {:lang :js :source "" :cache (edn body)}))
-          (src-cb nil)))
-          )))))
+          (let [filename (str "/cache/js/" path ".cljc.cache.json")
+                {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
+            (if (= 200 status)
+              (do (println "success load: " filename)
+                  (src-cb {:lang :js :source "" :cache (edn body)}))
+              (src-cb nil))))))))
+
+(defn fix-goog-path [path]
+  ; goog/string -> goog/string/string
+  ; goog/string/StringBuffer -> goog/string/stringbuffer
+  (let [parts (split path #"/")
+        last-part (last parts)
+        new-parts (concat
+                    (butlast parts)
+                    (if (= last-part (lower-case last-part))
+                      [last-part last-part]
+                      [(lower-case last-part)]))]
+    (join "/" new-parts)))
+
+(defmethod no-op :goog [{:keys [name path]} src-cb]
+  (src-cb {:lang :js :source ""}))
+  #_(go
+    (let [closure-github-path "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"
+          filename (str closure-github-path (fix-goog-path path) ".js")
+          {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
+      (if (= 200 status)
+        (do (println "success load: " filename)
+            (src-cb {:lang :js :source body}))
+        (do (println "failed load: " filename)
+            (src-cb nil)))))
 

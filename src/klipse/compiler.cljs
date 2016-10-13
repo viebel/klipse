@@ -1,5 +1,6 @@
 (ns klipse.compiler
   (:require-macros
+    [cljs.core.match :refer [match]]
     [gadjett.core :as gadjett :refer [deftrack dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
@@ -9,6 +10,8 @@
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
     [clojure.string :as s]
+
+    [cljs.analyzer.api :as api]
     [cljs.core.async :refer [chan put! <!]]
     [replumb.core :as replumb]
     cljs.env

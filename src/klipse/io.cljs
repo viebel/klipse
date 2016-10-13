@@ -1,6 +1,6 @@
 (ns klipse.io
   (:require-macros [gadjett.core :refer [dbg]]
-                   [cljs.core.async.macros :refer [go]])
+                   [cljs.core.async.macros :refer [go go-loop]])
   (:require
     [clojure.string :refer [join split lower-case]]
     [cljs-http.client :as http]
@@ -33,11 +33,11 @@
       (transit-decode :json nil)))
 
 (defmulti no-op (fn [{:keys [name macros path]} src-cb]
-  (print "no-op: " [name macros path])
-                  (dbg (cond
+  (dbg [name macros path])
+                  (cond
                     macros :macro
                     (re-matches #"^goog/.*" path) :goog
-                    :default :cljs))))
+                    :default :cljs)))
 
 ;https://github.com/clojure/clojurescript/blob/master/src/test/self/self_parity/test.cljs#L166
 ;Indicates namespaces that we either don't need to load,
@@ -51,8 +51,8 @@
                       'cljs.js
                       'cljs.compiler.macros})
 
-(def ns-macros-map '{cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/cljs/spec/impl/gen.cljc"
-                      cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/cljs/spec.cljc"})
+(def ns-macros-map '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
+                     cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"})
 
 (def skip-ns-cljs #{'cljs.core
                     'cljs.env
@@ -64,46 +64,35 @@
                     'goog.string.StringBuffer
                     'goog.array})
 
-
+(defn try-to-load-ns
+  ([filenames lang src-key src-cb] (try-to-load-ns filenames lang src-key src-cb identity))
+  ([filenames lang src-key src-cb transform-body-fn]
+   (go
+     (when-not (loop [filenames filenames]
+                 (when (seq filenames)
+                   (let [filename (first filenames)
+                         {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
+                     (if (= 200 status)
+                       (do (println "success load: " filename)
+                           (src-cb {:lang lang src-key (transform-body-fn body) :file filename})
+                           :success)
+                       (do (println "cannot load: " filename)
+                           (recur (rest filenames)))))))
+       (src-cb nil)))))
 
 (defmethod no-op :macro [{:keys [name path]} src-cb]
-  (go
-    (cond (contains? skip-ns-macros name)
-          (src-cb {:lang :clj :source ""})
-          (find ns-macros-map name)
-          (let [filename (get ns-macros-map name)
-                {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
-            (if (= 200 status)
-              (do (println "success load: " filename)
-                  (src-cb {:lang :clj :source body :file "core.clj"}))
-              (src-cb nil)))
-          :else (let [filename (str "/cache/js/" path ".clj")
-            {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
-        (if (= 200 status)
-          (do (println "success load: " filename)
-              (src-cb {:lang :clj :source body :file "core.clj"}))
-          (let [filename (str "/cache/js/" path ".cljc")
-                {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
-            (if (= 200 status)
-              (do (println "success load: " filename)
-                  (src-cb {:lang :clj :source body :file "core.clj"}))
-              (src-cb nil))))))))
+    (cond
+      (contains? skip-ns-macros name) (src-cb {:lang :clj :source ""})
+      (find ns-macros-map name) (let [prefix (str (get ns-macros-map name) path)
+                                                        filenames (dbg (map (partial str prefix) [".clj" ".cljc"]))]
+                                                    (try-to-load-ns filenames :clj :source src-cb))
+      :else (src-cb nil)))
 
 (defmethod no-op :cljs [{:keys [name path]} src-cb]
-  (go
-    (if (contains? skip-ns-cljs name)
-      (src-cb {:lang :js :source ""})
-      (let [filename (str "/cache/js/" path ".cljs.cache.json")
-            {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
-        (if (= 200 status)
-          (do (println "success load: " filename)
-              (src-cb {:lang :js :source "" :cache (edn body)}))
-          (let [filename (str "/cache/js/" path ".cljc.cache.json")
-                {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
-            (if (= 200 status)
-              (do (println "success load: " filename)
-                  (src-cb {:lang :js :source "" :cache (edn body)}))
-              (src-cb nil))))))))
+  (if (contains? skip-ns-cljs name)
+    (src-cb {:lang :js :source ""})
+    (let [filenames (map #(str "/cache/js/" path % ".cache.json") [".cljs" ".cljc"])]
+      (try-to-load-ns filenames :js :cache src-cb edn))))
 
 (defn fix-goog-path [path]
   ; goog/string -> goog/string/string

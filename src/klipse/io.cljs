@@ -1,5 +1,6 @@
 (ns klipse.io
   (:require-macros [gadjett.core :refer [dbg]]
+                   [purnam.core :refer [? ! !>]]
                    [cljs.core.async.macros :refer [go go-loop]])
   (:require
     [clojure.string :as string :refer [join split lower-case]]
@@ -154,11 +155,19 @@
                       [(lower-case last-part)]))]
     (join "/" new-parts)))
 
+(defn file-path-from-goog-dependencies
+  "Retrieves the path for a file from (.-dependencies_.nameToPath js/goog). If not found will returns nil."
+  [name]
+  (aget (.-dependencies_.nameToPath js/goog) (str name)))
+
 (defmethod load-ns :goog [_ {:keys [name path]} src-cb]
   (cond
-    (skip-ns-goog name) (src-cb {:lang :js :source ""})
-    :else (let [closure-github-path "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"
-                filenames (map #(str closure-github-path % ".js") [(fix-goog-path path) path])]
+    ;(skip-ns-goog name) (src-cb {:lang :js :source ""})
+    (dbg (!> js/goog.isProvided_ name)) (do
+                                   (print name "is Provided" )
+                                   (src-cb {:lang :js :source ""}))
+    :else (let [closure-github-path "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/goog/"
+                filenames [(str closure-github-path (file-path-from-goog-dependencies name))]]
             (try-to-load-ns filenames :js :source src-cb))))
 
 

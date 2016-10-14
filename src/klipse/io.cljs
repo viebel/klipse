@@ -2,7 +2,7 @@
   (:require-macros [gadjett.core :refer [dbg]]
                    [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    [clojure.string :refer [join split lower-case]]
+    [clojure.string :as string :refer [join split lower-case]]
     [cljs-http.client :as http]
     [cljs-http.util :refer [transit-decode]]
     [cljs.core.async :refer [<!]])
@@ -32,11 +32,12 @@
       js/JSON.stringify
       (transit-decode :json nil)))
 
-(defmulti no-op (fn [_ {:keys [name macros path]} src-cb]
-  (dbg [name macros path])
+(defmulti load-ns (fn [_ {:keys [name macros path]} src-cb]
+                    (dbg [name macros path])
                   (cond
                     macros :macro
-                    (re-matches #"^goog/.*" path) :goog
+                    (re-matches #"^goog\..*" (str name)) :goog
+                    (re-matches #".*\.gist-.*" (str name)) :gist
                     :default :cljs)))
 
 ;https://github.com/clojure/clojurescript/blob/master/src/test/self/self_parity/test.cljs#L166
@@ -64,16 +65,16 @@
 (def skip-ns-goog #{'goog.object
                     'goog.string
                     'goog.string.StringBuffer
+                    'goog.async.nextTick
+                    'goog.math.Long
                     'goog.array})
 
 (def cached-ns '#{cljs.analyzer.api
                   cljs.analyzer
-                  cljs.core
-                  cljs.core$macros
                   cljs.tagged-literals
                   cljs.compiler
-                  cljs.core.match
-                  cljs.env
+                  cljs.core.async
+                  cljs.core.async.impl.protocols
                   cljs.js
                   cljs.reader
                   cljs.source_map.base64
@@ -114,26 +115,31 @@
         suffix suffixes]
     (str lib "/" path suffix)))
 
-(defmethod no-op :macro [external-libs {:keys [name path]} src-cb]
+(defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (cond
     (skip-ns-macros name) (src-cb {:lang :clj :source ""})
     (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
-                                 filenames (dbg (map (partial str prefix) macro-suffixes))]
+                                 filenames (map (partial str prefix) macro-suffixes)]
                              (try-to-load-ns filenames :clj :source src-cb))
-    :else (let [filenames (dbg (external-libs-files external-libs macro-suffixes path))]
+    :else (let [filenames (external-libs-files external-libs macro-suffixes path)]
             (try-to-load-ns filenames :clj :source src-cb))))
 
 (def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
 #_(def cache-url "/cache/js/")
 
-(defmethod no-op :cljs [external-libs {:keys [name path]} src-cb]
+(defmethod load-ns :gist [external-libs {:keys [path]} src-cb]
+  (let [path (string/replace path #"gist_" "")
+        filenames (map #(str "https://gist.githubusercontent.com/" path %) cljs-suffixes)]
+    (try-to-load-ns filenames :clj :source src-cb)))
+
+(defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
   (cond (skip-ns-cljs name) (src-cb {:lang :js :source ""})
-        (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") [".cljs" ".cljc"])]
-                                     (try-to-load-ns filenames :js :cache src-cb edn))
+        (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
+                           (try-to-load-ns filenames :js :cache src-cb edn))
         (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
-                                     filenames (dbg (map (partial str prefix) [".cljc" ".cljs"]))]
+                                     filenames (map (partial str prefix) cljs-suffixes)]
                                  (try-to-load-ns filenames :clj :source src-cb))
-        :else (let [filenames (dbg (external-libs-files external-libs cljs-suffixes path))]
+        :else (let [filenames (external-libs-files external-libs cljs-suffixes path)]
                 (try-to-load-ns filenames :clj :source src-cb))))
 
 (defn fix-goog-path [path]
@@ -148,7 +154,7 @@
                       [(lower-case last-part)]))]
     (join "/" new-parts)))
 
-(defmethod no-op :goog [_ {:keys [name path]} src-cb]
+(defmethod load-ns :goog [_ {:keys [name path]} src-cb]
   (cond
     (skip-ns-goog name) (src-cb {:lang :js :source ""})
     :else (let [closure-github-path "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"

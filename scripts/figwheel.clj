@@ -12,6 +12,7 @@
      :source-paths ["src"]
      :compiler {:main 'klipse.run.all
                 :asset-path "fig/js"
+                :preloads '[devtools.preload]
                 :output-to "resources/public/fig/js/klipse.fig.js"
                 :output-dir "resources/public/fig/js"
                 :source-map-timestamp true }}

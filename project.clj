@@ -3,6 +3,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.225"]
                  [org.clojure/core.async "0.2.385"]
+                 [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]
                  [cljsjs/markdown "0.6.0-beta1-0"]
                  [cljs-http "0.1.41"]

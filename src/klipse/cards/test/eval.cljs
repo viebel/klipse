@@ -126,10 +126,10 @@
 (deftest display-evaluation-and-beautify
   "displays evaluation properly and beautify it"
   (are [in out]
-       (= (second (result-as-str {:success? true :value in} {:beautify-strings true})) out)
+       (= (second (result-as-str {:success? true :value in} {:beautify-strings true :print-length 2})) out)
        nil "nil"
-       "\n1" "\"\\n1\""
-       "ab" "\"ab\""
+       "\n1" "\n1"
+       "ab" "ab"
        [1 2] "[1 2]"
        [1 2 3 4 5] "[1 2 ...]"
        "abcdef" "abcdef"

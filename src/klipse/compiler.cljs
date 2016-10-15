@@ -1,5 +1,6 @@
 (ns klipse.compiler
   (:require-macros
+    [cljs.core.match :refer [match]]
     [gadjett.core :as gadjett :refer [deftrack dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
@@ -9,6 +10,7 @@
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
     [clojure.string :as s]
+    [cljs.analyzer.api :as api]
     [cljs.core.async :refer [chan put! <!]]
     [replumb.core :as replumb]
     [cljs.js :as cljs]))
@@ -26,17 +28,6 @@
 (defn load-inlined [opts cb]
   (cb {:lang :js :source ""}))
 
-(def known-src-paths 
-  {"goog-closure" "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"
-   "gist" "https://gist.githubusercontent.com"
-  "clojurescript" ["https://raw.githubusercontent.com/clojure/clojurescript/r1.9.225/src/main/clojure" "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.225/src/main/cljs"]
-   })
-
-(defn repos [additional-libs]
-  (-> (vals known-src-paths)
-      flatten
-      (concat additional-libs)))
-
 (defn special-fetch [file-url src-cb]
   (-> (s/replace file-url #"gist_" "")
       (io/fetch-file! src-cb)))
@@ -51,9 +42,9 @@
 
 (defn result-as-str [{:keys [form warning error value success?]} opts]
   (let [status (if error :error :ok)
-        res (if success?
+        res (if-not error
                 (display value opts)
-              (pr-str error))]
+             (pr-str error))]
     [status res]))
 
 (defn read-result [{:keys [form warning error value success?]}]
@@ -99,7 +90,7 @@
     c))
 
 (defn build-repl-opts [{:keys [static-fns context external-libs]}]
-  (merge (replumb/options :browser (repos external-libs) special-fetch)
+  (merge (replumb/options :browser #_(repos external-libs) (partial io/load-ns external-libs))
          {:warning-as-error false
           :static-fns static-fns
           :no-pr-str-on-value true
@@ -113,7 +104,16 @@
     (set! js/COMPILED true)
     (replumb/read-eval-call opts cb s)))
 
-(deftrack eval-async-1 [s opts]
+(def create-state (memoize cljs/empty-state))
+
+(defn core-eval-clj [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs '()}} cb]
+  (let [st (create-state)]
+    (cljs/eval-str st s  "my.klipse" {:eval cljs/js-eval
+                                      :context (keyword context)
+                                      :static-fns static-fns
+                                      :load (partial io/load-ns external-libs)} cb)))
+
+(deftrack eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]
     (core-eval s opts #(put! c (result-as-str % opts)))
     c))

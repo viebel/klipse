@@ -1,5 +1,5 @@
 (ns ^:figwheel-no-load klipse.core
-  (:require 
+  (:require
     [gadjett.core-fn :as gadjett]))
 
 (enable-console-print!)

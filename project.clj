@@ -1,11 +1,12 @@
 (defproject klipse "3.1.7"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.225"]
+                 [org.clojure/clojurescript "1.9.229"]
                  [org.clojure/core.async "0.2.385"]
                  [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]
                  [cljsjs/markdown "0.6.0-beta1-0"]
+                 [org.clojure/core.match "0.3.0-alpha4"]
                  [cljs-http "0.1.41"]
                  [viebel/gadjett "0.2.1"]
                  [org.omcljs/om "1.0.0-alpha41"]
@@ -23,7 +24,7 @@
                                     "resources/public/plugin/js"]
   :plugins [[lein-cljsbuild "1.1.1"]
             [lein-doo "0.1.6"]]
-  :source-paths ["src"]
+  :source-paths ["src" "scripts"]
   :cljsbuild {
               :builds {
                        :test {
@@ -67,6 +68,15 @@
                                           :elide-asserts false
                                           :optimizations :advanced
                                           :verbose true}}
+                       :cache {
+                               :source-paths ["cache-src"]
+                               :compiler {;:main "klipse.run.all"
+                                          :asset-path "cache/js"
+                                          :output-to "resources/public/cache/js/klipse.cache.js"
+                                          :output-dir "resources/public/cache/js"
+                                          :verbose true
+                                          :optimizations :none
+                                          }}
                        :figwheel {
                                   :figwheel true
                                   :source-paths ["src"]
@@ -77,7 +87,6 @@
                                              :output-dir "resources/public/fig/js"
                                              ;:elide-asserts true
                                              :verbose false}}
-                       
                        :devcards {
                                   :figwheel { :devcards true }
                                   :source-paths ["src"]
@@ -87,6 +96,4 @@
                                              :output-dir "resources/public/cards/js"
                                              ;:elide-asserts true
                                              :verbose false}}
-                       
-                       
                        }})

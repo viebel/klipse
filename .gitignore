@@ -3,7 +3,6 @@ figwheel_server.log
 klipse-access-logs/
 resources/private/
 resources/public/cards
-resources/public/cache
 resources/public/fig
 resources/public/dev
 resources/public/plugin

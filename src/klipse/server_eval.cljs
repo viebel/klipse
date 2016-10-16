@@ -7,7 +7,6 @@
     cljsjs.codemirror.mode.clike
     cljsjs.codemirror.mode.go
     [klipse.replit :refer [connect-and-evaluate]]
-    [klipse.io :as io]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan <! >! put!]]
     [klipse.plugin :refer [register-mode]]))

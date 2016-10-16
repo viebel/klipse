@@ -5,6 +5,6 @@
 (enable-console-print!)
 (gadjett/settings! :max-function-calls 100)
 
-(def version "3.1.7")
+(def version "3.2.0")
 (js/console.info "KLIPSE version:" version)
 

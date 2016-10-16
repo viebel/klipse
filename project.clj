@@ -1,4 +1,4 @@
-(defproject klipse "3.1.7"
+(defproject klipse "3.2.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.229"]
@@ -6,7 +6,6 @@
                  [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]
                  [cljsjs/markdown "0.6.0-beta1-0"]
-                 [org.clojure/core.match "0.3.0-alpha4"]
                  [cljs-http "0.1.41"]
                  [viebel/gadjett "0.2.1"]
                  [org.omcljs/om "1.0.0-alpha41"]
@@ -33,7 +32,7 @@
                                            :output-to "resources/private/test/klipse.testable.js"
                                            :output-dir "resources/private/test"
                                            :verbose false
-                                           :optimizations :whitespace }}
+                                           :optimizations :simple}}
                       :app {
                                :source-paths ["src/klipse/run/app" "resources/public/lib"]
                                :compiler {
@@ -44,7 +43,7 @@
                                           :optimize-constants true
                                           :static-fns true
                                           ;:elide-asserts true
-                                          :optimizations :whitespace
+                                          :optimizations :simple
                                           :verbose false}}
                       :plugin {
                                :source-paths ["src/klipse/run/plugin" "resources/public/lib"]
@@ -68,15 +67,6 @@
                                           :elide-asserts false
                                           :optimizations :advanced
                                           :verbose true}}
-                       :cache {
-                               :source-paths ["cache-src"]
-                               :compiler {;:main "klipse.run.all"
-                                          :asset-path "cache/js"
-                                          :output-to "resources/public/cache/js/klipse.cache.js"
-                                          :output-dir "resources/public/cache/js"
-                                          :verbose true
-                                          :optimizations :none
-                                          }}
                        :figwheel {
                                   :figwheel true
                                   :source-paths ["src"]

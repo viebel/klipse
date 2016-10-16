@@ -4,7 +4,6 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     cljsjs.codemirror.mode.python
-    [klipse.io :as io]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<! put! chan]]
     [klipse.plugin :refer [register-mode]]))

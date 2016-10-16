@@ -1,7 +1,7 @@
 (ns klipse.compiler
   (:require-macros
-    [cljs.core.match :refer [match]]
     [gadjett.core :as gadjett :refer [deftrack dbg]]
+    [purnam.core :refer [!]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     gadjett.core-fn
@@ -25,13 +25,8 @@
 (js* "window.cljs.user = {}")
 
 
-(defn load-inlined [opts cb]
-  (cb {:lang :js :source ""}))
-
-(defn special-fetch [file-url src-cb]
-  (-> (s/replace file-url #"gist_" "")
-      (io/fetch-file! src-cb)))
-
+(def create-state-eval (memoize cljs/empty-state))
+(def create-state-compile (memoize cljs/empty-state))
 
 (defn display [value {:keys [print-length beautify-strings]}]
   (with-redefs [*print-length* print-length]
@@ -69,49 +64,49 @@
               (advanced-compile value))]
     [status res]))
 
-(deftrack compile [s {:keys [static-fns] :or {static-fns false}}]
-  (cljs/compile-str (cljs/empty-state) s
+(deftrack compile [s {:keys [static-fns external-libs] :or {static-fns false external-libs nil}}]
+  (cljs/compile-str (create-state-compile) s
                     "cljs-in"
                     {
                      :static-fns static-fns
-                     :load load-inlined
+                     :load (partial io/load-ns external-libs)
                     }
                     convert-compile-res))
 
-(deftrack compile-async [s {:keys [static-fns] :or {static-fns false}}]
+(deftrack compile-async [s {:keys [static-fns external-libs] :or {static-fns false external-libs nil}}]
   (let [c (chan)]
-    (cljs/compile-str (cljs/empty-state) s
+    (cljs/compile-str (create-state-compile) s
                       "cljs-in"
                       {
                        :static-fns static-fns
-                       :load load-inlined
-                       }
+                       :load (partial io/load-ns external-libs)}
                       #(put! c (convert-compile-res %)))
     c))
 
 (defn build-repl-opts [{:keys [static-fns context external-libs]}]
-  (merge (replumb/options :browser #_(repos external-libs) (partial io/load-ns external-libs))
+  (merge (replumb/options :browser (partial io/load-ns external-libs))
          {:warning-as-error false
           :static-fns static-fns
           :no-pr-str-on-value true
           :context (or context :statement)
           :verbose false}))
 
-(defn core-eval [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs '()}} cb]
+(defn core-eval [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs nil}} cb]
   (let [opts (build-repl-opts {:static-fns static-fns
                                :external-libs external-libs
                                :context (keyword context)})]
-    (set! js/COMPILED true)
+    (! js/window.COMPILED true); for some reason it is required with read-eval-call
     (replumb/read-eval-call opts cb s)))
 
-(def create-state (memoize cljs/empty-state))
 
-(defn core-eval-clj [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs '()}} cb]
-  (let [st (create-state)]
-    (cljs/eval-str st s  "my.klipse" {:eval cljs/js-eval
-                                      :context (keyword context)
-                                      :static-fns static-fns
-                                      :load (partial io/load-ns external-libs)} cb)))
+(defn core-eval-clj [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs nil}} cb]
+  (cljs/eval-str (create-state-eval)
+                 s
+                 "my.klipse" {:eval cljs/js-eval
+                              :context (keyword context)
+                              :static-fns static-fns
+                              :load (partial io/load-ns external-libs)}
+                 cb))
 
 (deftrack eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]
@@ -137,9 +132,10 @@
       second
       str))
 
-(defn str-compile-async [exp {:keys [static-fns] :or {static-fns false}}]
+(defn str-compile-async [exp {:keys [static-fns external-libs] :or {static-fns false external-libs nil}}]
   (go
-  (-> (<! (compile-async exp {:static-fns static-fns}))
+  (-> (<! (compile-async exp {:static-fns static-fns
+                              :external-libs external-libs}))
       second
       str)))
 
@@ -159,9 +155,6 @@
   (go
     (-> (<! (eval-async exp opts))
         second)))
-
-(defn eval-file [url]
-  (io/fetch-file! url (comp print eval)))
 
 (def eval-opts {:editor-in-mode "clojure"
                   :editor-out-mode "clojure"

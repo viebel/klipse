@@ -5,7 +5,6 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
     cljsjs.codemirror.mode.scheme
-    [klipse.io :as io]
     [cljs.core.async :refer [<! put! chan]]
     [klipse.plugin :refer [register-mode]]))
 

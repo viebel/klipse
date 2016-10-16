@@ -8,7 +8,6 @@
     cljsjs.codemirror.mode.css
     cljsjs.codemirror.mode.clike
     cljsjs.codemirror.mode.php
-    [klipse.io :as io]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<! timeout chan put!]]
     [klipse.plugin :refer [register-mode]]))

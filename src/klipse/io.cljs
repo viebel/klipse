@@ -1,31 +1,13 @@
 (ns klipse.io
   (:require-macros [gadjett.core :refer [dbg]]
-                   [purnam.core :refer [? ! !>]]
+                   [purnam.core :refer [!>]]
                    [cljs.core.async.macros :refer [go go-loop]])
   (:require
+    [clojure.walk :as ww]
     [clojure.string :as string :refer [join split lower-case]]
     [cljs-http.client :as http]
     [cljs-http.util :refer [transit-decode]]
-    [cljs.core.async :refer [<!]])
-  (:import goog.net.XhrIo))
-
-(defn fetch-file!
-  "Very simple implementation of XMLHttpRequests that given a file path
-  calls src-cb with the string fetched of nil in case of error.
-  See doc at https://developers.google.com/closure/library/docs/xhrio"
-  [file-url src-cb]
-    (try
-      ; disable caching to support updates in source files
-      ; might consider to make it configurable to disable caching
-      (.send XhrIo (str file-url "?" (rand))
-             (fn [e]
-               (if (.isSuccess (.-target e))
-                 (do
-                   (js/console.info "loading file: " file-url)
-                   (src-cb (.. e -target getResponseText)))
-                 (src-cb nil))))
-      (catch :default e
-        (src-cb nil))))
+    [cljs.core.async :refer [<!]]))
 
 (defn edn [json]
   (-> json
@@ -33,8 +15,34 @@
       js/JSON.stringify
       (transit-decode :json nil)))
 
-(defmulti load-ns (fn [_ {:keys [name macros path]} src-cb]
-                    (dbg [name macros path])
+(def macro-suffixes [".clj" ".cljc"])
+(def cljs-suffixes [".cljs" ".cljc"])
+
+(defmulti load-ns
+  "
+  Each runtime environment provides a different way to load a library.
+  Received two arguments - a map and a callback function:
+  The map will have the following keys:
+
+    :name   - the name of the library (a symbol)
+    :macros - modifier signaling a macros namespace load
+    :path   - munged relative library path (a string)
+
+    It is up to the implementor to correctly resolve the corresponding .cljs,
+    .cljc, or .js resource (the order must be respected).
+    If :macros is true, resolution should only consider .clj or .cljc resources (the order must be respected).
+  Upon resolution the callback should be invoked with a map containing the following keys:
+
+    :lang       - the language, :clj or :js
+    :source     - the source of the library (a string)
+    :file       - optional, the file path, it will be added to AST's :file keyword (but not in :meta)
+    :cache      - optional, if a :clj namespace has been precompiled to :js, can give an analysis cache for faster loads.
+    :source-map - optional, if a :clj namespace has been precompiled to :js, can give a V3 source map JSON
+
+    If the resource could not be resolved, the callback should be invoked with
+    nil."
+  (fn [_ {:keys [name macros path]} src-cb]
+                    [name macros path]
                   (cond
                     macros :macro
                     (re-matches #"^goog\..*" (str name)) :goog
@@ -58,39 +66,9 @@
 
 (def skip-ns-cljs #{'cljs.core
                     'cljs.env
-                    'cljs.pprint
                     'cljs.source-map
                     'cljs.tools.reader.reader-types
                     'cljs.tools.reader})
-
-(def skip-ns-goog #{'goog.object
-                    'goog.string
-                    'goog.string.StringBuffer
-                    'goog.async.nextTick
-                    'goog.math.Long
-                    'goog.array})
-
-(def cached-ns '#{cljs.analyzer.api
-                  cljs.analyzer
-                  cljs.tagged-literals
-                  cljs.compiler
-                  cljs.core.async
-                  cljs.core.async.impl.protocols
-                  cljs.js
-                  cljs.reader
-                  cljs.source_map.base64
-                  cljs.source_map.base64_vlq
-                  cljs.source_map
-                  cljs.spec.impl.gen
-                  cljs.spec
-                  cljs.tagged_literals
-                  cljs.tools.reader.impl.commons
-                  cljs.tools.reader.impl.utils
-                  cljs.tools.reader.reader_types
-                  cljs.tools.reader
-                  clojure.set
-                  clojure.string
-                  clojure.walk})
 
 (defn try-to-load-ns
   ([filenames lang src-key src-cb] (try-to-load-ns filenames lang src-key src-cb identity))
@@ -101,17 +79,15 @@
                    (let [filename (first filenames)
                          {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
                      (if (= 200 status)
-                       (do (println "success load: " filename)
-                           (src-cb {:lang lang src-key (transform-body-fn body) :file filename})
+                       (do (src-cb {:lang lang src-key (transform-body-fn body) :file filename})
                            :success)
-                       (do (println "cannot load: " filename)
-                           (recur (rest filenames)))))))
+                       (do (recur (rest filenames)))))))
        (src-cb nil)))))
 
-(def macro-suffixes [".clj" ".cljc"])
-(def cljs-suffixes [".cljs" ".cljc"])
 
-(defn external-libs-files [external-libs suffixes path]
+(defn external-libs-files
+  "returns a list of files provided list of external-libs and suffixes"
+  [external-libs suffixes path]
   (for [lib external-libs
         suffix suffixes]
     (str lib "/" path suffix)))
@@ -133,6 +109,11 @@
         filenames (map #(str "https://gist.githubusercontent.com/" path %) cljs-suffixes)]
     (try-to-load-ns filenames :clj :source src-cb)))
 
+(defn cached-ns
+  "Checks whether a namspace is present at run-time"
+  [name]
+  (!> js/goog.getObjectByName (str (munge name)))); (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
+
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
   (cond (skip-ns-cljs name) (src-cb {:lang :js :source ""})
         (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
@@ -140,10 +121,11 @@
         (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
                                      filenames (map (partial str prefix) cljs-suffixes)]
                                  (try-to-load-ns filenames :clj :source src-cb))
-        :else (let [filenames (external-libs-files external-libs cljs-suffixes path)]
-                (try-to-load-ns filenames :clj :source src-cb))))
+        (seq external-libs) (let [filenames (external-libs-files external-libs cljs-suffixes path)]
+                (try-to-load-ns filenames :clj :source src-cb))
+        :else (src-cb nil)))
 
-(defn fix-goog-path [path]
+(defn fix-goog-path [path]; https://github.com/oakes/eval-soup/blob/master/src/eval_soup/core.cljs
   ; goog/string -> goog/string/string
   ; goog/string/StringBuffer -> goog/string/stringbuffer
   (let [parts (split path #"/")
@@ -155,19 +137,19 @@
                       [(lower-case last-part)]))]
     (join "/" new-parts)))
 
-(defn file-path-from-goog-dependencies
-  "Retrieves the path for a file from (.-dependencies_.nameToPath js/goog). If not found will returns nil."
-  [name]
-  (aget (.-dependencies_.nameToPath js/goog) (str name)))
+(defn another-goog-path [path]; https://github.com/oakes/eval-soup/blob/master/src/eval_soup/core.cljs
+  ; goog/string/format -> goog/string/stringformat
+  (let [parts (split path #"/")
+        last-part (last parts)
+        new-parts (concat
+                    (butlast parts)
+                    [(join "" (take-last 2 parts))])]
+    (join "/" new-parts)))
 
 (defmethod load-ns :goog [_ {:keys [name path]} src-cb]
   (cond
-    ;(skip-ns-goog name) (src-cb {:lang :js :source ""})
-    (dbg (!> js/goog.isProvided_ name)) (do
-                                   (print name "is Provided" )
-                                   (src-cb {:lang :js :source ""}))
-    :else (let [closure-github-path "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/goog/"
-                filenames [(str closure-github-path (file-path-from-goog-dependencies name))]]
+    (!> js/goog.getObjectByName (str name)) (src-cb {:lang :js :source ""}); isProvided and nameToPath don't work with :optimizations :simple or :whitespace
+    :else (let [closure-github-path "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"
+                filenames (map #(str closure-github-path % ".js") ((juxt fix-goog-path identity another-goog-path) path))]
             (try-to-load-ns filenames :js :source src-cb))))
-
 

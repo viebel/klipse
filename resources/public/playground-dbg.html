@@ -10,14 +10,7 @@
 <pre><code class="clojure">
     (map inc [1 2 3])
 </code></pre>
-
-<pre><code class="clojure">
-    (ns my.test
-      (:require
-          [cljs.pprint :as pp :refer [pprint]]))
-          (with-out-str (pprint (for [x (range 10)] (range x))))
-</code></pre>
-    <pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/math.combinatorics/master/src/main/clojure">
+<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/math.combinatorics/master/src/main/clojure">
     (ns my.combinatorics
       (:require [clojure.math.combinatorics :refer [permutations]]))
 
@@ -25,46 +18,10 @@
     </code></pre>
 
 
-<pre><code class="clojure" data-gist-id="viebel/820f672dd176169fd831c7748e6f3cd3" data-external-libs="https://raw.githubusercontent.com/mfikes/andare/master/src/main/clojure/">
-</code></pre>
-<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/clojure/test.check/ebcc57dd631e25ee39bc059899e3bbd9ddf24ee9/src/main/clojure">
-    (ns my.test   (:require [clojure.test.check :as tc]
-                [clojure.test.check.generators :as gen]
-                            [clojure.test.check.properties :as prop :include-macros true]))
-    (def sort-idempotent-prop
-      (prop/for-all [v (gen/vector gen/int)]
-            (= (sort v) (sort (sort v)))))
-
-            (tc/quick-check 100 sort-idempotent-prop)
-
-</code></pre>
-<pre><code class="clojure">
-    (ns my.spec
-    (:require [clojure.spec :as s]))
-
-    (s/def ::a integer?)
-    (s/conform ::a 12)
-    </code></pre>
-<pre><code class="clojure">
-    (ns my.cljs
-      (:require [cljs.js :as cljs :refer [eval-str]]))
-
-      (eval-str (cljs.js/empty-state) "(+ 1 2)" 'cljs.me {:eval cljs.js/js-eval} identity)
-
-
-    </code></pre>
-
-<pre><code class="clojure">
-(ns my.walk
-  (:require [clojure.walk :refer [postwalk]]))
-  (postwalk identity {:a 1})
-    </code></pre>
-
-<pre><code class="clojure">
-(ns my.ns
-  (:require [clojure.string :as string :refer [lower-case]]))
-  (lower-case "AbsCs")
-    </code></pre>
+    <pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/cognitect/transit-js/master/src/,https://raw.githubusercontent.com/cognitect/transit-cljs/master/src/">
+        (ns my.transit
+          (:require [cognitect.transit :as t]))
+   </code></pre>
 
 <script>
     window.klipse_settings = {

@@ -74,16 +74,17 @@
   ([filenames lang src-key src-cb] (try-to-load-ns filenames lang src-key src-cb identity))
   ([filenames lang src-key src-cb transform-body-fn]
    (go
-     (when-not (loop [filenames filenames]
-                 (when (seq filenames)
-                   (let [filename (first filenames)
-                         {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
-                     (if (= 200 status)
-                       (do (src-cb {:lang lang src-key (transform-body-fn body) :file filename})
-                           :success)
-                       (do (recur (rest filenames)))))))
+     (if
+       (loop [filenames filenames]
+         (when (seq filenames)
+           (let [filename (first filenames)
+                 {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
+             (if (= 200 status)
+               (do (src-cb {:lang lang src-key (transform-body-fn body) :file filename})
+                   :success)
+               (do (recur (rest filenames)))))))
+       :success
        (src-cb nil)))))
-
 
 (defn external-libs-files
   "returns a list of files provided list of external-libs and suffixes"
@@ -117,12 +118,21 @@
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
   (cond (skip-ns-cljs name) (src-cb {:lang :js :source ""})
         (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
-                           (try-to-load-ns filenames :js :cache src-cb edn))
+                                         (go
+                                           (when-not (<! (try-to-load-ns filenames :js :cache src-cb edn))
+                                             (src-cb {:lang :js :source ""}))))
         (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
                                      filenames (map (partial str prefix) cljs-suffixes)]
-                                 (try-to-load-ns filenames :clj :source src-cb))
+                                 (go
+                                   (when-not
+                                     (<! (try-to-load-ns filenames :clj :source src-cb))
+                                     (try-to-load-ns (str prefix ".js") :js :source src-cb))))
         (seq external-libs) (let [filenames (external-libs-files external-libs cljs-suffixes path)]
-                (try-to-load-ns filenames :clj :source src-cb))
+                              (go
+                                (when-not
+                                  (<! (try-to-load-ns filenames :clj :source src-cb))
+                                  (let [filenames (external-libs-files external-libs [".js"] path)]
+                                    (try-to-load-ns filenames :js :source src-cb)))))
         :else (src-cb nil)))
 
 (defn fix-goog-path [path]; https://github.com/oakes/eval-soup/blob/master/src/eval_soup/core.cljs

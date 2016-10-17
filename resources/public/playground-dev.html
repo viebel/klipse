@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+<link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+<link rel="stylesheet" type="text/css" href="css/codemirror.css">
+</head>
+<body>
+<pre><code class="clojure">
+    (map inc [1 2 3])
+</code></pre>
+<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/math.combinatorics/master/src/main/clojure">
+    (ns my.combinatorics
+      (:require [clojure.math.combinatorics :refer [permutations]]))
+
+    (permutations [1 2 3])
+    </code></pre>
+
+
+    <pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/cognitect/transit-js/master/src/,https://raw.githubusercontent.com/cognitect/transit-cljs/master/src/">
+        (ns my.transit
+          (:require [cognitect.transit :as t]))
+   </code></pre>
+
+<script>
+    window.klipse_settings = {
+    codemirror_options_in: {
+    lineWrapping: true,
+    lineNumbers: true,
+    autoCloseBrackets: true
+    },
+    codemirror_options_out: {
+    lineWrapping: true
+    },
+    selector: '.clojure',
+    selector_eval_markdown: '.eval-markdown',
+    selector_eval_html: '.eval-html',
+    selector_eval_lambdaway: '.lambda',
+    selector_eval_js: '.javascript',
+    selector_compile_js: '.compile_js',
+    selector_eval_scheme: '.scheme',
+    selector_js: '.clojure-js'
+    };
+    </script>
+    <script src="plugin/js/klipse_plugin.js"></script>
+    </body>
+    </html>

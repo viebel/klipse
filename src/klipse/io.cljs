@@ -71,20 +71,26 @@
                     'cljs.tools.reader})
 
 (defn try-to-load-ns
-  ([filenames lang src-key src-cb] (try-to-load-ns filenames lang src-key src-cb identity))
-  ([filenames lang src-key src-cb transform-body-fn]
-   (go
-     (if
-       (loop [filenames filenames]
-         (when (seq filenames)
-           (let [filename (first filenames)
-                 {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
-             (if (= 200 status)
-               (do (src-cb {:lang lang src-key (transform-body-fn body) :file filename})
-                   :success)
-               (do (recur (rest filenames)))))))
-       :success
-       (src-cb nil)))))
+  "Tries to load one namespace from filenames.
+  Will call the src-cb upon first success.
+  If can-recover? is false, will call src-cb with nil if it cannot load any namespace.
+  Returns :success if a nampespace was loaded otherwise, returns nil.
+  "
+  [filenames lang src-key src-cb & {:keys [transform can-recover?] :or {transform identity can-recover? false}}]
+  (go
+    (if
+      (loop [filenames filenames]
+        (when (seq filenames)
+          (let [filename (first filenames)
+                {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
+            (if (= 200 status)
+              (do (src-cb {:lang lang src-key (transform body) :file filename})
+                  :success)
+              (do (recur (rest filenames)))))))
+      :success
+      (do (when-not can-recover?
+            (src-cb nil))
+          false))))
 
 (defn external-libs-files
   "returns a list of files provided list of external-libs and suffixes"
@@ -116,24 +122,28 @@
   (!> js/goog.getObjectByName (str (munge name)))); (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
 
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
-  (cond (skip-ns-cljs name) (src-cb {:lang :js :source ""})
-        (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
-                                         (go
-                                           (when-not (<! (try-to-load-ns filenames :js :cache src-cb edn))
-                                             (src-cb {:lang :js :source ""}))))
-        (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
-                                     filenames (map (partial str prefix) cljs-suffixes)]
-                                 (go
-                                   (when-not
-                                     (<! (try-to-load-ns filenames :clj :source src-cb))
-                                     (try-to-load-ns (str prefix ".js") :js :source src-cb))))
-        (seq external-libs) (let [filenames (external-libs-files external-libs cljs-suffixes path)]
-                              (go
-                                (when-not
-                                  (<! (try-to-load-ns filenames :clj :source src-cb))
-                                  (let [filenames (external-libs-files external-libs [".js"] path)]
-                                    (try-to-load-ns filenames :js :source src-cb)))))
-        :else (src-cb nil)))
+  (dbg path)
+  (cond
+    (skip-ns-cljs name) (src-cb {:lang :js :source ""})
+    (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
+                       (go
+                         (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
+                           ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js
+                           (println "js cache: " name)
+                           (src-cb {:lang :js :source ""}))))
+    (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
+                                 filenames (map (partial str prefix) cljs-suffixes)]
+                             (go
+                               (when-not
+                                 (<! (try-to-load-ns filenames :clj :source src-cb :can-recover? true))
+                                 (try-to-load-ns (str prefix ".js") :js :source src-cb))))
+    (seq external-libs) (let [filenames (external-libs-files external-libs cljs-suffixes path)]
+                          (go
+                            (when-not
+                              (<! (try-to-load-ns filenames :clj :source src-cb :can-recover? true))
+                              (let [filenames (external-libs-files external-libs [".js"] path)]
+                                (try-to-load-ns filenames :js :source src-cb)))))
+    :else (src-cb nil)))
 
 (defn fix-goog-path [path]; https://github.com/oakes/eval-soup/blob/master/src/eval_soup/core.cljs
   ; goog/string -> goog/string/string

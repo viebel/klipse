@@ -1,4 +1,5 @@
 .cljs_node_repl
+.nrepl-port
 figwheel_server.log
 klipse-access-logs/
 resources/private/

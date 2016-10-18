@@ -15,6 +15,9 @@
 (defn static-fns? []
   (boolean (read-string (or (:static-fns (url-parameters)) "false"))))
 
+(defn verbose? []
+  (boolean (read-string (or (:verbose (url-parameters)) "false"))))
+
 (defn beautify-strings? []
   (boolean (read-string (or (:beautify-strings (url-parameters)) "false"))))
 
@@ -36,6 +39,7 @@
 (deftrack eval-clj [s]
   (go
     (let [[status res] (<! (eval-async s {:static-fns (static-fns?)
+                                          :verbose (verbose?)
                                           :beautify-strings (beautify-strings?)
                                           :external-libs (external-libs)
                                           :print-length (print-length)

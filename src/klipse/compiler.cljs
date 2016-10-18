@@ -13,6 +13,7 @@
     [cljs.analyzer.api :as api]
     [cljs.core.async :refer [chan put! <!]]
     [replumb.core :as replumb]
+    [cljs.env :as env]
     [cljs.js :as cljs]))
 
 
@@ -64,45 +65,55 @@
               (advanced-compile value))]
     [status res]))
 
-(deftrack compile [s {:keys [static-fns external-libs] :or {static-fns false external-libs nil}}]
+(deftrack compile [s {:keys [static-fns external-libs verbose] :or {static-fns false external-libs nil}}]
   (cljs/compile-str (create-state-compile) s
                     "cljs-in"
                     {
                      :static-fns static-fns
+                     :external-libs external-libs
+                     :verbose verbose
                      :load (partial io/load-ns external-libs)
                     }
                     convert-compile-res))
 
-(deftrack compile-async [s {:keys [static-fns external-libs] :or {static-fns false external-libs nil}}]
+(deftrack compile-async [s {:keys [static-fns external-libs verbose] :or {static-fns false external-libs nil}}]
   (let [c (chan)]
     (cljs/compile-str (create-state-compile) s
                       "cljs-in"
                       {
                        :static-fns static-fns
+                       :verbose verbose
                        :load (partial io/load-ns external-libs)}
                       #(put! c (convert-compile-res %)))
     c))
 
-(defn build-repl-opts [{:keys [static-fns context external-libs]}]
+(defn build-repl-opts [{:keys [static-fns context external-libs verbose]}]
   (merge (replumb/options :browser (partial io/load-ns external-libs))
          {:warning-as-error false
           :static-fns static-fns
+          :verbose verbose
           :no-pr-str-on-value true
-          :context (or context :statement)
-          :verbose false}))
+          :context (or context :statement)}))
 
-(defn core-eval [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs nil}} cb]
+(defn core-eval-replumb [s {:keys [static-fns context verbose external-libs] :or {static-fns false context nil external-libs nil}} cb]
   (let [opts (build-repl-opts {:static-fns static-fns
                                :external-libs external-libs
+                               :verbose verbose
                                :context (keyword context)})]
     (! js/window.COMPILED true); for some reason it is required with read-eval-call
     (replumb/read-eval-call opts cb s)))
 
 
-(defn core-eval-clj [s {:keys [static-fns context external-libs] :or {static-fns false context nil external-libs nil}} cb]
+(defn my-eval [{:keys [file source file lang name path cache] :as args}]
+  (cljs/js-eval args))
+
+(defn core-eval [s {:keys [static-fns context external-libs verbose] :or {static-fns false context nil external-libs nil}} cb]
+  ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
+  (set! env/*compiler* (create-state-eval))
   (cljs/eval-str (create-state-eval)
                  s
-                 "my.klipse" {:eval cljs/js-eval
+                 "my.klipse" {:eval my-eval
+                              :verbose verbose
                               :context (keyword context)
                               :static-fns static-fns
                               :load (partial io/load-ns external-libs)}
@@ -132,9 +143,10 @@
       second
       str))
 
-(defn str-compile-async [exp {:keys [static-fns external-libs] :or {static-fns false external-libs nil}}]
+(defn str-compile-async [exp {:keys [static-fns external-libs verbose] :or {static-fns false external-libs nil}}]
   (go
   (-> (<! (compile-async exp {:static-fns static-fns
+                              :verbose verbose
                               :external-libs external-libs}))
       second
       str)))

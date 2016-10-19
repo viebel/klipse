@@ -23,36 +23,33 @@ powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
 </ol>
 
 <h2> Setup </h2>
-First let's load <code>mathlab</code> from the <a href="https://github.com/timqian/mathlab">mathlab github repository</a> (It might take a couple of seconds...):
+First let's load <code>VerEx</code> from the JSVerbalExpressions CDN:
 
+Here is the <a href="https://github.com/VerbalExpressions/JSVerbalExpressions">JSVerbalExpressions Github repository</a>. 
 <br/>
 <br/>
 <pre><code class="js" data-external-libs="https://cdn.jsdelivr.net/jsverbalexpressions/0.2.1/verbalexpressions.min.js">
-  Object.keys(mathlab)
-</code></pre>
+VerEx.toString()</code></pre>
 
-<h2>  Matrix Manipulation</h2>
-
-<h3> Matrix inverse</h3>
+<h2> test RegExp</h2>
 <p>
   <code>inv</code> calculates the inverse of a matrix.
 </p>
 <pre><code class="js">
-mathlab.inv([[1,2],[3,4]])
-</code></pre>
+var tester = VerEx()
+    .startOfLine()
+    .then('http')
+    .maybe('s')
+    .then('://')
+    .maybe('www.')
+    .anythingBut(' ')
+    .endOfLine();
 
-<p>And here is what happens when the matrix is not invertible:</p>
-<pre><code class="js">
-mathlab.inv([[1,2],[1,2]])
-</code></pre>
+// Create an example URL
+var testMe = 'https://www.google.com';
 
-<h2>  Dot Product</h2>
-
-<p>
-  <code>dot</code> calculates the dot product of a matrix.
-</p>
-<pre><code class="js">
- mathlab.dot([[1, 1], [2, 1]], [1, 2])
+// Use RegExp object's native test() function
+tester.test(testMe)
 </code></pre>
 
 

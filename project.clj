@@ -6,17 +6,15 @@
                  [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]
                  [cljsjs/markdown "0.6.0-beta1-0"]
-                 [cljs-http "0.1.41"]
+                 [cljs-http "0.1.42"]
                  [viebel/gadjett "0.2.1"]
                  [org.omcljs/om "1.0.0-alpha41"]
-                 [replumb "0.2.4-SNAPSHOT"]
-                 [fipp "0.6.6"]
-                 [rewrite-cljs "0.4.1"]
+                 [replumb "0.2.4"]
                  [com.cemerick/url "0.1.1"]
-                 [cljsjs/codemirror "5.11.0-2"]
-                 [devcards "0.2.1-7"]
-                 [devcards-om-next "0.2.0"]]
-  :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.4-7"]] }}  
+                 [cljsjs/codemirror "5.19.0-0"]
+                 [devcards "0.2.2"]
+                 [devcards-om-next "0.3.0"]]
+  :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.8"]] }}
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ^{:protect false} ["resources/public/dev/js"
                                     "resources/public/plugin_prod/js"

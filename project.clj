@@ -9,6 +9,7 @@
                  [cljs-http "0.1.42"]
                  [viebel/gadjett "0.2.1"]
                  [org.omcljs/om "1.0.0-alpha41"]
+                 [zprint "0.2.0"]
                  [replumb "0.2.4"]
                  [com.cemerick/url "0.1.1"]
                  [cljsjs/codemirror "5.19.0-0"]

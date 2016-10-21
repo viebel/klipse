@@ -11,17 +11,18 @@
     (map inc [1 2 3])
 </code></pre>
 
-    <pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/cognitect/transit-js/master/src/,https://raw.githubusercontent.com/cognitect/transit-cljs/master/src/">
-        (ns my.transit
-          (:require [cognitect.transit :as t]))
-   </code></pre>
-<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/math.combinatorics/master/src/main/clojure">
-    (ns my.combinatorics
-      (:require [clojure.math.combinatorics :refer [permutations]]))
 
-    (permutations [1 2 3])
-    </code></pre>
+<pre><code class="clojure">
+    (zipmap (range 100) (range 100))
+</code></pre>
 
+<pre><code class="clojure">
+    (defn cl-format 
+    "An implementation of a Common Lisp compatible format function"
+    [stream format-in & args] (let [compiled-format (if (string? format-in) 
+    (compile-format format-in) format-in) navigator (init-navigator args)] 
+    (execute-format stream compiled-format navigator)))
+</code></pre>
 
 <script>
     window.klipse_settings = {

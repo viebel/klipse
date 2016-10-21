@@ -6,6 +6,7 @@
     [goog.dom :as gdom]
     [klipse.dom-utils :refer [create-div-after]]
     [gadjett.collections :as gadjett]
+    [zprint.core :refer [zprint-str]]
     cljsjs.codemirror
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.mode.javascript
@@ -61,17 +62,29 @@
       gadjett/fix-blank-lines
       (set-value editor)))
 
-(defn beautify [editor _]
-  (-> editor
-      auto-indent
-      goto-start
-      fix-blank-lines))
+(defn clojure-beautify [s]
+  (let [a (zprint-str s {:parse-string? true}) ]
+    (println "zprint: " s "-->" a))
+  (zprint-str s {:parse-string? true}))
+
+(defn clojure-beautify-editor [editor]
+  (->> (get-value editor)
+       clojure-beautify
+       (set-value editor)))
+
+(defn beautify [editor mode]
+  (if (= (dbg mode ) "clojure")
+    (-> editor
+        auto-indent
+        goto-start
+        fix-blank-lines
+        clojure-beautify-editor
+        )
+    editor))
 
 (defn set-value-and-beautify [editor mode value]
   (-> (set-value editor value)
       (beautify mode)))
-
-
 
 (defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [beautify?] :or {beautify? true}}]
   (let [editor (js/CodeMirror (fn [elt]

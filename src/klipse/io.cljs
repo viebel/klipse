@@ -122,7 +122,6 @@
   (!> js/goog.getObjectByName (str (munge name)))); (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
 
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
-  (dbg path)
   (cond
     (skip-ns-cljs name) (src-cb {:lang :js :source ""})
     (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]

@@ -38,11 +38,17 @@
 (defn eval-args-from-element [element {:keys [print-length beautify-strings]}]
   (let [my-dataset (aget element "dataset")
         static-fns (read-string-or-val (aget my-dataset "staticFns") false)
+        verbose (read-string-or-val (aget my-dataset "verbose") false)
         eval-context (read-string-or-val (aget my-dataset "evalContext") nil)
         print-length (read-string-or-val (aget my-dataset "printLength") print-length)
         beautify-strings (read-string-or-val (aget my-dataset "beautifyStrings") beautify-strings)
         external-libs (string->array (or (aget my-dataset "externalLibs") nil))]
-    {:static-fns static-fns :print-length print-length :external-libs external-libs :context eval-context :beautify-strings beautify-strings}))
+    {:static-fns static-fns
+     :print-length print-length
+     :external-libs external-libs
+     :context eval-context
+     :verbose verbose
+     :beautify-strings beautify-strings}))
 
 (defn editor-args-from-element [element]
   (let [my-dataset (aget element "dataset")

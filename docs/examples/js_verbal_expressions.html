@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> JS Verbal Expressions interactive documentation</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/css/main.css">
+
+</head>
+
+<body class="container">
+
+<h1> JS Verbal Expressions interactive documentation</h1>
+
+
+<p>The documentation is <strong>live</strong> and <strong>interactive</strong>
+powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
+
+<ol>
+  <li><strong>Live</strong>: The code is executed in your browser</li>
+  <li><strong>Interactive</strong>: You can modify the code and it is evaluated as you type</li>
+</ol>
+
+<h2> Setup </h2>
+  <p>
+First let's load <code>VerEx</code> from the JSVerbalExpressions CDN.
+  </p>
+<p>
+Here is the <a href="https://github.com/VerbalExpressions/JSVerbalExpressions">JSVerbalExpressions Github repository</a>. 
+  </p>
+<br/>
+<br/>
+<pre><code class="js" data-external-libs="https://cdn.jsdelivr.net/jsverbalexpressions/0.2.1/verbalexpressions.min.js">
+VerEx.toString()</code></pre>
+
+<h2> test RegExp</h2>
+<p>
+  <code>test</code> matches a Regexp.
+</p>
+<pre><code class="js">
+var tester = VerEx()
+    .startOfLine()
+    .then('http')
+    .maybe('s')
+    .then('://')
+    .maybe('www.')
+    .anythingBut(' ')
+    .endOfLine();
+
+// Create an example URL
+var testMe = 'https://www.google.com';
+
+// Use RegExp object's native test() function
+tester.test(testMe)
+</code></pre>
+
+  <h2> test RegExp</h2>
+<p>
+  <code>find</code> and <code>replace</code> for string manipulation.
+</p>
+<pre><code class="js">
+  
+VerEx().find('red').replace('We have a red house', 'blue');  
+  </code></pre>
+
+
+<script>
+    window.klipse_settings = {
+       selector_eval_js: '.js',
+       codemirror_options_out: {
+        lineWrapping: true
+       }
+    };
+</script>
+
+
+
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+</body>
+
+</html>

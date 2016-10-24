@@ -7,7 +7,7 @@
                  [im.chit/purnam "0.5.2"]
                  [cljsjs/markdown "0.6.0-beta1-0"]
                  [cljs-http "0.1.42"]
-                 [viebel/gadjett "0.2.1"]
+                 [viebel/gadjett "0.3.0"]
                  [org.omcljs/om "1.0.0-alpha41"]
                  [replumb "0.2.4"]
                  [com.cemerick/url "0.1.1"]

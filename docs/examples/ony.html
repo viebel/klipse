@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> Onyx demo</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/css/main.css">
+
+</head>
+
+<body class="container">
+
+<h1> Onyx demo</h1>
+
+
+<p>Ths page is <strong>live</strong> and <strong>interactive</strong>
+powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
+
+<ol>
+  <li><strong>Live</strong>: The code is executed in your browser</li>
+  <li><strong>Interactive</strong>: You can modify the code and it is evaluated as you type</li>
+</ol>
+
+ <script>
+goog.provide('onyx.static$.util');
+goog.provide('onyx.static$.default_vals');
+</script>
+
+<h2>  Require onyx </h2>
+
+<pre><code class="clojure" data-external-libs="[https://raw.githubusercontent.com/onyx-platform/onyx-local-rt/master/src/,%20https://raw.githubusercontent.com/onyx-platform/onyx/0.9.x/src/,https://raw.githubusercontent.com/stuartsierra/dependency/master/src/]">
+(ns my.onyx
+  (:require [onyx-local-rt.api :as api]))
+</code></pre>
+
+
+<h2>  Playing with onyx </h2>
+
+<pre><code class="clojure">
+;; ^:export the function if using in ClojureScript.
+(defn ^:export my-inc [segment]
+  (update-in segment [:n] inc))
+
+(def job
+  {:workflow [[:in :inc] [:inc :out]]
+   :catalog [{:onyx/name :in
+              :onyx/type :input
+              :onyx/batch-size 20}
+             {:onyx/name :inc
+              :onyx/type :function
+              :onyx/fn ::my-inc
+              :onyx/batch-size 20}
+             {:onyx/name :out
+              :onyx/type :output
+              :onyx/batch-size 20}]
+   :lifecycles []})
+
+ (-> (api/init job)
+     (api/new-segment :in {:n 41})
+     (api/new-segment :in {:n 84})
+     (api/drain)
+     (api/stop)
+     (api/env-summary))
+</code></pre>
+
+
+
+
+
+<script>
+    window.klipse_settings = {
+       selector: '.clojure'
+    };
+</script>
+
+
+
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+</body>
+
+</html>

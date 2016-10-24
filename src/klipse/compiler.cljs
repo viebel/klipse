@@ -6,6 +6,7 @@
   (:require
     gadjett.core-fn
     cljsjs.codemirror.mode.clojure
+    [clojure.pprint :as pprint]
     [cljs.reader :refer [read-string]]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
@@ -35,9 +36,10 @@
 
 (defn display [value {:keys [print-length beautify-strings]}]
   (with-redefs [*print-length* print-length]
-    (pr-str (if (and (string? value) beautify-strings)
-              (symbol value)
-              value))))
+    (with-out-str (pprint/pprint
+                    (if (and (string? value) beautify-strings)
+                      (symbol value)
+                      value)))))
 
 
 (defn result-as-str [{:keys [form warning error value success?]} opts]

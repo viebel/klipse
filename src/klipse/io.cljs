@@ -128,7 +128,6 @@
                        (go
                          (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
                            ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js
-                           (println "js cache: " name)
                            (src-cb {:lang :js :source ""}))))
     (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
                                  filenames (map (partial str prefix) cljs-suffixes)]

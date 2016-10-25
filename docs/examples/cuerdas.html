@@ -37,8 +37,15 @@ powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
 <h2>  Playing with Cuerdas </h2>
 
 <pre><code class="clojure">
-(str/strip-tags "<p>just <b>some</b> text</p>")
+(def value 30)
 
+(str/istr "value = ~{value}")
+</code></pre>
+
+ <pre><code class="clojure">
+
+(str/istr "value = ~(inc value)")
+;; => "value = 31"
 </code></pre>
 
 

@@ -8,22 +8,16 @@
 </head>
 <body>
 <pre><code class="clojure">
-    (map inc [1 2 3])
+    "abc"
 </code></pre>
 
+<pre><code class="clojure">
+    (let [a 1]
+    a)
+</code></pre>
 <pre><code class="clojure" data-beautify-strings="true">
-(str "adas")
+    123
 </code></pre>
-    <pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/cognitect/transit-js/master/src/,https://raw.githubusercontent.com/cognitect/transit-cljs/master/src/">
-        (ns my.transit
-          (:require [cognitect.transit :as t]))
-   </code></pre>
-<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/math.combinatorics/master/src/main/clojure">
-    (ns my.combinatorics
-      (:require [clojure.math.combinatorics :refer [permutations]]))
-
-    (permutations [1 2 3])
-    </code></pre>
 
 
 <script>
@@ -36,6 +30,7 @@
     codemirror_options_out: {
     lineWrapping: true
     },
+    eval_context: 'expr',
     selector: '.clojure',
     selector_eval_markdown: '.eval-markdown',
     selector_eval_html: '.eval-html',

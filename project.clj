@@ -20,8 +20,16 @@
                                     "resources/public/plugin_prod/js"
                                     "resources/public/plugin/js"]
   :plugins [[lein-cljsbuild "1.1.1"]
+            [lein-hiera "0.9.5"]
             [lein-doo "0.1.6"]]
   :source-paths ["src" "scripts"]
+  :hiera
+  {:path "deps-graph.png"
+    :vertical true
+    :show-external false
+    :cluster-depth 0
+    :trim-ns-prefix true
+    :ignore-ns #{cache.build klipse.cards}}
   :cljsbuild {
               :builds {
                        :test {

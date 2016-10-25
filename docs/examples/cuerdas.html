@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> Onyx demo</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/css/main.css">
+
+</head>
+
+<body class="container">
+
+<h1> Onyx demo</h1>
+
+This page is a live demo of <a href="https://github.com/onyx-platform/onyx-local-rt">A pure, deterministic Clojure(Script) runtime for Onyx</a>.
+
+<p>This page is <strong>live</strong> and <strong>interactive</strong>
+powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
+
+<ol>
+  <li><strong>Live</strong>: The code is executed in your browser</li>
+  <li><strong>Interactive</strong>: You can modify the code and it is evaluated as you type</li>
+</ol>
+
+
+
+<h2>  Require onyx </h2>
+
+<pre><code class="clojure" data-external-libs=
+ "https://raw.githubusercontent.com/funcool/cuerdas/master/src/">
+(ns my.namespace
+  (:require [cuerdas.core :as str]))
+</code></pre>
+
+
+<h2>  Playing with Cuerdas </h2>
+
+<pre><code class="clojure">
+(str/strip-tags "<p>just <b>some</b> text</p>")
+
+</code></pre>
+
+
+
+
+
+<script>
+    window.klipse_settings = {
+       selector: '.clojure'
+    };
+</script>
+
+
+<script src="https://raw.githubusercontent.com/funcool/cuerdas/master/assets/xregexp/xregexp.min.js">
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+ <script>
+goog.provide('cuerdas.vendor$.xregexp');
+</script>
+</body>
+
+</html>

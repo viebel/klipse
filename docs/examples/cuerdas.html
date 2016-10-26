@@ -36,7 +36,7 @@ powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
 
 <h2>  Playing with format </h2>
 
-  Simple string formatting function.
+  <code>format</code> is a simple string formatting function.
 
 The string formating works in two main modes: indexed and associative.
 
@@ -55,8 +55,8 @@ There are also the associative mode that consists in passing only one associativ
 
  <pre><code class="clojure">
 (str/format "hello %(name)s" {:name "yen"})
-A part of the %()s syntax, the $something can be used:
 </code></pre>
+A part of the %()s syntax, the $something can be used:
 
  <pre><code class="clojure">
 (str/format "hello $name" {:name "yen"})

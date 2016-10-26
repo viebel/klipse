@@ -34,20 +34,47 @@ powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
 </code></pre>
 
 
-<h2>  Playing with Cuerdas </h2>
+<h2>  Playing with format </h2>
 
-<pre><code class="clojure">
-(def value 30)
+  Simple string formatting function.
 
-(str/istr "value = ~{value}")
+The string formating works in two main modes: indexed and associative.
+
+The indexed mode is the most simple and consists in using %s tokens in the string indicating the position where interpolation should be done and an arbitrary number of non associate arguments. Format will replace all %s occurrences with the provided values in ordered mode:
+ <pre><code class="clojure">
+(str/format "hello %s and %s" "yen" "ciri")
+</code></pre>
+
+If you don’t provide enough values, the %s tokens won’t be changed:
+
+ <pre><code class="clojure">
+(str/format "hello %s and %s" "yen")
+</code></pre>
+
+There are also the associative mode that consists in passing only one associative argument (map or vector) and use named interpolation tokens:
+
+ <pre><code class="clojure">
+(str/format "hello %(name)s" {:name "yen"})
+A part of the %()s syntax, the $something can be used:
 </code></pre>
 
  <pre><code class="clojure">
-
-(str/istr "value = ~(inc value)")
-;; => "value = 31"
+(str/format "hello $name" {:name "yen"})
 </code></pre>
 
+And you can access to indexed positions of an vector using $0, $1, $N syntax:
+
+ <pre><code class="clojure">
+
+(str/format "hello $0" ["yen"])
+</code></pre>
+
+You can use str/fmt as shorter alias to str/format function.
+
+  
+ <pre><code class="clojure">
+(str/fmt "hello %(name)s" {:name "yen"})
+</code></pre>
 
 
 

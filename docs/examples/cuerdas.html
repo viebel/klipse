@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> Cuerdas demo</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/css/main.css">
+
+</head>
+
+<body class="container">
+
+<h1> Cuerdas demo</h1>
+
+This page is a live demo of <a href="https://github.com/funcool/cuerdas">The missing clojure(script) string manipulation library</a>.
+
+<p>This page is <strong>live</strong> and <strong>interactive</strong>
+powered by the <a href="https://github.com/viebel/klipse">klipse plugin</a>:</p>
+
+<ol>
+  <li><strong>Live</strong>: The code is executed in your browser</li>
+  <li><strong>Interactive</strong>: You can modify the code and it is evaluated as you type</li>
+</ol>
+
+
+
+<h2>  Require the cool lib cuerdas </h2>
+
+<pre><code class="clojure" data-external-libs=
+ "https://raw.githubusercontent.com/funcool/cuerdas/master/src/">
+(ns my.ns
+  (:require [cuerdas.core :as str]))
+</code></pre>
+
+
+<h2>  Playing with format </h2>
+
+  <code>format</code> is a simple string formatting function.
+
+The string formating works in two main modes: indexed and associative.
+
+The indexed mode is the most simple and consists in using %s tokens in the string indicating the position where interpolation should be done and an arbitrary number of non associate arguments. Format will replace all %s occurrences with the provided values in ordered mode:
+ <pre><code class="clojure">
+(str/format "hello %s and %s" "yen" "ciri")
+</code></pre>
+
+If you don’t provide enough values, the %s tokens won’t be changed:
+
+ <pre><code class="clojure">
+(str/format "hello %s and %s" "yen")
+</code></pre>
+
+There are also the associative mode that consists in passing only one associative argument (map or vector) and use named interpolation tokens:
+
+ <pre><code class="clojure">
+(str/format "hello %(name)s" {:name "yen"})
+</code></pre>
+A part of the %()s syntax, the $something can be used:
+
+ <pre><code class="clojure">
+(str/format "hello $name" {:name "yen"})
+</code></pre>
+
+And you can access to indexed positions of an vector using $0, $1, $N syntax:
+
+ <pre><code class="clojure">
+
+(str/format "hello $0" ["yen"])
+</code></pre>
+
+You can use str/fmt as shorter alias to str/format function.
+
+  
+ <pre><code class="clojure">
+(str/fmt "hello %(name)s" {:name "yen"})
+</code></pre>
+
+
+
+
+<script>
+    window.klipse_settings = {
+       selector: '.clojure'
+    };
+</script>
+
+
+<script src="https://storage.googleapis.com/app.klipse.tech/xregexp.min.js">
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+ <script>
+goog.provide('cuerdas.vendor.xregexp');
+</script>
+</body>
+
+</html>

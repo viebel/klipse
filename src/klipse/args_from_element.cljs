@@ -40,6 +40,7 @@
         static-fns (read-string-or-val (aget my-dataset "staticFns") false)
         verbose (read-string-or-val (aget my-dataset "verbose") false)
         eval-context (read-string-or-val (aget my-dataset "evalContext") eval-context)
+        preamble (aget my-dataset "preamble")
         print-length (read-string-or-val (aget my-dataset "printLength") print-length)
         beautify-strings (read-string-or-val (aget my-dataset "beautifyStrings") beautify-strings)
         external-libs (string->array (or (aget my-dataset "externalLibs") nil))]
@@ -47,6 +48,7 @@
      :print-length print-length
      :external-libs external-libs
      :context eval-context
+     :preamble preamble
      :verbose verbose
      :beautify-strings beautify-strings}))
 

@@ -104,21 +104,21 @@
           :no-pr-str-on-value true
           :context (or context :statement)}))
 
-(defmethod core-eval :replumb [s {:keys [static-fns context verbose external-libs] :or {static-fns false context nil external-libs nil}} cb]
+(defmethod core-eval :replumb [s {:keys [preamble static-fns context verbose external-libs] :or {preamble "" static-fns false context nil external-libs nil}} cb]
   (let [opts (build-repl-opts {:static-fns static-fns
                                :external-libs external-libs
                                :verbose verbose
                                :context (keyword context)})]
     (! js/window.COMPILED true); for some reason it is required with read-eval-call
-    (replumb/read-eval-call opts cb s)))
+    (replumb/read-eval-call opts cb (str preamble s))))
 
 (defn my-eval [{:keys [file source file lang name path cache] :as args}]
   (cljs/js-eval args))
 
-(defmethod core-eval :core [s {:keys [static-fns context external-libs verbose] :or {static-fns false context nil external-libs nil}} cb]
+(defmethod core-eval :core [s {:keys [preamble static-fns context external-libs verbose] :or {preamble "" static-fns false context nil external-libs nil}} cb]
   ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
   (cljs/eval-str (create-state-eval)
-                 s
+                 (str preamble s)
                  "my.klipse" {:eval my-eval
                               :def-emits-var true
                               :verbose verbose

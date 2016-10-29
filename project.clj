@@ -1,4 +1,4 @@
-(defproject klipse "3.4.0"
+(defproject klipse "3.5.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.229"]
@@ -61,7 +61,7 @@
                                           :optimize-constants true
                                           :static-fns true
                                           ;:elide-asserts true
-                                          :optimizations :whitespace
+                                          :optimizations :simple
                                           :verbose false}}
                       :plugin-prod {
                                :source-paths ["src/klipse/run/plugin_prod" "resources/public/lib"]

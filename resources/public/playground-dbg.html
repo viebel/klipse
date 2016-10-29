@@ -7,16 +7,18 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-<pre><code class="clojure">
-    "abc"
-</code></pre>
 
 <pre><code class="clojure">
-    (let [a 1]
-    a)
+    (loop [x 1]
+      (if (not= x 19)
+          (recur x)
+              (str "hello" 199)))
 </code></pre>
-<pre><code class="clojure" data-beautify-strings="true">
-    123
+<pre><code class="clojure">
+    (loop [x 1]
+      (if (= x 19)
+          (recur x)
+              (str "hello" 199)))
 </code></pre>
 
 

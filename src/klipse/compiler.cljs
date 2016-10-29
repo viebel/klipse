@@ -10,8 +10,10 @@
     [cljs.reader :refer [read-string]]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
-    [clojure.string :as s]
+    [clojure.string :as s :refer [starts-with?]]
     [cljs.analyzer.api :as api]
+    [cljs.analyzer :as ana]
+    [cljs.compiler :refer [emits emit *source-map-data*]]
     [cljs.core.async :refer [chan put! <!]]
     [replumb.core :as replumb]
     [cljs.env :as env]
@@ -21,6 +23,33 @@
 (def ^{:dynamic true
        :doc "The compiler to use. It could be either :core or :replumb"}
   *compiler-name* :core)
+
+(def ^{:export true
+       :dynamic true}
+  starttime 0)
+
+(defn ^{:export true}
+  guard []
+  (js/console.log (system-time) starttime (- (system-time) starttime))
+  (when (> (- (system-time) starttime) 1000)
+    (throw (str "Infinite Loop"))))
+
+(def original-emits emits)
+(defn my-emits [& xs]
+  (doseq [x xs]
+    (when (and (string? x) (re-matches #"^(if|continue).*" x))
+      (print "klipse.compiler.guard();"))
+    (cond
+     (nil? x) nil
+     (ana/cljs-map? x) (emit x)
+     (ana/cljs-seq? x) (apply my-emits x)
+     ^boolean (goog/isFunction x) (x)
+     :else (let [s (print-str x)]
+             (when-not (nil? *source-map-data*)
+               (swap! *source-map-data*
+                 update-in [:gen-col] #(+ % (count s))))
+             (print s))))
+  nil)
 
 ;; =============================================================================
 ;; Compiler functions
@@ -72,6 +101,7 @@
     [status res]))
 
 (defn compile [s {:keys [static-fns external-libs verbose] :or {static-fns false external-libs nil}} cb]
+  (with-redefs [cljs.compiler/emits my-emits]; TODO make it optional
     (cljs/compile-str (create-state-compile) s
                       "cljs-in"
                       {
@@ -80,7 +110,7 @@
                        :verbose verbose
                        :load (partial io/load-ns external-libs)
                        }
-                      cb))
+                      cb)))
 
 (defmulti core-eval (fn [& args]
                       *compiler-name*))
@@ -93,38 +123,33 @@
           :no-pr-str-on-value true
           :context (or context :statement)}))
 
-(defmethod core-eval :replumb [s {:keys [preamble static-fns context verbose external-libs] :or {preamble "" static-fns false context nil external-libs nil}} cb]
-  (let [opts (build-repl-opts {:static-fns static-fns
-                               :external-libs external-libs
-                               :verbose verbose
-                               :context (keyword context)})]
-    (! js/window.COMPILED true); for some reason it is required with read-eval-call
-    (replumb/read-eval-call opts cb (str preamble s))))
-
 (defn my-eval [{:keys [file source file lang name path cache] :as args}]
+  (set! starttime (system-time))
   (cljs/js-eval args))
 
 (defmethod core-eval :replumb [s {:keys [preamble static-fns context verbose external-libs] :or {preamble "" static-fns false context nil external-libs nil}} cb]
+  (with-redefs [cljs.compiler/emits my-emits]
     (let [opts (build-repl-opts {:static-fns static-fns
                                  :eval-fn my-eval
                                  :external-libs external-libs
                                  :verbose verbose
                                  :context (keyword context)})]
       (! js/window.COMPILED true); for some reason it is required with read-eval-call
-      (replumb/read-eval-call opts cb (str preamble s))))
+      (replumb/read-eval-call opts cb (str preamble s)))))
 
 (defmethod core-eval :core [s {:keys [preamble static-fns context external-libs verbose] :or {preamble "" static-fns false context nil external-libs nil}} cb]
-  ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
-  (cljs/eval-str (create-state-eval)
-                 (str preamble s)
-                 "my.klipse" {:eval my-eval
-                              :def-emits-var true
-                              :verbose verbose
-                              :*compiler* (set! env/*compiler* (create-state-eval))
-                              :context (keyword context)
-                              :static-fns static-fns
-                              :load (partial io/load-ns external-libs)}
-                 cb))
+  (with-redefs [cljs.compiler/emits my-emits]
+    ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
+    (cljs/eval-str (create-state-eval)
+                   (str preamble s)
+                   "my.klipse" {:eval my-eval
+                                :def-emits-var true
+                                :verbose verbose
+                                :*compiler* (set! env/*compiler* (create-state-eval))
+                                :context (keyword context)
+                                :static-fns static-fns
+                                :load (partial io/load-ns external-libs)}
+                   cb)))
 
 (defn eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]

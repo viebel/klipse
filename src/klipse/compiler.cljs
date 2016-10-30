@@ -11,6 +11,7 @@
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
     [clojure.string :as s]
+    [cljs.compiler :refer [emit* emit-wrap emit-constant]]
     [cljs.analyzer.api :as api]
     [cljs.core.async :refer [chan put! <!]]
     [replumb.core :as replumb]
@@ -20,7 +21,7 @@
 
 (def ^{:dynamic true
        :doc "The compiler to use. It could be either :core or :replumb"}
-  *compiler-name* :replumb)
+  *compiler-name* :core)
 
 ;; =============================================================================
 ;; Compiler functions
@@ -30,9 +31,14 @@
 ; the following code is advanced compilation friendly
 (js* "window.cljs.user = {}")
 
-
 (def create-state-eval (memoize cljs/empty-state))
 (def create-state-compile (memoize cljs/empty-state))
+
+; overrride the original emit* from cljs.compiler
+; by always emitting the form and not only when the context is not :statement
+(defmethod emit* :constant
+  [{:keys [form env]}]
+   (emit-wrap env (emit-constant form)))
 
 (defn display [value {:keys [print-length beautify-strings]}]
   (with-redefs [*print-length* print-length]

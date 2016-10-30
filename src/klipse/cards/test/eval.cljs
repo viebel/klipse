@@ -25,14 +25,14 @@
 (deftest test-eval
   "eval with expected failures"
   (are [input-clj message]
-       (= [:error {:message message}] (error->clj (eval input-clj)))
-       "(+ 1 2" "EOF while reading" 
-       "(a)" "ERROR"))
+       (= :error (first (error->clj (eval input-clj))))
+       "(+ 1 2"
+       "(a)"))
 
 (deftest test-eval-context-expr
   "eval with several expressions"
   (are [input-clj output-clj]
-       (b= (eval input-clj {:context :expr}) [:ok output-clj])
+       (b= (eval input-clj) [:ok output-clj])
        "(if (> 100 10) 1 2)" 1
        "\"abc\"" "abc"))
  

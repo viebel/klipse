@@ -21,10 +21,12 @@
   (are [input output]
        (a= (second (compile input)) output)
   "(ns my-project.my-ns) (def x 1) (def y 2)" "goog.provide('my_project.my_ns'); goog.require('cljs.core'); my_project.my_ns.x = (1); my_project.my_ns.y = (2);"
-  "(if 2 3) (def x (if 2 3))" "cljs.user.x= (3);"
+  "(if 2 3)" "(3);"
+  "(if 2 3) (def x (if 2 3))" "(3);cljs.user.x= (3);"
+  "(defn foo [] (let [a 1 b a] b))" "cljs.user.foo = (function cljs$user$foo(){ var a = (1); var b = a; return b; });"
   "(= 1 2)" "cljs.core._EQ_.call(null,(1),(2));"))
 
-(deftest static-fn 
+(deftest static-fn
   "compile with static dispatch (:static-fns true)"
   (are [input output]
        (a= (second (compile input {:static-fns true})) output)

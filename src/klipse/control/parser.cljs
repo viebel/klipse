@@ -6,7 +6,7 @@
     gadjett.core-fn
     [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters]]
-    [klipse.compiler :refer [eval-async compile]]
+    [klipse.compiler :refer [eval-async compile-async]]
     [om.next :as om]))
 
 ;; =============================================================================
@@ -65,10 +65,11 @@
 
 (defmethod mutate 'cljs/compile [{:keys [state]} _ {:keys [value]}]
   {:action (fn []
-             (swap! state assoc :compilation (compile value {:static-fns (static-fns?)})))})
+             (go
+               (swap! state assoc :compilation (<! (compile-async value {:static-fns (static-fns?)})))))})
 
 (defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] 
+  {:action (fn []
              #_(go ; it's incorrect to evaluate the code twice when the code has side effects
                    ; for the moment, we leave the js box empty
                (swap! state assoc :evaluation-js (<! (eval-js value)))))})

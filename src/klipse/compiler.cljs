@@ -1,6 +1,6 @@
 (ns klipse.compiler
   (:require-macros
-    [gadjett.core :as gadjett :refer [deftrack dbg]]
+    [gadjett.core :as gadjett :refer [dbg]]
     [purnam.core :refer [!]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
@@ -71,27 +71,16 @@
               (advanced-compile value))]
     [status res]))
 
-(deftrack compile [s {:keys [static-fns external-libs verbose] :or {static-fns false external-libs nil}}]
-  (cljs/compile-str (create-state-compile) s
-                    "cljs-in"
-                    {
-                     :static-fns static-fns
-                     :external-libs external-libs
-                     :verbose verbose
-                     :load (partial io/load-ns external-libs)
-                    }
-                    convert-compile-res))
-
-(deftrack compile-async [s {:keys [static-fns external-libs verbose] :or {static-fns false external-libs nil}}]
-  (let [c (chan)]
+(defn compile [s {:keys [static-fns external-libs verbose] :or {static-fns false external-libs nil}} cb]
     (cljs/compile-str (create-state-compile) s
                       "cljs-in"
                       {
                        :static-fns static-fns
+                       :external-libs external-libs
                        :verbose verbose
-                       :load (partial io/load-ns external-libs)}
-                      #(put! c (convert-compile-res %)))
-    c))
+                       :load (partial io/load-ns external-libs)
+                       }
+                      cb))
 
 (defmulti core-eval (fn [& args]
                       *compiler-name*))
@@ -115,6 +104,15 @@
 (defn my-eval [{:keys [file source file lang name path cache] :as args}]
   (cljs/js-eval args))
 
+(defmethod core-eval :replumb [s {:keys [preamble static-fns context verbose external-libs] :or {preamble "" static-fns false context nil external-libs nil}} cb]
+    (let [opts (build-repl-opts {:static-fns static-fns
+                                 :eval-fn my-eval
+                                 :external-libs external-libs
+                                 :verbose verbose
+                                 :context (keyword context)})]
+      (! js/window.COMPILED true); for some reason it is required with read-eval-call
+      (replumb/read-eval-call opts cb (str preamble s))))
+
 (defmethod core-eval :core [s {:keys [preamble static-fns context external-libs verbose] :or {preamble "" static-fns false context nil external-libs nil}} cb]
   ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
   (cljs/eval-str (create-state-eval)
@@ -128,37 +126,43 @@
                               :load (partial io/load-ns external-libs)}
                  cb))
 
-(deftrack eval-async-1 [s {:keys [print-length] :as opts}]
+(defn eval-async-1 [s {:keys [print-length] :as opts}]
   (let [c (chan)]
     (core-eval s opts #(put! c (result-as-str % opts)))
     c))
 
 (defn eval
   "used for testing and exporting to javascript"
+  ^{:export true}
   ([s] (eval s {}))
   ([s opts] (core-eval s opts read-result)))
 
 (defn contains-macro-def? [exp]
   (re-find #"\$macros" exp))
 
-(deftrack eval-async [s args]
+(defn eval-async [s args]
   (go
     (when (contains-macro-def? s) ; By design in bootstraped cljs. David Nolen and Mike Fikes told a couple of times: Macros should be defined in a previous compilation stage than their execution - see https://github.com/Lambda-X/replumb/issues/185
       (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
     (<! (eval-async-1 s args))))
 
-(defn str-compile [exp]
-  (-> (compile exp)
-      second
-      str))
+(defn str-compile "useful for testing and js export"
+  ^{:export true}
+  ([exp] (str-compile exp {}))
+  ([exp opts] (-> (compile exp opts convert-compile-res))))
 
-(defn str-compile-async [exp {:keys [static-fns external-libs verbose] :or {static-fns false external-libs nil}}]
-  (go
-  (-> (<! (compile-async exp {:static-fns static-fns
-                              :verbose verbose
-                              :external-libs external-libs}))
-      second
-      str)))
+(defn compile-async [exp {:keys [static-fns external-libs verbose] :or {static-fns false external-libs nil}}]
+  (let [c (chan)]
+    (compile exp {:static-fns static-fns
+                  :verbose verbose
+                  :external-libs external-libs}
+             #(put! c (convert-compile-res %)))
+    c))
+
+(defn str-compile-async [exp opts]
+  (go (-> (<! (compile-async exp opts))
+          second
+          str)))
 
 (defn ^:export str-eval
   "It is convenient to have a javascript function that evaluates clojure expressions"
@@ -166,11 +170,6 @@
   (-> (eval exp)
       second
       str))
-
-(defn my-str [x]
-  (if (nil? x)
-    "nil"
-    (str x)))
 
 (defn str-eval-async [exp opts]
   (go

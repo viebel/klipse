@@ -3,7 +3,7 @@
                    [purnam.core :refer [!>]]
                    [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    [clojure.walk :as ww]
+    [clojure.walk :as ww]; make it available at run time
     [clojure.string :as string :refer [join split lower-case]]
     [cljs-http.client :as http]
     [cljs-http.util :refer [transit-decode]]
@@ -82,7 +82,7 @@
       (loop [filenames filenames]
         (when (seq filenames)
           (let [filename (first filenames)
-                {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
+                {:keys [status body]} (<! (http/get (str filename "?" (rand)){:with-credentials? false}))]
             (if (= 200 status)
               (do (src-cb {:lang lang src-key (transform body) :file filename})
                   :success)

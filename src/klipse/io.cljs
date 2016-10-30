@@ -155,7 +155,14 @@
                       [(lower-case last-part)]))]
     (join "/" new-parts)))
 
-(defn another-goog-path [path]; https://github.com/oakes/eval-soup/blob/master/src/eval_soup/core.cljs
+(defn simple-goog-path [path]
+  ; goog/date/interval -> goog/date/date
+  (let [parts (split path #"/")
+        butlast-parts (butlast parts)
+        new-parts (concat butlast-parts [(last butlast-parts)])]
+    (join "/" new-parts)))
+
+(defn another-goog-path [path]
   ; goog/string/format -> goog/string/stringformat
   (let [parts (split path #"/")
         last-part (last parts)
@@ -168,6 +175,6 @@
   (cond
     (!> js/goog.getObjectByName (str name)) (src-cb {:lang :js :source ""}); isProvided and nameToPath don't work with :optimizations :simple or :whitespace
     :else (let [closure-github-path "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"
-                filenames (map #(str closure-github-path % ".js") ((juxt fix-goog-path identity another-goog-path) path))]
+                filenames (map #(str closure-github-path % ".js") ((juxt fix-goog-path identity another-goog-path simple-goog-path) path))]
             (try-to-load-ns filenames :js :source src-cb))))
 

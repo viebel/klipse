@@ -61,14 +61,14 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 ## javascript
 
 ```html
-<link rel="stylesheet" type="text/css" href="http://app.klipse.tech/css/codemirror.css">
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
 
 <script>
     window.klipse_settings = {
         selector_eval_js: '.language-klipse-eval-js', // css selector for the html elements you want to klipsify
     };
 </script>
-<script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
 Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/viebel/50oLnykk/).
@@ -77,7 +77,7 @@ And here are detailed explanations about [a javascript live code editor in a blo
 ## ruby
 
 ```html
-<link rel="stylesheet" type="text/css" href="http://app.klipse.tech/css/codemirror.css">
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
 
 <script>
     window.klipse_settings = {
@@ -86,12 +86,12 @@ And here are detailed explanations about [a javascript live code editor in a blo
 </script>
 <script src="http://cdn.opalrb.org/opal/current/opal.min.js"></script>
 <script src="http://cdn.opalrb.org/opal/current/opal-parser.min.js"></script>
-<script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 ## Scheme
 
 ```html
-<link rel="stylesheet" type="text/css" href="http://app.klipse.tech/css/codemirror.css">
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
 
 <script>
     window.klipse_settings = {
@@ -99,14 +99,14 @@ And here are detailed explanations about [a javascript live code editor in a blo
     };
 </script>
 <script src="http://www.biwascheme.org/release/biwascheme-0.6.6-min.js"></script>
-<script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
 
 ## PHP
 
 ```html
-<link rel="stylesheet" type="text/css" href="http://app.klipse.tech/css/codemirror.css">
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
 
 <script>
     window.klipse_settings = {
@@ -114,21 +114,21 @@ And here are detailed explanations about [a javascript live code editor in a blo
     };
 </script>
 <script src="https://asmblah.github.io/uniter/dist/uniter.js"></script>
-<script src="http://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
 
 ## clojure
 
 ```html
-<link rel="stylesheet" type="text/css" href="http://app.klipse.tech/css/codemirror.css">
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
 
 <script>
     window.klipse_settings = {
         selector: '.language-klipse'// css selector for the html elements you want to klipsify
     };
 </script>
-<script src="http://app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
 ```
 
 
@@ -147,7 +147,7 @@ The klipse plugin is configurable both at the level of the page and at the level
 
 Here are the settings for the klipse plugin a page level:
 
-~~~javascript
+```javascript
 window.klipse_settings = {
           eval_idle_msec: 20, // idle time in msec before the snippet is evaluated
           selector_js: '.language-klipse-js', // selector for javascript evaluation snippets
@@ -156,14 +156,14 @@ window.klipse_settings = {
           selector_eval_ruby: '.language-klipse-eval-ruby' //selector for ruby evaluation snippets
 };
 
-~~~
+```
 
 Additionaly, you can configure CodeMirror input (snippet source code) and output (snippet evaluation) by setting `codemirror_options_in` and `codemirror_options_out`:
 
 Currently, we support all the settings [CodeMirror Configuration settings](http://codemirror.net/doc/manual.html#config) and part of the [Addons settings](http://codemirror.net/doc/manual.html#addons):  `matchBrackets` and `autoCloseBrackets`.
 
 For instance, you can modify the `identUnit`, `lineWrapping`, `lineNumbers` and `autoCloseBrackets` like this:
-~~~javascript
+```javascript
 window.klipse_settings = {
     codemirror_options_in: {
         indentUnit: 8,
@@ -176,7 +176,7 @@ window.klipse_settings = {
         lineNumbers: true
     }
 }
-~~~
+```
 
 #### Clojure only
 

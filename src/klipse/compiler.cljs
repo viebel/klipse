@@ -20,7 +20,7 @@
 
 (def ^{:dynamic true
        :doc "The compiler to use. It could be either :core or :replumb"}
-  *compiler-name* :replumb)
+  *compiler-name* :core)
 
 ;; =============================================================================
 ;; Compiler functions

@@ -18,16 +18,12 @@
   (and (= status-a status-b)
        (a= a b)))
 
-(defn error->clj [[status error]]
-  [status {:message (.. error -message)}])
-
-
 (deftest test-eval
   "eval with expected failures"
   (are [input-clj message]
-       (= [:error {:message message}] (error->clj (eval input-clj)))
-       "(+ 1 2" "EOF while reading" 
-       "(a)" "ERROR"))
+       (= :error (first (eval input-clj)))
+       "(+ 1 2"
+       "(a)"))
 
 (deftest test-eval-context-expr
   "eval with several expressions"

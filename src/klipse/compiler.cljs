@@ -30,13 +30,16 @@
 
 (defn ^{:export true}
   guard []
-  (js/console.log (system-time) starttime (- (system-time) starttime))
   (when (> (- (system-time) starttime) 1000)
     (throw (str "Infinite Loop"))))
 
 ; TODO is there a way to call the original emits function after the guard insertion - instead of pasting the original code. The problem is with the recursive call to emits
 (defn my-emits
-  "same as cljs.compiler/emits with insertion og `guard` call before if and recur (emitted as continue) statement"
+  "same as cljs.compiler/emits with insertion og `guard` call before if and recur (emitted as continue) statement.
+  
+  Issues:
+  1. It doesn't prevent infinite loop in imported code e.g. (reduce + (range)
+  2. Code with asynchronous side effects in a loop will be considered as infinite loop"
   [& xs]
   (when (and (string? (first xs)) (re-matches #"^(if|continue).*" (first xs)))
     (print "klipse.compiler.guard();"))

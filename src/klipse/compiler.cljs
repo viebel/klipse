@@ -34,15 +34,17 @@
   (when (> (- (system-time) starttime) 1000)
     (throw (str "Infinite Loop"))))
 
-(def original-emits emits)
-(defn my-emits [& xs]
+; TODO is there a way to call the original emits function after the guard insertion - instead of pasting the original code. The problem is with the recursive call to emits
+(defn my-emits
+  "same as cljs.compiler/emits with insertion og `guard` call before if and recur (emitted as continue) statement"
+  [& xs]
+  (when (and (string? (first xs)) (re-matches #"^(if|continue).*" (first xs)))
+    (print "klipse.compiler.guard();"))
   (doseq [x xs]
-    (when (and (string? x) (re-matches #"^(if|continue).*" x))
-      (print "klipse.compiler.guard();"))
     (cond
      (nil? x) nil
      (ana/cljs-map? x) (emit x)
-     (ana/cljs-seq? x) (apply my-emits x)
+     (ana/cljs-seq? x) (apply my-emits x); call my-emits recursively and not emits
      ^boolean (goog/isFunction x) (x)
      :else (let [s (print-str x)]
              (when-not (nil? *source-map-data*)

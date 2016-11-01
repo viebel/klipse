@@ -6,6 +6,7 @@
   (:require
     gadjett.core-fn
     cljsjs.codemirror.mode.clojure
+    [klipse.utils :refer [runonce]]
     [clojure.pprint :as pprint]
     [cljs.reader :refer [read-string]]
     [klipse.plugin :refer [register-mode]]
@@ -14,7 +15,7 @@
     [cljs.analyzer.api :as api]
     [cljs.analyzer :as ana]
     [cljs.compiler :refer [emits emit *source-map-data*]]
-    [cljs.core.async :refer [chan put! <!]]
+    [cljs.core.async :refer [timeout chan put! <!]]
     [replumb.core :as replumb]
     [cljs.env :as env]
     [cljs.js :as cljs]))
@@ -24,22 +25,40 @@
        :doc "The compiler to use. It could be either :core or :replumb"}
   *compiler-name* :core)
 
-(def ^{:export true
+(def ^{:doc "each time the watchdog has a chance to run, this var is set with the current time"
        :dynamic true}
-  starttime 0)
+  *watchdog-tick* 0)
+
+(def ^{:dynamic true
+       :doc "the maximal amount of time that a snippet can keep the main thread busy"}
+  *max-eval-duration* 1000)
+
+(defn watchdog*
+  "reset the *watchdog-tick* to the current time once in a while"
+  []
+  (set! *watchdog-tick* (system-time))
+  (go-loop []
+    ; the duration is *max-eval-duration* divided by 2 in order to protect against synchronization mismatchs
+    (<! (timeout (/ *max-eval-duration* 2)))
+    (set! *watchdog-tick* (system-time))
+    (recur)))
+
+(def watchdog (runonce watchdog*))
 
 (defn ^{:export true}
   guard []
-  (when (> (- (system-time) starttime) 1000)
-    (throw (str "Infinite Loop"))))
+  (when (> (- (system-time) *watchdog-tick*) *max-eval-duration*)
+    (if (= "yes" (js/prompt "infinite loop?", "yes"))
+      (throw (str "Infinite Loop"))
+      (set! *watchdog-tick* (system-time)))))
 
 ; TODO is there a way to call the original emits function after the guard insertion - instead of pasting the original code. The problem is with the recursive call to emits
 (defn my-emits
   "same as cljs.compiler/emits with insertion og `guard` call before if and recur (emitted as continue) statement.
-  
+
   Issues:
   1. It doesn't prevent infinite loop in imported code e.g. (reduce + (range)
-  2. Code with asynchronous side effects in a loop will be considered as infinite loop"
+  "
   [& xs]
   (when (and (string? (first xs)) (re-matches #"^(if|continue).*" (first xs)))
     (print "klipse.compiler.guard();"))
@@ -119,7 +138,6 @@
 
 (defmulti core-eval (fn [& args]
                       *compiler-name*))
-
 (defn build-repl-opts [{:keys [static-fns context external-libs verbose]}]
   (merge (replumb/options :browser (partial io/load-ns external-libs))
          {:warning-as-error false
@@ -129,7 +147,7 @@
           :context (or context :statement)}))
 
 (defn my-eval [{:keys [file source file lang name path cache] :as args}]
-  (set! starttime (system-time))
+  (watchdog)
   (cljs/js-eval args))
 
 (defmethod core-eval :replumb [s {:keys [preamble static-fns context verbose external-libs] :or {preamble "" static-fns false context nil external-libs nil}} cb]

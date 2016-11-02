@@ -6,77 +6,21 @@
   (:require
     gadjett.core-fn
     cljsjs.codemirror.mode.clojure
-    [klipse.utils :refer [runonce]]
+    [klipse.guard :refer [my-emits watchdog]]
     [clojure.pprint :as pprint]
     [cljs.reader :refer [read-string]]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
-    [clojure.string :as s :refer [starts-with?]]
-    [cljs.analyzer.api :as api]
-    [cljs.analyzer :as ana]
-    [cljs.compiler :refer [emits emit *source-map-data*]]
     [cljs.core.async :refer [timeout chan put! <!]]
     [replumb.core :as replumb]
     [cljs.env :as env]
     [cljs.js :as cljs]))
 
-
 (def ^{:dynamic true
        :doc "The compiler to use. It could be either :core or :replumb"}
   *compiler-name* :core)
 
-(def ^{:doc "each time the watchdog has a chance to run, this var is set with the current time"
-       :dynamic true}
-  *watchdog-tick* 0)
 
-(def ^{:dynamic true
-       :doc "the maximal amount of time that a snippet can keep the main thread busy"}
-  *max-eval-duration* 1000)
-
-(defn watchdog*
-  "reset the *watchdog-tick* to the current time once in a while"
-  []
-  (set! *watchdog-tick* (system-time))
-  (go-loop []
-    ; the duration is *max-eval-duration* divided by 2 in order to protect against synchronization mismatchs
-    (<! (timeout (/ *max-eval-duration* 2)))
-    (set! *watchdog-tick* (system-time))
-    (recur)))
-
-(def watchdog (runonce watchdog*))
-
-(defn ^{:export true}
-  guard []
-  (when (> (- (system-time) *watchdog-tick*) *max-eval-duration*)
-    (if (= "yes" (js/prompt "infinite loop?", "yes"))
-      (throw (str "Infinite Loop"))
-      (set! *watchdog-tick* (system-time)))))
-
-; TODO is there a way to call the original emits function after the guard insertion - instead of pasting the original code. The problem is with the recursive call to emits
-(defn my-emits
-  "same as cljs.compiler/emits with insertion og `guard` call before if and recur (emitted as continue) statement.
-
-  Issues:
-  1. It doesn't prevent infinite loop in imported code e.g. (reduce + (range)
-  "
-  [& xs]
-  (when (and (string? (first xs)) (re-matches #"^(if|continue).*" (first xs)))
-    (print "klipse.compiler.guard();"))
-  (doseq [x xs]
-    (cond
-     (nil? x) nil
-     (ana/cljs-map? x) (emit x)
-     (ana/cljs-seq? x) (apply my-emits x); call my-emits recursively and not emits
-     ^boolean (goog/isFunction x) (x)
-     :else (let [s (print-str x)]
-             (when-not (nil? *source-map-data*)
-               (swap! *source-map-data*
-                 update-in [:gen-col] #(+ % (count s))))
-             (print s))))
-  nil)
-
-;; =============================================================================
-;; Compiler functions
 
 ;; create cljs.user
 ;(set! (.. js/window -cljs -user) #js {})
@@ -93,7 +37,6 @@
                     (if (and (string? value) beautify-strings)
                       (symbol value)
                       value)))))
-
 
 (defn result-as-str [{:keys [form warning error value success?]} opts]
   (let [status (if error :error :ok)

@@ -4,6 +4,7 @@
     [purnam.core :refer [!]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
+    klipse.bundled-namespaces
     gadjett.core-fn
     cljsjs.codemirror.mode.clojure
     [klipse.guard :refer [min-max-eval-duration my-emits watchdog]]

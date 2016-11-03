@@ -10,7 +10,13 @@
 <pre><code class="clojure">
     (map inc [1 2 3])
 </code></pre>
-
+<pre><code class="klojure">
+    (ns my.test
+      (:require
+          [cljs.pprint :as pp :refer [pprint]]))
+          (with-out-str (pprint (for [x (range 10)] (range x))))
+</code></pre>
+ 
 <pre><code class="clojure">
     (ns my.test
       (:require
@@ -76,7 +82,8 @@
     codemirror_options_out: {
     lineWrapping: true
     },
-    selector: '.clojure'
+    selector: '.klojure',
+    selector_js: '.clojure'
     };
     </script>
     <script src="lib/mirror_extensions.js"></script>

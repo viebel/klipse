@@ -8,26 +8,42 @@
 </head>
 <body>
 
-<pre><code class="klojure" data-verbose="true">
+<pre><code class="klojure">
     (map inc [1 2 3])
 </code></pre>
 <pre><code class="klojure">
     (loop []
     (recur))
 </code></pre>
+<pre><code class="klojure">
+    (defn foo []
+    (when (> 2 1) (foo)))
+</code></pre>
+
+<pre><code class="klojure">
+    (reduce (fn [a b] (when (= a b) (+ a b))) (range))
+</pre></code>
+
 <pre><code class="clojure">
     (loop [x 1]
       (if (not= x 19)
           (recur x)
               (str "hello" 199)))
 </code></pre>
-<pre><code class="clojure">
+<p>
+In the next snippet, guard should be displayed.
+</p>
+<pre><code class="clojure" data-compile-display-guard="true">
     (loop [x 1]
       (if (= x 19)
           (recur x)
               (str "hello" 199)))
 </code></pre>
 
+
+<pre><code class="klojure" data-print-length="12">
+    (range)
+</code></pre>
 
 <script>
     window.klipse_settings = {
@@ -49,7 +65,6 @@
     selector_js: '.clojure'
     };
     </script>
-    <script src="lib/mirror_extensions.js"></script>
-    <script src="fig/js/klipse.fig.js"></script>
+    <script src="plugin/js/klipse_plugin.js"></script>
     </body>
     </html>

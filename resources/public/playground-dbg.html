@@ -8,6 +8,13 @@
 </head>
 <body>
 
+<pre><code class="klojure" data-verbose="true">
+    (map inc [1 2 3])
+</code></pre>
+<pre><code class="klojure">
+    (loop []
+    (recur))
+</code></pre>
 <pre><code class="clojure">
     (loop [x 1]
       (if (not= x 19)
@@ -32,7 +39,6 @@
     codemirror_options_out: {
     lineWrapping: true
     },
-    eval_context: 'expr',
     selector: '.klojure',
     selector_eval_markdown: '.eval-markdown',
     selector_eval_html: '.eval-html',

@@ -27,14 +27,11 @@
 (defn external-libs []
   (map str (read-string (or (:external-libs (url-parameters)) "[]"))))
 
+(defn max-eval-duration []
+  (read-string (or (:max-eval-duration (url-parameters) "nil"))))
+
 (defn print-length []
   (read-string (or (:print-length (url-parameters)) "1000")))
-
-(deftrack eval-js [s]
-  (go
-    (let [[status res] (<! (eval-async s {:static-fns (static-fns?)}))]
-      (.log js/console res)
-      [status (.stringify js/JSON res nil 4)])))
 
 (deftrack eval-clj [s]
   (go
@@ -42,6 +39,7 @@
                                           :verbose (verbose?)
                                           :beautify-strings (beautify-strings?)
                                           :external-libs (external-libs)
+                                          :max-eval-duration (max-eval-duration)
                                           :print-length (print-length)
                                           :context (eval-context?)}))]
       [status res])))
@@ -66,13 +64,15 @@
 (defmethod mutate 'cljs/compile [{:keys [state]} _ {:keys [value]}]
   {:action (fn []
              (go
-               (swap! state assoc :compilation (<! (compile-async value {:static-fns (static-fns?)})))))})
+               (swap! state
+                      assoc
+                      :compilation
+                      (<! (compile-async value {:static-fns (static-fns?)
+                                                :verbose (verbose?)
+                                                :external-libs (external-libs)
+                                                :max-eval-duration (max-eval-duration)
+                                                :context (eval-context?)})))))})
 
-(defmethod mutate 'js/eval [{:keys [state]} _ {:keys [value]}]
-  {:action (fn []
-             #_(go ; it's incorrect to evaluate the code twice when the code has side effects
-                   ; for the moment, we leave the js box empty
-               (swap! state assoc :evaluation-js (<! (eval-js value)))))})
 
 (defn clean-print-box [state]
   (swap! state assoc :evaluation-js ""))

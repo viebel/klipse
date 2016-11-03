@@ -204,6 +204,7 @@ The following attributes can be added to the DOM element of the snippet:
 * `data-preamble`: (default `""`) A string containing Clojurescript source code that should be run before the contents of this snippet, eg "(reset! canvas-id :canvas-2)". Useful for hiding implementation details from readers in blog posts, like e.g. setting a `canvas-id` atom to `:canvas-2`, or for performing any other setup operations that need to be done on a per-snippet basis.
 * `data-beautify-strings`: (default false) when evaluation result is a string - display the "interior" of the string without escaping the quotes.
 * `data-verbose`: (default false) passed to boostrapped `eval` and `compile` `:verbose` opts
+* `data-max-eval-duration`: (default 1000) max number of milliseconds the snippet code is allowed to run synchronously before being interrupted.
 
 
 ## Styling

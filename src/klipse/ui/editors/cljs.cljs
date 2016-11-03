@@ -24,7 +24,6 @@
     (om/transact! component 
                   [`(input/save   {:value ~s})
                    `(cljs/compile {:value ~s})
-                   `(js/eval      {:value ~s})
                    `(clj/eval     {:value ~s})
                    ':input])))
 

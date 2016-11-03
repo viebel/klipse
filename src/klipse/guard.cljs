@@ -19,26 +19,23 @@
        :dynamic true}
   *watchdog-tick* 0)
 
-(def ^{:dynamic true
-       :doc "the maximal amount of time that a snippet can keep the main thread busy"}
-  *max-eval-duration* 1000)
+(def min-max-eval-duration 1000)
 
 (defn watchdog*
   "reset the *watchdog-tick* to the current time once in a while"
   []
   (set! *watchdog-tick* (system-time))
   (go-loop []
-    ; the duration is *max-eval-duration* divided by 2 in order to protect against synchronization mismatchs
-    (<! (timeout (/ *max-eval-duration* 2)))
+    (<! (timeout min-max-eval-duration))
     (set! *watchdog-tick* (system-time))
     (recur)))
 
 (def watchdog (runonce watchdog*))
 
 (defn ^{:export true}
-  guard []
-  (when (> (- (system-time) *watchdog-tick*) *max-eval-duration*)
-    (when (js/confirm (str "A KLIPSE snippet has been running for more than " *max-eval-duration* " milliseconds. This is often because of a long-running computation or infinite loop. Would you like to interrupt the snippet? \n OK to interrupt the evaluation.\n Cancel to continue."))
+  guard [max-eval-duration]
+  (when (> (- (system-time) *watchdog-tick*) max-eval-duration)
+    (when (js/confirm (str "A KLIPSE snippet has been running for more than " max-eval-duration " milliseconds. This is often because of a long-running computation or infinite loop. Would you like to interrupt the snippet? \n OK to interrupt the evaluation.\n Cancel to continue."))
       (throw (str "Infinite Loop")))
     (set! *watchdog-tick* (system-time))))
 
@@ -49,14 +46,14 @@
   Limitations:
   1. It doesn't prevent infinite loop in imported code e.g. (reduce + (range)
   "
-  [& xs]
+  [max-eval-duration & xs]
   (when (and (string? (first xs)) (re-matches #"^(if|continue).*" (first xs)))
-    (print "klipse.guard.guard();"))
+    (print (str "klipse.guard.guard(" max-eval-duration ");")))
   (doseq [x xs]
     (cond
      (nil? x) nil
      (ana/cljs-map? x) (emit x)
-     (ana/cljs-seq? x) (apply my-emits x); call my-emits recursively and not emits
+     (ana/cljs-seq? x) (apply my-emits max-eval-duration x); call my-emits recursively and not emits
      ^boolean (goog/isFunction x) (x)
      :else (let [s (print-str x)]
              (when-not (nil? *source-map-data*)

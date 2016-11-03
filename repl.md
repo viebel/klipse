@@ -19,6 +19,7 @@ KLIPSE configuration is done with the url parameters:
 * `eval-context` - (default `statement`) indicates the evaluation context that will be passed to `cljs/eval-str`. One in `expr`, `statement`, `return`. Use `expr` if you want to evaluate only one expression.
 * `external-libs` - array of external libs to resolve the namespace dependencies. Here is an [example with the gadjett library](http://app.klipse.tech/?cljs_in.gist=viebel/56695ae0360b8692255cc84115d37c6b&external-libs=[https://raw.githubusercontent.com/viebel/gadjett/master/src/]).
 * `verbose` - (default false) passed to bootstraped `eval` and `compile` functions as `:verbose` opts
+* `max-eval-duration` - (default 1000) max number of 1000 seconds the code is allowed to run synchronously before being interrupted.
 * `print-length`: (default 1000) max number of items in collections to display - useful to prevent browser stuck when evaluating infinite sequences like `(range)`
 * `beautify-strings`: (default false) when evaluation result is a string - display the "interior" of the string without escaping the quotes.
 

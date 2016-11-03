@@ -18,6 +18,9 @@
 (defn verbose? []
   (boolean (read-string (or (:verbose (url-parameters)) "false"))))
 
+(defn compile-display-guard? []
+  (boolean (read-string (or (:compile-display-guard (url-parameters)) "false"))))
+
 (defn beautify-strings? []
   (boolean (read-string (or (:beautify-strings (url-parameters)) "false"))))
 
@@ -70,6 +73,7 @@
                       (<! (compile-async value {:static-fns (static-fns?)
                                                 :verbose (verbose?)
                                                 :external-libs (external-libs)
+                                                :compile-display-guard (compile-display-guard?)
                                                 :max-eval-duration (max-eval-duration)
                                                 :context (eval-context?)})))))})
 

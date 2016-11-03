@@ -39,6 +39,7 @@
   (let [my-dataset (aget element "dataset")
         static-fns (read-string-or-val (aget my-dataset "staticFns") false)
         verbose (read-string-or-val (aget my-dataset "verbose") false)
+        compile-display-guard (read-string-or-val (aget my-dataset "compileDisplayGuard") false)
         eval-context (read-string-or-val (aget my-dataset "evalContext") eval-context)
         preamble (aget my-dataset "preamble")
         max-eval-duration (aget my-dataset "maxEvalDuration")
@@ -52,6 +53,7 @@
      :context eval-context
      :preamble preamble
      :verbose verbose
+     :compile-display-guard compile-display-guard
      :beautify-strings beautify-strings}))
 
 (defn editor-args-from-element [element]

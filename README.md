@@ -205,6 +205,7 @@ The following attributes can be added to the DOM element of the snippet:
 * `data-beautify-strings`: (default false) when evaluation result is a string - display the "interior" of the string without escaping the quotes.
 * `data-verbose`: (default false) passed to boostrapped `eval` and `compile` `:verbose` opts
 * `data-max-eval-duration`: (default 1000) max number of milliseconds the snippet code is allowed to run synchronously before being interrupted.
+* `data-compile-display-guard`: (default false) when true, display the anti-starvation code inside result of compilation
 
 
 ## Styling

@@ -66,9 +66,13 @@
   (watchdog)
   (cljs/js-eval args))
 
-(defn compile [s {:keys [static-fns external-libs verbose max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}} cb]
-  (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
-    (with-redefs [compiler/emits (partial my-emits max-eval-duration)]; TODO make it optional
+; store the original compiler/emits - as I'm afraif things might get wrong with all the with-redefs (especially with core.async. See http://dev.clojure.org/jira/browse/CLJS-1634
+(def original-emits compiler/emits)
+
+(defn compile [s {:keys [static-fns external-libs verbose max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}} cb]
+  (let [max-eval-duration (max max-eval-duration min-max-eval-duration)
+        the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
+    (with-redefs [compiler/emits the-emits]
       (cljs/compile-str (create-state-compile) s
                         "cljs-in"
                         {

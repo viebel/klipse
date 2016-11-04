@@ -10,6 +10,7 @@
     [klipse.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
     [replumb.core :as replumb]
+    [cljs.analyzer :as ana]
     [cljs.compiler :as compiler]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
@@ -24,6 +25,8 @@
 (js* "window.cljs.user = {}")
 
 
+(defonce ^:private current-ns (atom 'cljs.user))
+
 (def create-state-eval (memoize cljs/empty-state))
 (def create-state-compile (memoize cljs/empty-state))
 
@@ -34,7 +37,11 @@
                       (symbol value)
                       value)))))
 
-(defn result-as-str [{:keys [form warning error value success?]} opts]
+
+
+(defn result-as-str [{:keys [ns form warning error value success?] :as args} opts]
+  (when-not error
+    (reset! current-ns ns))
   (let [status (if error :error :ok)
         res (if-not error
                 (display value opts)
@@ -92,7 +99,7 @@
                                :no-pr-str-on-value true
                                :context (or context :statement)}))
 
-(defn core-eval [s {:keys [preamble static-fns context verbose external-libs max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
+(defn another-core-eval [s {:keys [preamble static-fns context verbose external-libs max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
   (watchdog); run the watchdog here as in replumb there is no way to override eval-fn
   (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
@@ -104,19 +111,23 @@
           (replumb/read-eval-call opts cb (str preamble s))))))
 
 
-(defn other-core-eval [s {:keys [preamble static-fns context external-libs verbose max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
+(defn core-eval [s {:keys [preamble static-fns context external-libs verbose max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
   (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
-    (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
+    (with-redefs [cljs.analyzer/*cljs-ns* @current-ns
+                  *ns* (create-ns @current-ns)
+                  compiler/emits (partial my-emits max-eval-duration)]
       ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
                      (str preamble s)
-                     "my.klipse" {:eval my-eval
-                                  :def-emits-var true
-                                  :verbose verbose
-                                  :*compiler* (set! env/*compiler* (create-state-eval))
-                                  :context (keyword context)
-                                  :static-fns static-fns
-                                  :load (partial io/load-ns external-libs)}
+                     "my.klipse"
+                     {:eval my-eval
+                      :ns @current-ns
+                      :def-emits-var true
+                      :verbose verbose
+                      :*compiler* (set! env/*compiler* (create-state-eval))
+                      :context (keyword context)
+                      :static-fns static-fns
+                      :load (partial io/load-ns external-libs)}
                      cb))))
 
 (defn eval-async-1 [s opts]

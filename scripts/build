@@ -1,3 +1,3 @@
 lein clean
-lein cljsbuild once app plugin plugin-prod
+lein cljsbuild once plugin app plugin-prod
 cp resources/public/plugin/js/klipse_plugin.js resources/public/plugin_prod/js/klipse_plugin.min.js dist

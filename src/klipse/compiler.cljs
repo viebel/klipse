@@ -93,6 +93,7 @@
                                :context (or context :statement)}))
 
 (defn core-eval [s {:keys [preamble static-fns context verbose external-libs max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
+  (watchdog); run the watchdog here as in replumb there is no way to override eval-fn
   (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
     (let [opts (build-repl-opts {:static-fns static-fns

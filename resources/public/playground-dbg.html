@@ -8,26 +8,13 @@
 </head>
 <body>
 
-<pre><code class="klojure" data-verbose="true">
-    (map inc [1 2 3])
-</code></pre>
-<pre><code class="klojure">
-    (loop []
-    (recur))
+<pre><code class="clojure">
+    (ns my.nehoray)
+    (ns-name *ns*)
 </code></pre>
 <pre><code class="clojure">
-    (loop [x 1]
-      (if (not= x 19)
-          (recur x)
-              (str "hello" 199)))
+    (ns-name *ns*)
 </code></pre>
-<pre><code class="clojure">
-    (loop [x 1]
-      (if (= x 19)
-          (recur x)
-              (str "hello" 199)))
-</code></pre>
-
 
 <script>
     window.klipse_settings = {
@@ -39,14 +26,14 @@
     codemirror_options_out: {
     lineWrapping: true
     },
-    selector: '.klojure',
+    selector: '.clojure',
     selector_eval_markdown: '.eval-markdown',
     selector_eval_html: '.eval-html',
     selector_eval_lambdaway: '.lambda',
     selector_eval_js: '.javascript',
     selector_compile_js: '.compile_js',
     selector_eval_scheme: '.scheme',
-    selector_js: '.clojure'
+    selector_js: '.yo-clojure'
     };
     </script>
     <script src="lib/mirror_extensions.js"></script>

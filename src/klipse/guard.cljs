@@ -24,16 +24,23 @@
             This value has to be much lower than min-max-eval-duration."}
   watchdog-period (/ min-max-eval-duration 10))
 
-(defn watchdog*
+(defn tick []
+  (set! *watchdog-tick* (system-time)))
+
+(defn run-watchdog*
   "reset the *watchdog-tick* to the current time once in a while"
   []
-  (set! *watchdog-tick* (system-time))
+  (tick)
   (go-loop []
     (<! (timeout watchdog-period))
-    (set! *watchdog-tick* (system-time))
+    (tick)
     (recur)))
 
-(def watchdog (runonce watchdog*))
+(def run-watchdog-once (runonce run-watchdog*))
+
+(defn watchdog []
+  (tick)
+  (run-watchdog-once))
 
 (defn ^{:export true}
   guard [max-eval-duration]

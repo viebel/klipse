@@ -6,5 +6,6 @@
 (gadjett/settings! :max-function-calls 100)
 
 (def version "3.6.0")
-(js/console.info "KLIPSE version:" version)
+(js/console.info "Klipse " version)
+(js/console.info "Clojurescript " *clojurescript-version*)
 

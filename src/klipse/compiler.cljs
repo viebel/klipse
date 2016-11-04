@@ -9,6 +9,7 @@
     cljsjs.codemirror.mode.clojure
     [klipse.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
+    [replumb.core :as replumb]
     [cljs.compiler :as compiler]
     [klipse.plugin :refer [register-mode]]
     [klipse.io :as io]
@@ -83,7 +84,27 @@
                          }
                         cb))))
 
-(defn core-eval [s {:keys [preamble static-fns context external-libs verbose max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
+(defn build-repl-opts [{:keys [static-fns context external-libs verbose]}]
+    (merge (replumb/options :browser (partial io/load-ns external-libs))
+                    {:warning-as-error false
+                               :static-fns static-fns
+                               :verbose verbose
+                               :no-pr-str-on-value true
+                               :context (or context :statement)}))
+
+(defn core-eval [s {:keys [preamble static-fns context verbose external-libs max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
+  (watchdog); run the watchdog here as in replumb there is no way to override eval-fn
+  (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
+    (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
+    (let [opts (build-repl-opts {:static-fns static-fns
+                                                                :external-libs external-libs
+                                                                :verbose verbose
+                                                                :context (keyword context)})]
+          (! js/window.COMPILED true); for some reason it is required with read-eval-call
+          (replumb/read-eval-call opts cb (str preamble s))))))
+
+
+(defn other-core-eval [s {:keys [preamble static-fns context external-libs verbose max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
   (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
       ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.

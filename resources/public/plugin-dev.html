@@ -25,6 +25,30 @@
 
     </code></pre>
 
+    <h2> Dealing with infinite loops </h2>
+    <p> Infinite loops in user code are stopped after 1 second</p>
+<pre><code class="clojure">
+    (loop []
+    (recur))
+</code></pre>
+
+<p> This is done by inserting <code>guard()</code> in each <code>if</code> and <code>recur</code>. You can see it by setting <code>data-compile-display-guard="true"</code>.</p>
+<pre><code class="clojure-js" data-compile-display-guard="true">
+(loop [x 1]
+      (if (not= x 19)
+          (recur x)
+              (str "hello" 199)))
+</code></pre>
+
+<p> But by default, the transpiled js is not altered </p>
+
+<pre><code class="clojure-js">
+(loop [x 1]
+      (if (not= x 19)
+          (recur x)
+              (str "hello" 199)))
+</code></pre>
+
 
     <h2> Dealing with infinite sequences </h2>
     <p>Sequences are cropped. At most we print 1000 elements.<br>

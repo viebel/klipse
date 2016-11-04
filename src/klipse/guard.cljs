@@ -1,5 +1,5 @@
 (ns klipse.guard
-  "The basic idea is that the first time a klipse snippet's cljs is evaluated, we kick off a go-loop whose job is to wake up every 500ms and update *watchdog-tick* to say: this is the last time that i woke up!
+  "The basic idea is that the first time a klipse snippet's cljs is evaluated, we kick off a go-loop whose job is to wake up every 100ms and update *watchdog-tick* to say: this is the last time that i woke up!
 
   And if (guard) gets run and notices that the watchdog hasn't been able to wake up within the last *max-eval-duration* milliseconds, it decides that we should kill the currently evaluating function, and does that by throwing an error.
 
@@ -20,13 +20,16 @@
   *watchdog-tick* 0)
 
 (def min-max-eval-duration 1000)
+(def ^{:doc "The number of msec for the watchdog period.
+            This value has to be much lower than min-max-eval-duration."}
+  watchdog-period (/ min-max-eval-duration 10))
 
 (defn watchdog*
   "reset the *watchdog-tick* to the current time once in a while"
   []
   (set! *watchdog-tick* (system-time))
   (go-loop []
-    (<! (timeout min-max-eval-duration))
+    (<! (timeout watchdog-period))
     (set! *watchdog-tick* (system-time))
     (recur)))
 

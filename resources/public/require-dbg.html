@@ -11,6 +11,18 @@
     (map inc [1 2 3])
 </code></pre>
 
+<pre><code class="dlojure" data-external-libs="https://raw.githubusercontent.com/viebel/core.match/master/src/main/clojure">
+(ns my.match
+  (:require [cljs.core.match :refer-macros [match]]))
+
+[(let [x 1 y 2]
+  (match [x y]
+         [1 b] b
+         [a 2] a
+         :else nil))]
+
+</code></pre>
+
 <pre><code class="clojure">
     (ns my.test
       (:require
@@ -134,8 +146,8 @@
     codemirror_options_out: {
     lineWrapping: true
     },
-    selector: '.clojure',
-    selector_js: '.klojure'
+    selector: '.dlojure',
+    selector_js: '.aaklojure'
     };
     </script>
     <script src="lib/mirror_extensions.js"></script>

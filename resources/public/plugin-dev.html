@@ -25,6 +25,19 @@
 
     </code></pre>
 
+    <h2> Dealing with namespaces </h2>
+    <p> When a namespace is defined, subsequent snippets must be evaluated in the same namespace </p>
+<pre><code class="clojure">
+(ns my.ns)
+(def my-func [x] (* x x))
+(ns-name *ns*)
+</code></pre>
+<pre><code class="clojure">
+(ns-name *ns*)
+</code></pre>
+<pre><code class="clojure">
+(my-func 19)
+</code></pre>
     <h2> Dealing with infinite loops </h2>
     <p> Infinite loops in user code are stopped after 1 second</p>
 <pre><code class="clojure">

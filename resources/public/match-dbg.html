@@ -8,21 +8,21 @@
 </head>
 <body>
 
-<pre><code class="clojure">
-    (ns my.match)
-(ns-name *ns*)
+<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/core.match/master/src/main/clojure">
+    (ns my.match 
+      (:require-macros [cljs.core.match :refer [match]]))
 </code></pre>
 <pre><code class="clojure">
-(ns-name *ns*)
+    (let [x true
+      y true
+      z true]
+  (match [x y z]
+         [_ false true] 1
+         [false true _ ] 2
+         [_ _ false] 3
+         [_ _ true] 4
+         :else 5))
 </code></pre>
-<pre><code class="clojure">
-    (ns my.color)
-(ns-name *ns*)
-</code></pre>
-<pre><code class="clojure">
-(ns-name *ns*)
-</code></pre>
-
 
 <script>
     window.klipse_settings = {

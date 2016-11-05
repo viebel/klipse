@@ -8,21 +8,22 @@
 </head>
 <body>
 
-<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/core.match/master/src/main/clojure">
-    (ns my.match 
-      (:require-macros [cljs.core.match :refer [match]]))
+<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/core.match/pure/src/main/clojure">
+(require '[cljs.core.match :refer-macros [match]])
+
 </code></pre>
-<pre><code class="clojure">
-    (let [x true
-      y true
-      z true]
-  (match [x y z]
-         [_ false true] 1
-         [false true _ ] 2
-         [_ _ false] 3
-         [_ _ true] 4
-         :else 5))
+<pre><code class="clojure" data-verbose="true">
+        [(match [1]
+              [2] 1
+:else 90)]
 </code></pre>
+
+<pre><code class="clojure-compile">
+      (require '[cljs.core.match :refer-macros [match]])
+      (match [1]
+              [2] 1)
+</code></pre>
+
 
 <script>
     window.klipse_settings = {
@@ -41,7 +42,7 @@
     selector_eval_js: '.javascript',
     selector_compile_js: '.compile_js',
     selector_eval_scheme: '.scheme',
-    selector_js: '.yo-clojure'
+    selector_js: '.clojure-compile'
     };
     </script>
     <script src="lib/mirror_extensions.js"></script>

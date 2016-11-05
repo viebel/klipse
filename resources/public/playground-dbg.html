@@ -8,19 +8,17 @@
 </head>
 <body>
 
-<pre><code class="clojure">
-    (ns my.match)
-(ns-name *ns*)
+<pre><code class="clojure" data-external-libs="http://localhost:5014/bootstrap_playground">
+    (ns my.ns$macros
+  (:require [cljs.tools.reader :as treader]
+            [cljs.reader :as reader]
+            [cljs.analyzer :as ana]))
+
+
+[`(aa my.ns/xx my.ns$macros/x)
+  (ana/resolve-symbol 'aa)]
 </code></pre>
 <pre><code class="clojure">
-(ns-name *ns*)
-</code></pre>
-<pre><code class="clojure">
-    (ns my.color)
-(ns-name *ns*)
-</code></pre>
-<pre><code class="clojure">
-(ns-name *ns*)
 </code></pre>
 
 

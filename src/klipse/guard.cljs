@@ -19,7 +19,7 @@
        :dynamic true}
   *watchdog-tick* 0)
 
-(def min-max-eval-duration 1000)
+(def min-max-eval-duration 3000)
 (def ^{:doc "The number of msec for the watchdog period.
             This value has to be much lower than min-max-eval-duration."}
   watchdog-period (/ min-max-eval-duration 10))

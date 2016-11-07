@@ -3,6 +3,7 @@
             klipse.lang.clojure
             klipse.lang.javascript
             klipse.lang.ruby
+            klipse.lang.sql
             klipse.lang.python
             klipse.lang.cpp
             klipse.lang.server-eval

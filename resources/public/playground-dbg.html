@@ -8,20 +8,17 @@
 </head>
 <body>
 
-<pre><code class="clojure" data-external-libs="http://localhost:5014/bootstrap_playground">
-    (ns my.ns$macros
-  (:require [cljs.tools.reader :as treader]
-            [cljs.reader :as reader]
-            [cljs.analyzer :as ana]))
 
-
-[`(aa my.ns/xx my.ns$macros/x)
-  (ana/resolve-symbol 'aa)]
-</code></pre>
-<pre><code class="clojure">
+<pre><code class="sql">
+CREATE TABLE IF NOT EXISTS test (col1, col2);
 </code></pre>
 
-
+<pre><code class="sql">
+INSERT INTO test VALUES (1,111),(2,222);
+</code></pre>
+<pre><code class="sql" data-editor-type="html">
+SELECT * FROM test;
+</code></pre>
 <script>
     window.klipse_settings = {
     codemirror_options_in: {
@@ -29,6 +26,7 @@
     lineNumbers: true,
     autoCloseBrackets: true
     },
+    //editor_type: 'html',
     codemirror_options_out: {
     lineWrapping: true
     },
@@ -37,6 +35,7 @@
     selector_eval_html: '.eval-html',
     selector_eval_lambdaway: '.lambda',
     selector_eval_js: '.javascript',
+    selector_sql: '.sql',
     selector_compile_js: '.compile_js',
     selector_eval_scheme: '.scheme',
     selector_js: '.yo-clojure'

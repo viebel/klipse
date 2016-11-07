@@ -6,7 +6,7 @@
     cljsjs.codemirror.mode.ruby
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<!]]
-    [klipse.plugin :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode]]))
 
 
 (defn load-opal-parser []

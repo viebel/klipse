@@ -4,7 +4,7 @@
   (:require 
     [cljs-http.client :as http]
     [cljs.core.async :refer [timeout <! >! chan]]
-    [klipse.plugin :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode]]))
 
 (defn advanced-compile [code]
   (let [flags  (clj->js {:jsCode [{:src code}]

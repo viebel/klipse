@@ -12,7 +12,7 @@
     [replumb.core :as replumb]
     [cljs.analyzer :as ana]
     [cljs.compiler :as compiler]
-    [klipse.plugin :refer [register-mode]]
+    [klipse.common.registry :refer [register-mode]]
     [klipse.lang.clojure.io :as io]
     [cljs.core.async :refer [timeout chan put! <!]]
     [cljs.env :as env]

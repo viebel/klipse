@@ -5,7 +5,7 @@
   (:require 
     [cljs-http.client :as http]
     [cljs.core.async :refer [<!]]
-    [klipse.plugin :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode]]))
 
 (def known-external-libs
   {

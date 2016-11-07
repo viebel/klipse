@@ -5,7 +5,7 @@
   (:require
     cljsjs.codemirror.mode.xml
     cljsjs.codemirror.mode.htmlmixed
-    [klipse.plugin :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode]]))
 
 
 (defn my-eval [exp _]

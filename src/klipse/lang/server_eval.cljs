@@ -9,7 +9,7 @@
     [klipse.lang.replit :refer [connect-and-evaluate]]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan <! >! put!]]
-    [klipse.plugin :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode]]))
 
 (when (? js/window.ReplitClient)
   (def min-eval-idle-msec 3000); throttle to protect the server

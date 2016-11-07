@@ -10,7 +10,7 @@
     cljsjs.codemirror.mode.php
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<! timeout chan put!]]
-    [klipse.plugin :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode]]))
 
 
 (def load-php-engine

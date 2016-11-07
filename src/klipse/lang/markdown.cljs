@@ -8,7 +8,7 @@
     cljsjs.codemirror.mode.css
     cljsjs.codemirror.mode.htmlmixed
     cljsjs.markdown
-    [klipse.plugin :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode]]))
 
 
 (defn str-eval-async [exp _]

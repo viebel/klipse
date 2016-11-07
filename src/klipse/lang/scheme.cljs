@@ -6,7 +6,7 @@
   (:require
     cljsjs.codemirror.mode.scheme
     [cljs.core.async :refer [<! put! chan]]
-    [klipse.plugin :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode]]))
 
 (defn display [result]
   (if (aget result "inspect")

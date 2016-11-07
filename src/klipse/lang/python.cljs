@@ -6,7 +6,7 @@
     cljsjs.codemirror.mode.python
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<! put! chan]]
-    [klipse.plugin :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode]]))
 
 (defn builtin-read [x]
   (when (or (nil? (? js/Sk.builtinFiles))

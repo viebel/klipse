@@ -3,6 +3,7 @@
     [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go]])
   (:require 
+    [klipse.common.registry :refer [selector->mode mode-options]]
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
     [cljs.spec :as s]
@@ -12,15 +13,7 @@
     [cljs.core.async :refer [<! timeout]]
     [gadjett.collections :refer [compactize-map]]))
 
-(enable-console-print!)
-(def selector->mode (atom {}))
-(def mode-options (atom {}))
 (def out-placeholder ";the evaluation will appear here (soon)...")
-
-(defn register-mode [mode selector opts]
-  (js/console.info "register-mode: " mode selector)
-  (swap! selector->mode assoc selector mode)
-  (swap! mode-options assoc mode opts))
 
 (defn calc-editor-args-from-element [element global-idle-msec min-idle-msec global-editor-type]
   (let [{:keys [idle-msec editor-type loop-msec] :or {idle-msec global-idle-msec editor-type global-editor-type loop-msec nil}} (editor-args-from-element element)]

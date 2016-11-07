@@ -1,4 +1,4 @@
-(ns klipse.js-eval
+(ns klipse.lang.javascript
   (:require-macros
     [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go go-loop]])

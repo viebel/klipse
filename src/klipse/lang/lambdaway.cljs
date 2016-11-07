@@ -1,4 +1,4 @@
-(ns klipse.lambdaway
+(ns klipse.lang.lambdaway
   (:require-macros
     [purnam.core :refer [? !>]]
     [cljs.core.async.macros :refer [go go-loop]])

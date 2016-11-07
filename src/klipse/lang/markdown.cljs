@@ -1,4 +1,4 @@
-(ns klipse.markdown
+(ns klipse.lang.markdown
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 

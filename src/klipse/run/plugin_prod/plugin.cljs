@@ -1,15 +1,16 @@
 (ns klipse.run.plugin-prod.plugin
   (:require klipse.core
-            klipse.js-eval
-            klipse.js-compile
-            klipse.ruby
-            klipse.python
-            klipse.scheme
-            klipse.php
-            klipse.server-eval
-            klipse.markdown
-            klipse.lambdaway
-            klipse.html
+            klipse.lang.javascript
+            klipse.lang.js-compile
+            klipse.lang.ruby
+            klipse.lang.python
+            klipse.lang.scheme
+            klipse.lang.php
+            klipse.lang.server-eval
+            klipse.lang.markdown
+            klipse.lang.lambdaway
+            klipse.lang.clojure
+            klipse.lang.html
             [klipse.plugin :as plugin]))
 
 (print "settings: " (aget js/window "klipse_settings"))

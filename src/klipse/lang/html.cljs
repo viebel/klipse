@@ -1,4 +1,4 @@
-(ns klipse.html
+(ns klipse.lang.html
   (:require-macros
     [purnam.core :refer [? !>]]
     [cljs.core.async.macros :refer [go go-loop]])

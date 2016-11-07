@@ -1,10 +1,10 @@
 (ns klipse.run.all
   (:require klipse.run.plugin.plugin
-            klipse.compiler
-            klipse.js_eval
-            klipse.ruby
-            klipse.python
-            klipse.cpp
-            klipse.server-eval
-            klipse.php
+            klipse.lang.clojure
+            klipse.lang.javascript
+            klipse.lang.ruby
+            klipse.lang.python
+            klipse.lang.cpp
+            klipse.lang.server-eval
+            klipse.lang.php
             klipse.run.app.app))

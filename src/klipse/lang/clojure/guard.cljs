@@ -1,4 +1,4 @@
-(ns klipse.guard
+(ns klipse.lang.clojure.guard
   "The basic idea is that the first time a klipse snippet's cljs is evaluated, we kick off a go-loop whose job is to wake up every 100ms and update *watchdog-tick* to say: this is the last time that i woke up!
 
   And if (guard) gets run and notices that the watchdog hasn't been able to wake up within the last *max-eval-duration* milliseconds, it decides that we should kill the currently evaluating function, and does that by throwing an error.
@@ -58,7 +58,7 @@
   "
   [max-eval-duration & xs]
   (when (and (string? (first xs)) (re-matches #"^(if|continue).*" (first xs)))
-    (print (str "klipse.guard.guard(" max-eval-duration ");")))
+    (print (str "klipse.lang.clojure.guard.guard(" max-eval-duration ");")))
   (doseq [x xs]
     (cond
      (nil? x) nil

@@ -1,4 +1,4 @@
-(ns klipse.server-eval
+(ns klipse.lang.server-eval
   (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
@@ -6,7 +6,7 @@
     cljsjs.codemirror.mode.python
     cljsjs.codemirror.mode.clike
     cljsjs.codemirror.mode.go
-    [klipse.replit :refer [connect-and-evaluate]]
+    [klipse.lang.replit :refer [connect-and-evaluate]]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan <! >! put!]]
     [klipse.plugin :refer [register-mode]]))

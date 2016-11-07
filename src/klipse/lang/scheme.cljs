@@ -1,4 +1,4 @@
-(ns klipse.scheme
+(ns klipse.lang.scheme
   (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
     [gadjett.core :refer [dbg]]

@@ -1,4 +1,4 @@
-(ns klipse.cpp
+(ns klipse.lang.cpp
   (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])

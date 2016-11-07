@@ -1,4 +1,4 @@
-(ns klipse.js-compile
+(ns klipse.lang.js-compile
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 

@@ -1,4 +1,4 @@
-(ns klipse.replit
+(ns klipse.lang.replit
   (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])

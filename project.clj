@@ -27,7 +27,7 @@
   {:path "deps-graph.png"
     :vertical true
     :show-external false
-    :cluster-depth 0
+    :cluster-depth 2
     :trim-ns-prefix true
     :ignore-ns #{cache.build klipse.cards}}
   :cljsbuild {

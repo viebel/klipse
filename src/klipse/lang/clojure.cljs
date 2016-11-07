@@ -1,19 +1,19 @@
-(ns klipse.compiler
+(ns klipse.lang.clojure
   (:require-macros
     [gadjett.core :as gadjett :refer [dbg]]
     [purnam.core :refer [!]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    klipse.bundled-namespaces
+    klipse.lang.clojure.bundled-namespaces
     gadjett.core-fn
     cljsjs.codemirror.mode.clojure
-    [klipse.guard :refer [min-max-eval-duration my-emits watchdog]]
+    [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
     [replumb.core :as replumb]
     [cljs.analyzer :as ana]
     [cljs.compiler :as compiler]
     [klipse.plugin :refer [register-mode]]
-    [klipse.io :as io]
+    [klipse.lang.clojure.io :as io]
     [cljs.core.async :refer [timeout chan put! <!]]
     [cljs.env :as env]
     [cljs.js :as cljs]))

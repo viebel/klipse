@@ -6,7 +6,7 @@
     gadjett.core-fn
     [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters]]
-    [klipse.compiler :refer [eval-async compile-async]]
+    [klipse.lang.clojure :refer [eval-async compile-async]]
     [om.next :as om]))
 
 ;; =============================================================================

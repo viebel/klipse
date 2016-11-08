@@ -99,7 +99,7 @@
     (handle-events in-editor
                    {:idle-msec idle-msec
                     :on-should-eval #(eval-in-html-editor eval-fn out-editor in-editor loop-msec state)})
-    #(<! (eval-in-html-editor eval-fn out-editor in-editor loop-msec state))))
+    #(eval-in-html-editor eval-fn out-editor in-editor loop-msec state)))
 
 (defmethod create-editor :code-mirror [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
@@ -116,7 +116,7 @@
         state (create-state)]
     (gdom/setTextContent out-editor default-txt)
     (add-event-listener element "input" #(eval-in-dom-editor eval-fn out-editor element loop-msec state))
-    #(<! (eval-in-dom-editor eval-fn out-editor element loop-msec state))))
+    #(eval-in-dom-editor eval-fn out-editor element loop-msec state)))
 
 (comment
   (s/instrument #'editor-options))

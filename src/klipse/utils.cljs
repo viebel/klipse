@@ -67,22 +67,26 @@
         (apply f args)))))
 
 (defn runonce-async
-  "return a function that will run `f` only once.
+  "Returns a function that will run `f` only once.
+  If `f` succeeds (returns [:ok & args]), on subsequent calls it will return [:ok].
   `f` must return a channel."
   [f]
   (let [ran (atom false)]
     (fn [& args]
       (go
-        (when-not @ran
-          (reset! ran true)
-          (<! (apply f args)))))))
+        (if-not @ran
+          (let [res (<! (apply f args))]
+            (when (= :ok (first res))
+              (reset! ran true))
+            res)
+          [:ok])))))
 
 (def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
 (defn load-scripts [scripts]
   (go-loop [the-scripts scripts]
            (if (seq the-scripts)
-             (let [script (str (first the-scripts) "?" (rand))
+             (let [script (str (first the-scripts))
                    _ (js/console.info "loading:" script)
                    {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
                (if (= 200 status)

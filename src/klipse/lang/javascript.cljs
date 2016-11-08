@@ -20,7 +20,7 @@
   (get known-external-libs lib-name-or-url lib-name-or-url))
 
 (defn beautify [js-exp]
-  (try 
+  (try
     (-> js-exp
         js/JSON.stringify
         str)
@@ -31,13 +31,14 @@
   (go
     (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
       (if (= :ok status)
-        (try (-> exp
-                 eval-in-global-scope
-                 beautify)
-             (catch js/Object o
-               (str o)))
-        (str "Cannot load script: " script "\n"
-             "error: " http-status)))))
+        (try
+          (-> exp
+              eval-in-global-scope
+              beautify)
+          (catch :default o
+            (str o)))
+        (str "//Cannot load script: " script "\n"
+             "//Error: " http-status)))))
 
 
 (def opts {:editor-in-mode "javascript"

@@ -93,7 +93,7 @@
 
 (defmethod create-editor :html [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
-        out-editor (create-div-after element)
+        out-editor (create-div-after element {:class "klipse-result"})
         in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
         state (create-state)]
     (handle-events in-editor
@@ -112,7 +112,7 @@
     #(eval-in-codemirror-editor eval-fn out-editor in-editor loop-msec editor-out-mode state)))
 
 (defmethod create-editor :dom [_ {:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec loop-msec]}]
-  (let [out-editor (create-div-after element)
+  (let [out-editor (create-div-after element {:class "klipse-result"})
         state (create-state)]
     (gdom/setTextContent out-editor default-txt)
     (add-event-listener element "input" #(eval-in-dom-editor eval-fn out-editor element loop-msec state))

@@ -4,8 +4,8 @@
     [goog.dom :as gdom]))
 
 
-(defn create-div-after [element]
-    (let [div (gdom/createDom "div" nil (gdom/createTextNode ""))]
+(defn create-div-after [element attrs]
+    (let [div (gdom/createDom "div" (clj->js attrs) (gdom/createTextNode ""))]
       (gdom/insertSiblingAfter div element)
       div))
 

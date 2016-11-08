@@ -15,10 +15,20 @@ CREATE TABLE IF NOT EXISTS test (col1, col2);
 
 <pre><code class="sql">
 INSERT INTO test VALUES (1,111),(2,222);
+INSERT INTO test VALUES (1,111),(2,222);
+INSERT INTO test VALUES (1,111),(2,222);
+INSERT INTO test VALUES (1,111),(2,222);
+INSERT INTO test VALUES (1,111),(2,222);
 </code></pre>
 <pre><code class="sql" data-editor-type="html">
 SELECT * FROM test;
 </code></pre>
+
+<pre><code class="sql" data-editor-type="html">
+SELECT * FROM sqlite_master
+</code></pre>
+
+
 <script>
     window.klipse_settings = {
     codemirror_options_in: {

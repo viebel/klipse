@@ -3,6 +3,7 @@
     [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
+    [klipse.utils :refer [load-scripts]]
     [cljs-http.client :as http]
     [cljs.core.async :refer [<!]]
     [klipse.common.registry :refer [register-mode]]))
@@ -14,19 +15,6 @@
    "underscore" "http://underscorejs.org/underscore-min.js"})
 
 (def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
-(defn load-scripts [scripts]
-  (go-loop [the-scripts scripts]
-           (if (seq the-scripts)
-             (let [script (str (first the-scripts) "?" (rand))
-                   _ (js/console.info "loading:" script)
-                   {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
-               (if (= 200 status)
-                 (do
-                   (js/console.info "evaluating:" script)
-                   (eval-in-global-scope body)
-                   (recur (rest the-scripts)))
-                 [:error status script]))
-             [:ok])))
 
 (defn external-lib-path [lib-name-or-url]
   (get known-external-libs lib-name-or-url lib-name-or-url))

@@ -21,6 +21,14 @@ h2 {
     font-size: 25px;
 }
 
+h5.license {
+    margin: 9px 0 22px 0;
+    color: #555;
+    font-weight: normal;
+    font-size: 12px;
+    font-style: italic;
+}
+
 .document h1, .namespace-index h1 {
     font-size: 32px;
     margin-top: 12px;

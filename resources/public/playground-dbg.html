@@ -23,6 +23,11 @@ margin: 0 auto;
 .klipse-result th
 {
     font-size: 13px;
+}
+    SELECT * FROM sqlite_master
+{
+    font-size: 13px;
+
     font-weight: normal;
     padding: 8px;
     background: #b9c9fe;
@@ -46,9 +51,14 @@ margin: 0 auto;
 
 </style>
 
-<pre><code class="javascript" ssdata-external-libs="http://a">
-    1 + 2
+
+<pre><code class="javascript" data-preamble="x=3;">
+    1 + x
 </code></pre>
+<pre><code class="clojure" data-preamble="(def x 3)">
+    (+ 1 x)
+</code></pre>
+
 <pre><code class="sql">
 CREATE TABLE IF NOT EXISTS test (col1, col2);
 </code></pre>

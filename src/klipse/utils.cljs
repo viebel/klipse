@@ -1,7 +1,8 @@
 (ns klipse.utils
-  (:require-macros 
+  (:require-macros
+    [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
-  (:require 
+  (:require
     [clojure.walk :refer [keywordize-keys]]
     [cljs-http.client :as http]
     [cljs.core.async :refer [timeout <!]]
@@ -81,6 +82,21 @@
             res)
           [:ok])))))
 
+(defn memoize-async
+  "Returns a memoized version of f.
+  If `f` succeeds (returns [:ok & args]), on subsequent calls it will return the cached results.
+  `f` must return a channel."
+  [f]
+  (let [ran (atom {})]
+    (fn [& args]
+      (go
+        (if-not (contains? @ran args)
+          (let [res (<! (apply f args))]
+            (when (= :ok (first res))
+              (swap! ran assoc args res))
+            res)
+          (get @ran args))))))
+
 (def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
 (defn load-scripts [scripts]
@@ -94,7 +110,9 @@
                    (js/console.info "evaluating:" script)
                    (eval-in-global-scope body)
                    (recur (rest the-scripts)))
-                 [:error status script]))
+                 (dbg [:error status script])))
              [:ok])))
+
+(def load-scripts-mem (memoize-async load-scripts))
 
 

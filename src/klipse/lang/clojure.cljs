@@ -99,7 +99,7 @@
                                :no-pr-str-on-value true
                                :context (or context :statement)}))
 
-(defn another-core-eval [s {:keys [preamble static-fns context verbose external-libs max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
+(defn another-core-eval [s {:keys [static-fns context verbose external-libs max-eval-duration] :or {static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
   (watchdog); run the watchdog here as in replumb there is no way to override eval-fn
   (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
@@ -108,17 +108,17 @@
                                                                 :verbose verbose
                                                                 :context (keyword context)})]
           (! js/window.COMPILED true); for some reason it is required with read-eval-call
-          (replumb/read-eval-call opts cb (str preamble s))))))
+          (replumb/read-eval-call opts cb s)))))
 
 
-(defn core-eval [s {:keys [preamble static-fns context external-libs verbose max-eval-duration] :or {preamble "" static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
+(defn core-eval [s {:keys [static-fns context external-libs verbose max-eval-duration] :or {static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
   (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [cljs.analyzer/*cljs-ns* @current-ns
                   *ns* (create-ns @current-ns)
                   compiler/emits (partial my-emits max-eval-duration)]
       ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
-                     (str preamble s)
+                     s
                      "my.klipse"
                      {:eval my-eval
                       :ns @current-ns

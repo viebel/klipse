@@ -16,9 +16,10 @@
 (def out-placeholder ";the evaluation will appear here (soon)...")
 
 (defn calc-editor-args-from-element [element global-idle-msec min-idle-msec global-editor-type]
-  (let [{:keys [idle-msec editor-type loop-msec] :or {idle-msec global-idle-msec editor-type global-editor-type loop-msec nil}} (editor-args-from-element element)]
+  (let [{:keys [idle-msec editor-type preamble loop-msec] :or {idle-msec global-idle-msec editor-type global-editor-type loop-msec nil}} (editor-args-from-element element)]
     (compactize-map {:idle-msec (max min-idle-msec idle-msec)
                      :loop-msec loop-msec
+                     :preamble preamble
                      :editor-type editor-type})))
 
 (defn calc-editor-type [minimalistic_ui? the-type]
@@ -33,15 +34,17 @@
 (defn klipsify-with-opts
   "returns a channel c with a function f.
   f returns a channel that will be ready to read when the snippet is evaluated."
-  [element {:keys [eval_idle_msec minimalistic_ui editor_type print_length beautify_strings eval_context codemirror_options_in codemirror_options_out] :or {beautify_strings false print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? min-eval-idle-msec] :or {min-eval-idle-msec 0 beautify? true}}]
+  [element {:keys [eval_idle_msec minimalistic_ui editor_type print_length beautify_strings eval_context codemirror_options_in codemirror_options_out] :or {beautify_strings false print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? min-eval-idle-msec external-scripts] :or {min-eval-idle-msec 0 beautify? true external-scripts []}}]
   (go (when element
         (let [eval-args (eval-args-from-element element {:eval-context eval_context :print-length print_length :beautify-strings beautify_strings})
               eval-fn-with-args #(eval-fn % eval-args)
               source-code (<! (content element comment-str))
-              {:keys [idle-msec editor-type loop-msec]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
+              {:keys [idle-msec editor-type loop-msec preamble]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
               editor-type (calc-editor-type minimalistic_ui editor-type)]
           (create-editor editor-type {:element element
                                       :loop-msec loop-msec
+                                      :external-scripts external-scripts
+                                      :preamble preamble
                                       :beautify? beautify?
                                       :editor-in-mode editor-in-mode
                                       :editor-out-mode editor-out-mode

@@ -72,10 +72,17 @@
                   snippet-args
                   state))
 
+(defn wrap-result-in-html [elem res]
+  (println (type res))
+  (let [wrapped-res (if (= (type res) js/Error)
+                      (str "<div class=\"klipse-error\">" res "</div>")
+                      res)]
+    (! elem.innerHTML wrapped-res)))
+
 (defn eval-in-html-editor [eval-fn target editor-source snippet-args state]
   (eval-in-editor eval-fn
                   (get-value editor-source)
-                  #(! target.innerHTML %)
+                  (partial wrap-result-in-html target)
                   snippet-args
                   state))
 

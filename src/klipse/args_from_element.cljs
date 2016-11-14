@@ -41,7 +41,6 @@
         verbose (read-string-or-val (aget my-dataset "verbose") false)
         compile-display-guard (read-string-or-val (aget my-dataset "compileDisplayGuard") false)
         eval-context (read-string-or-val (aget my-dataset "evalContext") eval-context)
-        preamble (aget my-dataset "preamble")
         max-eval-duration (aget my-dataset "maxEvalDuration")
         print-length (read-string-or-val (aget my-dataset "printLength") print-length)
         beautify-strings (read-string-or-val (aget my-dataset "beautifyStrings") beautify-strings)
@@ -51,7 +50,6 @@
      :external-libs external-libs
      :max-eval-duration max-eval-duration
      :context eval-context
-     :preamble preamble
      :verbose verbose
      :compile-display-guard compile-display-guard
      :beautify-strings beautify-strings}))
@@ -60,9 +58,10 @@
   (let [my-dataset (aget element "dataset")
         editor-type (aget my-dataset "editorType")
         loop-msec (read-string-or-val (aget my-dataset "loopMsec") nil)
+        preamble (or (aget my-dataset "preamble") "")
         idle-msec (read-string-or-val (aget my-dataset "evalIdleMsec") nil)]
     (compactize-map {:idle-msec idle-msec
                      :loop-msec loop-msec
+                     :preamble preamble
                      :editor-type editor-type})))
-       
 

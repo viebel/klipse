@@ -85,5 +85,5 @@
 
 
 (defn create-editor-after-element [element value opts]
-  (-> (create-div-after element)
+  (-> (create-div-after element {})
       (replace-element-by-editor value opts)))

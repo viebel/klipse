@@ -8,30 +8,33 @@
 <p><code>:seed</code>  Can be used to re-run previous tests, as the seed used is returned  after a test is run.</p>
 <p><code>:max-size</code>.  can be used to control the ‘size’ of generated values. The size will  start at 0, and grow up to max-size, as the number of tests increases.  Generators will use the size parameter to bound their growth. This  prevents, for example, generating a five-thousand element vector on  the very first test.</p>
 <p><code>:reporter-fn</code>  A callback function that will be called at various points in the test  run, with a map like:</p>
-<pre><code>;; called after a passing trial
-{:type      :trial
- :property  #&lt;...&gt;
- :so-far    &lt;number of tests run so far&gt;
- :num-tests &lt;total number of tests&gt;}
+<pre><code>  ;; called after a passing trial
+  {:type      :trial
+   :property  #&lt;...&gt;
+   :so-far    &lt;number of tests run so far&gt;
+   :num-tests &lt;total number of tests&gt;}
 
-;; called after each failing trial
-{:type         :failure
- :property     #&lt;...&gt;
- :result       ...
- :trial-number &lt;tests ran before failure found&gt;
- :failing-args [...]}
+  ;; called after each failing trial
+  {:type         :failure
+   :property     #&lt;...&gt;
+   :result       ...
+   :trial-number &lt;tests ran before failure found&gt;
+   :failing-args [...]}
+
+It will also be called on :complete, :shrink-step and :shrunk.
 </code></pre>
-<p>It will also be called on :complete, :shrink-step and :shrunk.</p>
 <p>Examples:</p>
+<p>Check that the square of a positive number is always greater than itself:</p>
 <pre><code>(def p (for-all [a gen/pos-int] (&gt; (* a a) a)))
-
 (quick-check 100 p)
-(quick-check 200 p
-             :seed 42
-             :max-size 50
-             :reporter-fn (fn [m]
-                            (when (= :failure (:type m))
-                              (println "Uh oh..."))))
+</code></pre>
+<p>Another example using <code>reporter-fn</code>:</p>
+<pre><code>(quick-check 200 p
+               :seed 42
+               :max-size 50
+               :reporter-fn (fn [m]
+                              (when (= :failure (:type m))
+                                (println "Uh oh..."))))
 </code></pre></div></div></div></div><script>window.klipse_settings = {
     selector: '.klipse,.clojure',
     codemirror_options_in: {

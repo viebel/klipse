@@ -156,7 +156,17 @@
     <p>This snippet prepends <code>(def preamble-var 2)</code> to its cljs source code.</p>
 
     <div class="clojure" data-preamble="(def preamble-var 2)">(= (+ preamble-var 3) 5)</div>
+        <h2> remove comments (only in clojure)</h2>
+        <p>comments at the end of the snippet should be removed </p>
       
+    <div class="clojure">
+        ; intro
+        (map inc [1 2 3])
+        ; you shouldn't see this comment
+        ; you shouldn't see this comment
+        ; you shouldn't see this comment
+
+        </div>
     <h1> styling </h1>
     <p> Leading and trailing blank lines should be removed. Other empty lines should be kept.</p>
     <pre>

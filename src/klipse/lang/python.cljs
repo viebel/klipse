@@ -32,6 +32,7 @@
            :editor-out-mode "python"
            :eval-fn str-eval-async
            :beautify? false
+           :external-scripts ["http://www.skulpt.org/static/skulpt.min.js" "http://www.skulpt.org/static/skulpt-stdlib.js"]
            :comment-str "#"})
 
 (register-mode "eval-python-client" "selector_eval_python_client" opts)

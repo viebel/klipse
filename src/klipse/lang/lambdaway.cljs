@@ -14,6 +14,7 @@
 (def opts {:editor-in-mode "clojure"
            :editor-out-mode "text"
            :eval-fn my-eval
+           :external-scripts "https://viebel.github.io/klipse/examples/lambdaway_eval.js"
            :comment-str "[comment]: "})
 
 (register-mode "eval-lambdaway" "selector_eval_lambdaway" opts)

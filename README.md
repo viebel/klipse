@@ -228,6 +228,7 @@ You can see an example of styling Klipse in `demos/styling`. And here is a [live
 Here are a couple of examples of blogs using the klipse plugin:
 
 - clojure: [Procedural Dungeon Generation: A Drunkard's Walk in ClojureScript](http://blog.jrheard.com/procedural-dungeon-generation-drunkards-walk-in-clojurescript)
+- clojure: [Island Generator](http://exupero.org/hazard/post/islands/)
 - clojurescript transpiled: [blog.ducky.io - More about protocols in ClojureScript](http://blog.ducky.io/clojurescript/2016/06/08/more-defprotocol/)
 - ruby: [jessewaites.com - interactive ruby snippets](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)
 - clojure: [z.caudate.me - live documentation with klipse](http://z.caudate.me/klipse-demo/)

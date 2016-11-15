@@ -8,77 +8,27 @@
 </head>
 <body>
 
-<style>
-.klipse-result table{
-margin: 0 auto;
-}
-
-.klipse-result
-{
-    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    font-size: 12px;
-    text-align: left;
-    border-collapse: collapse;
-}
-.klipse-result th
-{
-    font-size: 13px;
-}
-    SELECT * FROM sqlite_master
-{
-    font-size: 13px;
-
-    font-weight: normal;
-    padding: 8px;
-    background: #b9c9fe;
-    border-top: 4px solid #aabcfe;
-    border-bottom: 1px solid #fff;
-    color: #039;
-}
-.klipse-result td
-{
-    padding: 8px;
-    background: #e8edff; 
-    border-bottom: 1px solid #fff;
-    color: #669;
-    border-top: 1px solid transparent;
-}
-.klipse-result tr:hover td
-{
-    background: #d0dafd;
-    color: #339;
-}
-
-.klipse-error {
-color: red;
-}
-</style>
-
-
-<pre><code class="javascript" data-preamble="x=3;">
-    1 + x
+<pre><code class="clojure" data-preamble="(def x 3)">
+    (require '[clojure.spec])
+    ;; clojure.spec
 </code></pre>
 <pre><code class="clojure" data-preamble="(def x 3)">
     (+ 1 x)
+    ;; 4
 </code></pre>
 
-<pre><code class="sql">
-CREATE TABLE IF NOT EXISTS test (col1, col2);
+<pre><code class="clojure" data-preamble="(def x 3)">
+    ;; simple computation
+    (+ 1 x)
 </code></pre>
 
-<pre><code class="sql">
-INSERT INTO test VALUES (1,111),(2,222);
-INSERT INTO test VALUES (1,111),(2,222);
-INSERT INTO test VALUES (1,111),(2,222);
-INSERT INTO test VALUES (1,111),(2,222);
-INSERT INTO test VALUES (1,111),(2,222);
+<pre><code class="clojure" data-preamble="(def x 3)">
+    (symbol (str ";;"))
 </code></pre>
-<code class="sql" data-editor-type="html">
-SELECT * FROM test;
-</code>
 
-<pre><code class="sql" data-editor-type="html">
-SELECT * FROM sqlite_master
+<pre><code class="clojure" data-editor-type="html">
+    (+ 1 x)
+    ;; 4
 </code></pre>
 
 
@@ -89,7 +39,6 @@ SELECT * FROM sqlite_master
     lineNumbers: true,
     autoCloseBrackets: true
     },
-    editor_type: 'html',
     codemirror_options_out: {
     lineWrapping: true
     },

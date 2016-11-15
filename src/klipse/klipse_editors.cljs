@@ -123,7 +123,7 @@
 
 (defmethod create-editor :code-mirror [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec external-scripts preamble]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
-        out-editor (create-editor-after-element element default-txt out-editor-options); must be called before `element` is replaced
+        out-editor (create-editor-after-element element default-txt out-editor-options :remove-ending-comments? false); must be called before `element` is replaced
         in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
         snippet-args {:loop-msec loop-msec
                       :external-scripts external-scripts

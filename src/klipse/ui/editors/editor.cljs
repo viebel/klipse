@@ -61,29 +61,34 @@
       gadjett/fix-blank-lines
       (set-value editor)))
 
-(defn beautify [editor _]
+(defn fix-comments-lines [editor mode remove-ending-comments?]
+  (if (and remove-ending-comments? (= "clojure" mode))
+    (->> (get-value editor)
+         gadjett/remove-ending-comments
+         (set-value editor))
+    editor))
+
+(defn beautify [editor mode remove-ending-comments?]
   (-> editor
       auto-indent
       goto-start
-      fix-blank-lines))
+      fix-blank-lines
+      (fix-comments-lines mode remove-ending-comments?)))
 
 (defn set-value-and-beautify [editor mode value]
   (-> (set-value editor value)
       (beautify mode)))
 
-
-
-(defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [beautify?] :or {beautify? true}}]
+(defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [beautify? remove-ending-comments?] :or {beautify? true remove-ending-comments? true}}]
   (let [editor (js/CodeMirror (fn [elt]
                                 (gdom/replaceNode elt element))
                               (clj->js opts))]
     (as->
       (set-value editor value) $
       (if beautify?
-        (beautify $ mode)
+        (beautify $ mode remove-ending-comments?)
         $))))
 
-
-(defn create-editor-after-element [element value opts]
+(defn create-editor-after-element [element value opts & {:keys [remove-ending-comments?] :or {remove-ending-comments? false}}]
   (-> (create-div-after element {})
-      (replace-element-by-editor value opts)))
+      (replace-element-by-editor value opts :remove-ending-comments? remove-ending-comments?)))

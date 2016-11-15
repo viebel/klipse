@@ -11,46 +11,69 @@
 <h2><a href="#integers-5-through-9-inclusive" name="integers-5-through-9-inclusive"></a>Integers 5 through 9, inclusive</h2>
 <pre><code class="clojure">(def five-through-nine (gen/choose 5 9))
 (gen/sample five-through-nine)
+;; =&gt; (6 5 9 5 7 7 6 9 7 9)
 </code></pre>
 <h2><a href="#a-random-element-from-a-vector" name="a-random-element-from-a-vector"></a>A random element from a vector</h2>
 <pre><code class="clojure">(def languages (gen/elements ["clojure" "haskell" "erlang" "scala" "python"]))
 (gen/sample languages)
+;; =&gt; ("clojure" "scala" "clojure" "haskell" "clojure" "erlang" "erlang"
+;; =&gt;  "erlang" "haskell" "python")
 </code></pre>
 <h2><a href="#an-integer-or-nil" name="an-integer-or-nil"></a>An integer or nil</h2>
 <pre><code class="clojure">(def int-or-nil (gen/one-of [gen/int (gen/return nil)]))
 (gen/sample int-or-nil)
+;; =&gt; (nil 0 -2 nil nil 3 nil nil 4 2)
 </code></pre>
 <h2><a href="#an-integer-90-of-the-time-nil-10-" name="an-integer-90-of-the-time-nil-10-"></a>An integer 90% of the time, nil 10%</h2>
 <pre><code class="clojure">(def mostly-ints (gen/frequency [[9 gen/int] [1 (gen/return nil)]]))
 (gen/sample mostly-ints)
+;; =&gt; (0 -1 nil 0 -2 0 6 -6 8 7)
 </code></pre>
 <h2><a href="#even-positive-integers" name="even-positive-integers"></a>Even, positive integers</h2>
 <pre><code class="clojure">(def even-and-positive (gen/fmap #(* 2 %) gen/pos-int))
 (gen/sample even-and-positive 20)
+;; =&gt; (0 0 2 0 8 6 4 12 4 18 10 0 8 2 16 16 6 4 10 4)
 </code></pre>
 <h2><a href="#powers-of-two" name="powers-of-two"></a>Powers of two</h2>
-<p>Let’s generate exponents with <code>gen/s-pos-int</code> (strictly positive integers), and then apply the lambda to them:</p>
-<pre><code class="clojure">(def powers-of-two (gen/fmap #(int (Math/pow 2 %)) gen/s-pos-int))
+<pre><code class="clojure">;; generate exponents with gen/s-pos-int (strictly positive integers),
+;; and then apply the lambda to them
+(def powers-of-two (gen/fmap #(int (Math/pow 2 %)) gen/s-pos-int))
 (gen/sample powers-of-two)
+;; =&gt; (2 2 8 16 16 64 16 2 4 4)
 </code></pre>
 <h2><a href="#sorted-seq-of-integers" name="sorted-seq-of-integers"></a>Sorted seq of integers</h2>
-<p>Here, we apply the sort function to each generated vector:</p>
-<pre><code class="clojure">(def sorted-vec (gen/fmap sort (gen/vector gen/int)))
+<pre><code class="clojure">;; apply the sort function to each generated vector
+(def sorted-vec (gen/fmap sort (gen/vector gen/int)))
 (gen/sample sorted-vec)
+;; =&gt; (() (-1) (-2 -2) (-1 2 3) (-1 2 4) (-3 2 3 3 4) (1)
+;; =&gt; (-4 0 1 3 4 6) (-5 -4 -1 0 2 8) (1))
 </code></pre>
 <h2><a href="#an-integer-and-a-boolean" name="an-integer-and-a-boolean"></a>An integer and a boolean</h2>
 <pre><code class="clojure">(def int-and-boolean (gen/tuple gen/int gen/boolean))
 (gen/sample int-and-boolean)
+;; =&gt; ([0 false] [0 true] [0 true] [3 true] [-3 false]
+;; =&gt;  [0 true] [4 true] [0 true] [-2 true] [-9 false])
 </code></pre>
 <h2><a href="#any-number-but-5" name="any-number-but-5"></a>Any number but 5</h2>
 <pre><code class="clojure">(def anything-but-five (gen/such-that #(not= % 5) gen/int))
 (gen/sample anything-but-five)
+;; =&gt; (0 0 -2 1 -3 1 -4 7 -1 6)
 </code></pre>
 <p>It’s important to note that <code>such-that</code> should only be used for predicates that are <em>very</em> likely to match. For example, you should <em>not</em> use <code>such-that</code> to filter out random vectors that are not sorted, as is this is exceedingly unlikely to happen randomly. If you want sorted vectors, just sort them using <code>gen/fmap</code> and <code>sort</code>.</p>
 <h2><a href="#a-vector-and-a-random-element-from-it" name="a-vector-and-a-random-element-from-it"></a>A vector and a random element from it</h2>
 <pre><code class="clojure">(def vector-and-elem (gen/bind (gen/not-empty (gen/vector gen/int))
                                #(gen/tuple (gen/return %) (gen/elements %))))
 (gen/sample vector-and-elem)
+;; =&gt;([[-1] -1]
+;; =&gt; [[0] 0]
+;; =&gt; [[-1 -1] -1]
+;; =&gt; [[2 0 -2] 2]
+;; =&gt; [[0 1 1] 0]
+;; =&gt; [[-2 -3 -1 1] -1]
+;; =&gt; [[-1 2 -5] -5]
+;; =&gt; [[5 -7 -3 7] 5]
+;; =&gt; [[-1 2 2] 2]
+;; =&gt; [[-8 7 -3 -2 -6] -3])
 </code></pre>
 <p><code>gen/bind</code> and <code>gen/fmap</code> are similar: they’re both binary functions that take a generator and a function as arguments (though their argument order is reversed). They differ in what the provided function’s return value should be. The function provided to <code>gen/fmap</code> should return a <em>value</em>. We saw that earlier when we used <code>gen/fmap</code> to sort a vector. <code>sort</code> returns a normal value. The function provided to <code>gen/bind</code> should return a <em>generator</em>. Notice how above we’re providing a function that returns a <code>gen/tuple</code> generator? The decision of which to use depends on whether you want to simply transform the <em>value</em> of a generator (sort it, multiply it by two, etc.), or create an entirely new generator out of it.</p>
 <hr />

@@ -9,14 +9,11 @@
 <body>
 
 <pre><code class="clojure" data-preamble="(def x 3)">
-    (require '[clojure.spec])
-    ;; clojure.spec
-</code></pre>
-<pre><code class="clojure" data-preamble="(def x 3)">
     (+ 1 x)
     ;; 4
 </code></pre>
 
+<div class="lambda" data-editor-type="html">{+ 1 2 3}</div>
 <pre><code class="clojure" data-preamble="(def x 3)">
     ;; simple computation
     (+ 1 x)
@@ -26,11 +23,13 @@
     (symbol (str ";;"))
 </code></pre>
 
-<pre><code class="clojure" data-editor-type="html">
-    (+ 1 x)
-    ;; 4
+<pre><code class="ruby"> 
+    [1]*19
 </code></pre>
 
+<pre><code class="python"> 
+print(2 + 3)
+</code></pre>
 
 <script>
     window.klipse_settings = {
@@ -47,13 +46,15 @@
     selector_eval_html: '.eval-html',
     selector_eval_lambdaway: '.lambda',
     selector_eval_js: '.javascript',
+    selector_eval_ruby: '.ruby',
+    selector_eval_python_client: '.python',
     selector_sql: '.sql',
     selector_compile_js: '.compile_js',
     selector_eval_scheme: '.scheme',
     selector_js: '.yo-clojure'
     };
     </script>
-    <script src="lib/mirror_extensions.js"></script>
-    <script src="fig/js/klipse.fig.js"></script>
-    </body>
-    </html>
+<script src="lib/mirror_extensions.js"></script>
+<script src="fig/js/klipse.fig.js"></script>
+</body>
+</html>

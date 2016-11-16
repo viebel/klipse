@@ -26,6 +26,7 @@
 (def opts {:editor-in-mode "ruby"
            :editor-out-mode "ruby"
            :eval-fn str-eval-async
+           :external-scripts ["http://cdn.opalrb.org/opal/current/opal.min.js" "http://cdn.opalrb.org/opal/current/opal-parser.min.js"]
            :comment-str "#"})
 
 (register-mode "eval-ruby" "selector_eval_ruby" opts)

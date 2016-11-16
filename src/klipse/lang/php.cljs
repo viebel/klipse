@@ -35,6 +35,7 @@
 (def opts {:editor-in-mode "text/x-php"
            :editor-out-mode "text/x-php"
            :eval-fn str-eval-async
+           :external-scripts "https://asmblah.github.io/uniter/dist/uniter.js"
            :comment-str "//"})
 
 (register-mode "eval-php" "selector_eval_php" opts)

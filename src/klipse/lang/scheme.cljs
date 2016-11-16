@@ -28,6 +28,7 @@
 (def opts {:editor-in-mode "scheme"
            :editor-out-mode "scheme"
            :eval-fn str-eval-async
+           :external-scripts "http://www.biwascheme.org/release/biwascheme-0.6.6-min.js" 
            :comment-str ";"})
 
 (register-mode "eval-scheme" "selector_eval_scheme" opts)

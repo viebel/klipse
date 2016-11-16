@@ -1,4 +1,4 @@
-(defproject klipse "3.8.1"
+(defproject klipse "3.9.0"
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
@@ -7,7 +7,7 @@
                  [im.chit/purnam "0.5.2"]
                  [cljsjs/markdown "0.6.0-beta1-0"]
                  [cljs-http "0.1.42"]
-                 [viebel/gadjett "0.3.1"]
+                 [viebel/gadjett "0.3.2"]
                  [org.omcljs/om "1.0.0-alpha47"]
                  [replumb "0.2.4"]
                  [com.cemerick/url "0.1.1"]

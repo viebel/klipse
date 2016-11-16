@@ -6,6 +6,7 @@
     [klipse.common.registry :refer [selector->mode mode-options]]
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
+    [gadjett.collections :refer [collify]]
     [cljs.spec :as s]
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
@@ -43,7 +44,7 @@
               editor-type (calc-editor-type minimalistic_ui editor-type)]
           (create-editor editor-type {:element element
                                       :loop-msec loop-msec
-                                      :external-scripts external-scripts
+                                      :external-scripts (dbg (collify external-scripts))
                                       :preamble preamble
                                       :beautify? beautify?
                                       :editor-in-mode editor-in-mode

@@ -84,8 +84,6 @@ And here are detailed explanations about [a javascript live code editor in a blo
         selector_eval_ruby: '.language-klipse-eval-ruby', // css selector for the html elements you want to klipsify
     };
 </script>
-<script src="http://cdn.opalrb.org/opal/current/opal.min.js"></script>
-<script src="http://cdn.opalrb.org/opal/current/opal-parser.min.js"></script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 ## Scheme
@@ -98,7 +96,6 @@ And here are detailed explanations about [a javascript live code editor in a blo
         selector_eval_scheme: '.language-klipse-eval-ruby', // css selector for the html elements you want to klipsify
     };
 </script>
-<script src="http://www.biwascheme.org/release/biwascheme-0.6.6-min.js"></script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
@@ -113,7 +110,6 @@ And here are detailed explanations about [a javascript live code editor in a blo
         selector_eval_php: '.language-klipse-eval-php', // css selector for the html elements you want to klipsify
     };
 </script>
-<script src="https://asmblah.github.io/uniter/dist/uniter.js"></script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 

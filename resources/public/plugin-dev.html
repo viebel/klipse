@@ -6,6 +6,43 @@
         <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
+<style>
+.klipse-result table{
+margin: 10px auto 0px auto;
+}
+
+.klipse-result table
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    text-align: left;
+}
+.klipse-result table {
+       border: 1px solid black;
+}
+
+.klipse-result  table
+{
+    font-size: 13px;
+    font-weight: normal;
+    padding: 8px;
+    background: #b9c9fe;
+    color: #039;
+}
+.klipse-result table
+{
+    padding: 8px;
+    background: #e8edff; 
+    color: #669;
+}
+.klipse-result tr:hover td
+{
+    background: #d0dafd;
+    color: #339;
+}
+
+
+</style>
 
     </head>
     <body>
@@ -305,7 +342,7 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
 </code></pre>
 
 <pre><code class="sql" data-editor-type="html">
-    CREATE TABLE play (game, points, day)
+    SELECT game, sum(points) as total_points FROM play GROUP BY game HAVING total_points &gt; 10
 </code></pre>
 
 

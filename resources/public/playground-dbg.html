@@ -21,8 +21,8 @@
     INSERT INTO play VALUES ("chess", 3200, "saturday");
 </code></pre>
 
-<pre><code class="sql">
-    CREATE TABLE play (game, points, day)
+<pre><code class="sql" data-editor-type="html">
+    SELECT game, sum(points) as total_points FROM play GROUP BY game HAVING total_points &gt; 10
 </code></pre>
 
 <div class="lambda" data-editor-type="html">{+ 1 2 3}</div>

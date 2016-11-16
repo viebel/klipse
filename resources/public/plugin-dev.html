@@ -289,6 +289,27 @@ end
 letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}</div>
 <br/>
 
+
+<h1> SQL </h1>
+<pre><code class="sql" data-editor-type="html">
+    CREATE TABLE play (game, points, day)
+</code></pre>
+
+<pre><code class="sql" data-editor-type="html">
+    INSERT INTO play VALUES ("go", 500, "monday");
+    INSERT INTO play VALUES ("go", 300, "tuesday");
+    INSERT INTO play VALUES ("chess", 1250, "tuesday");
+    INSERT INTO play VALUES ("chess", 1250, "tuesday");
+    INSERT INTO play VALUES ("chess", 50, "sunday");
+    INSERT INTO play VALUES ("chess", 3200, "saturday");
+</code></pre>
+
+<pre><code class="sql" data-editor-type="html">
+    CREATE TABLE play (game, points, day)
+</code></pre>
+
+
+ 
 <h1> Markdown </h1>
 <h2> HTML transpilation</h2>
 <code class="eval-markdown">
@@ -329,9 +350,7 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
     </div>
 
 
-    <script src="https://viebel.github.io/klipse/examples/lambdaway_eval.js"></script>
- 
-        <script>
+<script>
         window.klipse_settings = {
             codemirror_options_in: {
                 lineWrapping: true,
@@ -347,6 +366,7 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
             selector_eval_python_client: '.eval-python',
             selector_eval_html: '.eval-html',
             selector_eval_php: '.eval-php',
+            selector_sql: '.sql',
             selector_eval_scheme: '.scheme',
             selector_eval_ruby: '.eval-ruby',
             selector_js: '.clojure-js'

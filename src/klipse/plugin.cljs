@@ -6,13 +6,12 @@
     [klipse.common.registry :refer [selector->mode mode-options]]
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
-    [gadjett.collections :refer [collify]]
     [cljs.spec :as s]
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
     [cljs.core.async :refer [<! timeout]]
-    [gadjett.collections :refer [compactize-map]]))
+    [gadjett.collections :refer [collify compactize-map]]))
 
 (def out-placeholder ";the evaluation will appear here (soon)...")
 
@@ -44,7 +43,7 @@
               editor-type (calc-editor-type minimalistic_ui editor-type)]
           (create-editor editor-type {:element element
                                       :loop-msec loop-msec
-                                      :external-scripts (dbg (collify external-scripts))
+                                      :external-scripts (collify external-scripts)
                                       :preamble preamble
                                       :beautify? beautify?
                                       :editor-in-mode editor-in-mode

@@ -4,7 +4,6 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     cljsjs.codemirror.mode.python
-    [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<! put! chan]]
     [klipse.common.registry :refer [register-mode]]))
 
@@ -32,7 +31,7 @@
            :editor-out-mode "python"
            :eval-fn str-eval-async
            :beautify? false
-           :external-scripts ["http://www.skulpt.org/static/skulpt.min.js" "http://www.skulpt.org/static/skulpt-stdlib.js"]
+           :external-scripts [ "https://viebel.github.io/klipse/repo/js/skulpt.min.js" "https://viebel.github.io/klipse/repo/js/skulpt-stdlib.js"]
            :comment-str "#"})
 
 (register-mode "eval-python-client" "selector_eval_python_client" opts)

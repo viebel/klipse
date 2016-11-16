@@ -61,7 +61,7 @@
 (defn eval-in-codemirror-editor [eval-fn editor-target editor-source snippet-args mode state]
   (eval-in-editor eval-fn
                   (get-value editor-source)
-                  (partial set-value-and-beautify editor-target mode)
+                  #(set-value-and-beautify editor-target mode % {:remove-ending-comments? false})
                   snippet-args
                   state))
 

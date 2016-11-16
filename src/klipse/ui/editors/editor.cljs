@@ -68,16 +68,16 @@
          (set-value editor))
     editor))
 
-(defn beautify [editor mode remove-ending-comments?]
+(defn beautify [editor mode {:keys [remove-ending-comments?]}]
   (-> editor
       auto-indent
       goto-start
       fix-blank-lines
       (fix-comments-lines mode remove-ending-comments?)))
 
-(defn set-value-and-beautify [editor mode value]
+(defn set-value-and-beautify [editor mode value opts]
   (-> (set-value editor value)
-      (beautify mode)))
+      (beautify mode opts)))
 
 (defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [beautify? remove-ending-comments?] :or {beautify? true remove-ending-comments? true}}]
   (let [editor (js/CodeMirror (fn [elt]
@@ -86,7 +86,7 @@
     (as->
       (set-value editor value) $
       (if beautify?
-        (beautify $ mode remove-ending-comments?)
+        (beautify $ mode {:remove-ending-comments? remove-ending-comments?})
         $))))
 
 (defn create-editor-after-element [element value opts & {:keys [remove-ending-comments?] :or {remove-ending-comments? false}}]

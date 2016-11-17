@@ -6,6 +6,7 @@
     [klipse.common.registry :refer [selector->mode mode-options]]
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
+    [klipse.utils :refer [load-scripts-mem]]
     [cljs.spec :as s]
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
@@ -31,6 +32,14 @@
       "html" :html
       :code-mirror)))
 
+(defn load-external-scripts [scripts]
+  (go
+    (let [[status http-status script] (<! (load-scripts-mem scripts))]
+      (when-not (= :ok status)
+        (throw (js/Error.
+                 (str "Cannot load script: " script "\n"
+                      "Error: " http-status)))))))
+
 (defn klipsify-with-opts
   "returns a channel c with a function f.
   f returns a channel that will be ready to read when the snippet is evaluated."
@@ -41,6 +50,7 @@
               source-code (<! (content element comment-str))
               {:keys [idle-msec editor-type loop-msec preamble]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
               editor-type (calc-editor-type minimalistic_ui editor-type)]
+          (<! (load-external-scripts external-scripts))
           (create-editor editor-type {:element element
                                       :loop-msec loop-msec
                                       :external-scripts (collify external-scripts)

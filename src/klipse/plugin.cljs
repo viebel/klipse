@@ -35,10 +35,9 @@
 (defn load-external-scripts [scripts]
   (go
     (let [[status http-status script] (<! (load-scripts-mem scripts))]
-      (when-not (= :ok status)
-        (throw (js/Error.
-                 (str "Cannot load script: " script "\n"
-                      "Error: " http-status)))))))
+      (if (= :ok status)
+        [:ok :ok]
+        [:error (str "Cannot load script: " script "\n" "Error: " http-status)]))))
 
 (defn klipsify-with-opts
   "returns a channel c with a function f.
@@ -49,11 +48,11 @@
               eval-fn-with-args #(eval-fn % eval-args)
               source-code (<! (content element comment-str))
               {:keys [idle-msec editor-type loop-msec preamble]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
-              editor-type (calc-editor-type minimalistic_ui editor-type)]
-          (<! (load-external-scripts external-scripts))
+              editor-type (calc-editor-type minimalistic_ui editor-type)
+          [load-status load-error] (<! (load-external-scripts (collify external-scripts)))
+          snippet-content (if (= :ok load-status) source-code load-error)]
           (create-editor editor-type {:element element
                                       :loop-msec loop-msec
-                                      :external-scripts (collify external-scripts)
                                       :preamble preamble
                                       :beautify? beautify?
                                       :editor-in-mode editor-in-mode
@@ -61,7 +60,7 @@
                                       :codemirror-options-in codemirror_options_in
                                       :codemirror-options-out codemirror_options_out
                                       :eval-fn eval-fn-with-args
-                                      :source-code source-code
+                                      :source-code snippet-content
                                       :default-txt out-placeholder
                                       :idle-msec idle-msec})))))
 

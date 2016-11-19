@@ -5,7 +5,6 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
     [goog.dom :as gdom]
-    [klipse.utils :refer [load-scripts-mem]]
     [goog.dom :as gdom]
     [cljs.spec :as s]
     [klipse.dom-utils :refer [create-div-after value add-event-listener]]
@@ -33,12 +32,7 @@
         (when-not (zero? eval-counter)
           (put! cmd-chan :reset))
         (swap! state update-in [:eval-counter] inc)
-        (let [[status http-status script] (<! (load-scripts-mem external-scripts))
-              _ (when-not (= :ok status)
-                  (throw (js/Error.
-                           (str "Cannot load script: " script "\n"
-                                "Error: " http-status))))
-              evaluation-chan (eval-fn (str preamble src-code))
+        (let [evaluation-chan (eval-fn (str preamble src-code))
               first-result (<! evaluation-chan)]
           (setter first-result)
           (when loop-msec

@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<pre><code class="sql" data-gist-id="dsas"`>
+</code></pre>
 <pre><code class="sql">
     CREATE TABLE play (game, points, day)
 </code></pre>
@@ -25,7 +27,6 @@
     SELECT game, sum(points) as total_points FROM play GROUP BY game HAVING total_points &gt; 10
 </code></pre>
 
-<script src="docs/repo/js/sql-formatter.min.js"></script>
 <script>
     window.klipse_settings = {
     codemirror_options_in: {

@@ -7,6 +7,8 @@
     klipse.lang.clojure.bundled-namespaces
     gadjett.core-fn
     cljsjs.codemirror.mode.clojure
+    [cljs.tools.reader :as r]
+    [cljs.tools.reader.reader-types :as rt]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
     [replumb.core :as replumb]
@@ -37,7 +39,9 @@
                       (symbol value)
                       value)))))
 
-
+(defn update-current-ns [{:keys [ns form warning error value success?]}]
+  (when-not error
+    (reset! current-ns ns)))
 
 (defn result-as-str [{:keys [ns form warning error value success?] :as args} opts]
   (when-not error
@@ -110,25 +114,46 @@
           (! js/window.COMPILED true); for some reason it is required with read-eval-call
           (replumb/read-eval-call opts cb s)))))
 
-
-(defn core-eval [s {:keys [static-fns context external-libs verbose max-eval-duration] :or {static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
-  (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
+(defn core-eval-an-exp [s {:keys [static-fns external-libs verbose max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
+  (let [c (chan)
+        max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [cljs.analyzer/*cljs-ns* @current-ns
                   *ns* (create-ns @current-ns)
                   compiler/emits (partial my-emits max-eval-duration)]
       ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
-                     s
-                     "my.klipse"
-                     {:eval my-eval
-                      :ns @current-ns
-                      :def-emits-var true
-                      :verbose verbose
-                      :*compiler* (set! env/*compiler* (create-state-eval))
-                      :context (keyword context)
-                      :static-fns static-fns
-                      :load (partial io/load-ns external-libs)}
-                     cb))))
+                 (dbg (pr-str s))
+                 "my.klipse"
+                 {:eval my-eval
+                  :ns (dbg @current-ns)
+                  :def-emits-var true
+                  :verbose verbose
+                  :*compiler* (set! env/*compiler* (create-state-eval))
+                  :context :expr
+                  :static-fns static-fns
+                  :load (partial io/load-ns external-libs)}
+                 (fn [res]
+                   (update-current-ns res)
+                   (put! c res))))
+    c))
+
+(defn read-several-exps [s]
+  (let [sentinel (js-obj)
+        reader (rt/string-push-back-reader s)]
+    (loop [res []]
+      (let [exp (r/read reader false sentinel)]
+        (if (= exp sentinel)
+          res
+          (recur (conj res exp)))))))
+
+(defn core-eval [s opts cb]
+  (go-loop [exps (dbg (read-several-exps s)) last-res nil]
+           (if (seq exps)
+             (let [{:keys [error] :as res} (dbg (<! (core-eval-an-exp (first exps) opts)))]
+               (if error
+                 (cb res)
+                 (recur (rest exps) res)))
+             (cb last-res))))
 
 (defn eval-async-1 [s opts]
   (let [c (chan)]

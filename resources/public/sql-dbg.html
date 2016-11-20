@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+<link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+<link rel="stylesheet" type="text/css" href="css/codemirror.css">
+</head>
+<body>
+
+<pre><code class="sql" data-editor-type="html">
+    CREATE TABLE play (game, points, day)
+</code></pre>
+
+<pre><code class="sql" data-editor-type="html">
+    INSERT INTO play VALUES ("go", 500, "monday");
+    INSERT INTO play VALUES ("go", 300, "tuesday");
+    INSERT INTO play VALUES ("chess", 1250, "tuesday");
+    INSERT INTO play VALUES ("chess", 1250, "tuesday");
+    INSERT INTO play VALUES ("chess", 50, "sunday");
+    INSERT INTO play VALUES ("chess", 3200, "saturday");
+</code></pre>
+
+<pre><code class="sql" data-editor-type="html">
+    SELECT game, sum(points) as total_points FROM play GROUP BY game HAVING total_points &gt; 10
+</code></pre>
+
+<script>
+    window.klipse_settings = {
+    codemirror_options_in: {
+    lineWrapping: true,
+    lineNumbers: true,
+    autoCloseBrackets: true
+    },
+    codemirror_options_out: {
+    lineWrapping: true
+    },
+    selector: '.clojure',
+    selector_eval_markdown: '.eval-markdown',
+    selector_eval_html: '.eval-html',
+    selector_eval_lambdaway: '.lambda',
+    selector_eval_js: '.javascript',
+    selector_eval_ruby: '.ruby',
+    selector_eval_python_client: '.python',
+    selector_sql: '.sql',
+    selector_compile_js: '.compile_js',
+    selector_eval_scheme: '.scheme',
+    selector_js: '.yo-clojure'
+    };
+    </script>
+<script src="lib/mirror_extensions.js"></script>
+<script src="fig/js/klipse.fig.js"></script>
+</body>
+</html>

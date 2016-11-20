@@ -26,7 +26,7 @@
 (def opts {:editor-in-mode "ruby"
            :editor-out-mode "ruby"
            :eval-fn str-eval-async
-           :external-scripts ["http://cdn.opalrb.org/opal/current/opal.min.js" "http://cdn.opalrb.org/opal/current/opal-parser.min.js"]
+           :external-scripts ["https://viebel.github.io/klipse/repo/js/opal.min.js?p" "https://viebel.github.io/klipse/repo/js/opal-parser.min.js?p"]
            :comment-str "#"})
 
 (register-mode "eval-ruby" "selector_eval_ruby" opts)

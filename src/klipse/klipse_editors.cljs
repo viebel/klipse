@@ -5,7 +5,6 @@
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
     [goog.dom :as gdom]
-    [klipse.utils :refer [load-scripts-mem]]
     [goog.dom :as gdom]
     [cljs.spec :as s]
     [klipse.dom-utils :refer [create-div-after value add-event-listener]]
@@ -25,7 +24,7 @@
   (Subsequent evaluations occur with `server-eval` where printing results are written on the channel, one after the other.
   In the case of client side evaluation, the channel is closed after the first message on the channel (this is done implicitly by `go`).
   "
-  [eval-fn src-code setter {:keys [loop-msec external-scripts preamble]} state]
+  [eval-fn src-code setter {:keys [loop-msec preamble]} state]
   (go
     ; it is important to block until the first evaluation because other klipse snippets might depend on this evaluation. E.g. when a snippet uses a function defined in a previous snippet.
     (try
@@ -33,12 +32,7 @@
         (when-not (zero? eval-counter)
           (put! cmd-chan :reset))
         (swap! state update-in [:eval-counter] inc)
-        (let [[status http-status script] (<! (load-scripts-mem external-scripts))
-              _ (when-not (= :ok status)
-                  (throw (js/Error.
-                           (str "Cannot load script: " script "\n"
-                                "Error: " http-status))))
-              evaluation-chan (eval-fn (str preamble src-code))
+        (let [evaluation-chan (eval-fn (str preamble src-code))
               first-result (<! evaluation-chan)]
           (setter first-result)
           (when loop-msec
@@ -73,7 +67,6 @@
                   state))
 
 (defn wrap-result-in-html [elem res]
-  (println (type res))
   (let [wrapped-res (if (= (type res) js/Error)
                       (str "<div class=\"klipse-error\">" res "</div>")
                       res)]
@@ -108,25 +101,24 @@
 
 (defmulti create-editor (fn [type _] type))
 
-(defmethod create-editor :html [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec external-scripts preamble]}]
+(defmethod create-editor :html [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec preamble]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         out-editor (create-div-after element {:class "klipse-result"})
         in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
         snippet-args {:loop-msec loop-msec
-                      :external-scripts external-scripts
                       :preamble preamble}
         state (create-state)]
+    (gdom/setTextContent out-editor default-txt)
     (handle-events in-editor
                    {:idle-msec idle-msec
                     :on-should-eval #(eval-in-html-editor eval-fn out-editor in-editor snippet-args state)})
     #(eval-in-html-editor eval-fn out-editor in-editor snippet-args state)))
 
-(defmethod create-editor :code-mirror [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec external-scripts preamble]}]
+(defmethod create-editor :code-mirror [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec preamble]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         out-editor (create-editor-after-element element default-txt out-editor-options :remove-ending-comments? false); must be called before `element` is replaced
         in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
         snippet-args {:loop-msec loop-msec
-                      :external-scripts external-scripts
                       :preamble preamble}
         state (create-state)]
     (handle-events in-editor
@@ -134,10 +126,9 @@
                     :on-should-eval #(eval-in-codemirror-editor eval-fn out-editor in-editor snippet-args editor-out-mode state)})
     #(eval-in-codemirror-editor eval-fn out-editor in-editor snippet-args editor-out-mode state)))
 
-(defmethod create-editor :dom [_ {:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec loop-msec external-scripts preamble]}]
+(defmethod create-editor :dom [_ {:keys [element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec loop-msec preamble]}]
   (let [out-editor (create-div-after element {:class "klipse-result"})
         snippet-args {:loop-msec loop-msec
-                      :external-scripts external-scripts
                       :preamble preamble}
         state (create-state)]
     (gdom/setTextContent out-editor default-txt)

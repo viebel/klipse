@@ -9,10 +9,17 @@
 <body>
 
 <pre><code class="sql">
+</code></pre>
+
+<pre><code class="sql" data-editor-type="dom">
+    </code></pre>
+<pre><code class="sql" data-editor-type="html">
+</code></pre>
+<pre><code class="sql" data-editor-type="html">
     CREATE TABLE play (game, points, day)
 </code></pre>
 
-<pre><code class="sql">
+<pre><code class="sql" data-editor-type="html">
     INSERT INTO play VALUES ("go", 500, "monday");
     INSERT INTO play VALUES ("go", 300, "tuesday");
     INSERT INTO play VALUES ("chess", 1250, "tuesday");
@@ -23,24 +30,6 @@
 
 <pre><code class="sql" data-editor-type="html">
     SELECT game, sum(points) as total_points FROM play GROUP BY game HAVING total_points &gt; 10
-</code></pre>
-
-<div class="lambda" data-editor-type="html">{+ 1 2 3}</div>
-<pre><code class="clojure" data-preamble="(def x 3)">
-    ;; simple computation
-    (+ 1 x)
-</code></pre>
-
-<pre><code class="clojure" data-preamble="(def x 3)">
-    (symbol (str ";;"))
-</code></pre>
-
-<pre><code class="ruby"> 
-    [1]*19
-</code></pre>
-
-<pre><code class="python"> 
-print(2 + 3)
 </code></pre>
 
 <script>

@@ -61,6 +61,15 @@
       gadjett/fix-blank-lines
       (set-value editor)))
 
+(defmulti beautify-language (fn [editor mode] mode))
+
+(defmethod beautify-language :default [editor _] editor)
+
+(defmethod beautify-language "text/x-sql" [editor _]
+  (->> (get-value editor)
+       (!> js/sqlFormatter.format)
+       (set-value editor)))
+
 (defn fix-comments-lines [editor mode remove-ending-comments?]
   (if (and remove-ending-comments? (= "clojure" mode))
     (->> (get-value editor)
@@ -73,7 +82,8 @@
       auto-indent
       goto-start
       fix-blank-lines
-      (fix-comments-lines mode remove-ending-comments?)))
+      (fix-comments-lines mode remove-ending-comments?)
+      (beautify-language mode)))
 
 (defn set-value-and-beautify [editor mode value opts]
   (-> (set-value editor value)

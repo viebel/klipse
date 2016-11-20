@@ -99,18 +99,27 @@
 
 (def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
+(defn load-script [script]
+  (go
+    (js/console.info "loading:" script)
+    (let [{:keys [status body]} (<! (http/get script {:with-credentials? false}))]
+      (if (= 200 status)
+        (do
+          (js/console.info "evaluating:" script)
+          (eval-in-global-scope body)
+          [:ok script])
+        [status script]))))
+
+(def load-script-mem (memoize-async load-script))
+
 (defn load-scripts [scripts]
   (go-loop [the-scripts scripts]
            (if (seq the-scripts)
              (let [script (str (first the-scripts))
-                   _ (js/console.info "loading:" script)
-                   {:keys [status body]} (<! (http/get script {:with-credentials? false}))]
-               (if (= 200 status)
-                 (do
-                   (js/console.info "evaluating:" script)
-                   (eval-in-global-scope body)
-                   (recur (rest the-scripts)))
-                 (dbg [:error status script])))
+                   [status script] (<! (load-script-mem script))]
+               (if (= :ok status)
+                 (recur (rest the-scripts)))
+               [status script])
              [:ok])))
 
 (def load-scripts-mem (memoize-async load-scripts))

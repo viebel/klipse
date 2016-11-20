@@ -7,10 +7,11 @@
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]))
 
-(def config-editor 
+(def config-editor
   {:lineNumbers true
    :lineWrapping true
-   :matchBrackets true 
+   :matchBrackets true
+   :autoCloseBrackets true
    :mode "clojure"
    :scrollbarStyle "overlay"})
 

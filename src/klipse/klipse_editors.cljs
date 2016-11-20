@@ -67,7 +67,6 @@
                   state))
 
 (defn wrap-result-in-html [elem res]
-  (println (type res))
   (let [wrapped-res (if (= (type res) js/Error)
                       (str "<div class=\"klipse-error\">" res "</div>")
                       res)]

@@ -2,7 +2,7 @@
   (:require-macros
     [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go]])
-  (:require 
+  (:require
     [klipse.common.registry :refer [selector->mode mode-options]]
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
@@ -11,7 +11,7 @@
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
-    [cljs.core.async :refer [<! timeout]]
+    [cljs.core.async :refer [chan <! timeout]]
     [gadjett.collections :refer [collify compactize-map]]))
 
 (def out-placeholder ";the evaluation will appear here (soon)...")
@@ -49,20 +49,20 @@
               source-code (<! (content element comment-str))
               {:keys [idle-msec editor-type loop-msec preamble]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
               editor-type (calc-editor-type minimalistic_ui editor-type)
-          [load-status load-error] (<! (load-external-scripts (collify external-scripts)))
-          snippet-content (if (= :ok load-status) source-code load-error)]
-          (create-editor editor-type {:element element
-                                      :loop-msec loop-msec
-                                      :preamble preamble
-                                      :beautify? beautify?
-                                      :editor-in-mode editor-in-mode
-                                      :editor-out-mode editor-out-mode
-                                      :codemirror-options-in codemirror_options_in
-                                      :codemirror-options-out codemirror_options_out
-                                      :eval-fn eval-fn-with-args
-                                      :source-code snippet-content
-                                      :default-txt out-placeholder
-                                      :idle-msec idle-msec})))))
+          [load-status load-error] (<! (load-external-scripts (collify external-scripts)))]
+          (create-editor editor-type
+                         {:element element
+                          :loop-msec loop-msec
+                          :preamble preamble
+                          :beautify? (if (= :ok load-status) beautify? false)
+                          :editor-in-mode editor-in-mode
+                          :editor-out-mode editor-out-mode
+                          :codemirror-options-in codemirror_options_in
+                          :codemirror-options-out codemirror_options_out
+                          :eval-fn (if (= :ok load-status) eval-fn-with-args #(chan))
+                          :source-code source-code
+                          :default-txt (if (= :ok load-status) out-placeholder load-error)
+                          :idle-msec idle-msec})))))
 
 (s/def ::dom-element isElement)
 (s/def ::editor-in-mode string?)

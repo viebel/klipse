@@ -149,15 +149,22 @@
   (apply str (read-chars r)))
 
 (defn first-exp-and-rest [s]
-  (let [sentinel (js-obj)
-        reader (rt/string-push-back-reader s)
-        res (r/read reader false sentinel)]
-    (if (= sentinel res)
-      ["" ""]
-      (let [rest-s (reader-content reader)
-            first-exp (subs s 0 (- (count s) (count rest-s)))]
-        [(s/replace first-exp #"^[\s\n]*" "")
-         rest-s]))))
+  (binding [ana/*cljs-ns* @current-ns
+            *ns* (create-ns @current-ns)
+            ;env/*compiler* st
+            ;r/*data-readers* tags/*cljs-data-readers*
+            r/resolve-symbol ana/resolve-symbol
+            ;r/*alias-map* (current-alias-map)
+            ]
+    (let [sentinel (js-obj)
+          reader (rt/string-push-back-reader s)
+          res (r/read reader false sentinel)]
+      (if (= sentinel res)
+        ["" ""]
+        (let [rest-s (reader-content reader)
+              first-exp (subs s 0 (- (count s) (count rest-s)))]
+          [(s/replace first-exp #"^[\s\n]*" "")
+           rest-s])))))
 
 
 (defn split-expressions [s]

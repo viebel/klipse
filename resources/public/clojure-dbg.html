@@ -32,12 +32,17 @@
 </div>
 <br/>
 <div class="clojure">
-(ns my.m$macros)
+`(let [x# 1] x#)
+</div>
+<br/>
+<div class="clojure">
+(ns my.moo$macros)
 (defmacro dbg[x]
-  `(let [x# 1] x#))
-
-
-(my.m/dbg (map inc [1 2 3]))
+  `(let [x# ~x]
+     (println (str '~x ": " x#))
+     x#))
+(with-out-str
+(my.moo/dbg (map inc [1 2 3])))
 </div>
 <br/>
 

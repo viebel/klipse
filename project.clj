@@ -2,6 +2,7 @@
   :description "Cljs compiler in cljs"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
+                 [org.clojure/tools.reader "1.0.0-beta3"]
                  [org.clojure/core.async "0.2.395"]
                  [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]

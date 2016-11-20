@@ -10,6 +10,7 @@
     [cljs.tools.reader :as r]
     [cljs.tools.reader.reader-types :as rt]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
+    [clojure.string :as s]
     [clojure.pprint :as pprint]
     [replumb.core :as replumb]
     [cljs.analyzer :as ana]
@@ -122,10 +123,10 @@
                   compiler/emits (partial my-emits max-eval-duration)]
       ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
-                 (dbg (pr-str s))
+                 s
                  "my.klipse"
                  {:eval my-eval
-                  :ns (dbg @current-ns)
+                  :ns @current-ns
                   :def-emits-var true
                   :verbose verbose
                   :*compiler* (set! env/*compiler* (create-state-eval))
@@ -137,25 +138,52 @@
                    (put! c res))))
     c))
 
-(defn read-several-exps [s]
+(defn read-chars
+  [reader]
+  (loop [res []]
+    (if-let [ch (rt/read-char reader)]
+      (recur (conj res ch))
+      res)))
+
+(defn reader-content [r]
+  (apply str (read-chars r)))
+
+(defn first-exp-and-rest [s]
   (let [sentinel (js-obj)
-        reader (rt/string-push-back-reader s)]
-    (loop [res []]
-      (let [exp (r/read reader false sentinel)]
-        (if (= exp sentinel)
-          res
-          (recur (conj res exp)))))))
+        reader (rt/string-push-back-reader s)
+        res (r/read reader false sentinel)]
+    (if (= sentinel res)
+      ["" ""]
+      (let [rest-s (reader-content reader)
+            first-exp (subs s 0 (- (count s) (count rest-s)))]
+        [(s/replace first-exp #"^[\s\n]*" "")
+         rest-s]))))
+
+
+(defn split-expressions [s]
+  (loop [s s res []]
+    (if (empty? s)
+      res
+      (let [[exp rest-s] (first-exp-and-rest s)]
+        (if (empty? exp)
+          (recur rest-s res)
+          (recur rest-s (conj res exp)))))))
 
 (defn core-eval [s opts cb]
-  (go-loop [exps (dbg (read-several-exps s)) last-res nil]
-           (if (seq exps)
-             (let [{:keys [error] :as res} (dbg (<! (core-eval-an-exp (first exps) opts)))]
-               (if error
-                 (cb res)
-                 (recur (rest exps) res)))
-             (cb last-res))))
+  (go
+    (try
+(dbg s)
+      (loop [exps (dbg (split-expressions s)) last-res nil]
+        (if (seq exps)
+          (let [{:keys [error] :as res} (<! (core-eval-an-exp (first exps) opts))]
+            (if error
+              (cb res)
+              (recur (rest exps) res)))
+          (cb last-res)))
+      (catch :default e
+        (cb {:error e})))))
 
-(defn eval-async-1 [s opts]
+(defn eval-async [s opts]
   (let [c (chan)]
     (core-eval s opts #(put! c (result-as-str % opts)))
     c))
@@ -165,15 +193,6 @@
   ^{:export true}
   ([s] (eval s {}))
   ([s opts] (core-eval s opts read-result)))
-
-(defn contains-macro-def? [exp]
-  (re-find #"\$macros" exp))
-
-(defn eval-async [s args]
-  (go
-    (when (contains-macro-def? s) ; By design in bootstraped cljs. David Nolen and Mike Fikes told a couple of times: Macros should be defined in a previous compilation stage than their execution - see https://github.com/Lambda-X/replumb/issues/185
-      (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
-    (<! (eval-async-1 s args))))
 
 (defn str-compile "useful for testing and js export"
   ^{:export true}

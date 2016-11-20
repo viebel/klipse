@@ -26,17 +26,30 @@
 </div>
 <br/>
 <div class="clojure">
+(ns my.m$macros)
+(defmacro m [x] x)
+(my.m/m 1)
+</div>
+<br/>
+<div class="clojure">
+(ns my.m$macros)
+(defmacro dbg[x]
+  `(let [x# 1] x#))
+
+
+(my.m/dbg (map inc [1 2 3]))
+</div>
+<br/>
+
+<div class="clojure">
     (ns my.test
       (:require
           [cljs.pprint :as pp :refer [pprint]]))
           (with-out-str (pprint (for [x (range 10)] (range x))))
 </div>
+<br/>
 <div class="clojure">
-    (ns my.spec
-      (:require [clojure.spec :as s]))
-
-      (s/def ::a integer?)
-      (s/conform ::a 12)
+    `(1 2 ~(map inc [1 2 3]))
 </div>
 <br/>
 <br/>

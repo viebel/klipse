@@ -12,7 +12,6 @@
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.string :as s]
     [clojure.pprint :as pprint]
-    [replumb.core :as replumb]
     [cljs.analyzer :as ana]
     [cljs.compiler :as compiler]
     [klipse.common.registry :refer [register-mode]]
@@ -53,7 +52,7 @@
              (pr-str error))]
     [status res]))
 
-(defn read-result [{:keys [form warning error value success?]}]
+(defn read-result [{:keys [form warning error value success?]:as args}]
   (let [status (if error :error :ok)
         res (if-not error
               value
@@ -96,25 +95,6 @@
                          }
                         cb))))
 
-(defn build-repl-opts [{:keys [static-fns context external-libs verbose]}]
-    (merge (replumb/options :browser (partial io/load-ns external-libs))
-                    {:warning-as-error false
-                               :static-fns static-fns
-                               :verbose verbose
-                               :no-pr-str-on-value true
-                               :context (or context :statement)}))
-
-(defn another-core-eval [s {:keys [static-fns context verbose external-libs max-eval-duration] :or {static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
-  (watchdog); run the watchdog here as in replumb there is no way to override eval-fn
-  (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
-    (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
-    (let [opts (build-repl-opts {:static-fns static-fns
-                                                                :external-libs external-libs
-                                                                :verbose verbose
-                                                                :context (keyword context)})]
-          (! js/window.COMPILED true); for some reason it is required with read-eval-call
-          (replumb/read-eval-call opts cb s)))))
-
 (defn core-eval-an-exp [s {:keys [static-fns external-libs verbose max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
   (let [c (chan)
         max-eval-duration (max max-eval-duration min-max-eval-duration)]
@@ -153,7 +133,7 @@
             *ns* (create-ns @current-ns)
             ;env/*compiler* st
             ;r/*data-readers* tags/*cljs-data-readers*
-            r/resolve-symbol ana/resolve-symbol
+            r/resolve-symbol identity
             ;r/*alias-map* (current-alias-map)
             ]
     (let [sentinel (js-obj)
@@ -176,30 +156,30 @@
           (recur rest-s res)
           (recur rest-s (conj res exp)))))))
 
-(defn core-eval [s opts cb]
+(defn core-eval [s opts]
   (go
     (try
-(dbg s)
-      (loop [exps (dbg (split-expressions s)) last-res nil]
+      (loop [exps (split-expressions s) last-res nil]
         (if (seq exps)
           (let [{:keys [error] :as res} (<! (core-eval-an-exp (first exps) opts))]
             (if error
-              (cb res)
+              res
               (recur (rest exps) res)))
-          (cb last-res)))
+          last-res))
       (catch :default e
-        (cb {:error e})))))
+        {:error e}))))
 
 (defn eval-async [s opts]
-  (let [c (chan)]
-    (core-eval s opts #(put! c (result-as-str % opts)))
-    c))
+  (go
+    (-> (<! (core-eval s opts))
+        (result-as-str opts))))
 
 (defn eval
   "used for testing and exporting to javascript"
   ^{:export true}
   ([s] (eval s {}))
-  ([s opts] (core-eval s opts read-result)))
+  ([s opts] (go (-> (<! (core-eval s opts))
+                    read-result))))
 
 (defn str-compile "useful for testing and js export"
   ^{:export true}
@@ -220,9 +200,9 @@
 (defn ^:export str-eval
   "It is convenient to have a javascript function that evaluates clojure expressions"
   [exp]
-  (-> (eval exp)
-      second
-      str))
+  (go (-> (<! (eval exp))
+          second
+          str)))
 
 (defn str-eval-async [exp opts]
   (go

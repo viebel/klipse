@@ -175,11 +175,18 @@
         (result-as-str opts))))
 
 (defn eval
-  "used for testing and exporting to javascript"
-  ^{:export true}
+  "used for testing"
   ([s] (eval s {}))
   ([s opts] (go (-> (<! (core-eval s opts))
                     read-result))))
+
+(defn eval-and-callback
+  "to be called from javacript"
+  ^{:export true}
+  [s cb]
+  (go (-> (<! (eval s))
+          clj->js
+          cb)))
 
 (defn str-compile "useful for testing and js export"
   ^{:export true}

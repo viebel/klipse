@@ -36,6 +36,13 @@
 </div>
 <br/>
 <div class="clojure">
+    (ns my.ns 
+    (:require [clojure.set :as ss]))
+
+    (str ::ss/xx)
+</div>
+<br/>
+<div class="clojure">
 (ns my.moo$macros)
 (defmacro dbg[x]
   `(let [x# ~x]

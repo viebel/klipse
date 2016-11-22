@@ -11,6 +11,7 @@
                  [viebel/gadjett "0.3.2"]
                  [org.omcljs/om "1.0.0-alpha47"]
                  [com.cemerick/url "0.1.1"]
+                 [rewrite-cljs "0.4.3"]
                  [cljsjs/codemirror "5.19.0-0"]
                  [devcards "0.2.2"]
                  [devcards-om-next "0.3.0"]]

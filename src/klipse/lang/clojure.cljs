@@ -117,11 +117,11 @@
                    (put! c res))))
     c))
 
-
 (defn split-expressions [s]
   (->> (p/parse-string-all s)
-    n/children
-    (map n/string)))
+       n/children
+       (map n/string)
+       (remove (partial re-matches #"\s*"))))
 
 (defn core-eval [s opts]
   (go

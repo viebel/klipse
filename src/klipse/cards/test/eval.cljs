@@ -39,6 +39,7 @@
                   " (def x 12)
                   (+ x 5)" 17
                   "(+ 1 2)" 3
+                  "(+ 1 2)\n\n   \n" 3
                   "(if 1 2 3)" 2
                   "(map inc [1 2 3])" '(2 3 4)
                   "(defn append-cyclic[lst a]

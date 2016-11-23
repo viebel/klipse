@@ -21,7 +21,7 @@
     (compactize-map {:idle-msec (max min-idle-msec idle-msec)
                      :loop-msec loop-msec
                      :preamble preamble
-                     :editor-type editor-type})))
+                     :the-editor-type editor-type})))
 
 (defn calc-editor-type [minimalistic_ui? the-type]
   (if minimalistic_ui?
@@ -47,10 +47,10 @@
         (let [eval-args (eval-args-from-element element {:eval-context eval_context :print-length print_length :beautify-strings beautify_strings})
               eval-fn-with-args #(eval-fn % eval-args)
               source-code (<! (content element comment-str))
-              {:keys [idle-msec editor-type loop-msec preamble]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
-              editor-type (calc-editor-type minimalistic_ui editor-type)
+              {:keys [idle-msec the-editor-type loop-msec preamble]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
+              the-editor-type (calc-editor-type minimalistic_ui the-editor-type)
           [load-status load-error] (<! (load-external-scripts (collify external-scripts)))]
-          (create-editor editor-type
+          (create-editor the-editor-type
                          {:element element
                           :loop-msec loop-msec
                           :preamble preamble

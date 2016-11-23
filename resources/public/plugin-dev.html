@@ -66,14 +66,15 @@ margin: 10px auto 0px auto;
     <p> When a namespace is defined, subsequent snippets must be evaluated in the same namespace </p>
 <pre><code class="clojure">
 (ns my.ns)
-(def my-func [x] (* x x))
+(defn my-func [x] (* x x))
 (ns-name *ns*)
 </code></pre>
 <pre><code class="clojure">
 (ns-name *ns*)
 </code></pre>
 <pre><code class="clojure">
-(my-func 19)
+    (ns my.ns)
+    (my-func 19)
 </code></pre>
     <h2> Dealing with infinite loops </h2>
     <p> Infinite loops in user code are stopped after 1 second</p>
@@ -134,23 +135,19 @@ margin: 10px auto 0px auto;
         Functions should be evaluated to their code.
         </p>
         <span class="clojure">(defn foo [])
-            [foo]</span>
+            foo</span>
 
         <p>
         Variables should be evaluated to their names.
         </p>
         <span class="clojure">(def my-var "cool")</span>
-        <h2>data-eval-context </h2>
-        <h2>data-eval-context not set</h2>
-        <p> by default, the evaluation context is <b>statement</b>: it allows to evaluate several expressions. But it is sometimes buggy for single expressions. For instance, `(if 1 2 3)` is evaluated as nil: </p>
  <div class="clojure">(if 1 2 3)</div>
-        <h3>data-eval-context set to <b>expr</b> </h3>
- <div class="clojure" data-eval-context="expr">(if 1 2 3)</div>
+ <div class="clojure">(if 1 2 3)</div>
 
      <p>
      Strings should be evaluated to their value - with the quote.
      </p>
- <div class="clojure" data-eval-context="expr">"abc"</div>
+ <div class="clojure">"abc"</div>
      <h2> load code from a gist </h2>
         <div class="clojure" data-loop-msec="3000" data-gist-id="viebel/08a311453c9d31378b357ced54221fb4"></div>
         <p> The below div should be colorized every 3 seconds</p>
@@ -205,7 +202,7 @@ margin: 10px auto 0px auto;
 
         </div>
     <h1> styling </h1>
-    <p> Leading and trailing blank lines should be removed. Other empty lines should be kept.</p>
+    <p> Leading and trailing blank lines should be removed. </p>
     <pre>
 <code class="eval-js">
 
@@ -217,6 +214,7 @@ function foo(){
 }
 
 </code></pre>
+<p>Other empty lines should be kept.</p>
 <pre>
 <code class="clojure">
 

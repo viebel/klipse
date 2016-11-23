@@ -5,7 +5,7 @@
   (:require 
     [cljs.core.async :refer [<!]]
     [clojure.string :as string]
-    [klipse.lang.clojure :refer [eval result-as-str str-eval]]
+    [klipse.lang.clojure :refer [eval result-as-str]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 
 (defn remove-chars [s]
@@ -104,14 +104,6 @@
                   )
              (done))))
 
-(deftest test-str-eval
-  "evaluates a string to a string"
-  (async done
-         (go (are [in out]
-                  (b= (<! (str-eval in)) out)
-                  "(map inc [1 2 3])" "(2 3 4)"
-                  )
-             (done))))
 
 (deftest display-evaluation-with-errors
   "displays evaluation when an error occurs"

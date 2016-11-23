@@ -3,7 +3,7 @@
     [cljs.test :refer [is are]])
   (:require 
     [clojure.string :as string]
-    [klipse.lang.clojure :refer [eval compile str-eval str-compile]]
+    [klipse.lang.clojure :refer [eval compile str-compile]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 
 (defn remove-chars [s]
@@ -36,19 +36,6 @@
        "(+ 1 2)" "((1) + (2));\n"
        "(map inc [1 2 3])" "cljs.core.map.call(null,cljs.core.inc,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [(1),(2),(3)], null));\n"))
 
-(deftest test-str-eval-ok
-  "str-eval should return the evaluation of the expression as a strin"
-  (are [input output]
-       (= (str-eval input) output)
-       "(+ 1 2)" "3"
-       "(map inc [1 2 3])" "(2 3 4)"))
-
-(deftest test-str-eval-error
-  "str-eval should return an error as a string"
-  (are [input output]
-       (= (str-eval input) output)
-       "(+ 1 2" "#error {:message \"EOF while reading\", :data {:type :reader-exception}}"
-       "(map inc [1 2 3]"    "#error {:message \"EOF while reading\", :data {:type :reader-exception}}"))
 
 (deftest test-str-compile-error
   "str-compile should return an error as a string"

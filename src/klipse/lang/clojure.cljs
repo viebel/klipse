@@ -10,7 +10,6 @@
     [rewrite-clj.node :as n]
     [rewrite-clj.parser :as p]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
-    [clojure.string :as s]
     [clojure.pprint :as pprint]
     [cljs.analyzer :as ana]
     [cljs.compiler :as compiler]
@@ -52,7 +51,7 @@
              (pr-str error))]
     [status res]))
 
-(defn read-result [{:keys [form warning error value success?]:as args}]
+(defn read-result [{:keys [form warning error value success?]}]
   (let [status (if error :error :ok)
         res (if-not error
               value
@@ -169,13 +168,6 @@
 
 (defn str-compile-async [exp opts]
   (go (-> (<! (compile-async exp opts))
-          second
-          str)))
-
-(defn ^:export str-eval
-  "It is convenient to have a javascript function that evaluates clojure expressions"
-  [exp]
-  (go (-> (<! (eval exp))
           second
           str)))
 

@@ -7,9 +7,10 @@
     klipse.lang.clojure.bundled-namespaces
     gadjett.core-fn
     cljsjs.codemirror.mode.clojure
+    [rewrite-clj.node :as n]
+    [rewrite-clj.parser :as p]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
-    [replumb.core :as replumb]
     [cljs.analyzer :as ana]
     [cljs.compiler :as compiler]
     [klipse.common.registry :refer [register-mode]]
@@ -37,7 +38,9 @@
                       (symbol value)
                       value)))))
 
-
+(defn update-current-ns [{:keys [ns form warning error value success?]}]
+  (when-not error
+    (reset! current-ns ns)))
 
 (defn result-as-str [{:keys [ns form warning error value success?] :as args} opts]
   (when-not error
@@ -91,64 +94,66 @@
                          }
                         cb))))
 
-(defn build-repl-opts [{:keys [static-fns context external-libs verbose]}]
-    (merge (replumb/options :browser (partial io/load-ns external-libs))
-                    {:warning-as-error false
-                               :static-fns static-fns
-                               :verbose verbose
-                               :no-pr-str-on-value true
-                               :context (or context :statement)}))
-
-(defn another-core-eval [s {:keys [static-fns context verbose external-libs max-eval-duration] :or {static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
-  (watchdog); run the watchdog here as in replumb there is no way to override eval-fn
-  (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
-    (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
-    (let [opts (build-repl-opts {:static-fns static-fns
-                                                                :external-libs external-libs
-                                                                :verbose verbose
-                                                                :context (keyword context)})]
-          (! js/window.COMPILED true); for some reason it is required with read-eval-call
-          (replumb/read-eval-call opts cb s)))))
-
-
-(defn core-eval [s {:keys [static-fns context external-libs verbose max-eval-duration] :or {static-fns false context nil external-libs nil max-eval-duration min-max-eval-duration}} cb]
-  (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
+(defn core-eval-an-exp [s {:keys [static-fns external-libs verbose max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
+  (let [c (chan)
+        max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [cljs.analyzer/*cljs-ns* @current-ns
                   *ns* (create-ns @current-ns)
                   compiler/emits (partial my-emits max-eval-duration)]
       ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
-                     s
-                     "my.klipse"
-                     {:eval my-eval
-                      :ns @current-ns
-                      :def-emits-var true
-                      :verbose verbose
-                      :*compiler* (set! env/*compiler* (create-state-eval))
-                      :context (keyword context)
-                      :static-fns static-fns
-                      :load (partial io/load-ns external-libs)}
-                     cb))))
-
-(defn eval-async-1 [s opts]
-  (let [c (chan)]
-    (core-eval s opts #(put! c (result-as-str % opts)))
+                 s
+                 "my.klipse"
+                 {:eval my-eval
+                  :ns @current-ns
+                  :def-emits-var true
+                  :verbose verbose
+                  :*compiler* (set! env/*compiler* (create-state-eval))
+                  :context :expr
+                  :static-fns static-fns
+                  :load (partial io/load-ns external-libs)}
+                 (fn [res]
+                   (update-current-ns res)
+                   (put! c res))))
     c))
 
-(defn eval
-  "used for testing and exporting to javascript"
-  ^{:export true}
-  ([s] (eval s {}))
-  ([s opts] (core-eval s opts read-result)))
 
-(defn contains-macro-def? [exp]
-  (re-find #"\$macros" exp))
+(defn split-expressions [s]
+  (->> (p/parse-string-all s)
+    n/children
+    (map n/string)))
 
-(defn eval-async [s args]
+(defn core-eval [s opts]
   (go
-    (when (contains-macro-def? s) ; By design in bootstraped cljs. David Nolen and Mike Fikes told a couple of times: Macros should be defined in a previous compilation stage than their execution - see https://github.com/Lambda-X/replumb/issues/185
-      (<! (eval-async-1 s args))) ; the workaround is to evaluate twice
-    (<! (eval-async-1 s args))))
+    (try
+      (loop [exps (split-expressions s) last-res nil]
+        (if (seq exps)
+          (let [res (<! (core-eval-an-exp (first exps) opts))]
+            (if (:error res)
+              res
+              (recur (rest exps) res)))
+          last-res))
+      (catch :default e
+        {:error e}))))
+
+(defn eval-async [s opts]
+  (go
+    (-> (<! (core-eval s opts))
+        (result-as-str opts))))
+
+(defn eval
+  "used for testing"
+  ([s] (eval s {}))
+  ([s opts] (go (-> (<! (core-eval s opts))
+                    read-result))))
+
+(defn eval-and-callback
+  "to be called from javacript"
+  ^{:export true}
+  [s cb]
+  (go (-> (<! (eval s))
+          clj->js
+          cb)))
 
 (defn str-compile "useful for testing and js export"
   ^{:export true}
@@ -165,13 +170,6 @@
   (go (-> (<! (compile-async exp opts))
           second
           str)))
-
-(defn ^:export str-eval
-  "It is convenient to have a javascript function that evaluates clojure expressions"
-  [exp]
-  (-> (eval exp)
-      second
-      str))
 
 (defn str-eval-async [exp opts]
   (go

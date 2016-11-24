@@ -60,6 +60,7 @@
 (def skip-ns-macros #{'cljs.core
                       'cljs.pprint
                       'cljs.env.macros
+                      'klipse.lang.clojure.env
                       'cljs.analyzer.macros
                       'cljs.js
                       'cljs.compiler.macros})

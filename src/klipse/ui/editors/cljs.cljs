@@ -1,6 +1,7 @@
 (ns klipse.ui.editors.cljs
   (:require
     [clojure.string :as string :refer [blank?]]
+    [parinfer-codemirror.editor :refer [start-editor-sync! parinferize!]]
     [klipse.ui.editors.editor :as editor]
     [klipse.ui.editors.common :refer [handle-events]]
     [klipse.utils :refer [url-parameters]] 
@@ -32,7 +33,13 @@
                   [(list 'input/save     {:value s})]))
 
 (defn init-editor [compiler]
-  (let [my-editor (editor/create "code-cljs" config-editor)]
+  (let [my-editor (editor/create "code-cljs" config-editor)
+        key- :indent-mode
+        wrapper (.getWrapperElement my-editor)
+        parinfer-mode nil]
+    (set! (.-id wrapper) (str "cm-" "element-id"))
+    (parinferize! my-editor key- parinfer-mode "")
+    (start-editor-sync!)
     (handle-events my-editor
                    {:idle-msec 3000
                     :on-should-eval #(process-input compiler (editor/get-value my-editor))})))

@@ -93,7 +93,7 @@ And here are detailed explanations about [a javascript live code editor in a blo
 
 <script>
     window.klipse_settings = {
-        selector_eval_scheme: '.language-klipse-eval-ruby', // css selector for the html elements you want to klipsify
+        selector_eval_scheme: '.language-klipse-eval-scheme', // css selector for the html elements you want to klipsify
     };
 </script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>

@@ -1,4 +1,6 @@
 (ns klipse.ui.editors.cljs
+  (:require-macros
+    [gadjett.core :as gadjett :refer [dbg]])
   (:require
     [cljs.reader :refer [read-string]]
     [clojure.string :as string :refer [blank?]]
@@ -24,7 +26,7 @@
 
 (defn process-input [component s]
   (when-not (blank? s)
-    (om/transact! component 
+    (om/transact! component
                   [`(input/save   {:value ~s})
                    `(clj/eval-and-compile     {:value ~s})
                    ':input])))
@@ -36,27 +38,29 @@
 (defn parinfer? []
   (boolean (read-string (or (:parinfer (url-parameters)) "false"))))
 
-(defn use-parinfer! [editor]
+(defn use-parinfer! [component editor]
   (let [key- :indent-mode
         wrapper (.getWrapperElement editor)
         parinfer-mode nil]
     (set! (.-id wrapper) (str "cm-" "element-id"))
     (parinferize! editor key- parinfer-mode (editor/get-value editor))
-    (start-editor-sync!)))
+    (start-editor-sync!)
+    (om/transact! component [(list 'editor/set-mode {:value :parinfer-indent})])))
 
 (defn init-editor [compiler]
   (let [my-editor (editor/create "code-cljs" config-editor)]
     (when (parinfer?)
-      (use-parinfer! my-editor))
+      (use-parinfer! compiler my-editor))
     (handle-events my-editor
                    {:idle-msec 3000
+                    :extra-keys {"Ctrl-P" #(use-parinfer! compiler my-editor)}
                     :on-should-eval #(process-input compiler (editor/get-value my-editor))})))
 
 (defui Cljs-editor
 
   static om/IQuery
   (query [this]
-    '[:input])
+    '[input editing-mode])
 
   Object
 
@@ -64,8 +68,14 @@
     (init-editor this))
 
   (render [this]
-    (let [input (:input (om/props this))]
-      (dom/section #js {:className "cljs-editor"}
+    (let [{:keys [input editing-mode] :or {editing-mode :regular}} (:input (om/props this))
+          _ (js/console.log "cljs editor input: " (:input (om/props this)))
+          _ (js/console.log "cljs editor editing-mode: " editing-mode )
+          editor-class (case editing-mode
+                         :regular "mode-regular"
+                         :parinfer-indent "mode-parinfer-ident"
+                         "mode-regular") ]
+      (dom/section #js {:className (str "cljs-editor" " " editor-class)}
       (dom/textarea #js {:autoFocus true
                          :value input
                          :id "code-cljs"

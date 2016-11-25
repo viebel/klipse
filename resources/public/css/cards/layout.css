@@ -95,8 +95,12 @@ section.cljs-editor .CodeMirror {
   background-position: right 5px bottom 5px;
   background-size: 40px;
   background-repeat: no-repeat;
+}
+
+section.cljs-editor.mode-regular .CodeMirror {
   background-image: url(../../img/clojure.png);
 }
+
 
 #klipse-container-wrapper {
   background-position: right 5px bottom 5px;
@@ -108,6 +112,10 @@ section.cljs-editor .CodeMirror {
   padding: 15px;
   overflow: scroll;
   /* z-index: 9999; */
+}
+
+section.cljs-editor.mode-parinfer-ident .CodeMirror {
+  background-image: url(../../img/hat.png);
 }
 
 /*js editor*/

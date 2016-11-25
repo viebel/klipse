@@ -9,15 +9,15 @@
     [klipse.ui.outputs.js :refer [js-textarea Js-textarea]]))
 
 (defui Layout
-  
+
   static om/IQuery
-  (query [this] 
-    `[:code-layout 
+  (query [this]
+    `[:code-layout
       {:input ~(om/get-query Cljs-editor)}
       {:compilation ~(om/get-query Js-editor)}
       {:evaluation-clj ~(om/get-query Cljs-textarea)}
       {:evaluation-js ~(om/get-query Js-textarea)}])
-    
+
   Object
   (render [this]
     (let [{:keys [code-layout]} (om/props this)]
@@ -30,7 +30,7 @@
                           (cljs-textarea (om/props this)))
                  (dom/div #js {:className "klipse-item"}
                           (js-textarea (om/props this))))
-        
+
         :js-only
         (dom/div #js {:className "klipse-layout klipse-layout-js-only"}
           (dom/div #js {:className "klipse-item"}

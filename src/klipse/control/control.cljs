@@ -23,15 +23,16 @@
    :compilation nil
    :evaluation-js nil
    :evaluation-clj nil
+   :editing-mode nil
    :code-layout (init-layout)}))
 
-(def parser 
-  (om/parser 
-    {:read parser/read 
+(def parser
+  (om/parser
+    {:read parser/read
      :mutate parser/mutate}))
 
 (defn reconciler [initial-state]
-  (om/reconciler 
+  (om/reconciler
     {:state (swap! app-state merge initial-state)
      :parser parser}))
 

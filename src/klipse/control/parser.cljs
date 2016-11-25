@@ -59,7 +59,7 @@
 
 (defmethod mutate 'input/save [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] 
-             (swap! state assoc :input value))})
+             (swap! state assoc-in [:input :input] value))})
 
 (defn clean-print-box [state]
   (swap! state assoc :evaluation-js ""))
@@ -67,8 +67,14 @@
 (defn append-print-box [state & args]
   (swap! state update :evaluation-js #(str % (apply str args))))
 
+(defmethod mutate 'editor/set-mode [{:keys [state]} _ {:keys [value]}]
+  {:action (fn []
+             (js/console.log "set-mode value" value " state " (:editing-mode @state))
+             (swap! state assoc-in [:input :editing-mode] value))})
+
 (defmethod mutate 'clj/eval-and-compile [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] 
+  {:action (fn []
+             (js/console.log "eval-and-compile editing-mode:" (:editing-mode @state))
              (go
                (clean-print-box state)
                (binding [*print-newline* true

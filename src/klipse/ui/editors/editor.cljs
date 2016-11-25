@@ -1,8 +1,8 @@
 (ns klipse.ui.editors.editor
-  (:use-macros 
+  (:use-macros
     [gadjett.core :only [dbg]]
     [purnam.core :only [? ! !>]])
-  (:require 
+  (:require
     [goog.dom :as gdom]
     [klipse.dom-utils :refer [create-div-after]]
     [gadjett.collections :as gadjett]
@@ -17,7 +17,7 @@
         (js/document.getElementById dom-id)
         (clj->js config)))
 
-(defn get-value [editor] 
+(defn get-value [editor]
   (.getValue editor))
 
 (defn set-value [editor value] 

@@ -172,9 +172,13 @@
           str)))
 
 (defn str-eval-async [exp opts]
-  (go
-    (-> (<! (eval-async exp opts))
-        second)))
+  (let [c (chan)]
+    (go
+      (binding [*print-newline* true
+                *print-fn* #(put! c %)]
+        (put! c (-> (<! (eval-async exp opts))
+                    second))))
+    c))
 
 (def eval-opts {:editor-in-mode "clojure"
                   :editor-out-mode "clojure"

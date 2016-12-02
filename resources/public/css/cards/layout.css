@@ -115,7 +115,7 @@ section.cljs-editor.mode-regular .CodeMirror {
 }
 
 section.cljs-editor.mode-parinfer-ident .CodeMirror {
-  background-image: url(../../img/hat.png);
+  background-image: url(../../img/parinfer.png);
 }
 
 /*js editor*/

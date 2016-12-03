@@ -93,7 +93,7 @@ And here are detailed explanations about [a javascript live code editor in a blo
 
 <script>
     window.klipse_settings = {
-        selector_eval_scheme: '.language-klipse-eval-ruby', // css selector for the html elements you want to klipsify
+        selector_eval_scheme: '.language-klipse-eval-scheme', // css selector for the html elements you want to klipsify
     };
 </script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
@@ -192,6 +192,11 @@ The following attributes can be added to the DOM element of the snippet:
 * `data-external-libs`: comma separated list of javascript libraries to load before snippet evaluation
 
 #### Clojure only
+
+
+Here is a [live demo](https://book.klipse.tech/interactive_clojure[script]_code_snippets.html) of the diffeent snippet level configuration options.
+
+The following data attributes are supported on a klipse snippet DOM element:
 
 * `data-static-fns`: (default `false`) set to true for using [static dispatch](http://blog.klipse.tech/clojurescript/2016/04/13/static-fns.html)
 * `data-external-libs`: comma separated list of github repositories to resolve dependencies: you need to provide the full list of dependencies (including the dependencies of dependencies recursively). See for instance [Lambda Caclulus with clojure and Klipse](http://blog.klipse.tech/lambda/2016/07/24/lambda-calculus-2.html)

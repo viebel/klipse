@@ -103,3 +103,8 @@ li.active a:hover{text-decoration:underline;}
 .alert-success{background:#d1f3ba;}
 @media (max-width:767px){body{padding:0 10px;} .row{margin:0;} .container{width:auto;} [class*="span"],.row-fluid{display:block;float:none;width:100%;margin-left:0;box-sizing:border-box;} .form-horizontal .control-label{float:none;display:block;text-align:left;margin-bottom:0.5em;} .form-horizontal .controls{margin-left:0;}}.pull-left{float:left;}
 .pull-right{float:right;}
+.hidden {display:none;}
+pre {
+   margin-top: 10px;
+   margin-bottom: 30px;
+}

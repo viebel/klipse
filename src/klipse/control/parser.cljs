@@ -73,8 +73,7 @@
 
 
 (defmethod mutate 'clj/eval-and-compile [{:keys [state]} _ {:keys [value]}]
-  {:action #(swap! state assoc :evaluation-clj  [:ok 123])
-   #_(go
+  {:action (go
                (clean-print-box state)
                (binding [*print-newline* true
                          *print-fn* (partial append-print-box state)]

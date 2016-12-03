@@ -58,8 +58,7 @@
 (defmulti mutate om/dispatch)
 
 (defmethod mutate 'input/save [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] 
-             (swap! state assoc-in [:input :input] value))})
+  {:action #(swap! state assoc-in [:input :input] value)})
 
 (defn clean-print-box [state]
   (swap! state assoc :evaluation-js ""))
@@ -68,9 +67,7 @@
   (swap! state update :evaluation-js #(str % (apply str args))))
 
 (defmethod mutate 'editor/set-mode [{:keys [state]} _ {:keys [value]}]
-  {:action (fn []
-             (js/console.log "set-mode value" value " state " (:editing-mode @state))
-             (swap! state assoc-in [:input :editing-mode] value))})
+  {:action #(swap! state assoc-in [:input :editing-mode] value)})
 
 (defmethod mutate 'clj/eval-and-compile [{:keys [state]} _ {:keys [value]}]
   {:action (fn []

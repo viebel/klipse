@@ -5,7 +5,7 @@
     [cljs.reader :refer [read-string]]
     [clojure.string :as string :refer [blank?]]
     [parinfer-codemirror.editor :refer [start-editor-sync! parinferize!]]
-    [klipse.ui.editors.editor :as editor]
+    [klipse.ui.editors.editor :refer [get-value set-value create]]
     [klipse.ui.editors.common :refer [handle-events]]
     [klipse.utils :refer [url-parameters]]
     [om.next :as om :refer-macros [defui]]
@@ -38,18 +38,18 @@
         wrapper (.getWrapperElement editor)
         parinfer-mode nil]
     (set! (.-id wrapper) (str "cm-" "element-id"))
-    (parinferize! editor key- parinfer-mode (editor/get-value editor))
+    (parinferize! editor key- parinfer-mode (get-value editor))
     (start-editor-sync!)
     (om/transact! component [(list 'editor/set-mode {:value :parinfer-indent})])))
 
 (defn init-editor [compiler]
-  (let [my-editor (editor/create "code-cljs" config-editor)]
+  (let [my-editor (create "code-cljs" config-editor)]
   (when (parinfer?)
     (use-parinfer! compiler my-editor))
   (handle-events my-editor
                  {:idle-msec 3000
                   :extra-keys {"Ctrl-P" #(use-parinfer! compiler my-editor)}
-                  :on-should-eval #(process-input compiler (editor/get-value my-editor))})
+                  :on-should-eval #(process-input compiler (get-value my-editor))})
     my-editor))
 
 (defui Cljs-editor
@@ -61,23 +61,24 @@
   Object
 
   (componentDidUpdate [this prev-props prev-state]
-                      (let [input (dbg (get-in (om/props this) [:input :input]))
-                            editor (dbg (om/get-state this :editor))]
-                        (when editor
-                          (editor/set-value editor input))))
+                      (let [input (get-in (om/props this) [:input :input])
+                            editor (om/get-state this :editor)]
+                        (when (and editor
+                                   (not= input (get-value editor))
+                          (set-value editor input)))))
 
   (componentDidMount [this]
-                     (dbg (om/set-state! this {:editor (init-editor this)})))
+                     (om/set-state! this {:editor (init-editor this)}))
 
   (render [this]
-          (let [{:keys [input editing-mode] :or {editing-mode :regular}} (dbg (:input (om/props this)))
+          (let [{:keys [input editing-mode] :or {editing-mode :regular}} (:input (om/props this))
                 editor-class (case editing-mode
                                :regular "mode-regular"
                                :parinfer-indent "mode-parinfer-ident"
                                "mode-regular")]
             (dom/section #js {:className (str "cljs-editor" " " editor-class)}
                          (dom/textarea #js {:autoFocus true
-                                            :value (dbg input)
+                                            :value input
                                             :id "code-cljs"
                                             :placeholder placeholder-editor})))))
 

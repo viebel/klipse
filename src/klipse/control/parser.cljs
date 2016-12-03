@@ -59,6 +59,7 @@
 (defmulti mutate om/dispatch)
 
 (defmethod mutate 'input/save [{:keys [state]} _ {:keys [value]}]
+  (dbg value)
   {:action #(swap! state assoc-in [:input :input] value)})
 
 (defn clean-print-box [state]
@@ -70,10 +71,10 @@
 (defmethod mutate 'editor/set-mode [{:keys [state]} _ {:keys [value]}]
   {:action #(swap! state assoc-in [:input :editing-mode] value)})
 
+
 (defmethod mutate 'clj/eval-and-compile [{:keys [state]} _ {:keys [value]}]
-  {:action (fn []
-             (js/console.log "eval-and-compile editing-mode:" (:editing-mode @state))
-             (go
+  {:action #(swap! state assoc :evaluation-clj  [:ok 123])
+   #_(go
                (clean-print-box state)
                (binding [*print-newline* true
                          *print-fn* (partial append-print-box state)]
@@ -85,4 +86,4 @@
                                                                :external-libs (external-libs)
                                                                :compile-display-guard (compile-display-guard?)
                                                                :max-eval-duration (max-eval-duration)
-                                                               :context (eval-context?)}))))))})
+                                                               :context (eval-context?)})))))})

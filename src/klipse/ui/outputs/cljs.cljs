@@ -17,7 +17,6 @@
 
     (render [this]
       (let [[status result] (:evaluation-clj (om/props this))
-            _ (js/console.log "cljs out: " result)
             status-class (when status (name status))]
         (dom/section #js {:className "cljs-textarea"}
           (dom/textarea #js {:value (or result "")

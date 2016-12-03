@@ -1,5 +1,6 @@
 (ns klipse.app
   (:require-macros
+    [klipse.macros :refer [dbg]]
     [cljs.core.async.macros :refer [go]])
   (:require 
    [om.next :as om]
@@ -10,6 +11,7 @@
     cljsjs.codemirror.addon.edit.closebrackets
     cljsjs.codemirror.addon.display.placeholder
     cljsjs.codemirror.addon.scroll.simplescrollbars
+    [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan timeout put! <!]]
     [klipse.ui.layout :as ui]
     [klipse.utils :refer [read-input-from-gist gist-path-page url-parameters]]
@@ -33,9 +35,10 @@
       (when-let [gist-id (:cljs_in.gist (url-parameters))]
         (<! (gist-content gist-id))))))
 
-(defn init [element]
-  (go
-    (let [input (<! (read-src-input))
-          reconciler (control/reconciler {})]
-      (om/add-root! reconciler ui/Layout element)
-      (cljs-editor/process-input reconciler input))))
+(defonce init (runonce
+            (fn [element]
+              (let [reconciler (control/reconciler {})]
+                (om/add-root! reconciler ui/Layout element)
+                (go
+                  (let [input (dbg (<! (read-src-input)))]
+                    (cljs-editor/process-input reconciler input)))))))

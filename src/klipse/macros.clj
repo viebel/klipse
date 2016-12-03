@@ -1,6 +1,12 @@
 (ns klipse.macros
   (:require [clojure.string :as string]))
 
+(defmacro dbg[x]
+  (when *assert*
+    `(let [x# ~x]
+       (js/console.log (str '~x ": ") x#)
+       x#)))
+
 ;https://nvbn.github.io/2014/11/05/protocols-for-testing/ in the comments - same implementation as with-redefs from clojurescript, except that `~@(map bind-value binds)` is inside the `try` block
 (defmacro with-redefs-safe
   [bindings & body]

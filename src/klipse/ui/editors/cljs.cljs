@@ -1,6 +1,6 @@
 (ns klipse.ui.editors.cljs
   (:require-macros
-    [gadjett.core :as gadjett :refer [dbg]])
+    [klipse.macros :refer [dbg]])
   (:require
     [cljs.reader :refer [read-string]]
     [clojure.string :as string :refer [blank?]]
@@ -28,12 +28,7 @@
   (when-not (blank? s)
     (om/transact! component
                   [`(input/save   {:value ~s})
-                   `(clj/eval-and-compile     {:value ~s})
-                   ':input])))
-
-(defn init-input [component s]
-  (om/transact! component
-                  [(list 'input/save     {:value s})]))
+                   `(clj/eval-and-compile     {:value ~s})])))
 
 (defn parinfer? []
   (boolean (read-string (or (:parinfer (url-parameters)) "false"))))
@@ -49,36 +44,41 @@
 
 (defn init-editor [compiler]
   (let [my-editor (editor/create "code-cljs" config-editor)]
-    (when (parinfer?)
-      (use-parinfer! compiler my-editor))
-    (handle-events my-editor
-                   {:idle-msec 3000
-                    :extra-keys {"Ctrl-P" #(use-parinfer! compiler my-editor)}
-                    :on-should-eval #(process-input compiler (editor/get-value my-editor))})))
+  (when (parinfer?)
+    (use-parinfer! compiler my-editor))
+  (handle-events my-editor
+                 {:idle-msec 3000
+                  :extra-keys {"Ctrl-P" #(use-parinfer! compiler my-editor)}
+                  :on-should-eval #(process-input compiler (editor/get-value my-editor))})
+    my-editor))
 
 (defui Cljs-editor
 
   static om/IQuery
   (query [this]
-    '[input editing-mode])
+         [:input])
 
   Object
 
+  (componentDidUpdate [this prev-props prev-state]
+                      (let [input (dbg (get-in (om/props this) [:input :input]))
+                            editor (dbg (om/get-state this :editor))]
+                        (when editor
+                          (editor/set-value editor input))))
+
   (componentDidMount [this]
-    (init-editor this))
+                     (dbg (om/set-state! this {:editor (init-editor this)})))
 
   (render [this]
-    (let [{:keys [input editing-mode] :or {editing-mode :regular}} (:input (om/props this))
-          _ (js/console.log "cljs editor input: " (:input (om/props this)))
-          _ (js/console.log "cljs editor editing-mode: " editing-mode )
-          editor-class (case editing-mode
-                         :regular "mode-regular"
-                         :parinfer-indent "mode-parinfer-ident"
-                         "mode-regular") ]
-      (dom/section #js {:className (str "cljs-editor" " " editor-class)}
-      (dom/textarea #js {:autoFocus true
-                         :value input
-                         :id "code-cljs"
-                         :placeholder placeholder-editor})))))
+          (let [{:keys [input editing-mode] :or {editing-mode :regular}} (dbg (:input (om/props this)))
+                editor-class (case editing-mode
+                               :regular "mode-regular"
+                               :parinfer-indent "mode-parinfer-ident"
+                               "mode-regular")]
+            (dom/section #js {:className (str "cljs-editor" " " editor-class)}
+                         (dom/textarea #js {:autoFocus true
+                                            :value (dbg input)
+                                            :id "code-cljs"
+                                            :placeholder placeholder-editor})))))
 
 (def cljs-editor (om/factory Cljs-editor))

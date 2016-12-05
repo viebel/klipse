@@ -1,0 +1,6 @@
+@font-face {
+  font-family: 'FiraCode';
+  src: url('https://viebel.github.io/klipse/fonts/FiraCode/woff2/FiraCode-Regular.woff2') format('webfont.woff2') , /* Super Modern Browsers */
+       url('https://viebel.github.io/klipse/fonts/FiraCode/woff/FiraCode-Regular.woff') format('woff'), /* Pretty Modern Browsers */
+       url('https://viebel.github.io/klipse/fonts/FiraCode/ttf/FiraCode-Regular.ttf')  format('truetype') /* Safari, Android, iOS */;
+}

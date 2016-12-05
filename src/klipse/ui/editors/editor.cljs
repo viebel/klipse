@@ -13,9 +13,9 @@
 (def code-mirror js/CodeMirror)
 
 (defn create [dom-id config]
-    (js/CodeMirror.fromTextArea
-        (js/document.getElementById dom-id)
-        (clj->js config)))
+  (js/CodeMirror.fromTextArea
+    (js/document.getElementById dom-id)
+    (clj->js config)))
 
 (defn get-value [editor]
   (.getValue editor))

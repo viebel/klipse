@@ -1,7 +1,7 @@
 (ns klipse.utils
   (:require-macros
-   [gadjett.core :refer [dbg]]
-   [cljs.core.async.macros :refer [go go-loop]])
+    [klipse.macros :refer [dbg]]
+    [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [cljs.reader :refer [read-string]]
    [clojure.walk :refer [keywordize-keys]]

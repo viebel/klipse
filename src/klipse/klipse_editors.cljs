@@ -55,7 +55,8 @@
 (defn eval-in-codemirror-editor [eval-fn editor-target editor-source snippet-args mode state]
   (eval-in-editor eval-fn
                   (get-value editor-source)
-                  #(set-value-and-beautify editor-target mode % {:remove-ending-comments? false})
+                  #(set-value-and-beautify editor-target mode % {:indent? false
+                                                                 :remove-ending-comments? false})
                   snippet-args
                   state))
 
@@ -101,10 +102,10 @@
 
 (defmulti create-editor (fn [type _] type))
 
-(defmethod create-editor :html [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec preamble]}]
+(defmethod create-editor :html [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         out-editor (create-div-after element {:class "klipse-result"})
-        in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
+        in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
         snippet-args {:loop-msec loop-msec
                       :preamble preamble}
         state (create-state)]
@@ -114,10 +115,10 @@
                     :on-should-eval #(eval-in-html-editor eval-fn out-editor in-editor snippet-args state)})
     #(eval-in-html-editor eval-fn out-editor in-editor snippet-args state)))
 
-(defmethod create-editor :code-mirror [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode beautify? codemirror-options-in codemirror-options-out loop-msec preamble]}]
+(defmethod create-editor :code-mirror [_ {:keys [element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
-        out-editor (create-editor-after-element element default-txt out-editor-options :remove-ending-comments? false); must be called before `element` is replaced
-        in-editor (replace-element-by-editor element source-code in-editor-options :beautify? beautify?)
+        out-editor (create-editor-after-element element default-txt out-editor-options :indent? false :remove-ending-comments? false); must be called before `element` is replaced
+        in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
         snippet-args {:loop-msec loop-msec
                       :preamble preamble}
         state (create-state)]

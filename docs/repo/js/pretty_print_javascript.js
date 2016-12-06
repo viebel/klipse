@@ -25,6 +25,7 @@ module.exports.pretty = function (jsObject, indentLength, outputTo, fullFunction
         'number'           : 'number',
         'boolean'          : 'boolean',
         'string'           : 'string',
+        'symbol'           : 'symbol',
         '[object Function]': 'function',
         '[object RegExp]'  : 'regexp',
         '[object Array]'   : 'array',

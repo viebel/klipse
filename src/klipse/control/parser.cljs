@@ -88,6 +88,6 @@
   {:action (fn [] 
              (go
                (clean-print-box state)
-               (with-redefs [*print-newline* true
-                             *print-fn* (partial append-print-box state)]
+               (binding [*print-newline* true
+                         *print-fn* (partial append-print-box state)]
                  (swap! state assoc :evaluation-clj (<! (eval-clj value))))))})

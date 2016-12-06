@@ -1,11 +1,13 @@
 (ns klipse.lang.javascript
   (:require-macros
+    [klipse.macros :refer [my-with-redefs]]
     [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
-  (:require 
+  (:require
     [klipse.utils :refer [load-scripts]]
     [cljs-http.client :as http]
-    [cljs.core.async :refer [<!]]
+    [clojure.string :as string]
+    [cljs.core.async :refer [<! chan put!]]
     [klipse.common.registry :refer [register-mode]]))
 
 (def known-external-libs
@@ -28,17 +30,23 @@
       (str js-exp))))
 
 (defn str-eval-js-async [exp {:keys [external-libs] :or {external-libs nil}}]
-  (go
-    (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
-      (if (= :ok status)
-        (try
-          (-> exp
-              eval-in-global-scope
-              beautify)
-          (catch :default o
-            (str o)))
-        (str "//Cannot load script: " script "\n"
-             "//Error: " http-status)))))
+  (let [c (chan)]
+    (my-with-redefs [js/console.log (fn[& args]
+                                      (put! c (string/join " "  args))
+                                      (put! c "\n"))]
+                    (go
+                      (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
+                        (try
+                          (put! c (if (= :ok status)
+                                    (try
+                                      (-> exp
+                                          eval-in-global-scope
+                                          beautify)
+                                      (catch :default o
+                                        (str o)))
+                                    (str "//Cannot load script: " script "\n"
+                                         "//Error: " http-status)))))))
+    c))
 
 
 (def opts {:editor-in-mode "javascript"

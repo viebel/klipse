@@ -14,7 +14,7 @@
     [cljs.core.async :refer [chan <! timeout]]
     [gadjett.collections :refer [collify compactize-map]]))
 
-(def out-placeholder ";the evaluation will appear here (soon)...")
+(def out-placeholder "the evaluation will appear here (soon)...")
 
 (defn calc-editor-args-from-element [element global-idle-msec min-idle-msec global-editor-type]
   (let [{:keys [idle-msec editor-type preamble loop-msec] :or {idle-msec global-idle-msec editor-type global-editor-type loop-msec nil}} (editor-args-from-element element)]
@@ -61,7 +61,7 @@
                           :codemirror-options-out codemirror_options_out
                           :eval-fn (if (= :ok load-status) eval-fn-with-args #(chan))
                           :source-code source-code
-                          :default-txt (if (= :ok load-status) out-placeholder load-error)
+                          :default-txt (if (= :ok load-status) (str comment-str out-placeholder) load-error)
                           :idle-msec idle-msec})))))
 
 (s/def ::dom-element isElement)

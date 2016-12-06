@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> spec.js documentation</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
+
+</head>
+
+<body class="container">
+
+<h1> spec.js interactive documentation</h1>
+
+This documentation is live and interactive. It is powered by <a href="https://github.com/viebel/klipse">klipse</a>.
+
+<h1> Setup </h1>
+First let's load <code>spec.js</code> from the js github repository (It might take a couple of seconds...):
+
+<br/>
+<br/>
+<div class="js" data-external-libs="https://raw.githubusercontent.com/prayerslayer/js.spec/master/dist/js.spec.bundle.js">
+Object.keys(window['js.spec'])
+</div>
+
+<h1> valid</h1>
+
+<p>
+</p>
+<div class="js">
+  const {spec, valid} = window['js.spec']
+  const foo = spec.map({
+    name: spec.string
+  })
+valid(foo, {name: 'hugo'})
+</div>
+
+
+<h1> conform </h1>
+<p> Returns the conformed value to this spec. In case of <code>or</code> it will be an array with the matched branches.</p>
+
+
+<div class="js">
+const {spec, valid, conform} = window['js.spec']
+const simple_address = spec.map({
+  country: spec.string,
+  zipcode: spec.string,
+  street: spec.string
+})
+
+const gps_address = spec.map({
+  lat: spec.number,
+  lon: spec.number
+})
+
+const address = spec.or({
+  gps: gps_address,
+  simple: simple_address
+})
+
+conform(address, { lat: 13, lon: 55 })
+</div>
+<script>
+    window.klipse_settings = {
+       selector_eval_js: '.js'
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+</body>
+
+</html>

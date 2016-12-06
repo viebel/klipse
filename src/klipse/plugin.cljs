@@ -54,7 +54,7 @@
                          {:element element
                           :loop-msec loop-msec
                           :preamble preamble
-                          :beautify? (if (= :ok load-status) beautify? false)
+                          :indent? (if (= :ok load-status) beautify? false)
                           :editor-in-mode editor-in-mode
                           :editor-out-mode editor-out-mode
                           :codemirror-options-in codemirror_options_in

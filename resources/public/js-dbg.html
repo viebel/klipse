@@ -7,13 +7,18 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-<pre><code class="js" data-external-libs="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.22.1/ramda.min.js, https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js">
-    [Object.keys(R).length,
-    Object.keys(_).length]
+<pre><code class="js">
+    x = {a: 1,
+         b: 2,
+    c: 1/0,
+d: Symbol("dd")}
 </code></pre>
 <br/>
 <pre><code class="js" data-gist-id="viebel/5cc67a97903f04036b569c0eb0436e5f">
-    permute([1, 2, 3])
+</code></pre>
+
+<pre><code class="js">
+    permutations([1, 2, 3])
 </code></pre>
 
       <script>

@@ -70,35 +70,36 @@
        (!> js/sqlFormatter.format)
        (set-value editor)))
 
-(defn fix-comments-lines [editor mode remove-ending-comments?]
-  (if (and remove-ending-comments? (= "clojure" mode))
+(defn fix-comments-lines [editor mode]
+  (if (= "clojure" mode)
     (->> (get-value editor)
          gadjett/remove-ending-comments
          (set-value editor))
     editor))
 
-(defn beautify [editor mode {:keys [remove-ending-comments?]}]
+(defn do-indent [editor]
   (-> editor
       auto-indent
-      goto-start
-      fix-blank-lines
-      (fix-comments-lines mode remove-ending-comments?)
-      (beautify-language mode)))
+      goto-start))
+
+(defn beautify [editor mode {:keys [indent? remove-ending-comments?]}]
+  (as-> editor $
+      (if indent? (do-indent $) $)
+      (fix-blank-lines $)
+      (if remove-ending-comments? (fix-comments-lines $ mode) $)
+      (beautify-language $ mode)))
 
 (defn set-value-and-beautify [editor mode value opts]
   (-> (set-value editor value)
       (beautify mode opts)))
 
-(defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [beautify? remove-ending-comments?] :or {beautify? true remove-ending-comments? true}}]
+(defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [indent? remove-ending-comments?] :or {indent? true remove-ending-comments? true}}]
   (let [editor (js/CodeMirror (fn [elt]
                                 (gdom/replaceNode elt element))
                               (clj->js opts))]
-    (as->
-      (set-value editor value) $
-      (if beautify?
-        (beautify $ mode {:remove-ending-comments? remove-ending-comments?})
-        $))))
+    (-> (set-value editor value)
+        (beautify mode {:indent? indent? :remove-ending-comments? remove-ending-comments?}))))
 
-(defn create-editor-after-element [element value opts & {:keys [remove-ending-comments?] :or {remove-ending-comments? false}}]
+(defn create-editor-after-element [element value opts & {:keys [remove-ending-comments? indent?] :or  {remove-ending-comments? false indent? false}}]
   (-> (create-div-after element {})
-      (replace-element-by-editor value opts :remove-ending-comments? remove-ending-comments?)))
+      (replace-element-by-editor value opts :remove-ending-comments? remove-ending-comments? :indent? indent?)))

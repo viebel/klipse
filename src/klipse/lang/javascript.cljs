@@ -31,21 +31,22 @@
 
 (defn str-eval-js-async [exp {:keys [external-libs] :or {external-libs nil}}]
   (let [c (chan)]
-    (my-with-redefs [js/console.log (fn[& args]
-                                      (put! c (string/join " "  args))
-                                      (put! c "\n"))]
-                    (go
-                      (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
-                        (try
-                          (put! c (if (= :ok status)
-                                    (try
+    (go
+      (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
+        (try
+          (put! c (if (= :ok status)
+                    (try
+                      (my-with-redefs [js/console.log (fn[& args]
+                                                        (put! c (string/join " "  args))
+                                                        (put! c "\n"))]
+
                                       (-> exp
                                           eval-in-global-scope
-                                          beautify)
-                                      (catch :default o
-                                        (str o)))
-                                    (str "//Cannot load script: " script "\n"
-                                         "//Error: " http-status)))))))
+                                          beautify))
+                      (catch :default o
+                        (str o)))
+                    (str "//Cannot load script: " script "\n"
+                         "//Error: " http-status))))))
     c))
 
 

@@ -21,7 +21,7 @@
 
 (def placeholder-editor
   (str
-    ";; Write your clojurescript expression \n" 
+    ";; Write your clojurescript expression \n"
     ";; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."))
 
 (defn process-input [component s]
@@ -64,7 +64,7 @@
                       (let [input (get-in (om/props this) [:input :input])
                             editor (om/get-state this :editor)]
                         (when (and editor
-                                   (not= (dbg input )(dbg (get-value editor)))
+                                   (dbg (not= (dbg input )(dbg (get-value editor))))
                           (set-value editor input)))))
 
   (componentDidMount [this]

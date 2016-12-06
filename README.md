@@ -45,6 +45,7 @@ With the klipse plugin, the code is evaluated as you type...
 - python: evaluation is done with [Skulpt](http://www.skulpt.org/)
 - scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)
 
+Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a web page.
 
 # How does it work?
 

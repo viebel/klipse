@@ -38,7 +38,7 @@ With the klipse plugin, the code is evaluated as you type...
 
 # Supported languages
 
-- javascript: evaluation is done with the javascript function `eval`
+- javascript: evaluation is done with the javascript function `eval` and pretty printing of the result is done with [pretty-format](https://github.com/thejameskyle/pretty-format)
 - clojure[script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
 - ruby: evaluation is done with [Opal](http://opalrb.org/)
 - PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)

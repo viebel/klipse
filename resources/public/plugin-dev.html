@@ -76,6 +76,14 @@ margin: 10px auto 0px auto;
     (ns my.ns)
     (my-func 19)
 </code></pre>
+<h2> Printing </h2>
+
+<p>When calling `print`, the result should be appended to the result cell</p>
+<pre><code class="clojure">
+(println "abc")
+(println "def")
+(+ 1 2)
+</code></pre>
     <h2> Dealing with infinite loops </h2>
     <p> Infinite loops in user code are stopped after 1 second</p>
 <pre><code class="clojure">
@@ -230,12 +238,13 @@ function foo(){
 
      <h1> javascript </h1>
      <h2> all the js values should be printed properly </h2>
-<pre><code class="js">
+<pre><code class="eval-js">
 a = new Set();
 a.add(1);
 a.add(2);
 x = {a: 1,
      aa: a,
+     str: "Hello World\nand Klipse!",
      date: new Date(),
      rrr: /^aa[a]+$/,
      c: [1/0, NaN, Promise.resolve(1)],
@@ -278,7 +287,7 @@ x
         <code>console.log</code> outputs should be appended to the result cell
         <div class="eval-js">
             console.log("hello");
-            console.log("klipse");
+            console.log("klipse\nand cljs");
             console.log("in 1st snippet");
             2+3;
         </div>

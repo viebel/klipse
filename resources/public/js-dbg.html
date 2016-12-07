@@ -8,10 +8,18 @@
     </head>
     <body>
 <pre><code class="js">
-    x = {a: 1,
-         b: 2,
-    c: 1/0,
-d: Symbol("dd")}
+a = new Set();
+a.add(1);
+a.add(2);
+x = {a: 1,
+     aa: a,
+     date: new Date(),
+     rrr: /^aa[a]+$/,
+     c: [1/0, NaN, Promise.resolve(1)],
+     arr: new Int32Array(3),
+     d: Symbol("dd")}
+x.selfRef = x;
+x
 </code></pre>
 <br/>
 <pre><code class="js" data-gist-id="viebel/5cc67a97903f04036b569c0eb0436e5f">

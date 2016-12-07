@@ -24,7 +24,7 @@
 (defn beautify [js-exp]
   (try
     (-> js-exp
-        (js/pretty.pretty 2)
+        js/prettyFormat
         str)
     (catch js/Object o
       (str js-exp))))
@@ -53,7 +53,7 @@
 (def opts {:editor-in-mode "javascript"
            :editor-out-mode "javascript"
            :eval-fn str-eval-js-async
-           :external-scripts ["http://viebel.github.io/klipse/repo/js/pretty_print_javascript.js"]
+           :external-scripts ["http://viebel.github.io/klipse/repo/js/pretty_format.js"]
            :comment-str "//"})
 
 (register-mode "eval-javascript" "selector_eval_js" opts)

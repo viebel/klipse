@@ -229,6 +229,21 @@ function foo(){
     </code></pre>
 
      <h1> javascript </h1>
+     <h2> all the js values should be printed properly </h2>
+<pre><code class="js">
+a = new Set();
+a.add(1);
+a.add(2);
+x = {a: 1,
+     aa: a,
+     date: new Date(),
+     rrr: /^aa[a]+$/,
+     c: [1/0, NaN, Promise.resolve(1)],
+     arr: new Int32Array(3),
+     d: Symbol("dd")}
+x.selfRef = x;
+x
+</code></pre>
      <h2> evaluate snippet in a loop </h2>
      <p>This snippet should be evaluated only once</p>
     <pre><code class="eval-js">Date()</code></pre>

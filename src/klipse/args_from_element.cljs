@@ -38,6 +38,7 @@
 (defn eval-args-from-element [element {:keys [print-length beautify-strings eval-context]}]
   (let [my-dataset (aget element "dataset")
         static-fns (read-string-or-val (aget my-dataset "staticFns") false)
+        async-code? (read-string-or-val (aget my-dataset "asyncCode") false)
         verbose (read-string-or-val (aget my-dataset "verbose") false)
         compile-display-guard (read-string-or-val (aget my-dataset "compileDisplayGuard") false)
         eval-context (read-string-or-val (aget my-dataset "evalContext") eval-context)
@@ -47,6 +48,7 @@
         external-libs (string->array (or (aget my-dataset "externalLibs") nil))]
     {:static-fns static-fns
      :print-length print-length
+     :async-code? async-code?
      :external-libs external-libs
      :max-eval-duration max-eval-duration
      :context eval-context

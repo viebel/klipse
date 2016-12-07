@@ -7,6 +7,18 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
+<pre><code class="js" data-async-code="true">
+    setTimeout(function() {
+    console.log("1st snippet", 1/0, [1, 2, {a: 2}]);
+    }, 1000);
+</code></pre>
+<pre><code class="js" data-async-code="true">
+    setTimeout(function() {
+    console.log("2nd snippet");
+    console.log("2nd snippet - bb");
+    }, 500);
+</code></pre>
+
 <pre><code class="js">
 a = new Set();
 a.add(1);

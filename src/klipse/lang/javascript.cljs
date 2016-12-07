@@ -29,20 +29,30 @@
     (catch js/Object o
       (str js-exp))))
 
-(defn str-eval-js-async [exp {:keys [external-libs] :or {external-libs nil}}]
+(defn eval-with-logger!
+  "Evals an expression where the window.console object is lexically bound to an object that put the console output on a channel.
+  Returns the empty string.
+  It works fine also with asynchronous code."
+  [c exp]
+  (let [logger (fn [& args]
+                 (put! c (string/join " "  (map beautify args)))
+                 (put! c "\n"))
+        wrapped-exp (str "(function(console) {" exp "}(window.klipse_snippet_console))")]
+    (set! js/klipse_snippet_console #js {:log logger})
+    (eval-in-global-scope wrapped-exp)
+    ""))
+(defn str-eval-js-async [exp {:keys [async-code? external-libs] :or {async-code? false external-libs nil}}]
   (let [c (chan)]
     (go
       (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
         (try
           (put! c (if (= :ok status)
                     (try
-                      (my-with-redefs [js/console.log (fn[& args]
-                                                        (put! c (string/join " "  args))
-                                                        (put! c "\n"))]
-
-                                      (-> exp
-                                          eval-in-global-scope
-                                          beautify))
+                      (if async-code?
+                        (eval-with-logger! c exp)
+                        (-> exp
+                            eval-in-global-scope
+                            beautify))
                       (catch :default o
                         (str o)))
                     (str "//Cannot load script: " script "\n"

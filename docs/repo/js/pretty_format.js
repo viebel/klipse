@@ -1,4 +1,153 @@
 // https://github.com/thejameskyle/pretty-format
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.prettyFormat = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+const printString = require('./printString');
+
+const toString = Object.prototype.toString;
+const toISOString = Date.prototype.toISOString;
+const errorToString = Error.prototype.toString;
+const regExpToString = RegExp.prototype.toString;
+const symbolToString = Symbol.prototype.toString;
+
+const SYMBOL_REGEXP = /^Symbol\((.*)\)(.*)$/;
+const NEWLINE_REGEXP = /\n/ig;
+
+const getSymbols = Object.getOwnPropertySymbols || (obj => []);
+
+function isToStringedArrayType(toStringed) {
+  return (
+    toStringed === '[object Array]' ||
+    toStringed === '[object ArrayBuffer]' ||
+    toStringed === '[object DataView]' ||
+    toStringed === '[object Float32Array]' ||
+    toStringed === '[object Float64Array]' ||
+    toStringed === '[object Int8Array]' ||
+    toStringed === '[object Int16Array]' ||
+    toStringed === '[object Int32Array]' ||
+    toStringed === '[object Uint8Array]' ||
+    toStringed === '[object Uint8ClampedArray]' ||
+    toStringed === '[object Uint16Array]' ||
+    toStringed === '[object Uint32Array]'
+  );
+}
+
+function printNumber(val) {
+  if (val != +val) return 'NaN';
+  const isNegativeZero = val === 0 && (1 / val) < 0;
+  return isNegativeZero ? '-0' : '' + val;
+}
+
+function printFunction(val, printFunctionName) {
+  if (!printFunctionName) {
+    return '[Function]';
+  } else if (val.name === '') {
+    return '[Function anonymous]'
+  } else {
+    return '[Function ' + val.name + ']';
+  }
+}
+
+function printSymbol(val) {
+  return symbolToString.call(val).replace(SYMBOL_REGEXP, 'Symbol($1)');
+}
+
+function printError(val) {
+  return '[' + errorToString.call(val) + ']';
+}
+
+function printBasicValue(val, printFunctionName, escapeRegex) {
+  if (val === true || val === false) return '' + val;
+  if (val === undefined) return 'undefined';
+  if (val === null) return 'null';
+
+  const typeOf = typeof val;
+
+  if (typeOf === 'number') return printNumber(val);
+  if (typeOf === 'string') return '"' + printString(val) + '"';
+  if (typeOf === 'function') return printFunction(val, printFunctionName);
+  if (typeOf === 'symbol') return printSymbol(val);
+
+  const toStringed = toString.call(val);
+
+  if (toStringed === '[object WeakMap]') return 'WeakMap {}';
+  if (toStringed === '[object WeakSet]') return 'WeakSet {}';
+  if (toStringed === '[object Function]' || toStringed === '[object GeneratorFunction]') return printFunction(val, printFunctionName);
+  if (toStringed === '[object Symbol]') return printSymbol(val);
+  if (toStringed === '[object Date]') return toISOString.call(val);
+  if (toStringed === '[object Error]') return printError(val);
+  if (toStringed === '[object RegExp]') {
+    if (escapeRegex) {
+      return printString(regExpToString.call(val));
+    }
+    return regExpToString.call(val);
+  };
+  if (toStringed === '[object Arguments]' && val.length === 0) return 'Arguments []';
+  if (isToStringedArrayType(toStringed) && val.length === 0) return val.constructor.name + ' []';
+
+  if (val instanceof Error) return printError(val);
+
+  return false;
+}
+
+function printList(list, indent, prevIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex) {
+  let body = '';
+
+  if (list.length) {
+    body += edgeSpacing;
+
+    const innerIndent = prevIndent + indent;
+
+    for (let i = 0; i < list.length; i++) {
+      body += innerIndent + print(list[i], indent, innerIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex);
+
+      if (i < list.length - 1) {
+        body += ',' + spacing;
+      }
+    }
+
+    body += (min ? '' : ',') + edgeSpacing + prevIndent;
+  }
+
+  return '[' + body + ']';
+}
+
+function printArguments(val, indent, prevIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex) {
+  return (min ? '' : 'Arguments ') + printList(val, indent, prevIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex);
+}
+
+function printArray(val, indent, prevIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex) {
+  return (min ? '' : val.constructor.name + ' ') + printList(val, indent, prevIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex);
+}
+
+function printMap(val, indent, prevIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex) {
+  let result = 'Map {';
+  const iterator = val.entries();
+  let current = iterator.next();
+
+  if (!current.done) {
+    result += edgeSpacing;
+
+    const innerIndent = prevIndent + indent;
+
+    while (!current.done) {
+      const key = print(current.value[0], indent, innerIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex);
+      const value = print(current.value[1], indent, innerIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex);
+
+      result += innerIndent + key + ' => ' + value;
+
+      current = iterator.next();
+
+      if (!current.done) {
+        result += ',' + spacing;
+      }
+    }
+
+    result += (min ? '' : ',') + edgeSpacing + prevIndent;
+  }
+
+  return result + '}';
+}
 
 function printObject(val, indent, prevIndent, spacing, edgeSpacing, refs, maxDepth, currentDepth, plugins, min, callToJSON, printFunctionName, escapeRegex) {
   const constructor = min ? '' : (val.constructor ?  val.constructor.name + ' ' : 'Object ');

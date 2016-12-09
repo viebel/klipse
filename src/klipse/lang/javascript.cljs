@@ -53,7 +53,7 @@
 (def opts {:editor-in-mode "javascript"
            :editor-out-mode "javascript"
            :eval-fn str-eval-js-async
-           :external-scripts ["http://viebel.github.io/klipse/repo/js/pretty_format.js"]
+           :external-scripts ["https://viebel.github.io/klipse/repo/js/pretty_format.js"]
            :comment-str "//"})
 
 (register-mode "eval-javascript" "selector_eval_js" opts)

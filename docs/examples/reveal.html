@@ -1,0 +1,105 @@
+
+<head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.3.0/css/reveal.css">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+ 
+<section>
+        <h1>This is a template of a presentation using reveal and featuring klipse interactive code snippets</h1>
+        <br/>
+        <p>There are a couple of languages available in Klipse</p>
+</section>
+
+
+    <section>
+        <div class="slide">
+            1. Javascript
+<iframe height="100px" width="100%" srcdoc="
+    <pre><code class=&quot;klipse&quot;>
+                function foo(x) { return &quot;hello &quot; + x; }
+                foo(&quot;klipse&quot;)
+    </code></pre>
+    <link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://storage.googleapis.com/app.klipse.tech/css/codemirror.css&quot;>
+    <script>
+      window.klipse_settings = {
+          selector_eval_js: &quot;.klipse&quot;
+      };
+    </script>
+    <script src=&quot;https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js&quot;></script>">
+</iframe>
+</div>
+</section>
+<section>
+        <div class="slide">
+            2. Clojure
+
+<iframe height="100px" width="100%" srcdoc="
+    <pre><code class=&quot;klipse&quot;>
+                (map inc [1 2 3])
+    </code></pre>
+    <link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://storage.googleapis.com/app.klipse.tech/css/codemirror.css&quot;>
+    <script>
+      window.klipse_settings = {
+          selector: &quot;.klipse&quot;
+      };
+    </script>
+    <script src=&quot;https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js&quot;></script>
+">
+</iframe>
+
+        </div>
+</section>
+<section>
+            <h1> 3. Ruby </h1>
+        <div class="slide">
+<iframe height="100px" width="100%" srcdoc="
+    <pre><code class=&quot;klipse&quot;>
+        [1,2]*5
+    </code></pre>
+    <link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://storage.googleapis.com/app.klipse.tech/css/codemirror.css&quot;>
+    <script>
+      window.klipse_settings = {
+          selector_eval_ruby: &quot;.klipse&quot;
+      };
+    </script>
+    <script src=&quot;https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js&quot;></script>">
+</iframe>
+        </div>
+</section>
+<section>
+        <div class="slide">
+            4. Python
+<iframe height="500px" width="100%" srcdoc="
+    <pre><code class=&quot;klipse&quot;>
+def factorial(n):
+  if n == 0:
+    return 1
+  else:
+    return n * factorial(n - 1)
+
+print(factorial(5))
+    </code></pre>
+    <link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://storage.googleapis.com/app.klipse.tech/css/codemirror.css&quot;>
+    <script>
+      window.klipse_settings = {
+          selector_eval_python_client: &quot;.klipse&quot;
+      };
+    </script>
+    <script src=&quot;https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js&quot;></script>">
+</iframe>
+
+        </div>
+</section>
+</div>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.3.0/js/reveal.js"></script>
+
+    <script>
+      Reveal.initialize({});
+    </script>
+
+</body>

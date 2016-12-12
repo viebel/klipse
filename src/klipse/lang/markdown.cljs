@@ -1,23 +1,16 @@
 (ns klipse.lang.markdown
   (:require-macros
-    [cljs.core.async.macros :refer [go go-loop]])
+    [cljs.core.async.macros :refer [go]])
   (:require 
-    ;cljsjs.codemirror.mode.markdown
-    cljsjs.codemirror.mode.xml
-    cljsjs.codemirror.mode.javascript
-    cljsjs.codemirror.mode.css
-    cljsjs.codemirror.mode.htmlmixed
-    cljsjs.markdown
-    [klipse.common.registry :refer [register-mode]]))
-
+    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
 (defn str-eval-async [exp _]
   (go
     (.toHTML js/markdown exp)))
 
-
 (def opts {:editor-in-mode "markdown"
            :editor-out-mode "htmlmixed"
+           :external-scripts ["https://viebel.github.io/klipse/repo/js/markdown.min.js?" (codemirror-mode-src "xml") (codemirror-mode-src "htmlmixed") (codemirror-mode-src "javascript") (codemirror-mode-src "css")]
            :eval-fn str-eval-async
            :comment-str "[comment]: "})
 

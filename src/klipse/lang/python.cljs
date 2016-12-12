@@ -3,9 +3,8 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    cljsjs.codemirror.mode.python
     [cljs.core.async :refer [<! put! chan]]
-    [klipse.common.registry :refer [register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
 (defn builtin-read [x]
   (when (or (nil? (? js/Sk.builtinFiles))
@@ -31,7 +30,7 @@
            :editor-out-mode "python"
            :eval-fn str-eval-async
            :beautify? false
-           :external-scripts [ "https://viebel.github.io/klipse/repo/js/skulpt.min.js" "https://viebel.github.io/klipse/repo/js/skulpt-stdlib.js"]
+           :external-scripts [(codemirror-mode-src "python") "https://viebel.github.io/klipse/repo/js/skulpt.min.js" "https://viebel.github.io/klipse/repo/js/skulpt-stdlib.js"]
            :comment-str "#"})
 
 (register-mode "eval-python-client" "selector_eval_python_client" opts)

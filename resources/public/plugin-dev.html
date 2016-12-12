@@ -310,7 +310,7 @@ x
         <br/>
      <body>
 <h1> React and jsx </h1>
-<pre><code class="js" data-external-libs="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js, https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js">
+<pre><code class="eval-js" data-external-libs="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js, https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js">
     Object.keys(React)
 </code></pre>
 <pre><code class="transpile-jsx">
@@ -337,7 +337,7 @@ class ShoppingList extends React.Component {
 }
 window.ShoppingList = ShoppingList
 </code></pre>
-<code><pre class="js">
+<code><pre class="eval-js">
 ShoppingList
 </code></pre>
  <h1> PHP </h1>
@@ -478,6 +478,22 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
             selector_transpile_jsx: '.transpile-jsx',
         };
         </script>
-        <script src="plugin/js/klipse_plugin.js"></script>
+        <script>
+{
+let addScript = (url) => {
+    var s = document.createElement('script');
+    s.src = url;
+    document.body.appendChild(s);
+}
+    if(window.location.search.match(/dev=1/)) {
+        alert("Remember to test advanced compilation mode!");
+        addScript("plugin/js/klipse_plugin.js");
+    } else {
+        addScript("plugin_prod/js/klipse_plugin.min.js");
+    }
+}
+
+
+        </script>
     </body>
 </html>

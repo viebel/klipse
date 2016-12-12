@@ -8,8 +8,15 @@
     </head>
     <body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js"></script>
+<pre><code class="js" data-external-libs="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js, https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js">
+    Object.keys(React)
+</code></pre>
+<pre><code class="transpile-jsx">
+      &lt;div className="shopping-list"&gt;
+        &lt;h1&gt;Shopping List for {this.props.name}&lt;/h1&gt;
+      &lt;/div&gt;
+</code></pre>
+
 <pre><code class="jsx">
 class ShoppingList extends React.Component {
   render() {
@@ -35,6 +42,7 @@ ShoppingList
         window.klipse_settings = {
             selector_eval_js: '.js',
             selector_jsx: '.jsx',
+            selector_transpile_jsx: '.transpile-jsx',
         };
         </script>
         <script src="/lib/mirror_extensions.js"></script>

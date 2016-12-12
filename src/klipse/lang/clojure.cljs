@@ -6,14 +6,13 @@
   (:require
     klipse.lang.clojure.bundled-namespaces
     gadjett.core-fn
-    cljsjs.codemirror.mode.clojure
     [rewrite-clj.node :as n]
     [rewrite-clj.parser :as p]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
     [cljs.analyzer :as ana]
     [cljs.compiler :as compiler]
-    [klipse.common.registry :refer [register-mode]]
+    [klipse.common.registry :refer [codemirror-mode-src register-mode]]
     [klipse.lang.clojure.io :as io]
     [cljs.core.async :refer [timeout chan put! <!]]
     [cljs.env :as env]
@@ -183,10 +182,12 @@
 (def eval-opts {:editor-in-mode "clojure"
                   :editor-out-mode "clojure"
                   :eval-fn str-eval-async
+                  :external-scripts [(codemirror-mode-src "clojure")]
                   :comment-str ";"})
 
 (def compile-opts {:editor-in-mode "clojure"
                   :editor-out-mode "javascript"
+                  :external-scripts [(codemirror-mode-src "clojure")]
                   :eval-fn str-compile-async
                   :comment-str ";"})
 

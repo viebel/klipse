@@ -4,10 +4,9 @@
     [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    cljsjs.codemirror.mode.sql
     [klipse.utils :refer [runonce runonce-async]]
     [cljs.core.async :refer [<! timeout chan put!]]
-    [klipse.common.registry :refer [register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
 
 (def db nil)
@@ -27,7 +26,7 @@
 
 (def opts {:editor-in-mode "text/x-sql"
            :eval-fn str-eval-async
-           :external-scripts ["https://viebel.github.io/klipse/repo/js/sql-formatter.min.js" "https://viebel.github.io/klipse/repo/js/sql.js" "https://gist.githubusercontent.com/viebel/fc86366093c27aca0adc103b1d20190d/raw"]
+           :external-scripts [(codemirror-mode-src "sql") "https://viebel.github.io/klipse/repo/js/sql-formatter.min.js" "https://viebel.github.io/klipse/repo/js/sql.js" "https://gist.githubusercontent.com/viebel/fc86366093c27aca0adc103b1d20190d/raw"]
            :comment-str "--"})
 
 (register-mode "eval-sql" "selector_sql" opts)

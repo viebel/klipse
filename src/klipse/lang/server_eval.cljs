@@ -3,13 +3,10 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    cljsjs.codemirror.mode.python
-    cljsjs.codemirror.mode.clike
-    cljsjs.codemirror.mode.go
     [klipse.lang.replit :refer [connect-and-evaluate]]
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan <! >! put!]]
-    [klipse.common.registry :refer [register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
 (when (? js/window.ReplitClient)
   (def min-eval-idle-msec 3000); throttle to protect the server
@@ -19,6 +16,7 @@
      :opts {:editor-in-mode "python"
             :editor-out-mode "python"
             :replit-language "python3"
+            :external-scripts [(codemirror-mode-src "python")]
             :comment-str "#"
             :beautify? false}})
 
@@ -27,6 +25,7 @@
      :name "eval-csharp"
      :opts {:editor-in-mode "text/x-csharp"
             :editor-out-mode "text/x-csharp"
+            :external-scripts [(codemirror-mode-src "clike")]
             :replit-language "csharp"
             :comment-str "#"}})
 
@@ -35,6 +34,7 @@
      :name "eval-go"
      :opts {:editor-in-mode "go"
             :editor-out-mode "go"
+            :external-scripts [(codemirror-mode-src "go")]
             :replit-language "go"
             :comment-str "//"}})
 

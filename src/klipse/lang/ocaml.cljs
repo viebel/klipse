@@ -44,5 +44,5 @@
                       ; oCaml does not know a single line comment
                       })
 
-(register-mode "eval-ocaml" "selector_ocaml" eval-opts)
-(register-mode "transpile-ocaml" "selector_transpile_jsx" transpile-ocaml)
+(register-mode "eval-ocaml" "selector_eval_ocaml" eval-opts)
+(register-mode "transpile-ocaml" "selector_transpile_ocaml" transpile-ocaml)

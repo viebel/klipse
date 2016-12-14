@@ -33,14 +33,14 @@
 (def eval-opts {:editor-in-mode "text/ocaml"
                 :editor-out-mode "javascript"
                 :eval-fn eval-ocaml
-                :external-csripts [(codemirror-mode-src "ocaml") "http://bloomberg.github.io/bucklescript/js-demo/exports.js"]
+                :external-scripts [(codemirror-mode-src "ocaml") "https://viebel.github.io/klipse/repo/js/ocaml-compiler.js"]
                 ; oCaml does not know a single line comment
                 })
 
 (def transpile-ocaml {:editor-in-mode "text/ocaml"
                       :editor-out-mode "javascript"
                       :eval-fn transpile-ocaml
-                      :external-scripts [(codemirror-mode-src "ocaml") "http://bloomberg.github.io/bucklescript/js-demo/exports.js"]
+                      :external-scripts [(codemirror-mode-src "ocaml") "https://viebel.github.io/klipse/repo/js/ocaml-compiler.js"]
                       ; oCaml does not know a single line comment
                       })
 

@@ -13,6 +13,7 @@
             klipse.lang.html
             klipse.lang.server-eval
             klipse.lang.clojure
+            klipse.lang.ocaml
             [klipse.plugin :as plugin]))
 
 (js/console.info "settings: " (aget js/window "klipse_settings"))

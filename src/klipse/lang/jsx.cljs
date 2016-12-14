@@ -39,7 +39,7 @@
 (def transpile-opts {:editor-in-mode "text/jsx"
            :editor-out-mode "javascript"
            :eval-fn transpile-jsx
-           :external-scripts [(codemirror-mode-src "xml") (codemirror-mode-src "javascript") (codemirror-mode-src "jsx")]
+           :external-scripts [(codemirror-mode-src "xml") (codemirror-mode-src "javascript") (codemirror-mode-src "jsx") "https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.18.1/babel.min.js"]
            :comment-str "//"})
 
 (register-mode "eval-jsx" "selector_jsx" eval-opts)

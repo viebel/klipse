@@ -2,7 +2,7 @@
 
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
-  font-family: Fira Code;
+  font-family: monospace;
   height: 100%;
   color: black;
   border: solid 1px #90B4FE;

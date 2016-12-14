@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+    <div class="brainfuck">
+        +.
+        +++.
+        +++.
+        +++++.
+    </div>
+     <div class="brainfuck-txt">
+         ++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.
+
+    </div>
+       <script>
+        window.klipse_settings = {
+            selector_brainfuck: '.brainfuck',
+            selector_brainfuck_txt: '.brainfuck-txt',
+        };
+        </script>
+        <script src="/lib/mirror_extensions.js"></script>
+        <script src="/fig/js/klipse.fig.js"></script>
+    </body>
+</html>

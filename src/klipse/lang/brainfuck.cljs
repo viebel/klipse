@@ -34,13 +34,13 @@
 (def eval-opts {:editor-in-mode "text/x-brainfuck"
                 :editor-out-mode "javascript"
                 :eval-fn eval-brainfuck
-                :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
+;                :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
                 :comment-str ""})
 
 (def eval-txt-opts {:editor-in-mode "text/x-brainfuck"
                     :editor-out-mode "javascript"
                     :eval-fn eval-brainfuck-txt
-                    :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
+;                    :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
                     :comment-str ""})
 
 

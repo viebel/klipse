@@ -8,26 +8,26 @@
 
 
 (defn bf [x]
-  (!> js/window.brainfuck x))
+  (try
+    [:ok (-> (!> js/window.brainfuck x)
+             js/JSON.stringify)]
+    (catch js/Object o
+      [:error (str o)])))
 
 (defn bf-txt [x]
   (!> js/brainfuck.text x))
 
 (defn eval-brainfuck [exp _]
-  (go
-    (try
-      (-> exp
-          bf
-          js/JSON.stringify)
-      (catch :default o
-        (str o)))))
+ (go
+    (let [[status res] (bf exp)]
+      res)))
 
 (defn eval-brainfuck-txt [exp _]
   (go
     (try
       (-> exp
           bf-txt)
-      (catch :default o
+      (catch js/Object o
         (str o)))))
 
 

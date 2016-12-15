@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.3.0/css/reveal.css">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+ 
+<section>
+        <h1>This is a template of a presentation using reveal and featuring klipse interactive code snippets</h1>
+        <br/>
+        <p>There are a couple of languages available in Klipse</p>
+    <test-klipse-snippet>
+    </test-klipse-snippet>
+</section>
+
+<section>
+            1. Javascript
+<js-klipse-snippet data-language="javascript">
+</klipse-snippet>
+</section>
+<section>
+2. Clojure
+<klipse-snippet data-language="clojure">
+    (map inc [1 2 3])
+</section>
+<section>
+3. Ruby
+<klipse-snippet data-language="ruby">
+[1,2]*5
+</section>
+
+<section>
+4. Python
+<klipse-snippet data-language="python">
+def factorial(n):
+  if n == 0:
+    return 1
+  else:
+    return n * factorial(n - 1)
+
+print(factorial(5))
+</section>
+
+<section>
+5. Scheme
+<klipse-snippet data-language="scheme">
+    (define x 89)
+    (* x 100)
+</section>
+
+</div>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.3.0/js/reveal.js"></script>
+
+    <script>
+      Reveal.initialize({
+                  keyboard: false,
+              });
+    </script>
+
+    <script>
+        window.klipse_settings = {
+            selector_eval_js: '.js',
+        };
+    </script>
+    <script>
+e = document.querySelectorAll('test-klipse-snippet')[0];
+ee = e.attachShadow({mode: 'open'});
+css = `<style>
+@import './css/codemirror.css';
+    :host {
+              all: initial;
+            }
+
+                    </style>
+                    <div class="js">2 +3 </div>`
+            ee.innerHTML = css ;
+            klipse_elements = ee.querySelectorAll(".js");
+            console.log(klipse_elements);
+
+    </script>
+    <script src="/lib/mirror_extensions.js"></script>
+    <script src="/fig/js/klipse.fig.js"></script>
+    </script>
+</body>

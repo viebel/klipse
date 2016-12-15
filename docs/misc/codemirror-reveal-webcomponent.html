@@ -19,7 +19,7 @@
  
 <section>
 <klipse-snippet id="code">
-</klipse-snippet
+</klipse-snippet>
 </section>
 </div>
 </div>
@@ -29,26 +29,43 @@
     <script>
       Reveal.initialize({});
     </script>
-   <script>
-  var elem = document.getElementById('code');
-ee = elem.attachShadow({mode: 'open'});
-css = `<style>
+    <script>
+    customElements.define('klipse-snippet', class extends HTMLElement {
+  constructor() {
+    super(); 
 
+    // Attach a shadow root to <fancy-tabs>.
+    const shadowRoot = this.attachShadow({mode: 'open'});
+    shadowRoot.innerHTML = `
+      <style>
 @import "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css";
-    :host {
-          all: initial;
-        }
-html, body,  div,  span,  applet,  object,  iframe,  h1,  h2,  h3,  h4,  h5,  h6,  p,  blockquote,  pre,  a,  abbr,  acronym,  address,  big,  cite,  code,  del,  dfn,  em,  img,  ins,  kbd,  q,  s,  samp,  small,  strike,  strong,  sub,  sup,  tt,  var,  b,  u,  center,  dl,  dt,  dd,  ol,  ul,  li,  fieldset,  form,  label,  legend,  table,  caption,  tbody,  tfoot,  thead,  tr,  th,  td,  article,  aside,  canvas,  details,  embed,  figure,  figcaption,  footer,  header,  hgroup,  menu,  nav,  output,  ruby,  section,  summary,  time,  mark,  audio,  video {
-        all: initial;
-    }
-    </style>
+:host {
+ all: initial;
+ }
+
+.reveal div {
+ all:initial;
+ text-align: right;
+}
+.reveal section {
+ all:initial;
+}
+
+.reveal .slides {
+    all:initial;
+}
+.reveal span {
+ all:initial;
+}
+ </style> 
     <textarea id="shadow-code">(map inc [1 2 3])</textarea>`
-    ee.innerHTML = css ;
-    console.log(ee);
-    </script>
-  
-<script>
-  var elem = ee.getElementById('shadow-code');
+    ;
+  }
+});
+</script>
+   <script>
+  var elem = document.querySelector('klipse-snippet').shadowRoot.querySelector('textarea');
+
   var editor = CodeMirror.fromTextArea(elem, {
     lineNumbers: true,
     mode: 'clojure'

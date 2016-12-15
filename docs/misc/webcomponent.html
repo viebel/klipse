@@ -1,0 +1,46 @@
+
+<head>
+  <style type="text/css">
+  .reveal .CodeMirror-lines {
+    text-align: left !important;
+}
+ </style>
+</head>
+<body>
+ 
+<style>
+p.hello {
+    color: red;
+}
+div {
+    color: inherit;
+}
+span {
+    color: green;
+}
+
+</style>
+<p class="hello">
+<div class="hello">
+Hello div
+</div>
+</p>
+<klipse-snippet id="code">
+</klipse-snippet>
+
+    <script>
+    customElements.define('klipse-snippet', class extends HTMLElement {
+  constructor() {
+    super(); 
+
+    // Attach a shadow root to <fancy-tabs>.
+    const shadowRoot = this.attachShadow({mode: 'open'});
+    shadowRoot.innerHTML = `
+ <div class="hello">Hello Web Component div
+ <span> Hello Web Component span</span>
+ </div>`
+    ;
+  }
+});
+</script>
+</body>

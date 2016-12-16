@@ -7,15 +7,35 @@
     [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
 
+(defn to-html [{:keys [output data pointer text]}]
+  (str "<table>
+         <tr>
+           <td>Output</td><td>" output "</td>
+         </tr>
+         <tr>
+           <td>Data</td><td>" data "</td>
+         </tr>
+         <tr>
+           <td>Pointer</td><td>" pointer "</td>
+         </tr>
+         <tr>
+           <td>Text</td><td> " text "</td>
+         </tr>
+       </table>"))
+
 (defn bf [x]
   (try
     [:ok (-> (!> js/window.brainfuck x)
-             js/JSON.stringify)]
-    (catch js/Object o
+             (js->clj :keywordize-keys true)
+             to-html)]
+    (catch :default o
       [:error (str o)])))
 
 (defn bf-txt [x]
-  (!> js/brainfuck.text x))
+  (try
+    [:ok (!> js/brainfuck.text x)]
+    (catch :default o
+      [:error (str o)])))
 
 (defn eval-brainfuck [exp _]
  (go
@@ -24,12 +44,8 @@
 
 (defn eval-brainfuck-txt [exp _]
   (go
-    (try
-      (-> exp
-          bf-txt)
-      (catch js/Object o
-        (str o)))))
-
+    (let [[status res] (bf-txt exp)]
+      res)))
 
 (def eval-opts {:editor-in-mode "text/x-brainfuck"
                 :editor-out-mode "javascript"

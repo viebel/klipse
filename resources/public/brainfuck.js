@@ -8,7 +8,7 @@ var toText = function(arr) {
 	}).join('');
 };
 
-var brainfuck = function(source, input) {
+var brainfuck = function(source, input, maxIterations) {
 	var output = [];
 	var input_cur = 0;
 	var source_cur = 0;
@@ -18,7 +18,7 @@ var brainfuck = function(source, input) {
 	var pointers = [];
 	var search = 0;
     var numIterations = 0;
-    var MAX_ITERATIONS = 500000;
+    var MAX_ITERATIONS = maxIterations || 500000;
 	data[0] = 0;
 
 	reader: while ( source_cur < source.length ) {
@@ -99,7 +99,7 @@ var brainfuck = function(source, input) {
 	        text: toText(output),};
 };
 
-var interface = function(source, input) {
+var interface = function(source, input, maxIterations) {
 	var a_source = source.replace(/[^\[\].,><+-]/g, '').split('');
 	var a_input = !input ? [] : input.split('').map(function(char) {
 		return char.charCodeAt(0);
@@ -107,11 +107,11 @@ var interface = function(source, input) {
 		return cc > 0 && cc < 256;
 	});
 
-	return brainfuck(a_source, a_input);
+	return brainfuck(a_source, a_input, maxIterations);
 };
 
-interface.text = function(source, input) {
-	return toText(interface(source, input).output);
+interface.text = function(source, input, maxIterations) {
+	return interface(source, input, maxIterations).text;
 };
 
 module.exports = interface;

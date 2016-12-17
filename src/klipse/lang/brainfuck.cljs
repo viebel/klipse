@@ -4,7 +4,7 @@
     [purnam.core :refer [!>]]
     [cljs.core.async.macros :refer [go]])
   (:require
-    [clojure.string :refer [join]]
+    [clojure.string :refer [split-lines join]]
     [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
 (defn boldify-head [data head]
@@ -29,9 +29,14 @@
 
 (defn bf [x]
   (try
-    [:ok (-> (!> js/window.brainfuck x)
-             (js->clj :keywordize-keys true)
-             to-html)]
+    (let [input (dbg (->> x
+                    split-lines
+                    first
+                    (re-matches #"\[in:\s*(.*)\]")
+                    second))]
+      [:ok (-> (!> js/window.brainfuck x input)
+               (js->clj :keywordize-keys true)
+               to-html)])
     (catch :default o
       [:error (str o)])))
 
@@ -60,7 +65,7 @@
 (def eval-txt-opts {:editor-in-mode "text/x-brainfuck"
                     :editor-out-mode "javascript"
                     :eval-fn eval-brainfuck-txt
-;                    :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
+                    :external-scripts [(codemirror-mode-src "brainfuck") #_"https://viebel.github.io/klipse/repo/js/brainfuck.js"]
                     :comment-str ""})
 
 

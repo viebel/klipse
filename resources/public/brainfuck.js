@@ -18,7 +18,7 @@ var brainfuck = function(source, input, maxIterations) {
 	var pointers = [];
 	var search = 0;
     var numIterations = 0;
-    var MAX_ITERATIONS = maxIterations || 500000;
+    var MAX_ITERATIONS = maxIterations || 1e7;
 	data[0] = 0;
 
 	reader: while ( source_cur < source.length ) {

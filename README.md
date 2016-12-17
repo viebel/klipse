@@ -151,6 +151,16 @@ window.klipse_settings = {
           selector: '.language-klipse', //selector for clojure evaluation snippets
           selector_eval_js: '.language-klipse-eval-js', // selector for clojure transpilation snippets
           selector_eval_ruby: '.language-klipse-eval-ruby' //selector for ruby evaluation snippets
+          // other available selectors:
+          selector_jsx: '.language-klipse-jsx',
+          selector_transpile_jsx: '.language-transpile-jsx',
+          selector_eval_php: '.language-klipse-eval-php',
+          selector_eval_markdown: '.language-klipse-markdown',
+          selector_eval_lambdaway: '.language-klipse-lambdaway',
+          selector_eval_python_client: '.language-klipse-python',
+          selector_eval_html: '.language-klipse-html',
+          selector_sql: '.language-klipse-sql',
+          selector_eval_scheme: '.language-klipse-scheme',
 };
 
 ```

@@ -4,19 +4,23 @@
     [purnam.core :refer [!>]]
     [cljs.core.async.macros :refer [go]])
   (:require
+    [clojure.string :refer [join]]
     [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
+(defn boldify-head [data head]
+  (let [head-value (str "<strong>" (nth data head) "</strong>")]
+    (assoc data head head-value)))
 
 (defn to-html [{:keys [output data pointer text]}]
   (str "<table>
          <tr>
-           <td>Output</td><td>" output "</td>
+           <td>Output</td><td>" (join " " output) "</td>
          </tr>
          <tr>
-           <td>Data</td><td>" data "</td>
+           <td>Data</td><td>" (join " " (boldify-head data pointer)) "</td>
          </tr>
          <tr>
-           <td>Pointer</td><td>" pointer "</td>
+           <td>Head</td><td>" pointer "</td>
          </tr>
          <tr>
            <td>Text</td><td> " text "</td>

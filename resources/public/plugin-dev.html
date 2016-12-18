@@ -453,6 +453,34 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
     &lt;img id="amelie" src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" height="150" title="Amélie Poulain" style="box-shadow:0 0 8px black; border:1px solid white; -webkit-transform:rotate(-5deg); -moz-transform:rotate(-5deg); transform:rotate(-5deg);"&gt;&lt;/img&gt;
     </div>
 
+<h1> BrainFuck </h1>
+<p> BF </p>
+    <div class="brainfuck">
+        +.
+        +++.
+        +++.
+        +++++.
+    </div>
+<br>
+<p> Multiplication </p>
+    <div class="brainfuck">
+        +++>+++++&lt; 
+        [>>>+>+&lt;&lt;&lt;&lt;-]>>>>[&lt;&lt;&lt;&lt;+>>>>-]&lt;
+        [&lt;&lt;
+          [>>>+>+&lt;&lt;&lt;&lt;-]>>>>[&lt;&lt;&lt;&lt;+>>>>-]&lt;
+            [&lt;&lt;+>>-]
+            &lt;-]
+            &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+            .>.>.>.
+    </div>
+ 
+    <p> Hello World!</p>
+    <div class="brainfuck-txt">
+        ++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]&gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;.+++.------.--------.&gt;+.&gt;
+    </div>
+  <p>Eval</p>
+ <div class="brainfuck" data-gist-id="viebel/9d801a43100c6a88669b641501c2929c"></div>
+     
 
 <script>
         window.klipse_settings = {
@@ -473,6 +501,8 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
             selector_sql: '.sql',
             selector_eval_scheme: '.scheme',
             selector_eval_ruby: '.eval-ruby',
+            selector_brainfuck: '.brainfuck',
+            selector_brainfuck_txt: '.brainfuck-txt',
             selector_js: '.clojure-js',
             selector_jsx: '.jsx',
             selector_transpile_jsx: '.transpile-jsx',

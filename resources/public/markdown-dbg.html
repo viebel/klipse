@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+<h1> Markdown </h1>
+<h2> HTML transpilation</h2>
+<code class="eval-markdown">
+# This is a title
+`clojure` rocks!
+</code>
+       <br/>
+
+<h2> HTML rendering</h2>
+<code class="eval-markdown" data-editor-type="html">
+# This is a title
+`clojure` rocks!
+</code>
+<br/>
+
+
+      <script>
+        window.klipse_settings = {
+            selector_eval_markdown: '.eval-markdown',
+        };
+        </script>
+        <script src="/lib/mirror_extensions.js"></script>
+        <script src="/fig/js/klipse.fig.js"></script>
+    </body>
+</html>

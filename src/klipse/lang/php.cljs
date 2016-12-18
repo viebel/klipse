@@ -3,14 +3,9 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    cljsjs.codemirror.mode.xml
-    cljsjs.codemirror.mode.javascript
-    cljsjs.codemirror.mode.css
-    cljsjs.codemirror.mode.clike
-    cljsjs.codemirror.mode.php
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<! timeout chan put!]]
-    [klipse.common.registry :refer [register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
 
 (def load-php-engine
@@ -35,7 +30,7 @@
 (def opts {:editor-in-mode "text/x-php"
            :editor-out-mode "text/x-php"
            :eval-fn str-eval-async
-           :external-scripts "https://viebel.github.io/klipse/repo/js/uniter.js?r"
+           :external-scripts [(codemirror-mode-src "xml") (codemirror-mode-src "clike") (codemirror-mode-src "php") (codemirror-mode-src "javascript") (codemirror-mode-src "css") "https://viebel.github.io/klipse/repo/js/uniter.js?r"]
            :comment-str "//"})
 
 (register-mode "eval-php" "selector_eval_php" opts)

@@ -3,10 +3,9 @@
   (:require-macros
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    cljsjs.codemirror.mode.clike
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [chan <! >! put!]]
-    [klipse.common.registry :refer [register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
 (def token #js {:msg_mac "RoyDczufgCsZycN3VFWJwm66e/eL4pSK19spUhmuzBU="
                 :time_created 1468499323000})
@@ -31,6 +30,7 @@
 
 (def opts {:editor-in-mode "clike"
            :editor-out-mode "clike"
+           :external-scripts [(codemirror-mode-src "clike")]
            :eval-fn str-eval-async
            :comment-str "#"})
 

@@ -8,10 +8,18 @@
     </head>
     <body>
 <pre><code class="js" data-async-code="true">
+    function a () { return "a";}
+    window.a = a;
     setTimeout(function() {
     console.log("1st snippet", 1/0, [1, 2, {a: 2}]);
     }, 1000);
 </code></pre>
+<pre><code class="js" data-async-code="true">
+    setTimeout(function() {
+    console.log("1st snippet", 1/0, [1, 2, {a: a()}]);
+    }, 1000);
+</code></pre>
+
 <pre><code class="js" data-async-code="true">
     setTimeout(function() {
     console.log("2nd snippet");
@@ -19,6 +27,10 @@
     }, 500);
 </code></pre>
 
+
+<pre><code class="js">
+console.log("inside");
+</code></pre>
 <pre><code class="js">
 a = new Set();
 a.add(1);

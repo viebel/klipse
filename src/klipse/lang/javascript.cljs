@@ -29,14 +29,17 @@
     (catch js/Object o
       (str js-exp))))
 
+(defn append-to-chan [c]
+  (fn [& args]
+    (put! c (string/join " "  (map beautify args)))
+    (put! c "\n")))
+
 (defn eval-with-logger!
-  "Evals an expression where the window.console object is lexically bound to an object that put the console output on a channel.
+  "Evals an expression where the window.console object is lexically bound to an object that puts the console output on a channel.
   Returns the empty string.
   It works fine also with asynchronous code."
   [c exp]
-  (let [logger (fn [& args]
-                 (put! c (string/join " "  (map beautify args)))
-                 (put! c "\n"))
+  (let [logger (append-to-chan c)
         wrapped-exp (str "(function(console) {" exp "}(window.klipse_snippet_console))")]
     (set! js/klipse_snippet_console #js {:log logger})
     (eval-in-global-scope wrapped-exp)
@@ -50,9 +53,10 @@
                     (try
                       (if async-code?
                         (eval-with-logger! c exp)
-                        (-> exp
-                            eval-in-global-scope
-                            beautify))
+                        (my-with-redefs [js/console.log (append-to-chan c)]
+                                        (-> exp
+                                            eval-in-global-scope
+                                            beautify)))
                       (catch :default o
                         (str o)))
                     (str "//Cannot load script: " script "\n"

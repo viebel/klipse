@@ -3,9 +3,7 @@
     [purnam.core :refer [? !>]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    cljsjs.codemirror.mode.xml
-    cljsjs.codemirror.mode.htmlmixed
-    [klipse.common.registry :refer [register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
 
 (defn my-eval [exp _]
@@ -14,6 +12,7 @@
 
 (def opts {:editor-in-mode "text/html"
            :editor-out-mode "text"
+           :external-scripts [(codemirror-mode-src "xml") (codemirror-mode-src "htmlmixed")]
            :eval-fn my-eval
            :comment-str "; "})
 

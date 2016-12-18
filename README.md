@@ -200,6 +200,7 @@ The following attributes can be added to the DOM element of the snippet:
 ### Javascript only
 
 * `data-external-libs`: comma separated list of javascript libraries to load before snippet evaluation
+* `data-async-code`: (default `false`) when `true`, asynchronous calls to `console.log` append their result to the result cell
 
 #### Clojure only
 

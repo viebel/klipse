@@ -17,10 +17,11 @@
 (def out-placeholder "the evaluation will appear here (soon)...")
 
 (defn calc-editor-args-from-element [element global-idle-msec min-idle-msec global-editor-type]
-  (let [{:keys [idle-msec editor-type preamble loop-msec] :or {idle-msec global-idle-msec editor-type global-editor-type loop-msec nil}} (editor-args-from-element element)]
+  (let [{:keys [idle-msec editor-type preamble async-code? loop-msec] :or {idle-msec global-idle-msec editor-type global-editor-type loop-msec nil}} (editor-args-from-element element)]
     (compactize-map {:idle-msec (max min-idle-msec idle-msec)
                      :loop-msec loop-msec
                      :preamble preamble
+                     :async-code? async-code?
                      :the-editor-type editor-type})))
 
 (defn calc-editor-type [minimalistic_ui? the-type]
@@ -47,12 +48,13 @@
         (let [eval-args (eval-args-from-element element {:eval-context eval_context :print-length print_length :beautify-strings beautify_strings})
               eval-fn-with-args #(eval-fn % eval-args)
               source-code (<! (content element comment-str))
-              {:keys [idle-msec the-editor-type loop-msec preamble]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
+              {:keys [idle-msec the-editor-type loop-msec async-code? preamble]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
               the-editor-type (calc-editor-type minimalistic_ui (or the-editor-type default-editor))
           [load-status load-error] (<! (load-external-scripts (collify external-scripts)))]
           (create-editor the-editor-type
                          {:element element
                           :loop-msec loop-msec
+                          :async-code? async-code?
                           :preamble preamble
                           :indent? (if (= :ok load-status) beautify? false)
                           :editor-in-mode editor-in-mode

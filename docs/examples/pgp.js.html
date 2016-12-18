@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> pgp.js documentation</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
+
+</head>
+
+<body class="container">
+
+<h1> pgp.js interactive documentation</h1>
+
+This documentation is live and interactive. It is powered by <a href="https://github.com/viebel/klipse">klipse</a>.
+
+<h1> Setup </h1>
+First let's load <code>pgp.js</code> from the js github repository (It might take a couple of seconds...):
+
+<br/>
+<br/>
+<div class="js" data-external-libs="https://raw.githubusercontent.com/openpgpjs/openpgpjs/master/dist/openpgp.min.js">
+    Object.keys(window.openpgp)
+</div>
+
+<h1> generateKey </h1>
+
+<p>
+</p>
+<div class="js" data-async-code="true">
+    var options = {
+    userIds: [{ name: 'Alice', email: 'alice@example.com' }],
+    numBits: 2048,
+    passphrase: 'secret'
+};
+var pubKey, privKey;
+openpgp.generateKey(options).then(key => {
+    privKey = key.privateKeyArmored;
+    pubKey = key.publicKeyArmored;
+    console.log('Key generated');
+    console.log(privKey);
+});
+</div>
+
+
+<script>
+    window.klipse_settings = {
+      eval_idle_msec: 2000, // idle time in msec before the snippet is evaluated
+      selector_eval_js: '.js'
+    };
+</script>
+<script src="http://localhost:5014/plugin_prod/js/klipse_plugin.min.js"></script>
+</body>
+
+</html>

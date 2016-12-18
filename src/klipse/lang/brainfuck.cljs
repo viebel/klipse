@@ -61,13 +61,15 @@
                 :editor-out-mode "text"
                 :default-editor "html"
                 :eval-fn eval-brainfuck
-;                :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
-                :comment-str "####"})
+                :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
+                :comment-str ""})
 
 (def eval-txt-opts {:editor-in-mode "text/x-brainfuck"
                     :editor-out-mode "text"
                     :eval-fn eval-brainfuck-txt
-                    :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"] })
+                    :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
+                    :comment-str ""})
+
 
 
 (register-mode "eval-brainfuck" "selector_brainfuck" eval-opts)

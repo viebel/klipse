@@ -29,11 +29,12 @@
 
 (defn bf [x]
   (try
-    (let [input (dbg (->> x
-                    split-lines
-                    first
-                    (re-matches #"\[in:\s*(.*)\]")
-                    second))]
+    (let [input (->> x
+                     split-lines
+                     (map (partial re-matches #"\[in:\s*(.*)\]"))
+                     (filter identity)
+                     first
+                     second)]
       [:ok (-> (!> js/window.brainfuck x input)
                (js->clj :keywordize-keys true)
                to-html)])
@@ -57,16 +58,16 @@
       res)))
 
 (def eval-opts {:editor-in-mode "text/x-brainfuck"
-                :editor-out-mode "javascript"
+                :editor-out-mode "text"
+                :default-editor "html"
                 :eval-fn eval-brainfuck
 ;                :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
-                :comment-str ""})
+                :comment-str "####"})
 
 (def eval-txt-opts {:editor-in-mode "text/x-brainfuck"
-                    :editor-out-mode "javascript"
+                    :editor-out-mode "text"
                     :eval-fn eval-brainfuck-txt
-                    :external-scripts [(codemirror-mode-src "brainfuck") #_"https://viebel.github.io/klipse/repo/js/brainfuck.js"]
-                    :comment-str ""})
+                    :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"] })
 
 
 (register-mode "eval-brainfuck" "selector_brainfuck" eval-opts)

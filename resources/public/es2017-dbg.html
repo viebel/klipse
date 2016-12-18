@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+<pre><code class="es2017">
+async function sleep(ms = 0) {
+      return new Promise(r => setTimeout(r, ms));
+}
+
+async function run() {
+      console.log("Before: " + (new Date()).toString());
+    await sleep(1000);
+      console.log("After:  " + (new Date()).toString());
+}
+
+run()
+</code></pre>
+      <script>
+        window.klipse_settings = {
+            selector_es2017: '.es2017'
+        };
+        </script>
+        <script src="/lib/mirror_extensions.js"></script>
+        <script src="/fig/js/klipse.fig.js"></script>
+    </body>
+</html>

@@ -89,7 +89,7 @@
                                       eval-in-global-scope
                                       beautify)))))
       (catch :default o
-        (str o)))
+        (put! c (str o))))
     c))
 
 (def es2017-opts {:editor-in-mode "javascript"

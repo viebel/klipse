@@ -2,6 +2,7 @@
   (:require-macros
     [klipse.macros :refer [my-with-redefs]]
     [gadjett.core :refer [dbg]]
+    [purnam.core :refer [!>]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
     [klipse.utils :refer [load-scripts]]
@@ -44,6 +45,7 @@
     (set! js/klipse_snippet_console #js {:log logger})
     (eval-in-global-scope wrapped-exp)
     ""))
+
 (defn str-eval-js-async [exp {:keys [async-code? external-libs] :or {async-code? false external-libs nil}}]
   (let [c (chan)]
     (go
@@ -71,3 +73,29 @@
            :comment-str "//"})
 
 (register-mode "eval-javascript" "selector_eval_js" opts)
+
+(defn babel [src]
+   (dbg (-> (!> js/Babel.transform src #js {:presets #js ["es2017"]})
+       (aget "code"))))
+
+(defn eval-es2017 [exp {:keys [async-code?] :or {async-code? false}}]
+  (let [c (chan)]
+    (try
+      (let [transpiled-exp (babel exp)]
+        (put! c (if async-code?
+                  (eval-with-logger! c transpiled-exp)
+                  (my-with-redefs [js/console.log (append-to-chan c)]
+                                  (-> transpiled-exp
+                                      eval-in-global-scope
+                                      beautify)))))
+      (catch :default o
+        (put! c (str o))))
+    c))
+
+(def es2017-opts {:editor-in-mode "javascript"
+           :editor-out-mode "javascript"
+           :eval-fn eval-es2017
+           :external-scripts ["https://viebel.github.io/klipse/repo/js/pretty_format.js" "https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.18.1/babel.min.js"]
+           :comment-str "//"})
+
+(register-mode "eval-es2017" "selector_es2017" es2017-opts)

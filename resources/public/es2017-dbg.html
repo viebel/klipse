@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-<pre><code class="es2017">
+<pre><code class="es2017" data-async-code="true">
 async function sleep(ms = 0) {
       return new Promise(r => setTimeout(r, ms));
 }
@@ -19,6 +19,15 @@ async function run() {
 }
 
 run()
+</code></pre>
+<pre><code class="es2017">
+Object.entries({ one: 1, two: 2 })
+</code></pre>
+<pre><code class="es2017" data-async-code="true">
+let obj = { one: 1, two: 2 };
+    for (let [k,v] of Object.entries(obj)) {
+                console.log(`${JSON.stringify(k)}: ${JSON.stringify(v)}`);
+                    }
 </code></pre>
       <script>
         window.klipse_settings = {

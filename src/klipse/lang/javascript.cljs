@@ -78,15 +78,18 @@
    (dbg (-> (!> js/Babel.transform src #js {:presets #js ["es2017"]})
        (aget "code"))))
 
-(defn eval-es2017 [exp _]
+(defn eval-es2017 [exp {:keys [async-code?] :or {async-code? false}}]
   (let [c (chan)]
     (try
-      (->> exp
-           babel
-           (eval-with-logger! c)
-           (put! c))
+      (let [transpiled-exp (babel exp)]
+        (put! c (if async-code?
+                  (eval-with-logger! c transpiled-exp)
+                  (my-with-redefs [js/console.log (append-to-chan c)]
+                                  (-> transpiled-exp
+                                      eval-in-global-scope
+                                      beautify)))))
       (catch :default o
-        (put! c (str o))))
+        (str o)))
     c))
 
 (def es2017-opts {:editor-in-mode "javascript"

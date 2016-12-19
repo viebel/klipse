@@ -75,8 +75,8 @@
 (register-mode "eval-javascript" "selector_eval_js" opts)
 
 (defn babel [src]
-   (dbg (-> (!> js/Babel.transform src #js {:presets #js ["es2017"]})
-       (aget "code"))))
+   (-> (!> js/Babel.transform src #js {:presets #js ["es2017"]})
+       (aget "code")))
 
 (defn eval-es2017 [exp {:keys [async-code?] :or {async-code? false}}]
   (let [c (chan)]

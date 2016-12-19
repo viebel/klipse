@@ -314,6 +314,38 @@ x
     }, 500);
 </code></pre>
         <br/>
+        <h2> EcmaScript 2017 </h2>
+<pre><code class="es2017" data-async-code="true">
+async function sleep(ms = 0) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+async function run() {
+  console.log("Before: " + (new Date()).toString());
+  await sleep(1000);
+  console.log("After:  " + (new Date()).toString());
+}
+
+run();
+
+(async () => {
+  await sleep(2000);
+  console.log('a');
+  await sleep(1000);
+  console.log('b');
+})()
+
+</code></pre>
+<pre><code class="es2017">
+Object.entries({ one: 1, two: 2 })
+</code></pre>
+<pre><code class="es2017" data-async-code="true">
+let obj = { one: 1, two: 2 };
+    for (let [k,v] of Object.entries(obj)) {
+                console.log(`${JSON.stringify(k)}: ${JSON.stringify(v)}`);
+                    }
+</code></pre>
+ 
         <h2> jQuery </h2>
  <div class="eval-js" data-external-libs="jQuery">
      $
@@ -507,6 +539,7 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
                 lineWrapping: true
             },
             selector: '.clojure',
+            selector_es2017: '.es2017',
             selector_eval_js: '.eval-js',
             selector_eval_markdown: '.eval-markdown',
             selector_eval_lambdaway: '.lambda',

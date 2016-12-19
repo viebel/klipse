@@ -95,7 +95,7 @@
 (def es2017-opts {:editor-in-mode "javascript"
            :editor-out-mode "javascript"
            :eval-fn eval-es2017
-           :external-scripts ["https://viebel.github.io/klipse/repo/js/pretty_format.js" "https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.18.1/babel.min.js"]
+           :external-scripts ["https://viebel.github.io/klipse/repo/js/pretty_format.js" "https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.18.1/babel.min.js" "https://viebel.github.io/klipse/repo/js/babel_polyfill.min.js"]
            :comment-str "//"})
 
 (register-mode "eval-es2017" "selector_es2017" es2017-opts)

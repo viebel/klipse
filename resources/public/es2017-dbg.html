@@ -9,16 +9,24 @@
     <body>
 <pre><code class="es2017" data-async-code="true">
 async function sleep(ms = 0) {
-      return new Promise(r => setTimeout(r, ms));
+  return new Promise(r => setTimeout(r, ms));
 }
 
 async function run() {
-      console.log("Before: " + (new Date()).toString());
-    await sleep(1000);
-      console.log("After:  " + (new Date()).toString());
+  console.log("Before: " + (new Date()).toString());
+  await sleep(1000);
+  console.log("After:  " + (new Date()).toString());
 }
 
-run()
+run();
+
+(async () => {
+  await sleep(2000);
+  console.log('a');
+  await sleep(1000);
+  console.log('b');
+})()
+
 </code></pre>
 <pre><code class="es2017">
 Object.entries({ one: 1, two: 2 })

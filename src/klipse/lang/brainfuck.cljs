@@ -12,20 +12,22 @@
     (assoc data head head-value)))
 
 (defn to-html [{:keys [output data pointer text]}]
-  (str "<table>
-         <tr>
+  (str "<table>"
+       (when (seq output)
+         (str "<tr>
            <td>Output</td><td>" (join " " output) "</td>
-         </tr>
-         <tr>
+         </tr>"))
+         "<tr>
            <td>Data</td><td>" (join " " (boldify-head data pointer)) "</td>
          </tr>
          <tr>
            <td>Head</td><td>" pointer "</td>
-         </tr>
-         <tr>
+           </tr>"
+        (when (seq output)
+         (str "<tr>
            <td>Text</td><td> " text "</td>
-         </tr>
-       </table>"))
+         </tr>"))
+       "</table>"))
 
 (defn bf [x]
   (try

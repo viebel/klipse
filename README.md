@@ -59,7 +59,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 
 In order to integrate the klipse plugin on a blog, library documentation or any other web page, add the following `javascript` tag **at the end of the page body** according to the language of the code snippets:
 
-**You need also to add `<!DOCTYPE html>` and  `<meta charset="utf-8">` in the `<head>` part of your html file.**
+**You need also to add `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>`.**
 
 
 ## javascript

@@ -63,8 +63,11 @@
                       'cljs.js
                       'cljs.compiler.macros})
 
-(def the-ns-map '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
-                  cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"})
+(def the-ns-map '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.293/src/main/cljs/"
+                  cljs.spec.test "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.293/src/main/cljs/"
+                  cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.293/src/main/cljs/"
+                  cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
+                  clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"})
 
 (def skip-ns-cljs #{'cljs.core
                     'cljs.env
@@ -119,7 +122,7 @@
             (try-to-load-ns filenames :clj :source src-cb))))
 
 (def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
-#_(def cache-url "/cache/js/")
+;(def cache-url "/fig/js/")
 
 (defmethod load-ns :gist [external-libs {:keys [path]} src-cb]
   (let [path (string/replace path #"gist_" "")

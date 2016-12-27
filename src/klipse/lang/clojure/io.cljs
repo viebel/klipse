@@ -3,6 +3,8 @@
                    [purnam.core :refer [!>]]
                    [cljs.core.async.macros :refer [go go-loop]])
   (:require
+    [cljs.reader :refer [read-string]]
+    [klipse.utils :refer [url-parameters]]
     [clojure.walk :as ww]
     [clojure.string :as string :refer [join split lower-case]]
     [cljs-http.client :as http]
@@ -70,6 +72,14 @@
                     'cljs.tools.reader.reader-types
                     'cljs.tools.reader})
 
+(defn cache-buster? []
+  (boolean (read-string (or (:cache-buster (url-parameters)) "false"))))
+
+(defn filename-of [s cache-buster?]
+  (if cache-buster?
+    (str s "?" (rand))
+    s))
+
 (defn try-to-load-ns
   "Tries to load one namespace from filenames.
   Will call the src-cb upon first success.
@@ -82,7 +92,7 @@
       (loop [filenames filenames]
         (when (seq filenames)
           (let [filename (first filenames)
-                {:keys [status body]} (<! (http/get filename {:with-credentials? false}))]
+                {:keys [status body]} (<! (http/get (filename-of filename (cache-buster?)) {:with-credentials? false}))]
             (if (= 200 status)
               (do (src-cb {:lang lang src-key (transform body) :file filename})
                   :success)

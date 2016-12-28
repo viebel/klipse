@@ -78,6 +78,11 @@
 (defn cache-buster? []
   (boolean (read-string (or (:cache-buster (url-parameters)) "false"))))
 
+(defn libs-root []
+  (if (boolean (read-string (or (:local-cache (url-parameters)) "false")))
+      "http://localhost:5014/fig/js/" 
+      "https://storage.googleapis.com/app.klipse.tech/fig/js/"))
+
 (defn filename-of [s cache-buster?]
   (if cache-buster?
     (str s "?" (rand))
@@ -121,8 +126,6 @@
     :else (let [filenames (external-libs-files external-libs macro-suffixes path)]
             (try-to-load-ns filenames :clj :source src-cb))))
 
-(def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
-;(def cache-url "/fig/js/")
 
 (defmethod load-ns :gist [external-libs {:keys [path]} src-cb]
   (let [path (string/replace path #"gist_" "")
@@ -137,7 +140,7 @@
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
   (cond
     (skip-ns-cljs name) (src-cb {:lang :js :source ""})
-    (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
+    (cached-ns name) (let [filenames (map #(str (libs-root) path % ".cache.json") cljs-suffixes)]
                        (go
                          (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
                            ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js

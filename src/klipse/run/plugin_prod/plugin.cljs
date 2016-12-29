@@ -3,6 +3,7 @@
             klipse.lang.javascript
             klipse.lang.js-compile
             klipse.lang.ruby
+            klipse.lang.cpp
             klipse.lang.jsx
             klipse.lang.brainfuck
             klipse.lang.sql

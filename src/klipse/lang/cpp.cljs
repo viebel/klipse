@@ -1,37 +1,34 @@
 (ns klipse.lang.cpp
-  (:use-macros [purnam.core :only [? ! !>]])
-  (:require-macros
-    [cljs.core.async.macros :refer [go go-loop]])
+  (:require-macros [purnam.core :refer [!>]])
   (:require 
-    [klipse.utils :refer [runonce]]
-    [cljs.core.async :refer [chan <! >! put!]]
+    [cljs.core.async :refer [chan put! close!]]
     [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
-(def token #js {:msg_mac "RoyDczufgCsZycN3VFWJwm66e/eL4pSK19spUhmuzBU="
-                :time_created 1468499323000})
+(defn eval-in-chan [s c]
+  (try
+    (let [config  (clj->js {:stdio
+                            {:write #(put! c %)}})
+          input ""; for the moment, we don't support input to cpp programs
+          exitCode (!> js/JSCPP.run s input config)]
+      (if (= 0 exitCode)
+        [:ok 0]
+        [:error exitCode]))
+    (catch :default e
+      [:exception e])))
 
-(defn replit [language exp]
+(defn str-eval-async [s _]
   (let [c (chan)
-        repl (js/ReplitClient. "api.repl.it" 80 language token)]
-    (-> 
-      (!> repl.evaluateOnce exp #js {:stdout (fn [output]
-                                               (put! c output))})
-      (.then (fn [result] 
-               (if (? result.error) 
-                 (put! c (str "Error: " (? result.error)))
-                 (put! c (str "Result: " (? result.data)))))
-             (fn [error]
-               (put! c error))))
+        [status res] (eval-in-chan s c)]
+    (case status
+      :ok (put! c (str  "\nexit code: " res))
+      :error (put! c (str "\nexit code:" res))
+      :exception (put! c (str "\n" res)))
     c))
 
-(defn str-eval-async [exp _]
-  (go
-    (<! (replit "c" exp))))
-
-(def opts {:editor-in-mode "clike"
-           :editor-out-mode "clike"
-           :external-scripts [(codemirror-mode-src "clike")]
+(def opts {:editor-in-mode "text/x-c++src"
+           :editor-out-mode "text"
+           :external-scripts [(codemirror-mode-src "clike") "https://viebel.github.io/klipse/repo/js/JSCPP.es5.min.js"]
            :eval-fn str-eval-async
-           :comment-str "#"})
+           :comment-str "//"})
 
 (register-mode "eval-cpp" "selector_eval_cpp" opts)

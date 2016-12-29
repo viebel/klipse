@@ -397,7 +397,18 @@ ShoppingList
 
     <div class="eval-php" data-gist-id="viebel/6d6e23270e65dd9a4849c507dba4f712"></div>
         <br/>
- 
+	<h1> C++ </h1>
+	<pre><code class="cpp">
+    #include &lt;iostream&gt;
+      using namespace std;
+      int main() {
+      int a = 98;
+      //cin &gt;&gt; a;
+      cout &lt;&lt; a*10 &lt;&lt; endl;
+		      return 0;
+		      }
+</code></pre>
+
 <h1> python </h1>
 <p> In python, code is not automatically indented, as the CodeMirror indentation for python doesn't work well. I've opened an <a href="https://github.com/codemirror/CodeMirror/issues/4119">issue about it on github</a>.
 </p>
@@ -554,6 +565,7 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
             selector_js: '.clojure-js',
             selector_jsx: '.jsx',
             selector_transpile_jsx: '.transpile-jsx',
+            selector_eval_cpp: '.cpp',
         };
         </script>
         <script>

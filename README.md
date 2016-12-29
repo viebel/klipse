@@ -41,9 +41,13 @@ With the klipse plugin, the code is evaluated as you type...
 - javascript: evaluation is done with the javascript function `eval` and pretty printing of the result is done with [pretty-format](https://github.com/thejameskyle/pretty-format)
 - clojure[script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
 - ruby: evaluation is done with [Opal](http://opalrb.org/)
-- PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
+- C++: evaluation is done with [JSCPP](https://github.com/felixhao28/JSCPP)
 - python: evaluation is done with [Skulpt](http://www.skulpt.org/)
 - scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)
+- PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
+- BrainFuck
+- JSX
+- EcmaScript2017
 
 Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a web page.
 
@@ -161,6 +165,7 @@ window.klipse_settings = {
           selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
           selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets
           selector_eval_python_client: '.language-klipse-python', // selector for python evaluation snippets
+	      selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
           selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
           selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
           selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets

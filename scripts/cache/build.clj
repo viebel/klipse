@@ -26,7 +26,7 @@
            (binding [*out* *err*]
              (println "WARNING:" (cljs.analyzer/message env s)))
            #_(System/exit 1))))]
-    (api/build (api/inputs "cache-src")
+    (api/build (api/inputs "src")
                {:output-dir         "out"
                :output-to          "out/main.js"
                :optimizations      :none
@@ -60,6 +60,7 @@
 (let [res "out/cljs/core$macros.cljc.cache.json"
       cache (transit/read (transit/reader (FileInputStream. res) :json))]
   (doseq [key (keys cache)]
+    (println "write-caches-macros: " key)
     (write-cache (key cache) (str "out/cljs/core$macros.cljc.cache." (munge key) ".json")))))
 
 (defn do-the-job []
@@ -71,3 +72,4 @@
   (println "Done building")
   (System/exit 0))
 
+(do-the-job)

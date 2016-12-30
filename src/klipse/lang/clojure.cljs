@@ -6,6 +6,7 @@
   (:require
     klipse.lang.clojure.bundled-namespaces
     gadjett.core-fn
+    [klipse.lang.clojure.repl :refer [print-doc]]
     [rewrite-clj.node :as n]
     [rewrite-clj.parser :as p]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]

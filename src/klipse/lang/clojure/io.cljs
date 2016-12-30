@@ -63,8 +63,11 @@
                       'cljs.js
                       'cljs.compiler.macros})
 
-(def the-ns-map '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
-                  cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"})
+(def the-ns-map '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.293/src/main/cljs/"
+                  cljs.spec.test "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.293/src/main/cljs/"
+                  cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.293/src/main/cljs/"
+                  cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
+                  clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"})
 
 (def skip-ns-cljs #{'cljs.core
                     'cljs.env
@@ -74,6 +77,11 @@
 
 (defn cache-buster? []
   (boolean (read-string (or (:cache-buster (url-parameters)) "false"))))
+
+(defn libs-root []
+  (if (boolean (read-string (or (:local-cache (url-parameters)) "false")))
+      "http://localhost:5014/fig/js/" 
+      "https://storage.googleapis.com/app.klipse.tech/fig/js/"))
 
 (defn filename-of [s cache-buster?]
   (if cache-buster?
@@ -118,8 +126,6 @@
     :else (let [filenames (external-libs-files external-libs macro-suffixes path)]
             (try-to-load-ns filenames :clj :source src-cb))))
 
-(def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
-#_(def cache-url "/cache/js/")
 
 (defmethod load-ns :gist [external-libs {:keys [path]} src-cb]
   (let [path (string/replace path #"gist_" "")
@@ -134,7 +140,7 @@
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
   (cond
     (skip-ns-cljs name) (src-cb {:lang :js :source ""})
-    (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
+    (cached-ns name) (let [filenames (map #(str (libs-root) path % ".cache.json") cljs-suffixes)]
                        (go
                          (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
                            ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js

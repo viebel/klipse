@@ -8,6 +8,8 @@
     [klipse.klipse-editors :refer [create-editor]]
     [klipse.utils :refer [load-scripts-mem]]
     [cljs.spec :as s]
+    [clojure.spec.test :as stest]
+    [clojure.spec.impl.gen :as gen]
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
@@ -82,6 +84,7 @@
                      :settings ::klipse-settings
                      :opts ::options))
 
+
 (defn ^:export klipsify
   "To be called from outside.
   Klipsifies a snippet.
@@ -141,4 +144,5 @@
   (init-clj (js->clj js-settings :keywordize-keys false))); we cannot keywordize the keys as the modules might be written in javascript
 
 (comment
-  (s/instrument #'klipsify-with-opts))
+  (stest/instrument `klipsify-with-opts))
+

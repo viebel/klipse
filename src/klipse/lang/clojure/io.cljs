@@ -63,8 +63,15 @@
                       'cljs.js
                       'cljs.compiler.macros})
 
-(def the-ns-map '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
-                  cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"})
+(defn the-ns-map [name]
+  (let [m '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
+           cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
+           cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
+            clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"}]
+    (cond
+      (m name) (m name)
+      (re-matches #"^reagent\..*" (str name)) "https://raw.githubusercontent.com/viebel/reagent/master/src/"
+      :else nil)))
 
 (def skip-ns-cljs #{'cljs.core
                     'cljs.env
@@ -112,8 +119,8 @@
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (cond
     (skip-ns-macros name) (src-cb {:lang :clj :source ""})
-    (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
-                                 filenames (map (partial str prefix) macro-suffixes)]
+    (the-ns-map name) (let [prefix (str (the-ns-map name) "/" path)
+                            filenames (map (partial str prefix) macro-suffixes)]
                              (try-to-load-ns filenames :clj :source src-cb))
     :else (let [filenames (external-libs-files external-libs macro-suffixes path)]
             (try-to-load-ns filenames :clj :source src-cb))))
@@ -144,7 +151,7 @@
                          (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
                            ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js
                            (src-cb {:lang :js :source ""}))))
-    (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
+    (the-ns-map name) (let [prefix (str (the-ns-map name) "/" path)
                                  filenames (map (partial str prefix) cljs-suffixes)]
                              (go
                                (when-not

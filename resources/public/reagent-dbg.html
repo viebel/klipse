@@ -8,33 +8,24 @@
     </head>
     <body>
 
-      <pre><code class="language-js">goog.provide('cljsjs.react');
-	  goog.provide('cljsjs.react.dom.server');
-      </code></pre>
-
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js"></script>
-
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.min.js"></script>
-
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom-server.min.js"></script></script>
 
 <pre>
-  <code class="language-klipse" data-external-libs="https://raw.githubusercontent.com/viebel/reagent/master/src/">
+  <code class="reagent" data-external-libs="https://raw.githubusercontent.com/viebel/reagent/master/src/">
 
-    (require '[reagent.core :as re])
+    (require '[reagent.core :as r])
 </code></pre>
 
-<pre><code class="language-klipse">(defn child [name]
+<pre><code class="clj">(defn child [name]
     [:p "Hi, I am " name])
 
     (defn childcaller []
     [child "Foo Bar"])
 </code></pre>
 
-<pre><code class="language-klipse">(re/render-to-string [child "Foo Bar"])
+<pre><code class="clj">(r/render-to-string [child "Foo Bar"])
 </code></pre>
 
-<pre><code class="language-klipse"> (re/render-component [child "Foo Bar"]
+<pre><code class="reagent"> (r/render-component [child "Foo Bar"]
     (js/document.getElementById "container-1"))
 </code></pre>
 
@@ -42,8 +33,8 @@
   </div>
        <script>
         window.klipse_settings = {
-        selector: '.clojure, .language-klipse',
-	selector_eval_js: '.language-js',
+        selector: '.clj',
+	selector_reagent: '.reagent',
         };
         </script>
         <script src="/lib/mirror_extensions.js"></script>

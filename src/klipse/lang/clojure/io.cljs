@@ -67,11 +67,13 @@
   (let [m '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
            cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
            cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
-            clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"}]
-    (cond
-      (m name) (m name)
-      (re-matches #"^reagent\..*" (str name)) "https://raw.githubusercontent.com/viebel/reagent/master/src/"
-      :else nil)))
+           clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"}]
+    (if-let [path (m name)]
+      path
+      (let [name-str (str name)]
+        (cond
+          (re-matches #"^reagent\..*" name-str) "https://raw.githubusercontent.com/viebel/reagent/master/src/"
+          :else nil)))))
 
 (def skip-ns-cljs #{'cljs.core
                     'cljs.env

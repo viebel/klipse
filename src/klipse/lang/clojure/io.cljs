@@ -118,8 +118,10 @@
     :else (let [filenames (external-libs-files external-libs macro-suffixes path)]
             (try-to-load-ns filenames :clj :source src-cb))))
 
+
 (def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
 #_(def cache-url "/cache/js/")
+
 
 (defmethod load-ns :gist [external-libs {:keys [path]} src-cb]
   (let [path (string/replace path #"gist_" "")
@@ -127,9 +129,12 @@
     (try-to-load-ns filenames :clj :source src-cb)))
 
 (defn cached-ns
-  "Checks whether a namspace is present at run-time"
+  "Checks whether a namespace is present at run-time"
   [name]
-  (!> js/goog.getObjectByName (str (munge name)))); (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
+  ; for some reason, during the load of reagent namespaces, a `reagent.dom` object is created - but it's not the real `reagent.dom` namespace
+  (if (re-matches #".*reagent.*" (str (munge name)))
+    false
+    (!> js/goog.getObjectByName (str (munge name))))) ; (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
 
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
   (cond

@@ -145,6 +145,13 @@
     false
     (!> js/goog.getObjectByName (str (munge name))))) ; (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
 
+(def cljsjs-ns-map
+  '{cljsjs.react  "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react.min.js"
+    cljsjs.react.dom.server "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom-server.min.js"
+    cljsjs.react.dom "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.min.js"
+    cljsjs.react-with-addons "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.min.js"
+   })
+
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
   (cond
     (skip-ns-cljs name) (src-cb {:lang :js :source ""})
@@ -153,6 +160,7 @@
                          (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
                            ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js
                            (src-cb {:lang :js :source ""}))))
+    (cljsjs-ns-map name) (try-to-load-ns [(cljsjs-ns-map name)] :js :source src-cb)
     (the-ns-map name) (let [prefix (str (the-ns-map name) "/" path)
                                  filenames (map (partial str prefix) cljs-suffixes)]
                              (go

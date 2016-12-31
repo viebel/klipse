@@ -28,11 +28,7 @@
            :editor-out-mode "clojure"
            :eval-fn eval-reagent
            :no-result true
-           :default-editor "html"
-           :external-scripts [(codemirror-mode-src "clojure") 
-                              "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js"
-                              "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.min.js"
-                              "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom-server.min.js"]
+           :external-scripts [(codemirror-mode-src "clojure")]
            :comment-str ";"})
 
 (register-mode "eval-reagent" "selector_reagent" opts)

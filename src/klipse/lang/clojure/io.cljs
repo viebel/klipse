@@ -63,8 +63,17 @@
                       'cljs.js
                       'cljs.compiler.macros})
 
-(def the-ns-map '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
-                  cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"})
+(defn the-ns-map [name]
+  (let [m '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
+           cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
+           cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
+           clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"}]
+    (if-let [path (m name)]
+      path
+      (let [name-str (str name)]
+        (cond
+          (re-matches #"^reagent\..*" name-str) "https://raw.githubusercontent.com/viebel/reagent/master/src/"
+          :else nil)))))
 
 (def skip-ns-cljs #{'cljs.core
                     'cljs.env
@@ -112,14 +121,16 @@
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (cond
     (skip-ns-macros name) (src-cb {:lang :clj :source ""})
-    (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
-                                 filenames (map (partial str prefix) macro-suffixes)]
+    (the-ns-map name) (let [prefix (str (the-ns-map name) "/" path)
+                            filenames (map (partial str prefix) macro-suffixes)]
                              (try-to-load-ns filenames :clj :source src-cb))
     :else (let [filenames (external-libs-files external-libs macro-suffixes path)]
             (try-to-load-ns filenames :clj :source src-cb))))
 
+
 (def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
 #_(def cache-url "/cache/js/")
+
 
 (defmethod load-ns :gist [external-libs {:keys [path]} src-cb]
   (let [path (string/replace path #"gist_" "")
@@ -127,9 +138,19 @@
     (try-to-load-ns filenames :clj :source src-cb)))
 
 (defn cached-ns
-  "Checks whether a namspace is present at run-time"
+  "Checks whether a namespace is present at run-time"
   [name]
-  (!> js/goog.getObjectByName (str (munge name)))); (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
+  ; for some reason, during the load of reagent namespaces, a `reagent.dom` object is created - but it's not the real `reagent.dom` namespace
+  (if (re-matches #".*reagent.*" (str (munge name)))
+    false
+    (!> js/goog.getObjectByName (str (munge name))))) ; (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
+
+(def cljsjs-ns-map
+  '{cljsjs.react  "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react.min.js"
+    cljsjs.react.dom.server "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom-server.min.js"
+    cljsjs.react.dom "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.min.js"
+    cljsjs.react-with-addons "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.min.js"
+   })
 
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
   (cond
@@ -139,7 +160,8 @@
                          (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
                            ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js
                            (src-cb {:lang :js :source ""}))))
-    (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
+    (cljsjs-ns-map name) (try-to-load-ns [(cljsjs-ns-map name)] :js :source src-cb)
+    (the-ns-map name) (let [prefix (str (the-ns-map name) "/" path)
                                  filenames (map (partial str prefix) cljs-suffixes)]
                              (go
                                (when-not

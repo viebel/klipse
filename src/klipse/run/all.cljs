@@ -1,6 +1,7 @@
 (ns klipse.run.all
   (:require klipse.run.plugin.plugin
             klipse.lang.clojure
+            klipse.lang.reagent
             klipse.lang.javascript
             klipse.lang.ruby
             klipse.lang.jsx

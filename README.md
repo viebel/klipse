@@ -156,6 +156,7 @@ window.klipse_settings = {
           eval_idle_msec: 20, // idle time in msec before the snippet is evaluated
           selector: '.language-klipse', //selector for clojure evaluation snippets
           selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
+		  selector_reagent: '.language-reagent', // selector for reagent snippets
           selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
           selector_eval_ruby: '.language-klipse-eval-ruby' //selector for ruby evaluation snippets
           selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets

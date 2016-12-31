@@ -538,7 +538,27 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
     </div>
   <p>Eval</p>
  <div class="brainfuck" data-gist-id="viebel/9d801a43100c6a88669b641501c2929c"></div>
-     
+ <h1> Reagent</h1>
+ <pre>
+  <code class="clj">
+
+    (require '[reagent.core :as r])
+</code></pre>
+
+<pre><code class="clj">(defn child [name]
+    [:p "Hi, I am " name])
+
+    (defn childcaller []
+    [child "Foo Bar"])
+</code></pre>
+
+<pre><code class="clj">(r/render-to-string [child "Foo Bar"])
+</code></pre>
+
+<pre><code class="reagent">
+    [child "Foo Bar"]
+</code></pre>
+
 
 <script>
         window.klipse_settings = {
@@ -566,6 +586,7 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
             selector_jsx: '.jsx',
             selector_transpile_jsx: '.transpile-jsx',
             selector_eval_cpp: '.cpp',
+            selector_reagent: '.reagent',
         };
         </script>
         <script>

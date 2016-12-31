@@ -16,6 +16,13 @@
 
 (def out-placeholder "the evaluation will appear here (soon)...")
 
+(def snippet-counter (atom 0))
+
+(defn snippet-num! []
+  (let [res @snippet-counter]
+    (swap! snippet-counter inc)
+    res))
+
 (defn calc-editor-args-from-element [element global-idle-msec min-idle-msec global-editor-type]
   (let [{:keys [idle-msec editor-type preamble async-code? loop-msec] :or {idle-msec global-idle-msec editor-type global-editor-type loop-msec nil}} (editor-args-from-element element)]
     (compactize-map {:idle-msec (max min-idle-msec idle-msec)
@@ -53,6 +60,7 @@
           [load-status load-error] (<! (load-external-scripts (collify external-scripts)))]
           (create-editor the-editor-type
                          {:element element
+                          :snippet-num (snippet-num!)
                           :loop-msec loop-msec
                           :async-code? async-code?
                           :no-result no-result

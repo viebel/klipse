@@ -4,6 +4,7 @@
    [purnam.core :refer [!]]
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
+   [cljs.reader :refer [read-string]]
    [klipse.utils :refer [runonce]]
    [cljs.core.async :refer [chan]]
    [klipse.common.registry :refer [codemirror-mode-src register-mode]]
@@ -11,11 +12,8 @@
 
 
 (defn eval-reagent [src opts state]
-  (let [container (:result-element state)
-        _ (js/console.info "state: " state)
-        _ (js/console.info "container: " container)
-        _ (set! js/my-reagent-container container)
-        code (str "(r/render-component" src " " "js/my-reagent-container" ")")]
+  (let [container-id (:result-element-id state)
+        code (str `(reagent.core/render-component  ~(read-string src) (js/document.getElementById ~container-id)))]
     (js/console.log code)
     (str-eval-async code opts state)))
 

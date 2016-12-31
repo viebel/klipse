@@ -10,12 +10,7 @@
    [klipse.lang.clojure :refer [str-eval-async]]))
 
 
-(def init (runonce (fn []
-                      (js* "goog.provide('cljsjs.react');")
-                      (js* "goog.provide('cljsjs.react.dom.server')"))))
-
 (defn eval-reagent [src opts state]
-  (init)
   (let [container (:result-element state)
         _ (js/console.info "state: " state)
         _ (js/console.info "container: " container)

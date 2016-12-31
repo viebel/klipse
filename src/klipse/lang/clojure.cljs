@@ -170,7 +170,7 @@
           second
           str)))
 
-(defn str-eval-async [exp opts _]
+(defn str-eval-async [exp opts]
   (let [c (chan)]
     (go
       (binding [*print-newline* true

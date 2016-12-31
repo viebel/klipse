@@ -11,11 +11,10 @@
    [klipse.lang.clojure :refer [str-eval-async]]))
 
 
-(defn eval-reagent [src opts state]
-  (let [container-id (:result-element-id state)
+(defn eval-reagent [src opts]
+  (let [container-id (:result-element-id opts)
         code (str `(reagent.core/render-component  ~(read-string src) (js/document.getElementById ~container-id)))]
-    (js/console.log code)
-    (str-eval-async code opts state)))
+    (str-eval-async code opts)))
 
 (def opts {:editor-in-mode "clojure"
            :editor-out-mode "clojure"

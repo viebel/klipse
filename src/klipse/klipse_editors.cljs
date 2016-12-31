@@ -18,6 +18,10 @@
          :result-element-id (aget result-element "id")
          :result-element result-element}))
 
+(defn klipse-result-attrs [n]
+  {:class "klipse-result"
+   :id (str "klipse-result-" n)})
+
 (defn eval-in-editor
   "
   Evaluates the `value` - with `preamble` prepended to it - and call `setter` with the result of the evaluation.
@@ -120,14 +124,10 @@
                     :on-should-eval #(eval-in-html-editor eval-fn out-editor in-editor snippet-args state)})
     #(eval-in-html-editor eval-fn out-editor in-editor snippet-args state)))
 
-(defn klipse-result-attrs [n]
-  {:class "klipse-result"
-   :id (str "klipse-result-" snippet-num)})
-
 (defmethod create-editor :code-mirror [_ {:keys [snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         out-editor (if no-result
-                     (create-div-after element snippet-num)
+                     (create-div-after element (klipse-result-attrs snippet-num))
                      (create-editor-after-element element default-txt out-editor-options :indent? false :remove-ending-comments? false)) ; must be called before `element` is replaced
         in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
         snippet-args {:loop-msec loop-msec

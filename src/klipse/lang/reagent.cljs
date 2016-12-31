@@ -1,12 +1,8 @@
 (ns klipse.lang.reagent
   (:require-macros
-   [gadjett.core :as gadjett :refer [dbg]]
-   [purnam.core :refer [!]]
-   [cljs.core.async.macros :refer [go go-loop]])
+   [gadjett.core :as gadjett :refer [dbg]])
   (:require
    [cljs.reader :refer [read-string]]
-   [klipse.utils :refer [runonce]]
-   [cljs.core.async :refer [chan]]
    [klipse.common.registry :refer [codemirror-mode-src register-mode]]
    [klipse.lang.clojure :refer [str-eval-async]]))
 

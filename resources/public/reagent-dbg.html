@@ -8,9 +8,11 @@
     </head>
     <body>
 
-
+      <pre><code class="reagent">
+	  [:p "aa"]
+	  </code></pre>
 <pre>
-  <code class="reagent">
+  <code class="clj">
 
     (require '[reagent.core :as r])
 </code></pre>
@@ -25,8 +27,8 @@
 <pre><code class="clj">(r/render-to-string [child "Foo Bar"])
 </code></pre>
 
-<pre><code class="reagent"> (r/render-component [child "Foo Bar"]
-    (js/document.getElementById "container-1"))
+<pre><code class="reagent">
+    [child "Foo Bar"]
 </code></pre>
 
 <div id="container-1">

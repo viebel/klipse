@@ -43,10 +43,10 @@
 (defn klipsify-with-opts
   "returns a channel c with a function f.
   f returns a channel that will be ready to read when the snippet is evaluated."
-  [element {:keys [eval_idle_msec minimalistic_ui editor_type print_length beautify_strings eval_context codemirror_options_in codemirror_options_out] :or {beautify_strings false print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? min-eval-idle-msec external-scripts default-editor] :or {min-eval-idle-msec 0 beautify? true external-scripts []}}]
+  [element {:keys [eval_idle_msec minimalistic_ui editor_type print_length beautify_strings eval_context codemirror_options_in codemirror_options_out] :or {beautify_strings false print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? min-eval-idle-msec external-scripts default-editor no-result] :as lang-opts :or {min-eval-idle-msec 0 beautify? true external-scripts []}}]
   (go (when element
         (let [eval-args (eval-args-from-element element {:eval-context eval_context :print-length print_length :beautify-strings beautify_strings})
-              eval-fn-with-args #(eval-fn % eval-args)
+              eval-fn-with-args #(eval-fn %1 eval-args %2)
               source-code (<! (content element comment-str))
               {:keys [idle-msec the-editor-type loop-msec async-code? preamble]} (calc-editor-args-from-element element eval_idle_msec min-eval-idle-msec editor_type)
               the-editor-type (calc-editor-type minimalistic_ui (or the-editor-type default-editor))
@@ -55,6 +55,7 @@
                          {:element element
                           :loop-msec loop-msec
                           :async-code? async-code?
+                          :no-result no-result
                           :preamble preamble
                           :indent? (if (= :ok load-status) beautify? false)
                           :editor-in-mode editor-in-mode

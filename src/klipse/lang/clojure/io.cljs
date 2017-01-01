@@ -159,7 +159,7 @@
   "Try to load the js file corresponding to a cljsjs package.
   For that, we have to convert the package name into a full path - hosted on this git repo: https://github.com/viebel/cljsjs-hosted
   "
-  [name path src-cb]
+  [name src-cb]
   ;; TODO - Jan 1, 2017 - for some reason when transpiling code that requires a cljsjs package, the package is reloaded on every transpilation
   (let [root-path "https://viebel.github.io/cljsjs-hosted/cljsjs/"
         lib-name (cljsjs-libname name)
@@ -175,7 +175,7 @@
                          (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
                                         ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js
                            (src-cb {:lang :js :source ""}))))
-    (cljsjs? name) (try-to-load-cljsjs-ns name path src-cb)
+    (cljsjs? name) (try-to-load-cljsjs-ns name src-cb)
     (the-ns-map name) (let [prefix (str (the-ns-map name) "/" path)
                             filenames (map (partial str prefix) cljs-suffixes)]
                         (go

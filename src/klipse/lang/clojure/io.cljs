@@ -147,7 +147,7 @@
     (!> js/goog.getObjectByName (str (munge name))))) ; (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
 
 (defn cljsjs? [name]
-  (re-matches #"^cljsjs\..*" (str name)))
+  (re-matches #"cljsjs\..*" (str name)))
 
 (defn cljsjs-libname [name]
   (as-> (str name) $

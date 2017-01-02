@@ -132,8 +132,8 @@
       (js/console.log name {:lang :js :cache (edn (:body cache)) :src (:body src)})
       (src-cb {:lang :js :cache (edn (:body cache)) :source (:body src)}))))
 
-(defn cached-macro-ns? [name]
-  (= name 'gadjett.core))
+(def cached-macro-ns?
+  '#{gadjett.core om.next})
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (cond

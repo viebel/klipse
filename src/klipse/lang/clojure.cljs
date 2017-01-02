@@ -78,7 +78,6 @@
     [status res]))
 
 (defn my-eval [{:keys [file source file lang name path cache] :as args}]
-  (js/console.log "eval:" name path cache lang source)
   (watchdog)
   (cljs/js-eval args))
 

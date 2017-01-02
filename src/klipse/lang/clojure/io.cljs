@@ -160,11 +160,14 @@
   For that, we have to convert the package name into a full path - hosted on this git repo: https://github.com/viebel/cljsjs-hosted
   "
   [name src-cb]
-  ;; TODO - Jan 1, 2017 - for some reason when transpiling code that requires a cljsjs package, the package is reloaded on every transpilation
+  ;; TODO - Jan 1, 2017 - BUGFIX: for some reason when transpiling code that requires a cljsjs package, the package is reloaded on every transpilation
   (let [root-path "https://viebel.github.io/cljsjs-hosted/cljsjs/"
         lib-name (cljsjs-libname name)
-        full-name (str root-path lib-name "/" "production/" lib-name ".min.inc.js")]
-    (try-to-load-ns [full-name] :js :source src-cb)))
+        full-names [(str root-path lib-name "/production/" lib-name ".min.inc.js")
+                    (str root-path "/production/" lib-name ".min.inc.js")
+                    (str root-path lib-name "/development/" lib-name ".inc.js")
+                    (str root-path "/development/" lib-name ".inc.js")]]
+    (try-to-load-ns full-names :js :source src-cb)))
 
 
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]

@@ -4,6 +4,7 @@
     [om.dom :as dom]
     [klipse.ui.editors.cljs :refer [cljs-editor Cljs-editor]]
     [klipse.ui.editors.js :refer [js-editor Js-editor]]
+    [klipse.ui.outputs.container :refer [container]]
     [klipse.ui.outputs.cljs :refer [cljs-textarea Cljs-textarea]]
     [klipse.ui.outputs.js :refer [js-textarea Js-textarea]]))
 
@@ -35,7 +36,18 @@
           (dom/div #js {:className "klipse-item"}
             (cljs-editor (om/props this)))
           (dom/div #js {:className "klipse-item"}
-            (js-editor (om/props this))))
+                   (js-editor (om/props this))))
+        
+        :with-container
+        (dom/div #js {:className "klipse-layout klipse-layout-with-container"}
+          (dom/div #js {:className "klipse-item"}
+            (cljs-editor (om/props this)))
+          (dom/div #js {:className "klipse-item"}
+                   (container (om/props this)))
+          (dom/div #js {:className "klipse-item"}
+            (cljs-textarea (om/props this)))
+          (dom/div #js {:className "klipse-item"}
+            (js-textarea (om/props this))))
         
         (dom/div #js {:className "klipse-layout klipse-layout-global"}
           (dom/div #js {:className "klipse-item"}

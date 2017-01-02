@@ -8,10 +8,11 @@
 ;; Utils
 
 (defn init-layout []
-  (let [{:keys [js_only eval_only]} (url-parameters)]
+  (let [{:keys [js_only eval_only container]} (url-parameters)]
     (cond
       js_only   :js-only
       eval_only :eval-only
+      container :with-container
       :else     :global)))
 
 ;; =============================================================================

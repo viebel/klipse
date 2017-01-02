@@ -7,10 +7,9 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-<div class="clojure">
-    (println "aaa")
-    (println "bbb")
-    (if 1 2 3)
+<div class="klojure" data-external-libs="https://raw.githubusercontent.com/viebel/gadjett/master/src/">
+  (require-macros '[gadjett.core :refer [dbg]])
+  (dbg (map inc [1 2 3]))
 </div>
 <br/>
 <div class="clojure">
@@ -70,7 +69,7 @@
 <br/>
        <script>
         window.klipse_settings = {
-            selector: '.clojure'
+            selector: '.klojure'
         };
         </script>
         <script src="/lib/mirror_extensions.js"></script>

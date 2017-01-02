@@ -7,6 +7,7 @@
    [clojure.string :as s]
    [klipse.utils :refer [url-parameters]]
    [clojure.walk :as ww]
+   [om.next]
    [clojure.string :as string :refer [join split lower-case]]
    [cljs-http.client :as http]
    [cljs-http.util :refer [transit-decode]]

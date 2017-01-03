@@ -145,7 +145,7 @@
   '#{gadjett.core om.next om.dom cljs.spec cljs.spec.impl.gen})
 
 (def cached-cljs-ns?
-    '#{cljs.spec cljs.spec.impl.gen om.next om.dom om.next.impl.parser om.next.protocols om.tempid om.util om.transit})
+    '#{om.next om.dom om.next.impl.parser om.next.protocols om.tempid om.util om.transit})
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :macro :" (str name)))

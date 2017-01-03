@@ -8,13 +8,12 @@
     </head>
     <body>
 <div class="klojure" data-external-libs="https://raw.githubusercontent.com/viebel/gadjett/master/src/">
-  (require-macros '[gadjett.core :refer [dbg]])
-  (dbg (map inc [1 2 3]))
+(require '[clojure.spec :as s])
 </div>
 <br/>
 <div class="clojure">
-    (def x 1)
-    x
+    (s/def ::a int?)
+    
 </div>
 <br/>
 <div class="clojure">

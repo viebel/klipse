@@ -590,8 +590,8 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
         };
         </script>
         <script>
-{
-let addScript = (url) => {
+
+function addScript(url) {
     var s = document.createElement('script');
     s.src = url;
     document.body.appendChild(s);
@@ -602,9 +602,6 @@ let addScript = (url) => {
     } else {
         addScript("plugin_prod/js/klipse_plugin.min.js");
     }
-}
-
-
         </script>
     </body>
 </html>

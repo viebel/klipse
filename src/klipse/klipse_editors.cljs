@@ -22,6 +22,10 @@
   {:class "klipse-result"
    :id (str "klipse-result-" n)})
 
+(defn klipse-container-attrs [n]
+  {:class "klipse-container"
+   :id (str "klipse-container-" n)})
+
 (defn eval-in-editor
   "
   Evaluates the `value` - with `preamble` prepended to it - and call `setter` with the result of the evaluation.
@@ -40,13 +44,14 @@
         (swap! state update-in [:eval-counter] inc)
         (let [evaluation-chan (eval-fn (str preamble src-code) @state)
               first-result (<! evaluation-chan)]
-          (setter first-result)
+          (when setter (setter first-result))
           (when loop-msec
             (go-loop []
                      (let [[cmd c] (alts! [cmd-chan (timeout loop-msec)])]
                        (when-not (and (= c cmd-chan)
                                       (= cmd :reset))
-                         (setter (<! (eval-fn src-code @state)))
+                         (let [res (<! (eval-fn src-code @state))]
+                           (when setter (setter res)))
                          (recur)))))
 
           (go-loop [previous-results first-result]
@@ -58,20 +63,18 @@
       (catch :default e
         (setter e)))))
 
-(defn eval-in-codemirror-editor [eval-fn editor-target editor-source {:keys [no-result] :as snippet-args} mode state]
+(defn eval-in-codemirror-editor [eval-fn editor-target editor-source snippet-args mode state]
   (eval-in-editor eval-fn
                   (get-value editor-source)
-                  (if no-result
-                    any?
-                    #(set-value-and-beautify editor-target mode % {:indent? false
-                                                                   :remove-ending-comments? false}))
+                  (when editor-target #(set-value-and-beautify editor-target mode % {:indent? false
+                                                                                     :remove-ending-comments? false}))
                   snippet-args
                   state))
 
-(defn eval-in-dom-editor [eval-fn target source {:keys [no-result] :as snippet-args} state]
+(defn eval-in-dom-editor [eval-fn target source snippet-args state]
     (eval-in-editor eval-fn
                   (or (value source) (aget source "textContent"))
-                  (if no-result any? (partial gdom/setTextContent target))
+                  (when target (partial gdom/setTextContent target))
                   snippet-args
                   state))
 
@@ -81,10 +84,10 @@
                       res)]
     (! elem.innerHTML wrapped-res)))
 
-(defn eval-in-html-editor [eval-fn target editor-source {:keys [no-result] :as snippet-args} state]
+(defn eval-in-html-editor [eval-fn target editor-source snippet-args state]
   (eval-in-editor eval-fn
                   (get-value editor-source)
-                  (if no-result any? (partial wrap-result-in-html target))
+                  (when target (partial wrap-result-in-html target))
                   snippet-args
                   state))
 
@@ -112,11 +115,12 @@
 
 (defmethod create-editor :html [_ {:keys [snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
-        out-editor (create-div-after element (klipse-result-attrs snippet-num))
+        container (create-div-after element (klipse-container-attrs snippet-num))
+        out-editor (when-not no-result (create-div-after element (klipse-result-attrs snippet-num)))
         in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
         snippet-args {:loop-msec loop-msec
-                      :no-result no-result
                       :preamble preamble}
+        
         state (create-state out-editor)]
     (gdom/setTextContent out-editor default-txt)
     (handle-events in-editor
@@ -126,23 +130,22 @@
 
 (defmethod create-editor :code-mirror [_ {:keys [snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result]}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
-        out-editor (if no-result
-                     (create-div-after element (klipse-result-attrs snippet-num))
-                     (create-editor-after-element element default-txt out-editor-options :indent? false :remove-ending-comments? false)) ; must be called before `element` is replaced
+        container  (create-div-after element (klipse-container-attrs snippet-num))
+        out-editor (when-not no-result (create-editor-after-element element default-txt out-editor-options :indent? false :remove-ending-comments? false)) ; must be called before `element` is replaced
+
         in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
         snippet-args {:loop-msec loop-msec
-                      :no-result no-result
                       :preamble preamble}
-        state (create-state out-editor)]
+        state (create-state container)]
     (handle-events in-editor
                    {:idle-msec idle-msec
                     :on-should-eval #(eval-in-codemirror-editor eval-fn out-editor in-editor snippet-args editor-out-mode state)})
     #(eval-in-codemirror-editor eval-fn out-editor in-editor snippet-args editor-out-mode state)))
 
 (defmethod create-editor :dom [_ {:keys [snippet-num element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec loop-msec preamble no-result]}]
-  (let [out-editor (create-div-after element (klipse-result-attrs snippet-num))
+  (let [container  (create-div-after element (klipse-container-attrs snippet-num))
+        out-editor (when-not no-result (create-div-after element (klipse-result-attrs snippet-num)))
         snippet-args {:loop-msec loop-msec
-                      :no-result no-result
                       :preamble preamble}
         state (create-state out-editor)]
     (gdom/setTextContent out-editor default-txt)

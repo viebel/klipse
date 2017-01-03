@@ -142,13 +142,11 @@
         (src-cb nil)))))
 
 (defn cached-macro-ns? [name]
-  (or (re-matches #"reagent\..*" (str (munge name))))
-  '#{gadjett.core om.next om.dom cljs.spec cljs.spec.impl.gen})
+  (or (re-matches #"reagent\..*|om\..*|cljs\.spec.*" (str (munge name))))
+  '#{gadjett.core})
 
 (defn cached-cljs-ns? [name]
-  (or (re-matches #"clojure\.test\.check.*|reagent\..*" (str (munge name)))
-      ('#{om.next om.dom om.next.impl.parser om.next.protocols om.tempid om.util om.transit} name)))
-
+  (re-matches #"clojure\.test\.check.*|reagent\.|om\..*" (str (munge name))))
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :macro :" (str name)))

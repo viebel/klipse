@@ -142,21 +142,24 @@
       (src-cb {:lang :js :cache (edn (:body cache)) :source (:body src)}))))
 
 (def cached-macro-ns?
-  '#{gadjett.core om.next})
+  '#{gadjett.core om.next om.dom})
 
 (def cached-cljs-ns?
   '#{om.next om.dom om.next.impl.parser om.next.protocols om.tempid om.util om.transit})
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
-  (when (verbose?) (js/console.log "load-ns :macro :" name))
+  (when (verbose?) (js/console.info "load-ns :macro :" (str name)))
   (cond
-    (skip-ns-macros name) (src-cb {:lang :clj :source ""})
+    (skip-ns-macros name) (do (when (verbose?) (js/console.info "load-ns :macro skip:" (str name))) (src-cb {:lang :clj :source ""}))
     (cached-macro-ns? name) (load-ns-from-cache name src-cb true)
-    (find the-ns-map name) (let [prefix (str (get the-ns-map name) "/" path)
-                                 filenames (map (partial str prefix) macro-suffixes)]
-                             (try-to-load-ns filenames :clj :source src-cb))
-    :else (let [filenames (external-libs-files external-libs macro-suffixes path)]
-            (try-to-load-ns filenames :clj :source src-cb))))
+    (the-ns-map name) (do (when (verbose?) (js/console.info "load-ns :macro known:" (str name))) (src-cb {:lang :clj :source ""})
+                          (let [prefix (str (the-ns-map name) "/" path)
+                                filenames (map (partial str prefix) macro-suffixes)]
+                            (try-to-load-ns filenames :clj :source src-cb)))
+    :else (do
+            (when (verbose?) (js/console.info "load-ns :macro external-libs:" (str name))) (src-cb {:lang :clj :source ""})
+            (let [filenames (external-libs-files external-libs macro-suffixes path)]
+                (try-to-load-ns filenames :clj :source src-cb)))))
 
 
 (def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")

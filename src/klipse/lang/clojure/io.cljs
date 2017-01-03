@@ -142,10 +142,10 @@
       (src-cb {:lang :js :cache (edn (:body cache)) :source (:body src)}))))
 
 (def cached-macro-ns?
-  '#{gadjett.core om.next om.dom})
+  '#{gadjett.core om.next om.dom cljs.spec cljs.spec.impl.gen})
 
 (def cached-cljs-ns?
-  '#{om.next om.dom om.next.impl.parser om.next.protocols om.tempid om.util om.transit})
+    '#{cljs.spec cljs.spec.impl.gen om.next om.dom om.next.impl.parser om.next.protocols om.tempid om.util om.transit})
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :macro :" (str name)))

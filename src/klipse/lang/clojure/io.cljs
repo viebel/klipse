@@ -146,7 +146,7 @@
   '#{gadjett.core})
 
 (defn cached-cljs-ns? [name]
-  (re-matches #"clojure\.test\.check.*|reagent\.|om\..*" (str (munge name))))
+  (re-matches #"clojure\.test\.check.*|reagent\..*|om\..*" (str (munge name))))
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :macro :" (str name)))
@@ -208,7 +208,7 @@
   (when (verbose?) (js/console.info "load-ns :cljs :" (str name)))
   (cond
     (skip-ns-cljs name) (src-cb {:lang :js :source ""})
-    (and (not (cached-cljs-ns? name)) (bundled-ns? name)) (let [_ (when (verbose?) (js/console.log "load-ns :cljs bundled" name))
+    (bundled-ns? name) (let [_ (when (verbose?) (js/console.log "load-ns :cljs bundled" name))
                                       filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
                             (go
                               (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))

@@ -65,15 +65,12 @@
                       'cljs.compiler.macros})
 
 (defn the-ns-map [name]
-  (let [m '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
-           cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
-           cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
+  (let [m '{cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
            clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"}]
     (if-let [path (m name)]
       path
       (let [name-str (str name)]
         (cond
-          (re-matches #"^reagent\..*" name-str) "https://raw.githubusercontent.com/viebel/reagent/master/src/"
           :else nil)))))
 
 (def skip-ns-cljs #{'cljs.core
@@ -84,6 +81,9 @@
 
 (defn cache-buster? []
   (boolean (read-string (or (:cache-buster (url-parameters)) "false"))))
+
+(defn verbose? []
+  (boolean (read-string (or (:verbose (url-parameters)) "false"))))
 
 (defn filename-of [s cache-buster?]
   (if cache-buster?
@@ -119,14 +119,48 @@
         suffix suffixes]
     (str lib "/" path suffix)))
 
+
+
+(defn name->cached-resource [name]
+  (-> (str (munge name))
+      (string/replace #"\." "_SLASH_")))
+
+(defn load-ns-from-cache [name src-cb macro?]
+  (when (verbose?) (js/console.info "load-ns-from-cache:" (str name) "macro: " macro?))
+  (go
+    (let [nn (name->cached-resource name)
+          suffix (if macro? "$macros" "")
+          root "http://viebel.github.io/klipse/cache-cljs/"
+          src-filename (str root nn suffix ".js")
+          cache-filename (str root nn suffix ".cache.json")
+          src (<! (http/get (filename-of src-filename (cache-buster?)) {:with-credentials? false}))
+          cache (<! (http/get (filename-of cache-filename (cache-buster?)) {:with-credentials? false}))]
+      (if (every? #(= 200 %) [(:status cache) (:status src)])
+        (do
+          (js/console.log name {:lang :js :cache (edn (:body cache)) :src (:body src)})
+          (src-cb {:lang :js :cache (edn (:body cache)) :source (:body src)}))
+        (src-cb nil)))))
+
+(defn cached-macro-ns? [name]
+  (or (re-matches #"reagent\..*|om\..*|cljs\.spec.*" (str (munge name))))
+  '#{gadjett.core})
+
+(defn cached-cljs-ns? [name]
+  (re-matches #"clojure\.test\.check.*|reagent\.|om\..*" (str (munge name))))
+
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
+  (when (verbose?) (js/console.info "load-ns :macro :" (str name)))
   (cond
-    (skip-ns-macros name) (src-cb {:lang :clj :source ""})
-    (the-ns-map name) (let [prefix (str (the-ns-map name) "/" path)
-                            filenames (map (partial str prefix) macro-suffixes)]
-                             (try-to-load-ns filenames :clj :source src-cb))
-    :else (let [filenames (external-libs-files external-libs macro-suffixes path)]
-            (try-to-load-ns filenames :clj :source src-cb))))
+    (skip-ns-macros name) (do (when (verbose?) (js/console.info "load-ns :macro skip:" (str name))) (src-cb {:lang :clj :source ""}))
+    (cached-macro-ns? name) (load-ns-from-cache name src-cb true)
+    (the-ns-map name) (do (when (verbose?) (js/console.info "load-ns :macro known:" (str name))) (src-cb {:lang :clj :source ""})
+                          (let [prefix (str (the-ns-map name) "/" path)
+                                filenames (map (partial str prefix) macro-suffixes)]
+                            (try-to-load-ns filenames :clj :source src-cb)))
+    :else (do
+            (when (verbose?) (js/console.info "load-ns :macro external-libs:" (str name))) (src-cb {:lang :clj :source ""})
+            (let [filenames (external-libs-files external-libs macro-suffixes path)]
+                (try-to-load-ns filenames :clj :source src-cb)))))
 
 
 (def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
@@ -138,7 +172,7 @@
         filenames (map #(str "https://gist.githubusercontent.com/" path %) cljs-suffixes)]
     (try-to-load-ns filenames :clj :source src-cb)))
 
-(defn cached-ns
+(defn bundled-ns?
   "Checks whether a namespace is present at run-time"
   [name]
   ; for some reason, during the load of reagent namespaces, a `reagent.dom` object is created - but it's not the real `reagent.dom` namespace
@@ -171,13 +205,16 @@
 
 
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
+  (when (verbose?) (js/console.info "load-ns :cljs :" (str name)))
   (cond
     (skip-ns-cljs name) (src-cb {:lang :js :source ""})
-    (cached-ns name) (let [filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
-                       (go
-                         (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
+    (and (not (cached-cljs-ns? name)) (bundled-ns? name)) (let [_ (when (verbose?) (js/console.log "load-ns :cljs bundled" name))
+                                      filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
+                            (go
+                              (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
                                         ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js
-                           (src-cb {:lang :js :source ""}))))
+                                (src-cb {:lang :js :source ""}))))
+    (cached-cljs-ns? name) (load-ns-from-cache name src-cb false)
     (cljsjs? name) (try-to-load-cljsjs-ns name src-cb)
     (the-ns-map name) (let [prefix (str (the-ns-map name) "/" path)
                             filenames (map (partial str prefix) cljs-suffixes)]

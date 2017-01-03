@@ -6,11 +6,13 @@
   (:require
     klipse.lang.clojure.bundled-namespaces
     gadjett.core-fn
+    [klipse.utils :refer [url-parameters]]
     [rewrite-clj.node :as n]
     [rewrite-clj.parser :as p]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
     [cljs.analyzer :as ana]
+    [cljs.reader :refer [read-string]]
     [cljs.compiler :as compiler]
     [klipse.common.registry :refer [codemirror-mode-src register-mode]]
     [klipse.lang.clojure.io :as io]
@@ -29,6 +31,9 @@
 
 (def create-state-eval (memoize cljs/empty-state))
 (def create-state-compile (memoize cljs/empty-state))
+
+(defn verbose? []
+  (boolean (read-string (or (:verbose (url-parameters)) "false"))))
 
 (defn display [value {:keys [print-length beautify-strings]}]
   (with-redefs [*print-length* print-length]
@@ -79,7 +84,7 @@
 ; store the original compiler/emits - as I'm afraif things might get wrong with all the with-redefs (especially with core.async. See http://dev.clojure.org/jira/browse/CLJS-1634
 (def original-emits compiler/emits)
 
-(defn compile [s {:keys [static-fns external-libs verbose max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}} cb]
+(defn compile [s {:keys [static-fns external-libs max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}} cb]
   (let [max-eval-duration (max max-eval-duration min-max-eval-duration)
         the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
     (with-redefs [compiler/emits the-emits]
@@ -88,32 +93,32 @@
                         {
                          :eval my-eval
                          :static-fns static-fns
-                         :verbose verbose
+                         :verbose (verbose?)
                          :load (partial io/load-ns external-libs)
-                         }
-                        cb))))
+                         }))
+    cb))
 
-(defn core-eval-an-exp [s {:keys [static-fns external-libs verbose max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
+(defn core-eval-an-exp [s {:keys [static-fns external-libs max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
   (let [c (chan)
         max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [cljs.analyzer/*cljs-ns* @current-ns
                   *ns* (create-ns @current-ns)
                   compiler/emits (partial my-emits max-eval-duration)]
-      ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
+                                        ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
-                 s
-                 "my.klipse"
-                 {:eval my-eval
-                  :ns @current-ns
-                  :def-emits-var true
-                  :verbose verbose
-                  :*compiler* (set! env/*compiler* (create-state-eval))
-                  :context :expr
-                  :static-fns static-fns
-                  :load (partial io/load-ns external-libs)}
-                 (fn [res]
-                   (update-current-ns res)
-                   (put! c res))))
+                     s
+                     "my.klipse"
+                     {:eval my-eval
+                      :ns @current-ns
+                      :def-emits-var true
+                      :verbose (verbose?)
+                      :*compiler* (set! env/*compiler* (create-state-eval))
+                      :context :expr
+                      :static-fns static-fns
+                      :load (partial io/load-ns external-libs)}
+                     (fn [res]
+                       (update-current-ns res)
+                       (put! c res))))
     c))
 
 (defn split-expressions [s]

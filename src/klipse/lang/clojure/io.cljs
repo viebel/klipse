@@ -65,15 +65,12 @@
                       'cljs.compiler.macros})
 
 (defn the-ns-map [name]
-  (let [m '{cljs.spec "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
-           cljs.spec.impl.gen "https://raw.githubusercontent.com/clojure/clojurescript/r1.9.229/src/main/cljs/"
-           cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
+  (let [m '{cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
            clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"}]
     (if-let [path (m name)]
       path
       (let [name-str (str name)]
         (cond
-          (re-matches #"^reagent\..*" name-str) "https://raw.githubusercontent.com/viebel/reagent/master/src/"
           :else nil)))))
 
 (def skip-ns-cljs #{'cljs.core
@@ -125,7 +122,7 @@
 
 
 (defn name->cached-resource [name]
-  (-> (str name)
+  (-> (str (munge name))
       (string/replace #"\." "_SLASH_")))
 
 (defn load-ns-from-cache [name src-cb macro?]
@@ -138,14 +135,20 @@
           cache-filename (str root nn suffix ".cache.json")
           src (<! (http/get (filename-of src-filename (cache-buster?)) {:with-credentials? false}))
           cache (<! (http/get (filename-of cache-filename (cache-buster?)) {:with-credentials? false}))]
-      (js/console.log name {:lang :js :cache (edn (:body cache)) :src (:body src)})
-      (src-cb {:lang :js :cache (edn (:body cache)) :source (:body src)}))))
+      (if (every? #(= 200 %) [(:status cache) (:status src)])
+        (do
+          (js/console.log name {:lang :js :cache (edn (:body cache)) :src (:body src)})
+          (src-cb {:lang :js :cache (edn (:body cache)) :source (:body src)}))
+        (src-cb nil)))))
 
-(def cached-macro-ns?
+(defn cached-macro-ns? [name]
+  (or (re-matches #"reagent\..*" (str (munge name))))
   '#{gadjett.core om.next om.dom cljs.spec cljs.spec.impl.gen})
 
-(def cached-cljs-ns?
-    '#{om.next om.dom om.next.impl.parser om.next.protocols om.tempid om.util om.transit})
+(defn cached-cljs-ns? [name]
+  (or (re-matches #"clojure\.test\.check.*|reagent\..*" (str (munge name)))
+      ('#{om.next om.dom om.next.impl.parser om.next.protocols om.tempid om.util om.transit} name)))
+
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :macro :" (str name)))

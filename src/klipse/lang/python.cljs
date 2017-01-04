@@ -18,7 +18,7 @@
 (def init (runonce (fn []
                       (! js/Sk.TurtleGraphics #js {}))))
 
-(defn str-eval-async [exp {:keys [result-element-id]}]
+(defn str-eval-async [exp {:keys [container-id]}]
   (init)
   (let [c (chan)]
     (!> js/Sk.configure #js {:output #(put! c %)
@@ -27,11 +27,10 @@
       (!> js/Sk.misceval.asyncToPromise
           (fn []
             (put! c "Output:\n")
-            (js/console.log "eval:" result-element-id)
-            (! js/Sk.TurtleGraphics.target result-element-id)
+            (! js/Sk.TurtleGraphics.target container-id)
             (!> js/Sk.importMainWithBody "<stdin>" false exp true)))
       (.then (fn [mod]
-               (!> js/console.info "success to eval skulpt: " exp))
+               (!> js/console.info "success to eval skulpt: "))
              (fn [err]
                (put! c (str "error: " err)))))
     c))

@@ -146,7 +146,7 @@
   (re-matches #"reagent\..*|om\..*|cljs\.spec.*" (str (munge name))))
 
 (defn cached-cljs-ns? [name]
-  (re-matches #"clojure\.test\.check.*|reagent\..*|om\..*" (str (munge name))))
+  (re-matches #"reagent\..*|om\..*" (str (munge name))))
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :macro :" (str name)))

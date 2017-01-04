@@ -1,27 +1,36 @@
 (ns klipse.lang.python
   (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
-    [cljs.core.async.macros :refer [go go-loop]])
+   [cljs.core.async.macros :refer [go go-loop]])
   (:require 
-    [cljs.core.async :refer [<! put! chan]]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+   [cljs.core.async :refer [<! put! chan]]
+   [klipse.utils :refer [runonce]]
+   [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+
 
 (defn builtin-read [x]
   (when (or (nil? (? js/Sk.builtinFiles))
             (nil? (aget (? js/Sk.builtinFiles.files) x)))
     (throw (str "File not found: '"  x  "'")))
-    (aget (? js/Sk.builtinFiles.files) x))
 
-(defn str-eval-async [exp _]
+  (aget (? js/Sk.builtinFiles.files) x))
+
+(def init (runonce (fn []
+                      (! js/Sk.TurtleGraphics #js {}))))
+
+(defn str-eval-async [exp {:keys [container-id]}]
+  (init)
   (let [c (chan)]
     (!> js/Sk.configure #js {:output #(put! c %)
                              :read builtin-read })
     (-> 
       (!> js/Sk.misceval.asyncToPromise
           (fn []
+            (put! c "Output:\n")
+            (! js/Sk.TurtleGraphics.target container-id)
             (!> js/Sk.importMainWithBody "<stdin>" false exp true)))
       (.then (fn [mod]
-               (!> js/console.info "success to eval skulpt: " exp))
+               (!> js/console.info "success to eval skulpt: "))
              (fn [err]
                (put! c (str "error: " err)))))
     c))

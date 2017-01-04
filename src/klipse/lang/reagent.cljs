@@ -3,13 +3,15 @@
    [gadjett.core :as gadjett :refer [dbg]])
   (:require
    [cljs.reader :refer [read-string]]
+   [cljs.core.async :refer [chan]]
    [klipse.common.registry :refer [codemirror-mode-src register-mode]]
    [klipse.lang.clojure :refer [str-eval-async]]))
 
 
-(defn eval-reagent [src opts]
-  (let [container-id (:result-element-id opts)
-        code (str `(reagent.core/render-component  ~(read-string src) (js/document.getElementById ~container-id)))]
+(defn eval-reagent [src {:keys [container-id] :as opts}]
+  ;; TODO - Jan 4 2016 - handle exceptions
+  ;; It's tricky because of `:no-result true`
+  (let [code (str `(reagent.core/render-component  ~(read-string src) (js/document.getElementById ~container-id)))]
     (str-eval-async code opts)))
 
 (def opts {:editor-in-mode "clojure"

@@ -97,6 +97,7 @@
   Returns :success if a nampespace was loaded otherwise, returns nil.
   "
   [filenames lang src-key src-cb & {:keys [transform can-recover?] :or {transform identity can-recover? false}}]
+  (when (verbose?) (js/console.info "try-to-load-ns " filenames lang src-key))
   (go
     (if
       (loop [filenames filenames]
@@ -142,8 +143,7 @@
         (src-cb nil)))))
 
 (defn cached-macro-ns? [name]
-  (or (re-matches #"reagent\..*|om\..*|cljs\.spec.*" (str (munge name))))
-  '#{gadjett.core})
+  (re-matches #"reagent\..*|om\..*|cljs\.spec.*" (str (munge name))))
 
 (defn cached-cljs-ns? [name]
   (re-matches #"clojure\.test\.check.*|reagent\..*|om\..*" (str (munge name))))
@@ -205,7 +205,7 @@
 
 
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
-  (when (verbose?) (js/console.info "load-ns :cljs :" (str name)))
+  (when (verbose?) (js/console.info "load-ns :cljs :" (str name) "external-libs: " external-libs))
   (cond
     (skip-ns-cljs name) (src-cb {:lang :js :source ""})
     (bundled-ns? name) (let [_ (when (verbose?) (js/console.log "load-ns :cljs bundled" name))

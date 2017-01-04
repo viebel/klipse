@@ -126,7 +126,7 @@
   (go
     (let [nn (name->cached-resource name)
           suffix (if macro? "$macros" "")
-          root "http://viebel.github.io/klipse/cache-cljs/"
+          root "https://viebel.github.io/klipse/cache-cljs/"
           src-filename  (str root nn suffix ".js")
           cache-filename (str root nn suffix ".cache.json")
           src (<! (http/get (filename-of src-filename (cache-buster?)) {:with-credentials? false}))

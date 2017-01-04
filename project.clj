@@ -12,7 +12,7 @@
                  [com.cemerick/url "0.1.1"]
                  [rewrite-cljs "0.4.3"]
                  [cljsjs/codemirror "5.19.0-0"]
-                 [reagent "0.6.1-SNAPSHOT"]
+                 ;[reagent "0.6.1-SNAPSHOT"]
                  [devcards "0.2.2"]
                  [devcards-om-next "0.3.0"]]
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.8"]] }}

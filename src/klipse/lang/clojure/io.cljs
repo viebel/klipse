@@ -64,14 +64,9 @@
                       'cljs.js
                       'cljs.compiler.macros})
 
-(defn the-ns-map [name]
-  (let [m '{cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
-           clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"}]
-    (if-let [path (m name)]
-      path
-      (let [name-str (str name)]
-        (cond
-          :else nil)))))
+(def the-ns-map 
+  '{cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
+    clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"})
 
 (def skip-ns-cljs #{'cljs.core
                     'cljs.env
@@ -132,7 +127,7 @@
     (let [nn (name->cached-resource name)
           suffix (if macro? "$macros" "")
           root "http://viebel.github.io/klipse/cache-cljs/"
-          src-filename (str root nn suffix ".js")
+          src-filename  (str root nn suffix ".js")
           cache-filename (str root nn suffix ".cache.json")
           src (<! (http/get (filename-of src-filename (cache-buster?)) {:with-credentials? false}))
           cache (<! (http/get (filename-of cache-filename (cache-buster?)) {:with-credentials? false}))]
@@ -143,10 +138,10 @@
         (src-cb nil)))))
 
 (defn cached-macro-ns? [name]
-  (re-matches #"reagent\..*|om\..*|cljs\.spec.*" (str (munge name))))
+  (re-matches #"cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*" (str (munge name))))
 
 (defn cached-cljs-ns? [name]
-  (re-matches #"reagent\..*|om\..*" (str (munge name))))
+  (re-matches #"clojure.test.check.*|reagent\..*|om\..*" (str (munge name))))
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :macro :" (str name)))

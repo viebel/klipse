@@ -541,18 +541,14 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
  <h1> Reagent</h1>
  <pre>
   <code class="clj">
+(require '[reagent.core :as r])
 
-    (require '[reagent.core :as r])
-</code></pre>
-
-<pre><code class="clj">(defn child [name]
+(defn child [name]
     [:p "Hi, I am " name])
 
     (defn childcaller []
     [child "Foo Bar"])
-</code></pre>
-
-<pre><code class="clj">(r/render-to-string [child "Foo Bar"])
+(r/render-to-string [child "Foo Bar"])
 </code></pre>
 
 <pre><code class="reagent">
@@ -603,5 +599,5 @@ function addScript(url) {
         addScript("plugin_prod/js/klipse_plugin.min.js");
     }
         </script>
-    </body>
+     </body>
 </html>

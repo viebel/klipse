@@ -95,8 +95,8 @@
                          :static-fns static-fns
                          :verbose (verbose?)
                          :load (partial io/load-ns external-libs)
-                         }))
-    cb))
+                         }
+                        cb))))
 
 (defn core-eval-an-exp [s {:keys [static-fns external-libs max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
   (let [c (chan)

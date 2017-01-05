@@ -86,15 +86,21 @@ lumo scripts/generate-clojure-spec-cache.cljs
 
 ```
 
-For #2, you need to open lumo with the appropriate cache folder and class path:
+For #2, you need to:
+
+1. run `lein deps
+
+2. open lumo with the appropriate cache folder and class path:
 
 ```bash
 export cp=`lein classpath`
 lumo -k docs/cache-cljs -c $cp
 ```
 
-And inside lumo, you need to require your namespaces, and the cache will be stored inder `docs/cache-cljs` e.g.:
+3. inside lumo, you need to require your namespaces, and the cache will be stored inder `docs/cache-cljs` e.g.:
 
 ```bash
 cljs.user=> (require 'clojure.test.check)
 ```
+
+4. commit `docs/cache-cljs`

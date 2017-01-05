@@ -29,8 +29,7 @@
 
 (defonce ^:private current-ns (atom 'cljs.user))
 
-(def create-state-eval (memoize cljs/empty-state))
-(def create-state-compile (memoize cljs/empty-state))
+(defonce create-state-eval (memoize cljs/empty-state))
 
 
 (defn display [value {:keys [print-length beautify-strings]}]
@@ -68,7 +67,7 @@
          result (aget (js/compile flags) "compiledCode")]
      result))
 
-(defn convert-compile-res [{:keys [value error]}]
+(defn convert-compile-res [{:keys [value error] :as foo}]
   (let [status (if error :error :ok)
         res (if error
               error
@@ -86,8 +85,11 @@
   (let [c (chan)
         max-eval-duration (max max-eval-duration min-max-eval-duration)
         the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
-    (with-redefs [compiler/emits the-emits]
-      (cljs/compile-str (create-state-compile) s
+    (with-redefs [compiler/emits the-emits
+                  cljs.analyzer/*cljs-ns* @current-ns
+                  *ns* (create-ns @current-ns)]
+      (js/console.log "compile:" *ns* @current-ns)
+      (cljs/compile-str (create-state-eval) s
                         "cljs-in"
                         {
                          :eval my-eval
@@ -96,7 +98,6 @@
                          :load (partial io/load-ns external-libs)
                          }
                         (fn [res]
-                          (update-current-ns res)
                           (put! c res))))
     c))
 
@@ -106,6 +107,7 @@
     (with-redefs [cljs.analyzer/*cljs-ns* @current-ns
                   *ns* (create-ns @current-ns)
                   compiler/emits (partial my-emits max-eval-duration)]
+            (js/console.log "eval:" *ns* @current-ns)
                                         ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
                      s
@@ -142,17 +144,27 @@
       (catch :default e
         {:error e}))))
 
+(defn ns-exp?
+  "receives a string.
+  returns true if the expression is a string of an ns-form like (ns my.foo...) or (require 'my.foo).
+  "
+  [exp]
+  (-> (read-string exp)
+      first
+      ('#{ns require-macros use use-macros import refer-clojure require})))
+
 (defn core-compile [s opts]
   (go
     (try
-      (loop [exps (split-expressions s) last-res nil]
+      (loop [exps (split-expressions s) all-res ""]
         (if (seq exps)
-          (let [_ (<! (core-eval-an-exp (first exps) opts))
-                res (<! (core-compile-an-exp (first exps) opts))]
+          (let [exp (first exps)
+                _ (when (ns-exp? exp) (<! (core-eval-an-exp exp opts)))
+                res (<! (core-compile-an-exp exp opts))]
             (if (:error res)
               res
-              (recur (rest exps) res)))
-          last-res))
+              (recur (rest exps) (str all-res (:value res)))))
+          {:value all-res}))
       (catch :default e
         {:error e}))))
 

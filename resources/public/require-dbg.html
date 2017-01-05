@@ -9,9 +9,27 @@
 <body>
 <pre><code class="klojure">
     (map inc [1 2 3])
+    (+ 1 2 3)
+    (js/alert 1 2)
+</code></pre>
+<pre><code class="klojure">
+    (ns my.ns)
+
+    (def a "hello")
+</code></pre>
+<pre><code class="clojure">
+(require-macros '[gadjett.core :refer [dbg]])
+(dbg [1 2 3 "hello"])
 </code></pre>
 
-<pre><code class="klojure">
+<pre><code class="clojure">
+    (ns my.ns
+    (:import [goog.string StringBuffer]))
+
+    (StringBuffer. "aa")
+</code></pre>
+
+<pre><code class="clojure">
     (ns my.test
       (:require
           [cljs.pprint :as pp :refer [pprint]]))
@@ -20,8 +38,7 @@
 
 
     <pre><code class="clojure">
-    (ns my.combinatorics
-      (:require [clojure.math.combinatorics :refer [permutations]]))
+      (require '[clojure.math.combinatorics :refer [permutations]]))
 
     (permutations [1 2 3])
     </code></pre>

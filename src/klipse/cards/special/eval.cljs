@@ -3,7 +3,7 @@
     [cljs.test :refer [is are]])
   (:require 
     [clojure.string :as string]
-    [klipse.lang.clojure :refer [eval compile str-compile]]
+    [klipse.lang.clojure :refer [eval str-compile]]
     [devcards.core :as dc :refer-macros [defcard deftest]]))
 
 (defn remove-chars [s]

@@ -82,8 +82,9 @@
 ; store the original compiler/emits - as I'm afraif things might get wrong with all the with-redefs (especially with core.async. See http://dev.clojure.org/jira/browse/CLJS-1634
 (def original-emits compiler/emits)
 
-(defn compile [s {:keys [static-fns external-libs max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}} cb]
-  (let [max-eval-duration (max max-eval-duration min-max-eval-duration)
+(defn core-compile-an-exp [s {:keys [static-fns external-libs max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}}]
+  (let [c (chan)
+        max-eval-duration (max max-eval-duration min-max-eval-duration)
         the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
     (with-redefs [compiler/emits the-emits]
       (cljs/compile-str (create-state-compile) s
@@ -94,7 +95,10 @@
                          :verbose (verbose?)
                          :load (partial io/load-ns external-libs)
                          }
-                        cb))))
+                        (fn [res]
+                          (update-current-ns res)
+                          (put! c res))))
+    c))
 
 (defn core-eval-an-exp [s {:keys [static-fns external-libs max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
   (let [c (chan)
@@ -138,6 +142,20 @@
       (catch :default e
         {:error e}))))
 
+(defn core-compile [s opts]
+  (go
+    (try
+      (loop [exps (split-expressions s) last-res nil]
+        (if (seq exps)
+          (let [_ (<! (core-eval-an-exp (first exps) opts))
+                res (<! (core-compile-an-exp (first exps) opts))]
+            (if (:error res)
+              res
+              (recur (rest exps) res)))
+          last-res))
+      (catch :default e
+        {:error e}))))
+
 (defn eval-async [s opts]
   (go
     (-> (<! (core-eval s opts))
@@ -160,13 +178,12 @@
 (defn str-compile "useful for testing and js export"
   ^{:export true}
   ([exp] (str-compile exp {}))
-  ([exp opts] (-> (compile exp opts convert-compile-res))))
+  ([exp opts] (go (-> (<! (core-compile exp opts))
+                      convert-compile-res))))
 
 (defn compile-async [exp opts]
-  (let [c (chan)]
-    (compile exp opts
-             #(put! c (convert-compile-res %)))
-    c))
+  (go (-> (<! (core-compile exp opts))
+          (convert-compile-res))))
 
 (defn str-compile-async [exp opts]
   (go (-> (<! (compile-async exp opts))

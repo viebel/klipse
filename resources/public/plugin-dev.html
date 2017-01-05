@@ -614,12 +614,6 @@ function addScript(url) {
     s.src = url;
     document.body.appendChild(s);
 }
-    if(window.location.search.match(/dev=1/)) {
-        alert("Remember to test advanced compilation mode!");
-        addScript("plugin/js/klipse_plugin.js");
-    } else {
-        addScript("plugin_prod/js/klipse_plugin.min.js");
-    }
         </script>
      </body>
 </html>

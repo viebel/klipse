@@ -82,6 +82,18 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/viebel/50oLnykk/).
 And here are detailed explanations about [a javascript live code editor in a blog post](http://untangled.io/how-to-use-the-live-code-editor/).
 
+## python
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_eval_python_client: '.language-klipse-python', // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
 ## ruby
 
 ```html
@@ -249,6 +261,7 @@ You can see an example of styling Klipse in `demos/styling`. And here is a [live
 Here are a couple of examples of blogs using the klipse plugin:
 
 - clojure: [Procedural Dungeon Generation: A Drunkard's Walk in ClojureScript](http://blog.jrheard.com/procedural-dungeon-generation-drunkards-walk-in-clojurescript)
+- python: [Drawing fractals with a turtle](http://blog.klipse.tech/python/2017/01/04/python-turtle-fractal.html)
 - clojure: [Island Generator](http://exupero.org/hazard/post/islands/)
 - clojurescript transpiled: [blog.ducky.io - More about protocols in ClojureScript](http://blog.ducky.io/clojurescript/2016/06/08/more-defprotocol/)
 - ruby: [jessewaites.com - interactive ruby snippets](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)

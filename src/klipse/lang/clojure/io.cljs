@@ -138,10 +138,15 @@
         (src-cb nil)))))
 
 (defn cached-macro-ns? [name]
-  (re-matches #"cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*" (str (munge name))))
+  (let [name (str (munge name))]
+    (or (#{"gadjett.core" "clojure.math.macros"} name)
+        (re-matches #"cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*" name))))
 
 (defn cached-cljs-ns? [name]
-  (re-matches #"clojure.test.check.*|reagent\..*|om\..*" (str (munge name))))
+  (let [name (str (munge name))]
+    (or (#{"clojure.math.combinatorics"} name)
+        (re-matches #"clojure.test.check.*|reagent\..*|om\..*" name))))
+
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :macro :" (str name)))
@@ -159,7 +164,7 @@
 
 
 (def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
-#_(def cache-url "/cache/js/")
+;(def cache-url "/fig/js/")
 
 
 (defmethod load-ns :gist [external-libs {:keys [path]} src-cb]

@@ -1,0 +1,1 @@
+gsutil -m rsync -R resources/public/fig/js gs://app.klipse.tech/fig/js

@@ -88,7 +88,6 @@
     (with-redefs [compiler/emits the-emits
                   cljs.analyzer/*cljs-ns* @current-ns
                   *ns* (create-ns @current-ns)]
-      (js/console.log "compile:" *ns* @current-ns)
       (cljs/compile-str (create-state-eval) s
                         "cljs-in"
                         {
@@ -107,8 +106,7 @@
     (with-redefs [cljs.analyzer/*cljs-ns* @current-ns
                   *ns* (create-ns @current-ns)
                   compiler/emits (partial my-emits max-eval-duration)]
-            (js/console.log "eval:" *ns* @current-ns)
-                                        ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
+                  ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
                      s
                      "my.klipse"
@@ -149,9 +147,10 @@
   returns true if the expression is a string of an ns-form like (ns my.foo...) or (require 'my.foo).
   "
   [exp]
-  (-> (read-string exp)
-      first
-      ('#{ns require-macros use use-macros import refer-clojure require})))
+  (let [form (read-string exp)]
+    (and (seq? form)
+         ('#{ns require-macros use use-macros import refer-clojure require} (first form)))))
+
 
 (defn core-compile [s opts]
   (go

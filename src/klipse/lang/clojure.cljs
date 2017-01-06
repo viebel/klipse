@@ -41,6 +41,7 @@
 
 (defn update-current-ns [{:keys [ns form warning error value success?]}]
   (when-not error
+    (when (verbose?) (js/console.info "update-current-ns:" (str ns)))
     (reset! current-ns ns)))
 
 (defn result-as-str [{:keys [ns form warning error value success?] :as args} opts]
@@ -78,6 +79,9 @@
   (watchdog)
   (cljs/js-eval args))
 
+(defn eval-for-compilation [{:keys [source]}]
+  source)
+
 ; store the original compiler/emits - as I'm afraif things might get wrong with all the with-redefs (especially with core.async. See http://dev.clojure.org/jira/browse/CLJS-1634
 (def original-emits compiler/emits)
 
@@ -86,16 +90,18 @@
         max-eval-duration (max max-eval-duration min-max-eval-duration)
         the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
     (with-redefs [compiler/emits the-emits]
-      (cljs/compile-str (create-state-eval) s
+      (cljs/eval-str (create-state-eval) s
                         "cljs-in"
                         {
-                         :eval my-eval
+                         :eval eval-for-compilation
                          :ns @current-ns
                          :static-fns static-fns
+                         :*compiler* (set! env/*compiler* (create-state-eval))
                          :verbose (verbose?)
                          :load (partial io/load-ns external-libs)
                          }
                         (fn [res]
+                          (update-current-ns res)
                           (put! c res))))
     c))
 
@@ -155,7 +161,7 @@
       (loop [exps (split-expressions s) all-res ""]
         (if (seq exps)
           (let [exp (first exps)
-                _ (when (ns-exp? exp) (<! (core-eval-an-exp exp opts)))
+                ;_ (when (ns-exp? exp) (<! (core-eval-an-exp exp opts)))
                 res (<! (core-compile-an-exp exp opts))]
             (if (:error res)
               res
@@ -163,6 +169,7 @@
           {:value all-res}))
       (catch :default e
         {:error e}))))
+
 
 (defn eval-async [s opts]
   (go

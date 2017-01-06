@@ -7,16 +7,23 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-<pre><code class="klojure">
-    (map inc [1 2 3])
-    (+ 1 2 3)
-    (js/alert 1 2)
-</code></pre>
+
 <pre><code class="klojure">
     (ns my.ns)
 
     (def a "hello")
+    (def b ::foo)
 </code></pre>
+
+<pre><code class="klojure">
+    (ns my.spec
+    (:require [clojure.spec :as s]))
+
+    (s/def ::a integer?)
+    (s/conform ::a 12)
+</code></pre>
+
+
 <pre><code class="clojure">
 (require-macros '[gadjett.core :refer [dbg]])
 (dbg [1 2 3 "hello"])
@@ -106,9 +113,9 @@
     };
 
       if(window.location.search.match(/transpile=1/)) {
-window.klipse_settings.selector_js = '.clojure';
+window.klipse_settings.selector_js = '.klojure';
     } else {
-window.klipse_settings.selector = '.clojure';
+window.klipse_settings.selector = '.klojure';
     }
 </script>
 

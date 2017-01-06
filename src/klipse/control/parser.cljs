@@ -67,12 +67,12 @@
                (swap! state
                       assoc
                       :compilation
-                      (<! (compile-async value {:static-fns (static-fns?)
-                                                :verbose (verbose?)
-                                                :external-libs (external-libs)
-                                                :compile-display-guard (compile-display-guard?)
-                                                :max-eval-duration (max-eval-duration)
-                                                :context (eval-context?)})))))})
+                      (dbg (<! (compile-async value {:static-fns (static-fns?)
+                                                     :verbose (verbose?)
+                                                     :external-libs (external-libs)
+                                                     :compile-display-guard (compile-display-guard?)
+                                                     :max-eval-duration (max-eval-duration)
+                                                     :context (eval-context?)}))))))})
 
 
 (defn clean-print-box [state]

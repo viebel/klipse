@@ -136,6 +136,8 @@ And here are detailed explanations about [a javascript live code editor in a blo
 
 ## clojure
 
+> Pay attention: for clojure interactive snippets, you must use the **non-minified** version of klipse as for the moment, self-host cljs doesn't support advanced compilation!
+
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
 

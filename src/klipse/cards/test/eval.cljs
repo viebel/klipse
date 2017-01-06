@@ -105,7 +105,17 @@
                   )
              (done))))
 
+(deftest eval-in-ns
+  "eval properly code that is related to ns"
+  (async done
+         (go (are [input-clj output-clj]
+                 (a= (second (<! (eval input-clj))) output-clj)
+               "(ns my.foo) ::foo" :my.foo/foo
 
+               )
+             (done))))
+
+;;;; DISPLAY
 (deftest display-evaluation-with-errors
   "displays evaluation when an error occurs"
   (async done
@@ -144,3 +154,4 @@
                   "abcdef" "\"abcdef\""; strings are not cropped
                   (range) "(0 1 ...)")
              (done))))
+

@@ -3,11 +3,13 @@
     [gadjett.core :as gadjett :refer [deftrack dbg]]
     [cljs.core.async.macros :refer [go]])
   (:require 
-    gadjett.core-fn
+   gadjett.core-fn
+   [cljs.core.async :refer [<! timeout]]
     [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters verbose?]]
     [klipse.lang.clojure :refer [eval-async compile-async]]
     [om.next :as om]))
+
 
 ;; =============================================================================
 ;; Utils
@@ -67,12 +69,14 @@
                (swap! state
                       assoc
                       :compilation
-                      (dbg (<! (compile-async value {:static-fns (static-fns?)
-                                                     :verbose (verbose?)
-                                                     :external-libs (external-libs)
-                                                     :compile-display-guard (compile-display-guard?)
-                                                     :max-eval-duration (max-eval-duration)
-                                                     :context (eval-context?)}))))))})
+                      (do
+                        (<! (timeout 1000))
+                        (<! (compile-async value {:static-fns (static-fns?)
+                                                    :verbose (verbose?)
+                                                    :external-libs (external-libs)
+                                                    :compile-display-guard (compile-display-guard?)
+                                                    :max-eval-duration (max-eval-duration)
+                                                    :context (eval-context?)}))))))})
 
 
 (defn clean-print-box [state]

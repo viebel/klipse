@@ -31,6 +31,16 @@
 
 (defonce create-state-eval (memoize cljs/empty-state))
 
+(defn wait-for-condition [f interval-in-msec]
+  (go-loop []
+    (when-not (f)
+      (<! (timeout interval-in-msec))
+      (recur))))
+
+(def inside-eval (atom false))
+
+(defn can-eval? []
+  (not @inside-eval))
 
 (defn display [value {:keys [print-length beautify-strings]}]
   (with-redefs [*print-length* print-length]
@@ -86,44 +96,52 @@
 (def original-emits compiler/emits)
 
 (defn core-compile-an-exp [s {:keys [static-fns external-libs max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}}]
-  (let [c (chan)
-        max-eval-duration (max max-eval-duration min-max-eval-duration)
-        the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
-    (with-redefs [compiler/emits the-emits]
-      (cljs/eval-str (create-state-eval) s
-                        "cljs-in"
-                        {
-                         :eval eval-for-compilation
-                         :ns @current-ns
-                         :static-fns static-fns
-                         :*compiler* (set! env/*compiler* (create-state-eval))
-                         :verbose (verbose?)
-                         :load (partial io/load-ns external-libs)
-                         }
-                        (fn [res]
-                          (update-current-ns res)
-                          (put! c res))))
+  (let [c (chan)]
+    (go
+      (<! (wait-for-condition can-eval? 100))
+      (reset! inside-eval true)
+      (let [max-eval-duration (max max-eval-duration min-max-eval-duration)
+            the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
+           (with-redefs [compiler/emits the-emits]
+             (cljs/eval-str (create-state-eval) s
+                            "cljs-in"
+                            {
+                             :eval eval-for-compilation
+                             :ns @current-ns
+                             :static-fns static-fns
+                             :*compiler* (set! env/*compiler* (create-state-eval))
+                             :verbose (verbose?)
+                             :load (partial io/load-ns external-libs)
+                             }
+                            (fn [res]
+                              (update-current-ns res)
+                              (reset! inside-eval false)
+                              (put! c res))))))
     c))
 
 (defn core-eval-an-exp [s {:keys [static-fns external-libs max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
-  (let [c (chan)
-        max-eval-duration (max max-eval-duration min-max-eval-duration)]
-    (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
-                  ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
-      (cljs/eval-str (create-state-eval)
-                     s
-                     "my.klipse"
-                     {:eval my-eval
-                      :ns @current-ns
-                      :def-emits-var true
-                      :verbose (verbose?)
-                      :*compiler* (set! env/*compiler* (create-state-eval))
-                      :context :expr
-                      :static-fns static-fns
-                      :load (partial io/load-ns external-libs)}
-                     (fn [res]
-                       (update-current-ns res)
-                       (put! c res))))
+  (let [c (chan)]
+    (go
+      (<! (wait-for-condition can-eval? 100))
+      (reset! inside-eval true)
+      (let [max-eval-duration (max max-eval-duration min-max-eval-duration)]
+        (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
+                                        ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
+          (cljs/eval-str (create-state-eval)
+                         s
+                         "my.klipse"
+                         {:eval my-eval
+                          :ns @current-ns
+                          :def-emits-var true
+                          :verbose (verbose?)
+                          :*compiler* (set! env/*compiler* (create-state-eval))
+                          :context :expr
+                          :static-fns static-fns
+                          :load (partial io/load-ns external-libs)}
+                         (fn [res]
+                           (update-current-ns res)
+                           (reset! inside-eval false)
+                           (put! c res))))))
     c))
 
 (defn split-expressions [s]

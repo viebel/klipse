@@ -19,5 +19,6 @@
   (editor/set-option editor "extraKeys" 
                      #js {"Ctrl-S" #(display-url-with-input base-url (editor/get-value editor))
                           "Ctrl-R" #(refresh-with-code base-url (editor/get-value editor))
-                          "Ctrl-Enter" on-should-eval}))
+                          "Ctrl-Enter" on-should-eval
+                          "Cmd-Enter" on-should-eval}))
 

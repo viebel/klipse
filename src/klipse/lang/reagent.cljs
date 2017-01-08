@@ -13,9 +13,13 @@
 (defn eval-reagent [src {:keys [container-id container] :as opts}]
   (try
     (let [exps (split-expressions src)
-          component (last exps)
+          component (read-string (last exps))
+          ;; To watch reagent/atom changes, component must be in a vector.
+          component (if (vector? component)
+                      component
+                      [component])
           other-code (string/join "\n" (drop-last 1 exps))
-          code (str other-code `(reagent.core/render-component  ~(read-string component) (js/document.getElementById ~container-id)))]
+          code (str other-code `(reagent.core/render-component  ~component (js/document.getElementById ~container-id)))]
       (str-eval-async code opts))
     (catch :default e
       (gdom/setTextContent container (str e))

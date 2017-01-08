@@ -64,11 +64,11 @@ margin: 10px auto 0px auto;
 <h2> Containers </h2>
 Each snippet has a container near it that is accessible with `js/klipse-container`:
 
-<code class="clojure">
+<pre><code class="clojure">
   (require 'goog.dom)
   (goog.dom/setTextContent js/klipse-container "hello")
   [1 2 3]
-    </code></pre>
+</code></pre>
     <h2> Dealing with namespaces </h2>
     <p> When a namespace is defined, subsequent snippets must be evaluated in the same namespace </p>
 <pre><code class="clojure">
@@ -261,7 +261,7 @@ x.selfRef = x;
 x
 </code></pre>
 <h2>containers</h2>
-Each snippet has a container near it that is accessible with `js/klipse-container`:
+Each snippet has a container near it that is accessible with `klipse_container`:
 <pre><code class="eval-js">
     klipse_container.innerHTML="hello";
     [1,2,3]
@@ -355,7 +355,7 @@ Object.entries({ one: 1, two: 2 })
 </code></pre>
 
 
-Each snippet has a container near it that is accessible with `js/klipse-container`:
+Each snippet has a container near it that is accessible with `klipse_container`:
 <pre><code class="es2017">
     klipse_container.innerHTML="hello es2017";
     [1,2,3]

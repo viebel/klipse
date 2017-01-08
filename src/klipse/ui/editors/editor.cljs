@@ -7,12 +7,8 @@
     [klipse.dom-utils :refer [create-div-after]]
     [gadjett.collections :as gadjett]
     cljsjs.codemirror
-    cljsjs.codemirror.mode.clojure
-    cljsjs.codemirror.mode.javascript
     cljsjs.codemirror.addon.edit.matchbrackets
-    cljsjs.codemirror.addon.edit.closebrackets
-    cljsjs.codemirror.addon.display.placeholder
-    cljsjs.codemirror.addon.scroll.simplescrollbars))
+    cljsjs.codemirror.addon.edit.closebrackets))
 
 (def code-mirror js/CodeMirror)
 

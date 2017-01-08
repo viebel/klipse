@@ -2,6 +2,7 @@
   (:require-macros
     [gadjett.core :as gadjett :refer [dbg]]
     [purnam.core :refer [!]]
+    [klipse.macros :refer [my-with-redefs]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
     klipse.lang.clojure.bundled-namespaces
@@ -175,12 +176,15 @@
           second
           str)))
 
-(defn str-eval-async [exp opts]
-  (let [c (chan)]
+(defn str-eval-async [exp {:keys [container-id] :as opts}]
+  (let [c (chan)
+        the-exp (str `(set! js/klipse-container (js/document.getElementById ~container-id)) "\n" `(set! js/klipse-container-id ~container-id) "\n" exp)]
+    (js/console.info the-exp)
     (go
+      
       (binding [*print-newline* true
                 *print-fn* #(put! c %)]
-        (put! c (-> (<! (eval-async exp opts))
+        (put! c (-> (<! (eval-async the-exp opts))
                     second))))
     c))
 

@@ -2,17 +2,30 @@
   (:require-macros
    [gadjett.core :as gadjett :refer [dbg]])
   (:require
+   [goog.dom :as gdom]
    [cljs.reader :refer [read-string]]
-   [cljs.core.async :refer [chan]]
+   [clojure.string :as string]
+   [cljs.core.async :refer [chan close!]]
    [klipse.common.registry :refer [codemirror-mode-src register-mode]]
-   [klipse.lang.clojure :refer [str-eval-async]]))
+   [klipse.lang.clojure :refer [str-eval-async split-expressions]]))
 
 
-(defn eval-reagent [src {:keys [container-id] :as opts}]
-  ;; TODO - Jan 4 2016 - handle exceptions
-  ;; It's tricky because of `:no-result true`
-  (let [code (str `(reagent.core/render-component  ~(read-string src) (js/document.getElementById ~container-id)))]
-    (str-eval-async code opts)))
+(defn eval-reagent [src {:keys [container-id container] :as opts}]
+  (try
+    (let [exps (split-expressions src)
+          component (read-string (last exps))
+          ;; To watch reagent/atom changes, component must be in a vector.
+          component (if (vector? component)
+                      component
+                      [component])
+          other-code (string/join "\n" (drop-last 1 exps))
+          code (str other-code `(reagent.core/render-component  ~component (js/document.getElementById ~container-id)))]
+      (str-eval-async code opts))
+    (catch :default e
+      (gdom/setTextContent container (str e))
+      (let [c (chan)]
+        (close! c)
+        c))))
 
 (def opts {:editor-in-mode "clojure"
            :editor-out-mode "clojure"

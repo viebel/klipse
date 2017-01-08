@@ -129,3 +129,10 @@
 
 (defn verbose? []
   (boolean (read-string (or (:verbose (url-parameters)) "false"))))
+
+(defn klipse-settings* []
+  (->
+   (aget js/window "klipse_settings")
+   (js->clj :keywordize-keys true)))
+
+(def klipse-settings (memoize klipse-settings*))

@@ -8,6 +8,7 @@
     </head>
     <body>
 
+
 <div class="clojure">
   (ns my.ns
   (:refer-clojure :exclude [distinct group-by update])
@@ -23,6 +24,13 @@
 <br/>
 
 
+      
+<div class="clojure">
+    (def y 1)
+    (+ y y)
+    ;; you should not see the comments
+</div>
+<br/>
 
 <div class="clojure">
   (require-macros '[gadjett.core :refer [dbg]])
@@ -83,7 +91,10 @@
 <br/>
        <script>
         window.klipse_settings = {
-        selector: '.clojure'
+        selector: '.clojure',
+	clojure_cached_macro_ns_regexp: /sqlingvo.*/,
+        clojure_cached_ns_regexp: /sqlingvo.*/,
+        cached_ns_root: "http://localhost:9999/",
         };
         </script>
         <script src="/lib/mirror_extensions.js"></script>

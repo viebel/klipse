@@ -5,7 +5,7 @@
     [purnam.core :refer [!>]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    [klipse.utils :refer [load-scripts]]
+    [klipse.utils :refer [load-scripts verbose?]]
     [cljs-http.client :as http]
     [clojure.string :as string]
     [cljs.core.async :refer [<! chan put!]]
@@ -46,8 +46,14 @@
     (eval-in-global-scope wrapped-exp)
     ""))
 
-(defn str-eval-js-async [exp {:keys [async-code? external-libs] :or {async-code? false external-libs nil}}]
-  (let [c (chan)]
+(defn setup-container [container-id]
+  (str "klipse_container = document.getElementById('" container-id "');\n"
+       "klipse_container_id = '"container-id "';\n"))
+
+(defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
+  (let [exp (str (setup-container container-id) exp)
+        c (chan)]
+    (when (verbose?) (js/console.info "[javascript] evaluating" exp))
     (go
       (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
         (try
@@ -78,8 +84,10 @@
    (-> (!> js/Babel.transform src #js {:presets #js ["es2017"]})
        (aget "code")))
 
-(defn eval-es2017 [exp {:keys [async-code?] :or {async-code? false}}]
-  (let [c (chan)]
+(defn eval-es2017 [exp {:keys [async-code? container-id] :or {async-code? false}}]
+  (let [exp (str (setup-container container-id) exp)
+        c (chan)]
+    (when (verbose?) (js/console.info "[javascript es2017] evaluating" exp))
     (try
       (let [transpiled-exp (babel exp)]
         (put! c (if async-code?

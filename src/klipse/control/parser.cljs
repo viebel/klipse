@@ -5,7 +5,7 @@
   (:require 
     gadjett.core-fn
     [cljs.reader :refer [read-string]]
-    [klipse.utils :refer [add-url-parameter url-parameters]]
+    [klipse.utils :refer [add-url-parameter url-parameters verbose?]]
     [klipse.lang.clojure :refer [eval-async compile-async]]
     [om.next :as om]))
 
@@ -14,9 +14,6 @@
 
 (defn static-fns? []
   (boolean (read-string (or (:static-fns (url-parameters)) "false"))))
-
-(defn verbose? []
-  (boolean (read-string (or (:verbose (url-parameters)) "false"))))
 
 (defn compile-display-guard? []
   (boolean (read-string (or (:compile-display-guard (url-parameters)) "false"))))

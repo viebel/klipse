@@ -2,7 +2,6 @@
   (:require-macros
     [gadjett.core :as gadjett :refer [dbg]]
     [purnam.core :refer [!]]
-    [klipse.macros :refer [my-with-redefs]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
     klipse.lang.clojure.bundled-namespaces

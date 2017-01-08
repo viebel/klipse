@@ -46,7 +46,6 @@
                       :app {
                                :source-paths ["src/klipse/run/app" "resources/public/lib"]
                                :compiler {
-                                    :preamble ["mirror_extensions.js"]
                                           :output-to "resources/public/dev/js/klipse.js"
                                           :output-dir "resources/public/dev/js"
                                           :pretty-print true
@@ -58,7 +57,6 @@
                       :plugin {
                                :source-paths ["src/klipse/run/plugin" "resources/public/lib"]
                                :compiler {
-                                    :preamble ["mirror_extensions.js"]
                                           :output-to "resources/public/plugin/js/klipse_plugin.js"
                                           :output-dir "resources/public/plugin/js"
                                           :pretty-print false
@@ -70,7 +68,6 @@
                       :plugin-prod {
                                :source-paths ["src/klipse/run/plugin_prod" "resources/public/lib"]
                                :compiler {
-                                          :preamble ["mirror_extensions.js"]
                                           :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
                                           :output-dir "resources/public/plugin_prod/js"
                                           :pretty-print true
@@ -81,7 +78,6 @@
                                   :figwheel true
                                   :source-paths ["src"]
                                   :compiler {:main "klipse.run.all"
-                                             :preamble ["mirror_extensions.js"]
                                              :asset-path "fig/js"
                                              :output-to "resources/public/fig/js/klipse.fig.js"
                                              :output-dir "resources/public/fig/js"

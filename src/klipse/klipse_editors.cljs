@@ -70,7 +70,7 @@
 (defn eval-in-codemirror-editor [eval-fn result-element editor-source snippet-args mode state]
   (eval-in-editor eval-fn
                   (get-value editor-source)
-                  (when result-element #(set-value-and-beautify result-element mode % {:indent? false
+                  (when result-element #(set-value-and-beautify result-element mode % {:indent? true
                                                                                      :remove-ending-comments? false}))
                   snippet-args
                   state))
@@ -105,8 +105,7 @@
                      :options-out ::codemirror-options))
 
 (def default-editor-options
-  {:matchBrackets true 
-   :scrollbarStyle "overlay"})
+  {:matchBrackets true})
 
 (defn editor-options [editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out]
   [(-> (assoc default-editor-options :mode editor-in-mode)

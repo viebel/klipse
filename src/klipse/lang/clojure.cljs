@@ -6,7 +6,7 @@
   (:require
     klipse.lang.clojure.bundled-namespaces
     gadjett.core-fn
-    [klipse.utils :refer [url-parameters]]
+    [klipse.utils :refer [url-parameters verbose?]]
     [rewrite-clj.node :as n]
     [rewrite-clj.parser :as p]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
@@ -32,8 +32,6 @@
 (def create-state-eval (memoize cljs/empty-state))
 (def create-state-compile (memoize cljs/empty-state))
 
-(defn verbose? []
-  (boolean (read-string (or (:verbose (url-parameters)) "false"))))
 
 (defn display [value {:keys [print-length beautify-strings]}]
   (with-redefs [*print-length* print-length]
@@ -175,8 +173,10 @@
           second
           str)))
 
-(defn str-eval-async [exp opts]
-  (let [c (chan)]
+(defn str-eval-async [exp {:keys [container-id] :as opts}]
+  (let [c (chan)
+        exp (str `(set! js/klipse-container (js/document.getElementById ~container-id)) "\n" `(set! js/klipse-container-id ~container-id) "\n" exp)]
+    (when (verbose?) (js/console.info "[clojure] evaluating" exp))
     (go
       (binding [*print-newline* true
                 *print-fn* #(put! c %)]

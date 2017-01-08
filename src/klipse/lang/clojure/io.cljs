@@ -5,7 +5,7 @@
   (:require
    [cljs.reader :refer [read-string]]
    [clojure.string :as s]
-   [klipse.utils :refer [url-parameters]]
+   [klipse.utils :refer [url-parameters verbose?]]
    [clojure.walk :as ww]
    [clojure.string :as string :refer [join split lower-case]]
    [cljs-http.client :as http]
@@ -77,8 +77,6 @@
 (defn cache-buster? []
   (boolean (read-string (or (:cache-buster (url-parameters)) "false"))))
 
-(defn verbose? []
-  (boolean (read-string (or (:verbose (url-parameters)) "false"))))
 
 (defn filename-of [s cache-buster?]
   (if cache-buster?

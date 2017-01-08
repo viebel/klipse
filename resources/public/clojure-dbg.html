@@ -7,19 +7,18 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-<div class="klojure" data-external-libs="https://raw.githubusercontent.com/viebel/gadjett/master/src/">
-(require '[clojure.spec :as s])
-</div>
-<br/>
-<div class="klojure">
-    (s/def ::a int?)
-    
-</div>
-<br/>
+
 <div class="clojure">
     (def y 1)
     (+ y y)
     ;; you should not see the comments
+</div>
+<br/>
+
+<div class="clojure">
+  (require 'goog.dom)
+  (goog.dom/setTextContent js/klipse-container "hello")
+  [1 2 3]
 </div>
 <br/>
 <div class="clojure">
@@ -68,7 +67,7 @@
 <br/>
        <script>
         window.klipse_settings = {
-            selector: '.klojure'
+            selector: '.clojure'
         };
         </script>
         <script src="/lib/mirror_extensions.js"></script>

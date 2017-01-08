@@ -7,13 +7,12 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
+
 <pre><code class="reagent">
     [child "Foo Bar"]
 </code></pre>
 
-<pre>
-  <code class="clj">
-
+<pre><code class="clj">
     (require '[reagent.core :as r])
 </code></pre>
 
@@ -29,6 +28,21 @@
 
 <pre><code class="reagent">
     [child "Foo Bar"]
+</code></pre>
+
+<pre><code class="reagent">
+    (defn foo [txt]
+       [:p "hello " txt])
+    [foo "Foo Bar"]
+</code></pre>
+
+<pre><code class="reagent">
+(def c (r/atom 1))
+
+(defn counter []
+  [:div
+     [:button {:on-click (fn [e] (swap! c inc))} "inc"]
+     [:p "Current count: " @c]])
 </code></pre>
 
        <script>

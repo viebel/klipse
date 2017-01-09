@@ -8,13 +8,21 @@
     </head>
     <body>
 
-<div class="clojure">
+ <div class="transpile">
+	(ns my.foo)
+    (def y 1)
+    (+ y y)
+    ;; you should not see the comments
+</div>
+ <br/>
+
+  <div class="clojure">
+	(ns my.foo)
     (def y 1)
     (+ y y)
     ;; you should not see the comments
 </div>
 <br/>
-
 <div class="clojure">
   (require 'goog.dom)
   (goog.dom/setTextContent js/klipse-container "hello")
@@ -67,10 +75,12 @@
 <br/>
        <script>
         window.klipse_settings = {
-            selector: '.clojure'
+        selector: '.clojure',
+	selector_js: '.transpile',
         };
         </script>
-        <script src="/lib/mirror_extensions.js"></script>
+       <script src="/secured_eval.js"></script>
+       <script src="/lib/mirror_extensions.js"></script>
         <script src="/fig/js/klipse.fig.js"></script>
     </body>
 </html>

@@ -77,7 +77,8 @@
 
 (defn my-eval [{:keys [file source file lang name path cache] :as args}]
   (watchdog)
-  (cljs/js-eval args))
+  (js/secured_eval source)
+  #_(cljs/js-eval args))
 
 ; store the original compiler/emits - as I'm afraif things might get wrong with all the with-redefs (especially with core.async. See http://dev.clojure.org/jira/browse/CLJS-1634
 (def original-emits compiler/emits)
@@ -175,7 +176,7 @@
 
 (defn str-eval-async [exp {:keys [container-id] :as opts}]
   (let [c (chan)
-        exp (str `(set! js/klipse-container (js/document.getElementById ~container-id)) "\n" `(set! js/klipse-container-id ~container-id) "\n" exp)]
+        exp exp #_(str `(set! js/klipse-container (js/document.getElementById ~container-id)) "\n" `(set! js/klipse-container-id ~container-id) "\n" exp)]
     (when (verbose?) (js/console.info "[clojure] evaluating" exp))
     (go
       (binding [*print-newline* true

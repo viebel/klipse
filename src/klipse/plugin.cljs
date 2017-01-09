@@ -7,6 +7,7 @@
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
     [klipse.utils :refer [load-scripts-mem]]
+    [klipse.security :refer [eval-sandbox!]]
     [cljs.spec :as s]
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
@@ -119,6 +120,7 @@
 
 (defn klipsify-elements [elements general-settings modes]
   (go
+    (<! (eval-sandbox!))
     (let [eval-fns (<! (edit-elements elements general-settings modes))]
       (doseq [eval-fn eval-fns]
         (<! (eval-fn))))))

@@ -173,10 +173,13 @@
           second
           str)))
 
+(defn setup-container [container-id]
+  nil #_(str `(set! js/klipse-container (js/document.getElementById ~container-id)) "\n" `(set! js/klipse-container-id ~container-id) "\n"))
+
 (defn str-eval-async [exp {:keys [container-id] :as opts}]
   (let [c (chan)
-        exp (str `(set! js/klipse-container (js/document.getElementById ~container-id)) "\n" `(set! js/klipse-container-id ~container-id) "\n" exp)]
-    (when (verbose?) (js/console.info "[clojure] evaluating" exp))
+        exp (str (setup-container container-id) exp)]
+    (when (verbose?) (js/console.info "[clojure] evaluating:\n" exp))
     (go
       (binding [*print-newline* true
                 *print-fn* #(put! c %)]

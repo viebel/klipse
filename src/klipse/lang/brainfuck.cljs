@@ -5,7 +5,7 @@
     [cljs.core.async.macros :refer [go]])
   (:require
     [clojure.string :refer [split-lines join]]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
 
 (defn boldify-head [data head]
   (let [head-value (str "<strong>" (nth data head) "</strong>")]
@@ -63,13 +63,13 @@
                 :editor-out-mode "text"
                 :default-editor "html"
                 :eval-fn eval-brainfuck
-                :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
+                :external-scripts [(codemirror-mode-src "brainfuck") (scripts-src "brainfuck.js")]
                 :comment-str ""})
 
 (def eval-txt-opts {:editor-in-mode "text/x-brainfuck"
                     :editor-out-mode "text"
                     :eval-fn eval-brainfuck-txt
-                    :external-scripts [(codemirror-mode-src "brainfuck") "https://viebel.github.io/klipse/repo/js/brainfuck.js"]
+                    :external-scripts [(codemirror-mode-src "brainfuck") (scripts-src "brainfuck.js")]
                     :comment-str ""})
 
 

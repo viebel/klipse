@@ -11,6 +11,10 @@
   (let [root (:codemirror_root (klipse-settings) "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/mode")]
     (str root "/" mode "/" mode ".min.js")))
 
+(defn scripts-src [name]
+  (let [root (:scripts_root (klipse-settings) "https://viebel.github.io/klipse/repo/js")]
+    (str root "/" name)))
+
 (defn register-mode [mode selector opts]
   (js/console.info "register-mode: " mode selector)
   (swap! selector->mode assoc selector mode)

@@ -51,7 +51,9 @@ function evel(code) {
 }
 
 evel.Function = function () {
-    if (!evel_.supportsStrict()) throw Error("This browser does not support sandboxed code execution.");
+    // will be checked from outside
+    // if (!evel_.supportsStrict()) throw Error("This browser does not support sandboxed code execution.");
+    
     /* This works by:
     
         1. Sanitizing the provided source (immediately, which also serves to flag syntax errors at expected time)

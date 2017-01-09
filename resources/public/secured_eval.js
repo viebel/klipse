@@ -7,10 +7,11 @@ function secured_eval_0(s) {
 
 
 const sandboxProxies = new WeakMap();
+sandbox = {};
+Object.keys(window).forEach( function(k) { sandbox[k] = {}});
 
 function secured_eval (src) {
-    sandbox = {has,get,cljs,goog};
-    sandbox = new Proxy(sandbox, {has, get});
+    //sandbox = new Proxy(sandbox, {has, get});
     src = 'with (sandbox) {' + src + '}';
     return eval(src);
 }

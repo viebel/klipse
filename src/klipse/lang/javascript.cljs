@@ -11,13 +11,15 @@
     [cljs.core.async :refer [<! chan put!]]
     [klipse.common.registry :refer [register-mode]]))
 
+
+
 (def known-external-libs
   {
    "immutable" "https://raw.githubusercontent.com/facebook/immutable-js/master/dist/immutable.min.js"
    "jQuery" "https://code.jquery.com/jquery-2.2.4.min.js"
    "underscore" "http://underscorejs.org/underscore-min.js"})
 
-(def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
+(def eval-in-global-scope js/secured_eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
 (defn external-lib-path [lib-name-or-url]
   (get known-external-libs lib-name-or-url lib-name-or-url))
@@ -47,7 +49,7 @@
     ""))
 
 (defn setup-container [container-id]
-  (str "klipse_container = document.getElementById('" container-id "');\n"
+  nil #_(str "klipse_container = document.getElementById('" container-id "');\n"
        "klipse_container_id = '"container-id "';\n"))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]

@@ -143,7 +143,7 @@
 (defn cached-cljs-ns? [name]
   (let [name (str (munge name))]
     (or (#{"clojure.math.combinatorics"} name)
-        (re-matches #"clojure.test.check.*|reagent\..*|om\..*" name))))
+        (re-matches #"cljs\.spec.*|clojure.test.check.*|reagent\..*|om\..*" name))))
 
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]

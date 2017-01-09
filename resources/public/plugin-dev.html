@@ -173,7 +173,13 @@ Each snippet has a container near it that is accessible with `js/klipse-containe
                   [clojure.string :as string]))
                   (string/blank? "HELLO!!")</span>
       <br/>
-
+<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/original-lisp/64fcf67146c3af9d7d136ea50c886d87ba32ce28/src/">
+    (require '[original-lisp.core :as lisp :refer [l-eval]])
+    (l-eval '((lambda (x y) (cons x (cdr y)))
+    'a
+    '(b c d))
+                     '())
+    </code></pre>
           <h2> requiring a namespace  using :rename</h2>
  <span class="clojure">(ns my.ns
               (:require 

@@ -172,7 +172,7 @@ window.klipse_settings = {
           selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
           selector_reagent: '.language-reagent', // selector for reagent snippets
           selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
-          selector_eval_ruby: '.language-klipse-eval-ruby' //selector for ruby evaluation snippets
+          selector_eval_ruby: '.language-klipse-eval-ruby', //selector for ruby evaluation snippets
           selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
           selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
           selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets

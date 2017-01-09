@@ -14,21 +14,34 @@
 
 <h1> Javascript isolated snippets </h1>
 
+In order to have secured snippets, each <code>klipse-snippet</code> element is embedded into an iframe.
+
+<br>
+
+This approach supports the following features:
 
 <br/>
-Usual data manipulation stuff:
-<br>
+<h5>Usual data manipulation stuff:</h5>
+
 <klipse-snippet data-language="javascript">
   [1,2,3].map((x) => x +1)
 </klipse-snippet>
 
-You can even manipulate the dom:
+<h5> sandoboxed dom manipulation :) </h5>
 <br>
 <klipse-snippet data-language="javascript">
-  klipse_container.innerHTML = "hello dev.to"
+  klipse_container.innerHTML = "hello &lt;b&gt;dev.to&lt;/b&gt;";
+  1 + 2;
 </klipse-snippet>
 
-Let's try to share data between snippets:
+<h5> The sandbox is secured: you cannot access the document cookies </h5>
+
+<klipse-snippet data-language="javascript">
+document.cookie
+</klipse-snippet>
+
+
+<h5> But you cannot share code or data between snippets :( </h5>
 
 <klipse-snippet data-language="javascript">
   foo = (name) => `Hello ${name}`
@@ -43,7 +56,7 @@ Let's try to share data between snippets:
 
 
 
-<script src="http://iframe.klipse.iframe:9001/klipse_reveal.js">
+<script src="./klipse_reveal.js">
   </script>
 
 </body>

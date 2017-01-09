@@ -11,13 +11,13 @@ let jsSrc = (lang) => {
     if (lang === 'clojure') {
         return 'https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js'
     }
-    return 'https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js'
+    return 'https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js'
 }
 
 
 let createIFrame = (lang,src) => {
     let selectorName = langToSelectorName[lang];
-    return `<iframe height="500px" width="100%" srcdoc='
+    return `<iframe sandbox="allow-scripts" height="100px" width="100%" srcdoc='
     <pre><code class=&quot;klipse&quot;>${src}</code></pre>
 
       <link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://storage.googleapis.com/app.klipse.tech/css/codemirror.css&quot;>

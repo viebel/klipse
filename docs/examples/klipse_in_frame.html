@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> KLIPSE demo</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
+
+</head>
+
+<body class="container">
+
+
+<h1> Javascript isolated snippets </h1>
+
+
+<br/>
+Usual data manipulation stuff:
+<br>
+<klipse-snippet data-language="javascript">
+  [1,2,3].map((x) => x +1)
+</klipse-snippet>
+
+You can even manipulate the dom:
+<br>
+<klipse-snippet data-language="javascript">
+  klipse_container.innerHTML = "hello dev.to"
+</klipse-snippet>
+
+Let's try to share data between snippets:
+
+<klipse-snippet data-language="javascript">
+  foo = (name) => `Hello ${name}`
+  foo("Klipse")
+</klipse-snippet>
+
+<klipse-snippet data-language="javascript">
+  foo("Javascript")
+</klipse-snippet>
+
+
+
+
+
+<script src="http://iframe.klipse.iframe:9001/klipse_reveal.js">
+  </script>
+
+</body>
+
+</html>

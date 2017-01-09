@@ -3,13 +3,11 @@
     [gadjett.core :as gadjett :refer [deftrack dbg]]
     [cljs.core.async.macros :refer [go]])
   (:require 
-   gadjett.core-fn
-   [cljs.core.async :refer [<! timeout]]
+    gadjett.core-fn
     [cljs.reader :refer [read-string]]
     [klipse.utils :refer [add-url-parameter url-parameters verbose?]]
     [klipse.lang.clojure :refer [eval-async compile-async]]
     [om.next :as om]))
-
 
 ;; =============================================================================
 ;; Utils

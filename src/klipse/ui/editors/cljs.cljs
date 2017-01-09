@@ -24,8 +24,7 @@
   (when-not (blank? s)
     (om/transact! component 
                   [`(input/save   {:value ~s})
-                   `(cljs/compile {:value ~s})
-                   `(clj/eval     {:value ~s})
+                   `(clj/eval-and-compile     {:value ~s})
                    ':input])))
 
 (defn init-input [component s]

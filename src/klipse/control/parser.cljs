@@ -61,30 +61,24 @@
   {:action (fn [] 
              (swap! state assoc :input value))})
 
-(defmethod mutate 'cljs/compile [{:keys [state]} _ {:keys [value]}]
-  {:action (fn []
-             (go
-               (swap! state
-                      assoc
-                      :compilation
-                      (<! (compile-async value {:static-fns (static-fns?)
-                                                :verbose (verbose?)
-                                                :external-libs (external-libs)
-                                                :compile-display-guard (compile-display-guard?)
-                                                :max-eval-duration (max-eval-duration)
-                                                :context (eval-context?)})))))})
-
-
 (defn clean-print-box [state]
   (swap! state assoc :evaluation-js ""))
 
 (defn append-print-box [state & args]
   (swap! state update :evaluation-js #(str % (apply str args))))
 
-(defmethod mutate 'clj/eval [{:keys [state]} _ {:keys [value]}]
+(defmethod mutate 'clj/eval-and-compile [{:keys [state]} _ {:keys [value]}]
   {:action (fn [] 
              (go
                (clean-print-box state)
                (binding [*print-newline* true
                          *print-fn* (partial append-print-box state)]
-                 (swap! state assoc :evaluation-clj (<! (eval-clj value))))))})
+                 (swap! state assoc
+                        :evaluation-clj (<! (eval-clj value))
+                        ;; we need to prevent from evaluation and compilation to occurs in paralllel - as it would load twince the code of the deps
+                        :compilation (<! (compile-async value {:static-fns (static-fns?)
+                                                               :verbose (verbose?)
+                                                               :external-libs (external-libs)
+                                                               :compile-display-guard (compile-display-guard?)
+                                                               :max-eval-duration (max-eval-duration)
+                                                               :context (eval-context?)}))))))})

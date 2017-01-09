@@ -29,9 +29,7 @@
 
 (defonce ^:private current-ns (atom 'cljs.user))
 
-(def create-state-eval (memoize cljs/empty-state))
-(def create-state-compile (memoize cljs/empty-state))
-
+(defonce create-state-eval (memoize cljs/empty-state))
 
 (defn display [value {:keys [print-length beautify-strings]}]
   (with-redefs [*print-length* print-length]
@@ -42,6 +40,7 @@
 
 (defn update-current-ns [{:keys [ns form warning error value success?]}]
   (when-not error
+    (when (verbose?) (js/console.info "update-current-ns:" (str ns)))
     (reset! current-ns ns)))
 
 (defn result-as-str [{:keys [ns form warning error value success?] :as args} opts]
@@ -68,7 +67,7 @@
          result (aget (js/compile flags) "compiledCode")]
      result))
 
-(defn convert-compile-res [{:keys [value error]}]
+(defn convert-compile-res [{:keys [value error] :as foo}]
   (let [status (if error :error :ok)
         res (if error
               error
@@ -79,30 +78,37 @@
   (watchdog)
   (cljs/js-eval args))
 
+(defn eval-for-compilation [{:keys [source]}]
+  source)
+
 ; store the original compiler/emits - as I'm afraif things might get wrong with all the with-redefs (especially with core.async. See http://dev.clojure.org/jira/browse/CLJS-1634
 (def original-emits compiler/emits)
 
-(defn compile [s {:keys [static-fns external-libs max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}} cb]
-  (let [max-eval-duration (max max-eval-duration min-max-eval-duration)
+(defn core-compile-an-exp [s {:keys [static-fns external-libs max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}}]
+  (let [c (chan)
+        max-eval-duration (max max-eval-duration min-max-eval-duration)
         the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
     (with-redefs [compiler/emits the-emits]
-      (cljs/compile-str (create-state-compile) s
+      (cljs/eval-str (create-state-eval) s
                         "cljs-in"
                         {
-                         :eval my-eval
+                         :eval eval-for-compilation
+                         :ns @current-ns
                          :static-fns static-fns
+                         :*compiler* (set! env/*compiler* (create-state-eval))
                          :verbose (verbose?)
                          :load (partial io/load-ns external-libs)
                          }
-                        cb))))
+                        (fn [res]
+                          (update-current-ns res)
+                          (put! c res))))
+    c))
 
 (defn core-eval-an-exp [s {:keys [static-fns external-libs max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
   (let [c (chan)
         max-eval-duration (max max-eval-duration min-max-eval-duration)]
-    (with-redefs [cljs.analyzer/*cljs-ns* @current-ns
-                  *ns* (create-ns @current-ns)
-                  compiler/emits (partial my-emits max-eval-duration)]
-                                        ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
+    (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
+                  ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
                      s
                      "my.klipse"
@@ -138,6 +144,32 @@
       (catch :default e
         {:error e}))))
 
+(defn ns-exp?
+  "receives a string.
+  returns true if the expression is a string of an ns-form like (ns my.foo...) or (require 'my.foo).
+  "
+  [exp]
+  (let [form (read-string exp)]
+    (and (seq? form)
+         ('#{ns require-macros use use-macros import refer-clojure require} (first form)))))
+
+
+(defn core-compile [s opts]
+  (go
+    (try
+      (loop [exps (split-expressions s) all-res ""]
+        (if (seq exps)
+          (let [exp (first exps)
+                ;_ (when (ns-exp? exp) (<! (core-eval-an-exp exp opts)))
+                res (<! (core-compile-an-exp exp opts))]
+            (if (:error res)
+              res
+              (recur (rest exps) (str all-res (:value res)))))
+          {:value all-res}))
+      (catch :default e
+        {:error e}))))
+
+
 (defn eval-async [s opts]
   (go
     (-> (<! (core-eval s opts))
@@ -160,13 +192,12 @@
 (defn str-compile "useful for testing and js export"
   ^{:export true}
   ([exp] (str-compile exp {}))
-  ([exp opts] (-> (compile exp opts convert-compile-res))))
+  ([exp opts] (go (-> (<! (core-compile exp opts))
+                      convert-compile-res))))
 
 (defn compile-async [exp opts]
-  (let [c (chan)]
-    (compile exp opts
-             #(put! c (convert-compile-res %)))
-    c))
+  (go (-> (<! (core-compile exp opts))
+          (convert-compile-res))))
 
 (defn str-compile-async [exp opts]
   (go (-> (<! (compile-async exp opts))

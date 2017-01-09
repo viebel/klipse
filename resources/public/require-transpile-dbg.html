@@ -7,35 +7,8 @@
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
 </head>
 <body>
-
 <pre><code class="clojure">
-    (ns my.ns)
-
-    (def a "hello")
-    (def b ::foo)
-</code></pre>
-
-<pre><code class="clojure">
-    (ns my.spec
-    (:require [clojure.spec :as s]))
-
-    (s/def ::a integer?)
-    (s/conform ::a 12)
-</code></pre>
-
-
-This one with <code>dbg </code> is not transpiled:
-<br>
-<pre><code class="clojure">
-(require-macros '[gadjett.core :refer [dbg]])
-(dbg [1 2 3 "hello"])
-</code></pre>
-
-<pre><code class="clojure">
-    (ns my.ns
-    (:import [goog.string StringBuffer]))
-
-    (StringBuffer. "aa")
+    (map inc [1 2 3])
 </code></pre>
 
 <pre><code class="clojure">
@@ -44,21 +17,16 @@ This one with <code>dbg </code> is not transpiled:
           [cljs.pprint :as pp :refer [pprint]]))
           (with-out-str (pprint (for [x (range 10)] (range x))))
 </code></pre>
-
-
     <pre><code class="clojure">
-      (require '[clojure.math.combinatorics :refer [permutations]])
+    (ns my.combinatorics
+      (:require [clojure.math.combinatorics :refer [permutations]]))
 
     (permutations [1 2 3])
     </code></pre>
 
 
-
-    This one with core.async doesn't transpile yet:
-    <br>
 <pre><code class="clojure" data-gist-id="viebel/820f672dd176169fd831c7748e6f3cd3" data-external-libs="https://raw.githubusercontent.com/mfikes/andare/master/src/main/clojure/">
 </code></pre>
-
 
 <pre><code class="clojure">
     (ns my.test   (:require [clojure.test.check :as tc]
@@ -86,16 +54,20 @@ This one with <code>dbg </code> is not transpiled:
       (:require [cljs.js :as cljs :refer [eval-str]]))
 
       (eval-str (cljs.js/empty-state) "(+ 1 2)" 'cljs.me {:eval cljs.js/js-eval} identity)
-
-
 </code></pre>
+
+
 
 <pre><code class="clojure">
 (ns my.walk
   (:require [clojure.walk :refer [postwalk]]))
   (postwalk identity {:a 1})
-</code></pre>
-
+    </code></pre>
+<pre><code class="klojure">
+(ns my.walk
+  (:require [clojure.walk :refer [postwalk]]))
+  (postwalk identity {:a 1})
+    </code></pre>
 
 
 <pre><code class="clojure">
@@ -103,6 +75,12 @@ This one with <code>dbg </code> is not transpiled:
   (:require [clojure.string :as string :refer [lower-case]]))
   (lower-case "AbsCs")
     </code></pre>
+<pre><code class="klojure">
+(ns my.ns
+  (:require [clojure.string :as string :refer [lower-case]]))
+  (lower-case "AbsCs")
+    </code></pre>
+
 
 <script>
     window.klipse_settings = {
@@ -114,16 +92,10 @@ This one with <code>dbg </code> is not transpiled:
     codemirror_options_out: {
     lineWrapping: true
     },
+    selector_js: '.clojure',
     };
-
-      if(window.location.search.match(/transpile=1/)) {
-window.klipse_settings.selector_js = '.clojure';
-    } else {
-window.klipse_settings.selector = '.clojure';
-    }
-</script>
-
-<script src="lib/mirror_extensions.js"></script>
-<script src="fig/js/klipse.fig.js"></script>
+    </script>
+    <script src="lib/mirror_extensions.js"></script>
+    <script src="fig/js/klipse.fig.js"></script>
     </body>
     </html>

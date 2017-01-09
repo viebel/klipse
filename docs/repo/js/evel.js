@@ -1,4 +1,4 @@
-// https://github.com/natevw/evel
+// https://github.com/natevw/evel/blob/c234addf1b04667ed0365b6b9d7520ce3448223b/evel.js
 var evel_ = {};       // internal methods go here
 
 evel_.supportsStrict = function () {

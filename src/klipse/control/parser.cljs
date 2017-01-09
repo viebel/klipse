@@ -81,5 +81,4 @@
                                                                :external-libs (external-libs)
                                                                :compile-display-guard (compile-display-guard?)
                                                                :max-eval-duration (max-eval-duration)
-                                                               :context (eval-context?)}))
-                        ))))})
+                                                               :context (eval-context?)}))))))})

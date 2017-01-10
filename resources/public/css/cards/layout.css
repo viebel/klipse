@@ -87,26 +87,8 @@
   height: 70%;
 }
 
-.klipse-layout-with-container .klipse-item:nth-child(2) {
-  width: 50%;
-  height: 70%;
-}
-
-.klipse-layout-with-container .klipse-item:nth-child(3) {
-  width: 50%;
+.klipse-layout-with-container .klipse-item:nth-child(n+3) {
   height: 30%;
-}
-
-.klipse-layout-with-container .klipse-item:nth-child(4) {
-  width: 50%;
-  height: 30%;
-}
-
-
-
-.klipse-layout-with-container #console {
-  width: 100%;
-  height: 50%;
 }
 
 section {

@@ -39,11 +39,11 @@
                    (js-editor (om/props this))))
         
         :with-container
-        (dom/div #js {:className "klipse-layout klipse-layout-with-container"}
+        (dom/div #js {:className "klipse-layout klipse-layout-global"}
           (dom/div #js {:className "klipse-item"}
             (cljs-editor (om/props this)))
           (dom/div #js {:className "klipse-item"}
-                   (container (om/props this)))
+            (container (om/props this)))
           (dom/div #js {:className "klipse-item"}
             (cljs-textarea (om/props this)))
           (dom/div #js {:className "klipse-item"}

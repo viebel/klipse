@@ -7,7 +7,7 @@
 (defui Container
   Object
   (componentDidMount [this]
-    (set! js/klipse-container (js/document.getElementById "klipse-container")))
+          (set! js/klipse-container (js/document.getElementById "klipse-container")))
   (render [this]
           (dom/div #js {:id "klipse-container-wrapper"}
                    (dom/div #js {:id "klipse-container"}

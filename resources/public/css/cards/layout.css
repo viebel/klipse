@@ -107,6 +107,7 @@ section.cljs-editor .CodeMirror {
   border: solid 1px #90B4FE;
   height: 100%;
   padding: 15px;
+  overflow: scroll;
 }
 
 /*js editor*/

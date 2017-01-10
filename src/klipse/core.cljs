@@ -5,7 +5,7 @@
 (enable-console-print!)
 (gadjett/settings! :max-function-calls 100)
 
-(def version "5.5.1")
+(def version "6.0.0")
 (js/console.info "Klipse " version)
 (js/console.info "Clojurescript " *clojurescript-version*)
 

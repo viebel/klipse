@@ -103,11 +103,11 @@ section.cljs-editor .CodeMirror {
   background-size: 40px;
   background-repeat: no-repeat;
   background-image: url(../../img/container.png);
-
   border: solid 1px #90B4FE;
   height: 100%;
   padding: 15px;
   overflow: scroll;
+  /* z-index: 9999; */
 }
 
 /*js editor*/

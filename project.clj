@@ -1,5 +1,5 @@
-(defproject klipse "5.5.1"
-  :description "Cljs compiler in cljs"
+(defproject klipse "6.0.0"
+  :description "Embeddable multi-language WEB REPL"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
                  [org.clojure/core.async "0.2.395"]

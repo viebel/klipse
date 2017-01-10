@@ -6,6 +6,7 @@
   (:require
     klipse.lang.clojure.bundled-namespaces
     gadjett.core-fn
+    [goog.dom :as gdom]
     [klipse.utils :refer [url-parameters verbose?]]
     [rewrite-clj.node :as n]
     [rewrite-clj.parser :as p]
@@ -131,6 +132,11 @@
        (map n/string)
        (remove (partial re-matches #"\s*"))))
 
+(defn populate-err [res {:keys [result-element container]}]
+  (when-not result-element
+    (gdom/setTextContent container (str (:error res))))
+  res)
+
 (defn core-eval [s opts]
   (go
     (try
@@ -138,11 +144,11 @@
         (if (seq exps)
           (let [res (<! (core-eval-an-exp (first exps) opts))]
             (if (:error res)
-              res
+              (populate-err res opts)
               (recur (rest exps) res)))
           last-res))
       (catch :default e
-        {:error e}))))
+        (populate-err {:error e} opts)))))
 
 (defn ns-exp?
   "receives a string.

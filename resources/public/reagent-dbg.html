@@ -32,6 +32,7 @@
 
 <pre><code class="reagent">
     (defn foo [txt]
+     (throw "You should see this exception")
        [:p "hello " txt])
     [foo "Foo Bar"]
 </code></pre>

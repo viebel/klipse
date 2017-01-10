@@ -81,7 +81,6 @@
   height: 60%;
 }
 
-
 section {
   height: 100%;
 }
@@ -99,6 +98,17 @@ section.cljs-editor .CodeMirror {
   background-image: url(../../img/clojure.png);
 }
 
+#klipse-container-wrapper {
+  background-position: right 5px bottom 5px;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  background-image: url(../../img/container.png);
+
+  border: solid 1px #90B4FE;
+  height: 100%;
+  padding: 15px;
+  overflow: scroll;
+}
 
 /*js editor*/
 

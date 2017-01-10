@@ -133,7 +133,7 @@
        (remove (partial re-matches #"\s*"))))
 
 (defn populate-err [res {:keys [result-element container]}]
-  (when-not result-element
+  (when (and container (not result-element))
     (gdom/setTextContent container (str (:error res))))
   res)
 

@@ -81,16 +81,6 @@
   height: 60%;
 }
 
-.klipse-layout-with-container .klipse-item:nth-child(1) {
-  padding: 5px;
-  width: 50%;
-  height: 70%;
-}
-
-.klipse-layout-with-container .klipse-item:nth-child(n+3) {
-  height: 30%;
-}
-
 section {
   height: 100%;
 }
@@ -108,6 +98,16 @@ section.cljs-editor .CodeMirror {
   background-image: url(../../img/clojure.png);
 }
 
+#klipse-container-wrapper {
+  background-position: right 5px bottom 5px;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  background-image: url(../../img/container.png);
+
+  border: solid 1px #90B4FE;
+  height: 100%;
+  padding: 15px;
+}
 
 /*js editor*/
 

@@ -1,4 +1,4 @@
-(defproject klipse "6.0.0"
+(defproject klipse "6.0.1"
   :description "Embeddable multi-language WEB REPL"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
@@ -49,7 +49,7 @@
                                     :preamble ["mirror_extensions.js"]
                                           :output-to "resources/public/dev/js/klipse.js"
                                           :output-dir "resources/public/dev/js"
-                                          :pretty-print false
+                                          :pretty-print true
                                           :optimize-constants true
                                           :static-fns true
                                           ;:elide-asserts true

@@ -1,6 +1,6 @@
 (ns klipse.lang.clojure.io
   (:require-macros [gadjett.core :refer [dbg]]
-                   [purnam.core :refer [!>]]
+                   [purnam.core :refer [? !>]]
                    [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [cljs.reader :refer [read-string]]
@@ -131,7 +131,6 @@
           cache (<! (http/get (filename-of cache-filename (cache-buster?)) {:with-credentials? false}))]
       (if (every? #(= 200 %) [(:status cache) (:status src)])
         (do
-          (js/console.log name {:lang :js :cache (edn (:body cache)) :src (:body src)})
           (src-cb {:lang :js :cache (edn (:body cache)) :source (:body src)}))
         (src-cb nil)))))
 
@@ -187,19 +186,35 @@
     (second $)
     (s/replace $ #"\." "-")))
 
+(defn bundled-cljsjs-ns?
+  "some cljsjs packages are already loaded e.g react in klipse app"
+  [name]
+  (or
+   (and (= name 'cljsjs.react) (? js/window.React))
+   (and (= name 'cljsjs.react.dom.server) (? js/window.ReactDOMServer))
+   (and (= name 'cljsjs.react.dom) (? js/window.ReactDOM))))
+
 (defn try-to-load-cljsjs-ns
   "Try to load the js file corresponding to a cljsjs package.
   For that, we have to convert the package name into a full path - hosted on this git repo: https://github.com/viebel/cljsjs-hosted
   "
   [name src-cb]
-  ;; TODO - Jan 1, 2017 - BUGFIX: for some reason when transpiling code that requires a cljsjs package, the package is reloaded on every transpilation
-  (let [root-path "https://viebel.github.io/cljsjs-hosted/cljsjs/"
-        lib-name (cljsjs-libname name)
-        full-names [(str root-path lib-name "/production/" lib-name ".min.inc.js")
-                    (str root-path "/production/" lib-name ".min.inc.js")
-                    (str root-path lib-name "/development/" lib-name ".inc.js")
-                    (str root-path "/development/" lib-name ".inc.js")]]
-    (try-to-load-ns full-names :js :source src-cb)))
+  (when (verbose?) (js/console.log "load-ns :cljs try-to-load-cljsjs-ns" name))
+  (if (bundled-cljsjs-ns? name)
+    (do
+      (when (verbose?)
+        (js/console.info "load-ns bundled-cljsjs-ns" (str name)))
+      (src-cb {:lang :js :source ""}))
+    (let [root-path (if '#{cljsjs.react cljsjs.react.dom cljsjs.react.dom.server}
+                      ; klipse app has a different version of react that the latest one on cljsjs
+                      "https://viebel.github.io/cljsjs-hosted/cljsjs-klipse-only/"
+                      "https://viebel.github.io/cljsjs-hosted/cljsjs/")
+          lib-name (cljsjs-libname name)
+          full-names [(str root-path lib-name "/production/" lib-name ".min.inc.js")
+                      (str root-path "/production/" lib-name ".min.inc.js")
+                      (str root-path lib-name "/development/" lib-name ".inc.js")
+                      (str root-path "/development/" lib-name ".inc.js")]]
+      (try-to-load-ns full-names :js :source src-cb))))
 
 
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]

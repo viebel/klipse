@@ -1,3 +1,5 @@
+
+// https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
 function secured_eval_0(s) {
     with ({document: {},
 	   window: {}}) {

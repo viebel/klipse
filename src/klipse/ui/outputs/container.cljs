@@ -9,19 +9,11 @@
 (defui ContainerInner
   Object
   (componentDidMount [this]
-                     (set! js/klipse-container (dom/node this))
-                                        ; detach the component from react - as it will be accessed by the code and therefore leaving it in react tree is dangerous
-                     (set!
-                      (.-innerHTML (dom/node this))
-                       "Hi there!")
-                     ;(js/ReactDOM.unmountComponentAtNode (dom/node this))
-                     )
+                     (set! js/klipse-container (dom/node this)))
   
   (shouldComponentUpdate [this] false)
   (render [this]
-          ;(js/console.info "render")
-          
-          #_(dom/div #js {:id "klipse-container"}
+          (dom/div #js {:id "klipse-container"}
                    (dom/p nil "This is your "
                           (dom/strong nil "klipse container")
                           ".")
@@ -36,24 +28,14 @@
 
 (def container-inner (om/factory ContainerInner))
 
-(def init (fn [this]
-            (if-let [el (js/document.getElementById "klipse-container-id")]
-              (set!
-                   (.-innerHTML (dom/node this))
-                   (.-innerHTML el))
-              (do (set!
-                   (.-innerHTML (dom/node this))
-                   "<div id='klipse-container-id'>Hi there!</div>")
-                  (set! js/klipse-container (js/document.getElementById "klipse-container-id"))))))
 
 (defui Container
   Object
-  (componentDidMount [this]
-                     (js/console.info "componentdidmount")
-                     (init this))
+  
   (shouldComponentUpdate [this] false)
+
   (render [this]
           (dom/div #js {:id "klipse-container-wrapper"}
-                   nil)))
+                   (container-inner (om/props this)))))
 
 (def container (om/factory Container))

@@ -85,7 +85,7 @@
 ; store the original compiler/emits - as I'm afraif things might get wrong with all the with-redefs (especially with core.async. See http://dev.clojure.org/jira/browse/CLJS-1634
 (def original-emits compiler/emits)
 
-(defn core-compile-an-exp [s {:keys [static-fns external-libs max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}}]
+(defn core-compile-an-exp [s {:keys [static-fns external-libs max-eval-duration compile-display-guard verbose] :or {verbose (verbose?) static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}}]
   (let [c (chan)
         max-eval-duration (max max-eval-duration min-max-eval-duration)
         the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
@@ -97,7 +97,7 @@
                          :ns @current-ns
                          :static-fns static-fns
                          :*compiler* (set! env/*compiler* (create-state-eval))
-                         :verbose (verbose?)
+                         :verbose verbose
                          :load (partial io/load-ns external-libs)
                          }
                         (fn [res]
@@ -105,7 +105,7 @@
                           (put! c res))))
     c))
 
-(defn core-eval-an-exp [s {:keys [static-fns external-libs max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
+(defn core-eval-an-exp [s {:keys [static-fns external-libs max-eval-duration verbose] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration verbose (verbose?)}}]
   (let [c (chan)
         max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
@@ -116,7 +116,7 @@
                      {:eval my-eval
                       :ns @current-ns
                       :def-emits-var true
-                      :verbose (verbose?)
+                      :verbose false;verbose
                       :*compiler* (set! env/*compiler* (create-state-eval))
                       :context :expr
                       :static-fns static-fns

@@ -205,7 +205,7 @@
       (when (verbose?)
         (js/console.info "load-ns bundled-cljsjs-ns" (str name)))
       (src-cb {:lang :js :source ""}))
-    (let [root-path (if '#{cljsjs.react cljsjs.react.dom cljsjs.react.dom.server}
+    (let [root-path (if ('#{cljsjs.react cljsjs.react.dom cljsjs.react.dom.server} name)
                       ; klipse app has a different version of react that the latest one on cljsjs
                       "https://viebel.github.io/cljsjs-hosted/cljsjs-klipse-only/"
                       "https://viebel.github.io/cljsjs-hosted/cljsjs/")

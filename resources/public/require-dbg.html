@@ -14,7 +14,10 @@
     (def a "hello")
     (def b ::foo)
 </code></pre>
-
+<pre><code class="clojure">
+    (require 'cljsjs.highcharts)
+    (count (js->clj js/Highcharts))
+ </code></pre>
 <pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/original-lisp/64fcf67146c3af9d7d136ea50c886d87ba32ce28/src/">
     (require '[original-lisp.core :as lisp :refer [l-eval]])
     (l-eval '((lambda (x y) (cons x (cdr y)))

@@ -9,7 +9,7 @@
     [cljs-http.client :as http]
     [clojure.string :as string]
     [cljs.core.async :refer [<! chan put!]]
-    [klipse.common.registry :refer [register-mode]]))
+    [klipse.common.registry :refer [register-mode scripts-src]]))
 
 (def known-external-libs
   {
@@ -75,7 +75,7 @@
 (def opts {:editor-in-mode "javascript"
            :editor-out-mode "javascript"
            :eval-fn str-eval-js-async
-           :external-scripts ["https://viebel.github.io/klipse/repo/js/pretty_format.js"]
+           :external-scripts [(scripts-src "pretty_format.js")]
            :comment-str "//"})
 
 (register-mode "eval-javascript" "selector_eval_js" opts)
@@ -103,7 +103,7 @@
 (def es2017-opts {:editor-in-mode "javascript"
            :editor-out-mode "javascript"
            :eval-fn eval-es2017
-           :external-scripts ["https://viebel.github.io/klipse/repo/js/pretty_format.js" "https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.18.1/babel.min.js" "https://viebel.github.io/klipse/repo/js/babel_polyfill.min.js"]
+           :external-scripts [(scripts-src "pretty_format.js") (scripts-src "babel.min.js") (scripts-src "babel_polyfill.min.js")]
            :comment-str "//"})
 
 (register-mode "eval-es2017" "selector_es2017" es2017-opts)

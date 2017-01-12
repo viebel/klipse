@@ -183,7 +183,13 @@ window.klipse_settings = {
 	      selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
           selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
           selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
-          selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets
+          selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets,
+		  clojure_cached_ns_root: '/my-root', // the root of clojure cached namespace
+		  clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
+  		  clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
+		  codemirror_root: '/my-codemirror-root', // the root of codemirror files
+		  scripts_root: '/my-scripts-root', // the root of scripts files (e.g pretty_format.js, opal.js ...)
+		  
 };
 
 ```

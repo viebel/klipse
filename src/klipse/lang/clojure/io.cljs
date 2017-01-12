@@ -5,7 +5,7 @@
   (:require
    [cljs.reader :refer [read-string]]
    [clojure.string :as s]
-   [klipse.utils :refer [url-parameters verbose?]]
+   [klipse.utils :refer [url-parameters verbose? klipse-settings]]
    [clojure.walk :as ww]
    [clojure.string :as string :refer [join split lower-case]]
    [cljs-http.client :as http]
@@ -119,12 +119,15 @@
   (-> (str (munge name))
       (string/replace #"\." "_SLASH_")))
 
+(defn cached-ns-root []
+  (:cached_ns_root (klipse-settings) "https://viebel.github.io/klipse/cache-cljs/"))
+
 (defn load-ns-from-cache [name src-cb macro?]
   (when (verbose?) (js/console.info "load-ns-from-cache:" (str name) "macro: " macro?))
   (go
     (let [nn (name->cached-resource name)
           suffix (if macro? "$macros" "")
-          root "https://viebel.github.io/klipse/cache-cljs/"
+          root (str (cached-ns-root) "/")
           src-filename  (str root nn suffix ".js")
           cache-filename (str root nn suffix ".cache.json")
           src (<! (http/get (filename-of src-filename (cache-buster?)) {:with-credentials? false}))
@@ -134,30 +137,36 @@
           (src-cb {:lang :js :cache (edn (:body cache)) :source (:body src)}))
         (src-cb nil)))))
 
+(defn cached-macro-ns-regexp []
+  (:clojure_cached_macro_ns_regexp (klipse-settings) #"clojure\.math\.macros|gadjett\.core|cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*"))
+
 (defn cached-macro-ns? [name]
-  (let [name (str (munge name))]
-    (or (#{"gadjett.core" "clojure.math.macros"} name)
-        (re-matches #"cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*" name))))
+  (re-matches (cached-macro-ns-regexp) (str name)))
+
+(defn cached-ns-regexp []
+  (:clojure_cached_ns_regexp (klipse-settings) #"cljs\.spec.*|clojure.math\.combinatorics|clojure.test.check.*|reagent\..*|om\..*"))
 
 (defn cached-cljs-ns? [name]
-  (let [name (str (munge name))]
-    (or (#{"clojure.math.combinatorics"} name)
-        (re-matches #"cljs\.spec.*|clojure.test.check.*|reagent\..*|om\..*" name))))
-
+  (re-matches (cached-ns-regexp) (str name)))
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :macro :" (str name)))
   (cond
-    (skip-ns-macros name) (do (when (verbose?) (js/console.info "load-ns :macro skip:" (str name))) (src-cb {:lang :clj :source ""}))
-    (cached-macro-ns? name) (load-ns-from-cache name src-cb true)
-    (the-ns-map name) (do (when (verbose?) (js/console.info "load-ns :macro known:" (str name))) (src-cb {:lang :clj :source ""})
-                          (let [prefix (str (the-ns-map name) "/" path)
-                                filenames (map (partial str prefix) macro-suffixes)]
-                            (try-to-load-ns filenames :clj :source src-cb)))
+    (skip-ns-macros name) (do
+                            (when (verbose?) (js/console.info "load-ns :macro skipping:" (str name)))
+                            (src-cb {:lang :clj :source ""}))
+    (cached-macro-ns? name) (do
+                              (when (verbose?) (js/console.info "load-ns :macro cached:" (str name)))
+                              (load-ns-from-cache name src-cb true))
+    (the-ns-map name) (do
+                        (when (verbose?) (js/console.info "load-ns :macro known:" (str name)))
+                        (let [prefix (str (the-ns-map name) "/" path)
+                              filenames (map (partial str prefix) macro-suffixes)]
+                          (try-to-load-ns filenames :clj :source src-cb)))
     :else (do
             (when (verbose?) (js/console.info "load-ns :macro external-libs:" (str name))) (src-cb {:lang :clj :source ""})
             (let [filenames (external-libs-files external-libs macro-suffixes path)]
-                (try-to-load-ns filenames :clj :source src-cb)))))
+              (try-to-load-ns filenames :clj :source src-cb)))))
 
 
 (def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")
@@ -220,9 +229,11 @@
 (defmethod load-ns :cljs [external-libs {:keys [name path]} src-cb]
   (when (verbose?) (js/console.info "load-ns :cljs :" (str name) "external-libs: " external-libs))
   (cond
-    (skip-ns-cljs name) (src-cb {:lang :js :source ""})
+    (skip-ns-cljs name) (do
+                          (when (verbose?) (js/console.info "load-ns :cljs skipping" (str name)))
+                          (src-cb {:lang :js :source ""}))
     (bundled-ns? name) (let [_ (when (verbose?) (js/console.log "load-ns :cljs bundled" name))
-                                      filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
+                             filenames (map #(str cache-url path % ".cache.json") cljs-suffixes)]
                             (go
                               (when-not (<! (try-to-load-ns filenames :js :cache src-cb :transform edn :can-recover? true))
                                         ; sometimes it's a javascript namespace that is cached e.g com.cognitect.transit from transit-js
@@ -231,6 +242,7 @@
     (cljsjs? name) (try-to-load-cljsjs-ns name src-cb)
     (the-ns-map name) (let [prefix (str (the-ns-map name) "/" path)
                             filenames (map (partial str prefix) cljs-suffixes)]
+                        (when (verbose?) (js/console.info "load-ns :cljs from external libs" (str name)))
                         (go
                           (when-not
                               (<! (try-to-load-ns filenames :clj :source src-cb :can-recover? true))
@@ -241,7 +253,9 @@
                                 (<! (try-to-load-ns filenames :clj :source src-cb :can-recover? true))
                               (let [filenames (external-libs-files external-libs [".js"] path)]
                                 (try-to-load-ns filenames :js :source src-cb)))))
-    :else (src-cb nil)))
+    :else (do
+            (when (verbose?) (js/console.info "load-ns :cljs nothing can be done" (str name)))
+            (src-cb nil))))
 
 (defn fix-goog-path [path]; https://github.com/oakes/eval-soup/blob/master/src/eval_soup/core.cljs
   ; goog/string -> goog/string/string

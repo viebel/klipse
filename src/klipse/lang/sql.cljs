@@ -6,7 +6,7 @@
   (:require 
     [klipse.utils :refer [runonce runonce-async]]
     [cljs.core.async :refer [<! timeout chan put!]]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
 
 
 (def db nil)
@@ -26,7 +26,7 @@
 
 (def opts {:editor-in-mode "text/x-sql"
            :eval-fn str-eval-async
-           :external-scripts [(codemirror-mode-src "sql") "https://viebel.github.io/klipse/repo/js/sql-formatter.min.js" "https://viebel.github.io/klipse/repo/js/sql.js" "https://gist.githubusercontent.com/viebel/fc86366093c27aca0adc103b1d20190d/raw"]
+           :external-scripts [(codemirror-mode-src "sql") (scripts-src "sql-formatter.min.js") (scripts-src "sql.js") "https://gist.githubusercontent.com/viebel/fc86366093c27aca0adc103b1d20190d/raw"]
            :comment-str "--"})
 
 (register-mode "eval-sql" "selector_sql" opts)

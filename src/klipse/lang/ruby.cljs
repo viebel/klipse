@@ -5,7 +5,7 @@
   (:require 
     [klipse.utils :refer [runonce]]
     [cljs.core.async :refer [<!]]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
 
 
 (defn load-opal-parser []
@@ -25,7 +25,7 @@
 (def opts {:editor-in-mode "ruby"
            :editor-out-mode "ruby"
            :eval-fn str-eval-async
-           :external-scripts [(codemirror-mode-src "ruby") "https://viebel.github.io/klipse/repo/js/opal.min.js?p" "https://viebel.github.io/klipse/repo/js/opal-parser.min.js?p"]
+           :external-scripts [(codemirror-mode-src "ruby") (scripts-src "opal.min.js?p") (scripts-src "opal-parser.min.js?p")]
            :comment-str "#"})
 
 (register-mode "eval-ruby" "selector_eval_ruby" opts)

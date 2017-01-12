@@ -5,7 +5,7 @@
   (:require 
    [cljs.core.async :refer [<! put! chan]]
    [klipse.utils :refer [runonce]]
-   [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+   [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
 
 
 (defn builtin-read [x]
@@ -39,7 +39,7 @@
            :editor-out-mode "python"
            :eval-fn str-eval-async
            :beautify? false
-           :external-scripts [(codemirror-mode-src "python") "https://viebel.github.io/klipse/repo/js/skulpt.min.js" "https://viebel.github.io/klipse/repo/js/skulpt-stdlib.js"]
+           :external-scripts [(codemirror-mode-src "python") (scripts-src "skulpt.min.js") (scripts-src "skulpt-stdlib.js")]
            :comment-str "#"})
 
 (register-mode "eval-python-client" "selector_eval_python_client" opts)

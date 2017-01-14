@@ -65,8 +65,13 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 
 **You need also to add `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>`.**
 
+Heres is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
+
 
 ## javascript
+
+
+Here is the [full interactive guide](https://book.klipse.tech/interactive_javascript_code_snippets.html) of the klipse `javascript` snippets. 
 
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
@@ -81,6 +86,27 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 
 Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/viebel/50oLnykk/).
 And here are detailed explanations about [a javascript live code editor in a blog post](http://untangled.io/how-to-use-the-live-code-editor/).
+
+## clojure
+
+> Pay attention: for clojure interactive snippets, you must use the **non-minified** version of klipse as for the moment, self-host cljs doesn't support advanced compilation!
+
+Here is the [full interactive guide](https://book.klipse.tech/interactive_clojure[script]_code_snippets.html
+) of the klipse `clojure` snippets.
+
+
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector: '.language-klipse'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+```
+
 
 ## python
 
@@ -134,20 +160,6 @@ And here are detailed explanations about [a javascript live code editor in a blo
 ```
 
 
-## clojure
-
-> Pay attention: for clojure interactive snippets, you must use the **non-minified** version of klipse as for the moment, self-host cljs doesn't support advanced compilation!
-
-```html
-<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
-
-<script>
-    window.klipse_settings = {
-        selector: '.language-klipse'// css selector for the html elements you want to klipsify
-    };
-</script>
-<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
-```
 
 
 ## https

@@ -15,17 +15,12 @@ The code evaluation is done in the browser: no server is involved at all!
 
 The code editing is done with [CodeMirror](http://codemirror.net/).
 
-## Web REPL
-
-The Web REPL is live at http://app.klipse.tech
-
-Here is [the manual for the KLIPSE web repl](https://github.com/viebel/klipse/blob/master/repl.md).
-
-Languages supported in the REPL: `clojure` and `clojurescript`.
-
 # Live demo
 
 With the klipse plugin, the code is evaluated as you type...
+
+Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a web page.
+
 
 |Javascript | Ruby |
 |-------------------------|-------------------------|
@@ -49,7 +44,6 @@ With the klipse plugin, the code is evaluated as you type...
 - JSX
 - EcmaScript2017
 
-Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a web page.
 
 # How does it work?
 
@@ -298,7 +292,15 @@ Ask us any question about the klipse plugin (integration, feature requests...) o
 
 
 ## Klipse App - Clojure Web Repl
+
 Here is the [information about the Klipse app](https://github.com/viebel/klipse/blob/master/contributing.md)
+
+The Web REPL is live at http://app.klipse.tech
+
+Here is [the manual for the KLIPSE web repl](https://github.com/viebel/klipse/blob/master/repl.md).
+
+Languages supported in the REPL: `clojure` and `clojurescript`.
+
 
 # License
 

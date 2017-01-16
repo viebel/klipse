@@ -11,7 +11,6 @@ The klipse plugin is a `javascript` tag (see details [below](https://github.com/
 
 The code evaluation is done in the browser: no server is involved at all!
 
-The code editing is done with [CodeMirror](http://codemirror.net/).
 
 # Live demo
 
@@ -42,14 +41,14 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - JSX
 - EcmaScript2017
 
+The code editing inside the interactive snippets is powered by [CodeMirror](http://codemirror.net/).
+
 
 # How does it work?
 
 - javascript: [A new way of blogging about javascript](http://blog.klipse.tech/javascript/2016/06/20/blog-javascript.html)
 - ruby: [A new way of blogging about ruby](http://blog.klipse.tech/ruby/2016/06/20/blog-ruby.html)
 - clojure[script]: [How to klipsify a clojure[script] blog post] (http://blog.klipse.tech/clojure/2016/06/07/klipse-plugin-tuto.html)
-- PHP: [A new way of blogging about PHP](http://blog.klipse.tech/php/2016/06/26/blog-php.html)
-
 
 # Integration
 

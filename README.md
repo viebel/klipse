@@ -4,7 +4,7 @@ KLIPSE is a simple client-side code evaluator pluggable on any web page.
 
 ## Plugin
 
-The klipse plugin is a `javascript` tag (see details [below](https://github.com/viebel/klipse/edit/master/README.md#Integration)) that transforms static code snippets of an html page into live and interactive snippets:
+The klipse plugin is a `javascript` tag (see details [below](https://github.com/viebel/klipse#integration)) that transforms static code snippets of an html page into live and interactive snippets:
 
 1. **Live**: The code is executed in your browser
 2. **Interactive**: You can modify the code and it is evaluated as you type

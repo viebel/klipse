@@ -7,5 +7,5 @@
 
 (def version "6.1.1")
 (js/console.info "Klipse " version)
-(js/console.info "Clojurescript " *clojurescript-version*)
+(js/console.info "Clojurescript "  *clojurescript-version*)
 

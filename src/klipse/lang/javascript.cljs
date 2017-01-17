@@ -32,7 +32,7 @@
 
 (defn append-to-chan [c]
   (fn [& args]
-    (put! c (string/join " "  (map beautify args)))
+    (put! c (string/join " " args))
     (put! c "\n")))
 
 (defn eval-with-logger!

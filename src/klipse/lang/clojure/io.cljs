@@ -138,13 +138,13 @@
         (src-cb nil)))))
 
 (defn cached-macro-ns-regexp []
-  (:clojure_cached_macro_ns_regexp (klipse-settings) #"clojure\.math\.macros|gadjett\.core|cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*"))
+  (:clojure_cached_macro_ns_regexp (klipse-settings) #"cljs\.core\.async.*|clojure\.math\.macros|gadjett\.core|cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*"))
 
 (defn cached-macro-ns? [name]
   (re-matches (cached-macro-ns-regexp) (str name)))
 
 (defn cached-ns-regexp []
-  (:clojure_cached_ns_regexp (klipse-settings) #"cljs\.spec.*|clojure.math\.combinatorics|clojure.test.check.*|reagent\..*|om\..*"))
+  (:clojure_cached_ns_regexp (klipse-settings) #"cljs\.core\.async.*|cljs\.spec.*|clojure.math\.combinatorics|clojure.test.check.*|reagent\..*|om\..*"))
 
 (defn cached-cljs-ns? [name]
   (re-matches (cached-ns-regexp) (str name)))
@@ -182,7 +182,8 @@
   "Checks whether a namespace is present at run-time"
   [name]
   ; for some reason, during the load of reagent namespaces, a `reagent.dom` object is created - but it's not the real `reagent.dom` namespace
-  (if (re-matches #".*reagent.*" (str (munge name)))
+  ; cljs.core.async should be loaded from cache - as we use andare for self-host core.async
+  (if (re-matches #".*reagent.*|cljs.core.async.*" (str name))
     false
     (!> js/goog.getObjectByName (str (munge name))))) ; (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
 

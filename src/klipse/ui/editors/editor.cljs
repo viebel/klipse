@@ -7,15 +7,8 @@
     [klipse.dom-utils :refer [create-div-after]]
     [gadjett.collections :as gadjett]
     cljsjs.codemirror
-    cljsjs.codemirror.mode.clojure
-    cljsjs.codemirror.mode.javascript
     cljsjs.codemirror.addon.edit.matchbrackets
-    cljsjs.codemirror.addon.edit.closebrackets
-    cljsjs.codemirror.addon.display.placeholder
-    cljsjs.codemirror.addon.scroll.simplescrollbars))
-
-(when (? js/window.initMirrorCustomExtensions)
-  (!> js/window.initMirrorCustomExtensions))
+    cljsjs.codemirror.addon.edit.closebrackets))
 
 (def code-mirror js/CodeMirror)
 
@@ -36,25 +29,6 @@
 
 (defn set-option [editor option value]
   (.setOption editor option value))
-
-(defn select-all [editor]
-  (as->
-    (? code-mirror.commands) $
-    (!> $.selectAll editor))
-  editor)
-
-(defn goto-start [editor]
-  (as->
-    (? code-mirror.commands) $
-    (!> $.goDocStart editor))
-  editor)
-
-(defn auto-indent [editor]
-  (select-all editor)
-  (let [from (.getCursor editor true)
-        to (.getCursor editor false)]
-    (!> editor.autoIndentRange from to))
-  editor)
 
 (defn fix-blank-lines [editor]
   (->> (get-value editor)
@@ -78,9 +52,9 @@
     editor))
 
 (defn do-indent [editor]
-  (-> editor
-      auto-indent
-      goto-start))
+  (!> editor.operation #(dotimes [line (!> editor.lineCount)]
+                          (!> editor.indentLine line "smart")))
+  editor)
 
 (defn beautify [editor mode {:keys [indent? remove-ending-comments?]}]
   (as-> editor $

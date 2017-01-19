@@ -34,8 +34,7 @@
           (->>
             (if (= :ok status) result (str result))
             (editor/set-value editor-js)
-            (editor/auto-indent)
-            (editor/goto-start)))))
+            (editor/do-indent)))))
 
     (componentDidMount [this]
       (om/set-state! this {:editor (init-editor this)}))

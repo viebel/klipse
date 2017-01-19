@@ -1,4 +1,4 @@
-(defproject klipse "6.2.0"
+(defproject klipse "6.3.0"
   :description "Embeddable multi-language WEB REPL"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
@@ -12,10 +12,6 @@
                  [com.cemerick/url "0.1.1"]
                  [rewrite-cljs "0.4.3"]
                  [cljsjs/codemirror "5.19.0-0"]
-                 ;; repos for cache-cljs
-                 ;[reagent "0.6.1-SNAPSHOT"]
-                 ;[org.clojure/math.combinatorics "0.2.0"]
-                 
                  [devcards "0.2.2"]
                  [devcards-om-next "0.3.0"]]
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.8"]] }}
@@ -44,7 +40,7 @@
                                            :verbose false
                                            :optimizations :simple}}
                       :app {
-                               :source-paths ["src/klipse/run/app" "resources/public/lib"]
+                               :source-paths ["src/klipse/run/app"]
                                :compiler {
                                           :output-to "resources/public/dev/js/klipse.js"
                                           :output-dir "resources/public/dev/js"
@@ -55,7 +51,7 @@
                                           :optimizations :simple
                                           :verbose false}}
                       :plugin {
-                               :source-paths ["src/klipse/run/plugin" "resources/public/lib"]
+                               :source-paths ["src/klipse/run/plugin"]
                                :compiler {
                                           :output-to "resources/public/plugin/js/klipse_plugin.js"
                                           :output-dir "resources/public/plugin/js"
@@ -66,7 +62,7 @@
                                           :optimizations :simple
                                           :verbose false}}
                       :plugin-prod {
-                               :source-paths ["src/klipse/run/plugin_prod" "resources/public/lib"]
+                               :source-paths ["src/klipse/run/plugin_prod"]
                                :compiler {
                                           :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
                                           :output-dir "resources/public/plugin_prod/js"

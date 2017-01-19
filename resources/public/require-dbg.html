@@ -1,139 +1,141 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-<meta charset="UTF-8">
-<title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
-<link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
-<link rel="stylesheet" type="text/css" href="css/codemirror.css">
-</head>
-<body>
-
-<pre><code class="clojure">
-    (ns my.ns)
-
-    (def a "hello")
-    (def b ::foo)
-</code></pre>
-<pre><code class="clojure">
-    (require 'cljsjs.highcharts)
-    (count (js->clj js/Highcharts))
- </code></pre>
-<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/original-lisp/64fcf67146c3af9d7d136ea50c886d87ba32ce28/src/">
-    (require '[original-lisp.core :as lisp :refer [l-eval]])
-    (l-eval '((lambda (x y) (cons x (cdr y)))
-    'a
-    '(b c d))
-                     '())
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+    <pre><code class="clojure">
+	(ns my.match
+	(:require [cljs.core.match :refer-macros [match]]))
     </code></pre>
-<pre><code class="clojure">
-    (ns my.spec
-    (:require [clojure.spec :as s]))
+    <pre><code class="clojure">
+	(ns my.ns)
 
-    (s/def ::a integer?)
-    (s/conform ::a 12)
-</code></pre>
+	(def a "hello")
+	(def b ::foo)
+    </code></pre>
+    <pre><code class="clojure">
+	(require 'cljsjs.highcharts)
+	(count (js->clj js/Highcharts))
+    </code></pre>
+    <pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/original-lisp/64fcf67146c3af9d7d136ea50c886d87ba32ce28/src/">
+	(require '[original-lisp.core :as lisp :refer [l-eval]])
+	(l-eval '((lambda (x y) (cons x (cdr y)))
+	'a
+	'(b c d))
+        '())
+    </code></pre>
+    <pre><code class="clojure">
+	(ns my.spec
+	(:require [clojure.spec :as s]))
+
+	(s/def ::a integer?)
+	(s/conform ::a 12)
+    </code></pre>
 
 
-This one with <code>dbg </code> is not transpiled:
-<br>
-<pre><code class="clojure">
-(require-macros '[gadjett.core :refer [dbg]])
-(dbg [1 2 3 "hello"])
-</code></pre>
+    This one with <code>dbg </code> is not transpiled:
+    <br>
+    <pre><code class="clojure">
+	(require-macros '[gadjett.core :refer [dbg]])
+	(dbg [1 2 3 "hello"])
+    </code></pre>
 
-<pre><code class="clojure">
-    (ns my.ns
-    (:import [goog.string StringBuffer]))
+    <pre><code class="clojure">
+	(ns my.ns
+	(:import [goog.string StringBuffer]))
 
-    (StringBuffer. "aa")
-</code></pre>
+	(StringBuffer. "aa")
+    </code></pre>
 
-<pre><code class="clojure">
-    (ns my.test
-      (:require
-          [cljs.pprint :as pp :refer [pprint]]))
-          (with-out-str (pprint (for [x (range 10)] (range x))))
-</code></pre>
+    <pre><code class="clojure">
+	(ns my.test
+	(:require
+        [cljs.pprint :as pp :refer [pprint]]))
+        (with-out-str (pprint (for [x (range 10)] (range x))))
+    </code></pre>
 
 
     <pre><code class="clojure">
-      (require '[clojure.math.combinatorics :refer [permutations]])
+	(require '[clojure.math.combinatorics :refer [permutations]])
 
-    (permutations [1 2 3])
+	(permutations [1 2 3])
     </code></pre>
 
 
 
     This one with core.async doesn't transpile yet:
     <br>
-<pre><code class="clojure" data-gist-id="viebel/820f672dd176169fd831c7748e6f3cd3">
-</code></pre>
-
-
-<pre><code class="clojure">
-    (ns my.test   (:require [clojure.test.check :as tc]
-                [clojure.test.check.generators :as gen]
-                            [clojure.test.check.properties :as prop :include-macros true]))
-    (def sort-idempotent-prop
-      (prop/for-all [v (gen/vector gen/int)]
-            (= (sort v) (sort (sort v)))))
-
-            (tc/quick-check 100 sort-idempotent-prop)
-
-</code></pre>
-
-<pre><code class="clojure">
-    (ns my.spec
-    (:require [clojure.spec :as s]))
-
-    (s/def ::a integer?)
-    (s/conform ::a 12)
-</code></pre>
-
-
-<pre><code class="clojure">
-    (ns my.cljs
-      (:require [cljs.js :as cljs :refer [eval-str]]))
-
-      (eval-str (cljs.js/empty-state) "(+ 1 2)" 'cljs.me {:eval cljs.js/js-eval} identity)
-
-
-</code></pre>
-
-<pre><code class="clojure">
-(ns my.walk
-  (:require [clojure.walk :refer [postwalk]]))
-  (postwalk identity {:a 1})
-</code></pre>
-
-
-
-<pre><code class="clojure">
-(ns my.ns
-  (:require [clojure.string :as string :refer [lower-case]]))
-  (lower-case "AbsCs")
+    <pre><code class="clojure" data-gist-id="viebel/820f672dd176169fd831c7748e6f3cd3">
     </code></pre>
 
-<script>
-    window.klipse_settings = {
-    codemirror_options_in: {
-    lineWrapping: true,
-    lineNumbers: true,
-    autoCloseBrackets: true
-    },
-    codemirror_options_out: {
-    lineWrapping: true
-    },
-    };
+
+    <pre><code class="clojure">
+	(ns my.test   (:require [clojure.test.check :as tc]
+        [clojure.test.check.generators :as gen]
+        [clojure.test.check.properties :as prop :include-macros true]))
+	(def sort-idempotent-prop
+	(prop/for-all [v (gen/vector gen/int)]
+        (= (sort v) (sort (sort v)))))
+
+        (tc/quick-check 100 sort-idempotent-prop)
+
+    </code></pre>
+
+    <pre><code class="clojure">
+	(ns my.spec
+	(:require [clojure.spec :as s]))
+
+	(s/def ::a integer?)
+	(s/conform ::a 12)
+    </code></pre>
+
+
+    <pre><code class="clojure">
+	(ns my.cljs
+	(:require [cljs.js :as cljs :refer [eval-str]]))
+
+	(eval-str (cljs.js/empty-state) "(+ 1 2)" 'cljs.me {:eval cljs.js/js-eval} identity)
+
+
+    </code></pre>
+
+    <pre><code class="clojure">
+	(ns my.walk
+	(:require [clojure.walk :refer [postwalk]]))
+	(postwalk identity {:a 1})
+    </code></pre>
+
+
+
+    <pre><code class="clojure">
+	(ns my.ns
+	(:require [clojure.string :as string :refer [lower-case]]))
+	(lower-case "AbsCs")
+    </code></pre>
+
+    <script>
+      window.klipse_settings = {
+      codemirror_options_in: {
+      lineWrapping: true,
+      lineNumbers: true,
+      autoCloseBrackets: true
+      },
+      codemirror_options_out: {
+      lineWrapping: true
+      },
+      };
 
       if(window.location.search.match(/transpile=1/)) {
-window.klipse_settings.selector_js = '.clojure';
-    } else {
-window.klipse_settings.selector = '.clojure';
-    }
-</script>
+      window.klipse_settings.selector_js = '.clojure';
+      } else {
+      window.klipse_settings.selector = '.clojure';
+      }
+    </script>
 
-<script src="lib/mirror_extensions.js"></script>
-<script src="fig/js/klipse.fig.js"></script>
-    </body>
-    </html>
+    <script src="fig/js/klipse.fig.js"></script>
+  </body>
+</html>

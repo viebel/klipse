@@ -25,8 +25,7 @@
     ";; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."))
 
 (defn process-input [component s]
-  (js/console.info "process-input:" s)
-  (when-not (blank? (dbg s))
+  (when-not (blank? s)
     (om/transact! component
                   [`(input/save   {:value ~s})
                    `(clj/eval-and-compile     {:value ~s})
@@ -66,7 +65,7 @@
                       (let [input (get-in (om/props this) [:input :input])
                             editor (om/get-state this :editor)]
                         (when (and editor
-                                   (dbg (not= (dbg input )(dbg (get-value editor))))
+                                   (not= input (get-value editor))
                           (set-value editor input)))))
 
   (componentDidMount [this]

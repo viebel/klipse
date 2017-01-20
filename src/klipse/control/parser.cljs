@@ -59,7 +59,6 @@
 (defmulti mutate om/dispatch)
 
 (defmethod mutate 'input/save [{:keys [state]} _ {:keys [value]}]
-  (js/console.info "save:" value)
   {:action #(swap! state assoc-in [:input :input] value)})
 
 (defn clean-print-box [state]

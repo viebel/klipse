@@ -28,7 +28,8 @@
   (.on editor "change" f))
 
 (defn set-option [editor option value]
-  (.setOption editor option value))
+  (.setOption editor option value)
+  editor)
 
 (defn fix-blank-lines [editor]
   (->> (get-value editor)

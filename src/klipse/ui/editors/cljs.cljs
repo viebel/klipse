@@ -25,10 +25,13 @@
     ";; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."))
 
 (defn process-input [component s]
+  (js/console.info "process-input:" s)
   (when-not (blank? (dbg s))
     (om/transact! component
                   [`(input/save   {:value ~s})
-                   `(clj/eval-and-compile     {:value ~s})])))
+                   `(clj/eval-and-compile     {:value ~s})
+                   ':input
+                   ])))
 
 (defn parinfer? []
   (boolean (read-string (or (:parinfer (url-parameters)) "false"))))
@@ -49,8 +52,7 @@
   (handle-events my-editor
                  {:idle-msec 3000
                   :extra-keys {"Ctrl-P" #(use-parinfer! compiler my-editor)}
-                  :on-should-eval #(process-input compiler (get-value my-editor))})
-    my-editor))
+                  :on-should-eval #(process-input compiler (get-value my-editor))})))
 
 (defui Cljs-editor
 

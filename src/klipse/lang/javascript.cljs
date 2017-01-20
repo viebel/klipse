@@ -51,24 +51,25 @@
        "klipse_container_id = '"container-id "';\n"))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
-  (let [exp (str (setup-container container-id) exp)
-        c (chan)]
+  (let [c (chan)]
     (when (verbose?) (js/console.info "[javascript] evaluating" exp))
     (go
-      (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
-        (try
-          (put! c (if (= :ok status)
-                    (try
-                      (if async-code?
-                        (eval-with-logger! c exp)
-                        (my-with-redefs [js/console.log (append-to-chan c)]
-                                        (-> exp
-                                            eval-in-global-scope
-                                            beautify)))
-                      (catch :default o
-                        (str o)))
-                    (str "//Cannot load script: " script "\n"
-                         "//Error: " http-status))))))
+      (when-not (string/blank? exp)
+        (eval-in-global-scope (setup-container container-id))
+        (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
+          (try
+            (put! c (if (= :ok status)
+                      (try
+                        (if async-code?
+                          (eval-with-logger! c exp)
+                          (my-with-redefs [js/console.log (append-to-chan c)]
+                                          (-> exp
+                                              eval-in-global-scope
+                                              beautify)))
+                        (catch :default o
+                          (str o)))
+                      (str "//Cannot load script: " script "\n"
+                           "//Error: " http-status)))))))
     c))
 
 
@@ -85,17 +86,18 @@
        (aget "code")))
 
 (defn eval-es2017 [exp {:keys [async-code? container-id] :or {async-code? false}}]
-  (let [exp (str (setup-container container-id) exp)
-        c (chan)]
+  (let [c (chan)]
     (when (verbose?) (js/console.info "[javascript es2017] evaluating" exp))
     (try
-      (let [transpiled-exp (babel exp)]
-        (put! c (if async-code?
-                  (eval-with-logger! c transpiled-exp)
-                  (my-with-redefs [js/console.log (append-to-chan c)]
-                                  (-> transpiled-exp
-                                      eval-in-global-scope
-                                      beautify)))))
+      (when-not (string/blank? exp)
+        (eval-in-global-scope (setup-container container-id))
+        (let [transpiled-exp (babel exp)]
+          (put! c (if async-code?
+                    (eval-with-logger! c transpiled-exp)
+                    (my-with-redefs [js/console.log (append-to-chan c)]
+                                    (-> transpiled-exp
+                                        eval-in-global-scope
+                                        beautify))))))
       (catch :default o
         (put! c (str o))))
     c))

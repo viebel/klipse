@@ -10,6 +10,7 @@
     [klipse.utils :refer [url-parameters verbose?]]
     [rewrite-clj.node :as n]
     [rewrite-clj.parser :as p]
+    [clojure.string :refer [blank?]]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
     [cljs.analyzer :as ana]
@@ -212,13 +213,17 @@
 
 (defn str-eval-async [exp {:keys [container-id] :as opts}]
   (let [c (chan)
-        exp (str `(set! js/klipse-container (js/document.getElementById ~container-id)) "\n" `(set! js/klipse-container-id ~container-id) "\n" exp)]
+        exp-container (str `(set! js/klipse-container (js/document.getElementById ~container-id)) "\n" `(set! js/klipse-container-id ~container-id))]
     (when (verbose?) (js/console.info "[clojure] evaluating" exp))
     (go
-      (binding [*print-newline* true
-                *print-fn* #(put! c %)]
-        (put! c (-> (<! (eval-async exp opts))
-                    second))))
+      (if (blank? exp)
+        (put! c "")
+        (do
+          (<! (eval-async exp-container opts))
+          (binding [*print-newline* true
+                    *print-fn* #(put! c %)]
+            (put! c (-> (<! (eval-async exp opts))
+                        second))))))
     c))
 
 (def eval-opts {:editor-in-mode "clojure"

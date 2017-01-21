@@ -1,631 +1,647 @@
 <!DOCTYPE html>
 <html>
-    <head lang="en">
-        <meta charset="UTF-8">
-        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
-        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
-        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
-<style>
-.klipse-result table{
-margin: 10px auto 0px auto;
-}
+    <style>
+      .klipse-result table{
+      margin: 10px auto 0px auto;
+      }
 
-.klipse-result table
-{
-    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    font-size: 12px;
-    text-align: left;
-}
-.klipse-result table {
-       border: 1px solid black;
-}
+      .klipse-result table
+      {
+      font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+      font-size: 12px;
+      text-align: left;
+      }
+      .klipse-result table {
+      border: 1px solid black;
+      }
 
-.klipse-result  table
-{
-    font-size: 13px;
-    font-weight: normal;
-    padding: 8px;
-    background: #b9c9fe;
-    color: #039;
-}
-.klipse-result table
-{
-    padding: 8px;
-    background: #e8edff; 
-    color: #669;
-}
-.klipse-result tr:hover td
-{
-    background: #d0dafd;
-    color: #339;
-}
+      .klipse-result  table
+      {
+      font-size: 13px;
+      font-weight: normal;
+      padding: 8px;
+      background: #b9c9fe;
+      color: #039;
+      }
+      .klipse-result table
+      {
+      padding: 8px;
+      background: #e8edff; 
+      color: #669;
+      }
+      .klipse-result tr:hover td
+      {
+      background: #d0dafd;
+      color: #339;
+      }
 
 
-</style>
+    </style>
 
-    </head>
-    <body>
+  </head>
+  <body>
     <p>
-    <h1>Snippets evaluation - in order </h1>
-    The snippets should be evaluated in the order they appear in the DOM, no matter what language the snippets are:
-     <pre><code class="eval-js" >foo = () => 1</code></pre>
+      <h1>Snippets evaluation - in order </h1>
+      The snippets should be evaluated in the order they appear in the DOM, no matter what language the snippets are:
+      <pre><code class="eval-js" >foo = () => 1</code></pre>
       <pre><code class="clojure">(js/foo)</code></pre>
       <pre><code class="eval-js" >bar = () => "bar"</code></pre>
-       <pre><code class="clojure">(js/bar)</code></pre>
-    <h1> clojure evaluation</h1>
-    <h2> Dealing with errors </h2>
-    When there is an error, it should be displayed
-<pre>
-<code class="clojure">
-(range
+      <pre><code class="clojure">(js/bar)</code></pre>
+      <h1> clojure evaluation</h1>
+      <h2> Dealing with errors </h2>
+      When there is an error, it should be displayed
+      <pre>
+	<code class="clojure">
+	  (range
 
-    </code></pre>
-<h2> Containers </h2>
-Each snippet has a container near it that is accessible with `js/klipse-container`:
+      </code></pre>
+      <h2> empty input </h2>
+      <p> When input is empty the output shoud be empty </p>
+      <pre>
+	<code class="clojure">
+      </code></pre>
+	  
+      <h2> Containers </h2>
+      Each snippet has a container near it that is accessible with `js/klipse-container`:
 
-<pre><code class="clojure">
-  (require 'goog.dom)
-  (goog.dom/setTextContent js/klipse-container "hello")
-  [1 2 3]
-</code></pre>
-    <h2> Dealing with namespaces </h2>
+      <pre><code class="clojure">
+	  (require 'goog.dom)
+	  (goog.dom/setTextContent js/klipse-container "hello")
+	  [1 2 3]
+      </code></pre>
+      <h2> Dealing with namespaces </h2>
     <p> When a namespace is defined, subsequent snippets must be evaluated in the same namespace </p>
-<pre><code class="clojure">
-(ns my.ns)
-(defn my-func [x] (* x x))
-(ns-name *ns*)
-</code></pre>
-<pre><code class="clojure">
-(ns-name *ns*)
-</code></pre>
-<pre><code class="clojure">
-    (ns my.ns)
-    (my-func 19)
-</code></pre>
-<h2> Printing </h2>
+    <pre><code class="clojure">
+	(ns my.ns)
+	(defn my-func [x] (* x x))
+	(ns-name *ns*)
+    </code></pre>
+    <pre><code class="clojure">
+	(ns-name *ns*)
+    </code></pre>
+    <pre><code class="clojure">
+	(ns my.ns)
+	(my-func 19)
+    </code></pre>
+    <h2> Printing </h2>
 
-<p>When calling `print`, the result should be appended to the result cell</p>
-<pre><code class="clojure">
-(println "abc")
-(println "def")
-(+ 1 2)
-</code></pre>
+    <p>When calling `print`, the result should be appended to the result cell</p>
+    <pre><code class="clojure">
+	(println "abc")
+	(println "def")
+	(+ 1 2)
+    </code></pre>
     <h2> Dealing with infinite loops </h2>
     <p> Infinite loops in user code are stopped after 1 second</p>
-<pre><code class="clojure">
-    (loop []
-    (recur))
-</code></pre>
+    <pre><code class="clojure">
+	(loop []
+	(recur))
+    </code></pre>
 
-<p> This is done by inserting <code>guard()</code> in each <code>if</code> and <code>recur</code>. You can see it by setting <code>data-compile-display-guard="true"</code>.</p>
-<pre><code class="clojure-js" data-compile-display-guard="true">
-(loop [x 1]
-      (if (not= x 19)
-          (recur x)
-              (str "hello" 199)))
-</code></pre>
+    <p> This is done by inserting <code>guard()</code> in each <code>if</code> and <code>recur</code>. You can see it by setting <code>data-compile-display-guard="true"</code>.</p>
+    <pre><code class="clojure-js" data-compile-display-guard="true">
+	(loop [x 1]
+	(if (not= x 19)
+        (recur x)
+        (str "hello" 199)))
+    </code></pre>
 
-<p> But by default, the transpiled js is not altered </p>
+    <p> But by default, the transpiled js is not altered </p>
 
-<pre><code class="clojure-js">
-(loop [x 1]
-      (if (not= x 19)
-          (recur x)
-              (str "hello" 199)))
-</code></pre>
+    <pre><code class="clojure-js">
+	(loop [x 1]
+	(if (not= x 19)
+        (recur x)
+        (str "hello" 199)))
+    </code></pre>
 
 
     <h2> Dealing with infinite sequences </h2>
     <p>Sequences are cropped. At most we print 1000 elements.<br>
-    This number is configurable at the snippet level. E.g. data-print-length="5"
+      This number is configurable at the snippet level. E.g. data-print-length="5"
     </p>
-<code class="clojure" data-print-length="5">
-(range)
+    <code class="clojure" data-print-length="5">
+      (range)
     </code>
 
     <h2> The basics </h2>
 
     <div class="clojure">(map inc [1 2 3])</div>
-        <br/>
-        <span class="clojure"> (defn foo [x] (* x x)) </span>
-        <br/>
-        <span class="clojure"> (foo 19) </span>
-        <br/>
-         <p>
-        Strings should be evaluated to their value - with the quote.
-        </p>
-        <span class="clojure">(str "abc")</span>
-         <br/>
-             <p>
-             Output should be pretty printed
-        </p>
-        <span class="clojure">
-            {:next-action :lifecycle/start-task?, :tasks {:in {:inbox []}, :inc {:inbox []}, :out {:inbox [], :outputs [{:n 42} {:n 85}]}}}
-            </span>
+    <br/>
+    <span class="clojure"> (defn foo [x] (* x x)) </span>
+    <br/>
+    <span class="clojure"> (foo 19) </span>
+    <br/>
+    <p>
+      Strings should be evaluated to their value - with the quote.
+    </p>
+    <span class="clojure">(str "abc")</span>
+    <br/>
+    <p>
+      Output should be pretty printed
+    </p>
+    <span class="clojure">
+      {:next-action :lifecycle/start-task?, :tasks {:in {:inbox []}, :inc {:inbox []}, :out {:inbox [], :outputs [{:n 42} {:n 85}]}}}
+    </span>
 
 
- 
-        <p>
-        Functions should be evaluated to their code.
-        </p>
-        <span class="clojure">(defn foo [])
-            foo</span>
+    
+    <p>
+      Functions should be evaluated to their code.
+    </p>
+    <span class="clojure">(defn foo [])
+      foo</span>
 
-        <p>
-        Variables should be evaluated to their names.
-        </p>
-        <span class="clojure">(def my-var "cool")</span>
- <div class="clojure">(if 1 2 3)</div>
- <div class="clojure">(if 1 2 3)</div>
+    <p>
+      Variables should be evaluated to their names.
+    </p>
+    <span class="clojure">(def my-var "cool")</span>
+    <div class="clojure">(if 1 2 3)</div>
+    <div class="clojure">(if 1 2 3)</div>
 
-     <p>
-     Strings should be evaluated to their value - with the quote.
-     </p>
- <div class="clojure">"abc"</div>
-     <h2> load code from a gist </h2>
-        <div class="clojure" data-loop-msec="3000" data-gist-id="viebel/08a311453c9d31378b357ced54221fb4"></div>
-        <p> The below div should be colorized every 3 seconds</p>
-        <div id="klipse-color" style="width:100px; height: 50px; background-color: black;"></div>
-            <h2> requiring a namespace </h2>
-<span class="clojure">(ns my.ns
-              (:require 
-                  [clojure.string :as string]))
-                  (string/blank? "HELLO!!")</span>
-      <br/>
-<pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/original-lisp/64fcf67146c3af9d7d136ea50c886d87ba32ce28/src/">
-    (require '[original-lisp.core :as lisp :refer [l-eval]])
-    (l-eval '((lambda (x y) (cons x (cdr y)))
-    'a
-    '(b c d))
-                     '())
+    <p>
+      Strings should be evaluated to their value - with the quote.
+    </p>
+    <div class="clojure">"abc"</div>
+    <h2> load code from a gist </h2>
+    <div class="clojure" data-loop-msec="3000" data-gist-id="viebel/08a311453c9d31378b357ced54221fb4"></div>
+    <p> The below div should be colorized every 3 seconds</p>
+    <div id="klipse-color" style="width:100px; height: 50px; background-color: black;"></div>
+    <h2> requiring a namespace </h2>
+    <span class="clojure">(ns my.ns
+      (:require 
+      [clojure.string :as string]))
+      (string/blank? "HELLO!!")</span>
+    <br/>
+    <pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/original-lisp/64fcf67146c3af9d7d136ea50c886d87ba32ce28/src/">
+	(require '[original-lisp.core :as lisp :refer [l-eval]])
+	(l-eval '((lambda (x y) (cons x (cdr y)))
+	'a
+	'(b c d))
+        '())
     </code></pre>
-          <h2> requiring a namespace  using :rename</h2>
- <span class="clojure">(ns my.ns
-              (:require 
-                  [clojure.string :as string]
-                  [clojure.set :refer [union intersection] :rename {union UNION}]))
-                  [(intersection #{1 2 3} #{2 3 4})
-                  (UNION #{1 2 3} #{2 3 4 5})]</span>
-      <br/>
-           
+    <h2> requiring a namespace  using :rename</h2>
+    <span class="clojure">(ns my.ns
+      (:require 
+      [clojure.string :as string]
+      [clojure.set :refer [union intersection] :rename {union UNION}]))
+      [(intersection #{1 2 3} #{2 3 4})
+      (UNION #{1 2 3} #{2 3 4 5})]</span>
+    <br/>
+    
 
-        <br/>
-        <h2> requiring a goog namespace </h2>
-        <span class="clojure">(ns my.gg
-                (:require [goog.string :as gstring]))
+    <br/>
+    <h2> requiring a goog namespace </h2>
+    <span class="clojure">(ns my.gg
+      (:require [goog.string :as gstring]))
 
-                (gstring/capitalize "hello")</span>
+      (gstring/capitalize "hello")</span>
 
-                        
-        <h2> defining a macro </h2>
-        <div class="clojure">(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)</div> <br/>
+    
+    <h2> defining a macro </h2>
+    <div class="clojure">(ns my.hello$macros) (defmacro hello [x] `(inc ~x)) (my.hello/hello 13)</div> <br/>
 
-     <h1> clojurescript transpilation </h1>
-       <div class="clojure-js">(map inc [100000 2 3])</div>
+    <h1> clojurescript transpilation </h1>
+    <div class="clojure-js">(map inc [100000 2 3])</div>
     <h2> data-static-fns=true </h2>
-<div class="clojure-js" data-static-fns="true">(map inc [100000 2 3])</div>
+    <div class="clojure-js" data-static-fns="true">(map inc [100000 2 3])</div>
 
     <h2> data-preamble </h2>
 
     <p>This snippet prepends <code>(def preamble-var 2)</code> to its cljs source code.</p>
 
     <div class="clojure" data-preamble="(def preamble-var 2)">(= (+ preamble-var 3) 5)</div>
-        <h2> remove comments (only in clojure)</h2>
-        <p>comments at the end of the snippet should be removed </p>
-      
+    <h2> remove comments (only in clojure)</h2>
+    <p>comments at the end of the snippet should be removed </p>
+    
     <div class="clojure">
-        ; intro
-        (map inc [1 2 3])
-        ; you shouldn't see this comment
-        ; you shouldn't see this comment
-        ; you shouldn't see this comment
+      ; intro
+      (map inc [1 2 3])
+      ; you shouldn't see this comment
+      ; you shouldn't see this comment
+      ; you shouldn't see this comment
 
-        </div>
+    </div>
     <h1> styling </h1>
     <p> Leading and trailing blank lines should be removed. </p>
     <pre>
-<code class="eval-js">
+      <code class="eval-js">
 
 
 
-function foo(){
-    var x = 4;
-    return x;
-}
+	function foo(){
+	var x = 4;
+	return x;
+	}
 
-</code></pre>
-<p>Other empty lines should be kept.</p>
-<pre>
-<code class="clojure">
+    </code></pre>
+    <p>Other empty lines should be kept.</p>
+    <pre>
+      <code class="clojure">
 
-    (defn foo
+	(defn foo
 
-    ([] "aa")
+	([] "aa")
 
 
 
-    ([x] x))
+	([x] x))
 
     </code></pre>
 
-     <h1> javascript </h1>
-     <h2> all the js values should be printed properly </h2>
-<pre><code class="eval-js">
-a = new Set();
-a.add(1);
-a.add(2);
-x = {a: 1,
-     aa: a,
-     str: "Hello World\nand Klipse!",
-     date: new Date(),
-     rrr: /^aa[a]+$/,
-     c: [1/0, NaN, Promise.resolve(1)],
-     arr: new Int32Array(3),
-     d: Symbol("dd")}
-x.selfRef = x;
-x
-</code></pre>
-<h2>containers</h2>
-Each snippet has a container near it that is accessible with `klipse_container`:
-<pre><code class="eval-js">
-    klipse_container.innerHTML="hello";
-    [1,2,3]
+    <h1> javascript </h1>
+    <h2> empty input </h2>
+    <p> When input is empty the output shoud be empty </p>
+    <pre><code class="eval-js">
     </code></pre>
 
-     <h2> evaluate snippet in a loop </h2>
-     <p>This snippet should be evaluated only once</p>
+    <h2> all the js values should be printed properly </h2>
+    <pre><code class="eval-js">
+	a = new Set();
+	a.add(1);
+	a.add(2);
+	x = {a: 1,
+	aa: a,
+	str: "Hello World\nand Klipse!",
+	date: new Date(),
+	rrr: /^aa[a]+$/,
+	c: [1/0, NaN, Promise.resolve(1)],
+	arr: new Int32Array(3),
+	d: Symbol("dd")}
+	x.selfRef = x;
+	x
+    </code></pre>
+    <h2>containers</h2>
+    Each snippet has a container near it that is accessible with `klipse_container`:
+    <pre><code class="eval-js">
+	klipse_container.innerHTML="hello";
+	[1,2,3]
+    </code></pre>
+
+    <h2> evaluate snippet in a loop </h2>
+    <p>This snippet should be evaluated only once</p>
     <pre><code class="eval-js">Date()</code></pre>
-     <p>This snippet should be evaluated every second</p>
+    <p>This snippet should be evaluated every second</p>
     <pre><code class="eval-js" data-loop-msec="1000">Date()</code></pre>
-     <p>This snippet should be evaluated every 5 seconds</p>
+    <p>This snippet should be evaluated every 5 seconds</p>
     <pre><code class="eval-js" data-loop-msec="5000">Date()</code></pre>
     <h2> immutable.js </h2>
- <div class="eval-js" data-external-libs="immutable">
-     Immutable
-        </div>
-        <br/>
-        <div class="eval-js">
-     var m = Immutable.fromJS({a: 10, c: 40});
+    <div class="eval-js" data-external-libs="immutable">
+      Immutable
+    </div>
+    <br/>
+    <div class="eval-js">
+      var m = Immutable.fromJS({a: 10, c: 40});
 
-     m.map(x => x * x);
+      m.map(x => x * x);
 
-        </div>
-        <br/>
+    </div>
+    <br/>
 
-        <h2> native javascript </h2>
-       <p>Functions should be displayed as empty strings</p>
-        <div class="eval-js">
-            () => 1
-            </div>
-        <div class="eval-js">
-            [1, 2, 3].reduce(
-              function(total, num){ return total + num }
-                , 0);
-        </div>
-        <h2> console.log </h2>
-        <code>console.log</code> outputs should be appended to the result cell
-        <div class="eval-js">
-            console.log("hello");
-            console.log("klipse\nand cljs");
-            console.log("in 1st snippet");
-            2+3;
-        </div>
-        <br/>
-        <div class="eval-js">
-            console.log("hello");
-            console.log("klipse");
-            console.log("in 2nd snippet");
-            3+19;
-        </div>
+    <h2> native javascript </h2>
+    <p>Functions should be displayed as empty strings</p>
+    <div class="eval-js">
+      () => 1
+    </div>
+    <div class="eval-js">
+      [1, 2, 3].reduce(
+      function(total, num){ return total + num }
+      , 0);
+    </div>
+    <h2> console.log </h2>
+    <code>console.log</code> outputs should be appended to the result cell
+    <div class="eval-js">
+      console.log("hello");
+      console.log("klipse\nand cljs");
+      console.log("in 1st snippet");
+      2+3;
+    </div>
+    <br/>
+    <div class="eval-js">
+      console.log("hello");
+      console.log("klipse");
+      console.log("in 2nd snippet");
+      3+19;
+    </div>
 
-        <h2> async console.log </h2>
-        When the call to <code>console.log</code> is asynchronous, you must use <code>data-async-code="true"</code>:
+    <h2> async console.log </h2>
+    When the call to <code>console.log</code> is asynchronous, you must use <code>data-async-code="true"</code>:
 
-<pre><code class="eval-js" data-async-code="true">
-    setTimeout(function() {
-    console.log("1st snippet", 1/0, [1, 2, {a: 2}]);
-    }, 1000);
-</code></pre>
-<pre><code class="eval-js" data-async-code="true">
-    setTimeout(function() {
-    console.log("2nd snippet");
-    console.log("2nd snippet - bb");
-    }, 500);
-</code></pre>
-        <br/>
-        <h2> EcmaScript 2017 </h2>
-<pre><code class="es2017" data-async-code="true">
-async function sleep(ms = 0) {
-  return new Promise(r => setTimeout(r, ms));
-}
-
-async function run() {
-  console.log("Before: " + (new Date()).toString());
-  await sleep(1000);
-  console.log("After:  " + (new Date()).toString());
-}
-
-run();
-
-(async () => {
-  await sleep(2000);
-  console.log('a');
-  await sleep(1000);
-  console.log('b');
-})()
-
-</code></pre>
-<pre><code class="es2017">
-Object.entries({ one: 1, two: 2 })
-</code></pre>
-
-
-Each snippet has a container near it that is accessible with `klipse_container`:
-<pre><code class="es2017">
-    klipse_container.innerHTML="hello es2017";
-    [1,2,3]
+    <pre><code class="eval-js" data-async-code="true">
+	setTimeout(function() {
+	console.log("1st snippet", 1/0, [1, 2, {a: 2}]);
+	}, 1000);
+    </code></pre>
+    <pre><code class="eval-js" data-async-code="true">
+	setTimeout(function() {
+	console.log("2nd snippet");
+	console.log("2nd snippet - bb");
+	}, 500);
+    </code></pre>
+    <br/>
+    <h2> EcmaScript 2017 </h2>
+    <h3> empty input </h3>
+    <p> When input is empty the output shoud be empty </p>
+    <pre><code class="es2017">
     </code></pre>
 
-<pre><code class="es2017" data-async-code="true">
-let obj = { one: 1, two: 2 };
-    for (let [k,v] of Object.entries(obj)) {
-                console.log(`${JSON.stringify(k)}: ${JSON.stringify(v)}`);
-                    }
-</code></pre>
- 
-        <h2> jQuery </h2>
- <div class="eval-js" data-external-libs="jQuery">
-     $
-        </div>
-        <br/>
- <div class="eval-js">
-     $('div').length
-        </div>
-        <br/>
-     <body>
-<h1> React and jsx </h1>
-<pre><code class="eval-js" data-external-libs="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js, https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js">
-    Object.keys(React)
-</code></pre>
-<pre><code class="transpile-jsx">
-      &lt;div className="shopping-list"&gt;
-        &lt;h1&gt;Shopping List for {this.props.name}&lt;/h1&gt;
-      &lt;/div&gt;
-</code></pre>
+    <pre><code class="es2017" data-async-code="true">
+	async function sleep(ms = 0) {
+	return new Promise(r => setTimeout(r, ms));
+	}
 
-<p>In ES6 class definitions are local, therefore we have to add them to the global objet explicitly</p>
-<pre><code class="jsx">
-class ShoppingList extends React.Component {
-  render() {
-    return (
-      &lt;div className="shopping-list"&gt;
+	async function run() {
+	console.log("Before: " + (new Date()).toString());
+	await sleep(1000);
+	console.log("After:  " + (new Date()).toString());
+	}
+
+	run();
+
+	(async () => {
+	await sleep(2000);
+	console.log('a');
+	await sleep(1000);
+	console.log('b');
+	})()
+
+    </code></pre>
+    <pre><code class="es2017">
+	Object.entries({ one: 1, two: 2 })
+    </code></pre>
+
+
+    Each snippet has a container near it that is accessible with `klipse_container`:
+    <pre><code class="es2017">
+	klipse_container.innerHTML="hello es2017";
+	[1,2,3]
+    </code></pre>
+
+    <pre><code class="es2017" data-async-code="true">
+	let obj = { one: 1, two: 2 };
+	for (let [k,v] of Object.entries(obj)) {
+        console.log(`${JSON.stringify(k)}: ${JSON.stringify(v)}`);
+        }
+    </code></pre>
+    
+    <h2> jQuery </h2>
+    <div class="eval-js" data-external-libs="jQuery">
+      $
+    </div>
+    <br/>
+    <div class="eval-js">
+      $('div').length
+    </div>
+    <br/>
+  <body>
+    <h1> React and jsx </h1>
+    <pre><code class="eval-js" data-external-libs="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js, https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js">
+	Object.keys(React)
+    </code></pre>
+    <pre><code class="transpile-jsx">
+	&lt;div className="shopping-list"&gt;
+        &lt;h1&gt;Shopping List for {this.props.name}&lt;/h1&gt;
+	&lt;/div&gt;
+    </code></pre>
+
+    <p>In ES6 class definitions are local, therefore we have to add them to the global objet explicitly</p>
+    <pre><code class="jsx">
+	class ShoppingList extends React.Component {
+	render() {
+	return (
+	&lt;div className="shopping-list"&gt;
         &lt;h1&gt;Shopping List for {this.props.name}&lt;/h1&gt;
         &lt;ul&gt;
-          &lt;li&gt;Instagram&lt;/li&gt;
-          &lt;li&gt;WhatsApp&lt;/li&gt;
-          &lt;li&gt;Oculus&lt;/li&gt;
+        &lt;li&gt;Instagram&lt;/li&gt;
+        &lt;li&gt;WhatsApp&lt;/li&gt;
+        &lt;li&gt;Oculus&lt;/li&gt;
         &lt;/ul&gt;
-      &lt;/div&gt;
-    );
-  }
-}
-window.ShoppingList = ShoppingList
-</code></pre>
-<code><pre class="eval-js">
-ShoppingList
-</code></pre>
- <h1> PHP </h1>
+	&lt;/div&gt;
+	);
+	}
+	}
+	window.ShoppingList = ShoppingList
+    </code></pre>
+    <code><pre class="eval-js">
+	ShoppingList
+    </code></pre>
+    <h1> PHP </h1>
     <div class="eval-php">print "Hello from PHP!";</div>
-<br/>
-<div class="eval-php">
-    $var = ["a" => 1];
-    var_dump($var);
-</div>
+    <br/>
+    <div class="eval-php">
+      $var = ["a" => 1];
+      var_dump($var);
+    </div>
 
     <div class="eval-php" data-gist-id="viebel/6d6e23270e65dd9a4849c507dba4f712"></div>
-        <br/>
-	<h1> C++ </h1>
-	<pre><code class="cpp">
-    #include &lt;iostream&gt;
-      using namespace std;
-      int main() {
-      int a = 98;
-      //cin &gt;&gt; a;
-      cout &lt;&lt; a*10 &lt;&lt; endl;
-		      return 0;
-		      }
-</code></pre>
+    <br/>
+    <h1> C++ </h1>
+    <pre><code class="cpp">
+	#include &lt;iostream&gt;
+	using namespace std;
+	int main() {
+	int a = 98;
+	//cin &gt;&gt; a;
+	cout &lt;&lt; a*10 &lt;&lt; endl;
+	return 0;
+	}
+    </code></pre>
 
-<h1> python </h1>
-<p> In python, code is not automatically indented, as the CodeMirror indentation for python doesn't work well. I've opened an <a href="https://github.com/codemirror/CodeMirror/issues/4119">issue about it on github</a>.
-</p>
-<pre><code class="eval-python">print [x + 1 for x in range(10)]</code></pre>
+    <h1> python </h1>
+    <p> In python, code is not automatically indented, as the CodeMirror indentation for python doesn't work well. I've opened an <a href="https://github.com/codemirror/CodeMirror/issues/4119">issue about it on github</a>.
+    </p>
+    <pre><code class="eval-python">print [x + 1 for x in range(10)]</code></pre>
     </br>
 
 
-<h1> Scheme </h1>
+    <h1> Scheme </h1>
 
-Code without errors:
+    Code without errors:
 
-<pre><code class="scheme">
-    (define x 89)
+    <pre><code class="scheme">
+	(define x 89)
     </code></pre>
-<pre><code class="scheme">
-    (* x 100)
-    </code></pre>
-
-Code with errors:
-
-<pre><code class="scheme">
-    (* asdsadsada 100)
+    <pre><code class="scheme">
+	(* x 100)
     </code></pre>
 
+    Code with errors:
+
+    <pre><code class="scheme">
+	(* asdsadsada 100)
+    </code></pre>
 
 
 
-<h1> ruby</h1>
+
+    <h1> ruby</h1>
     <div class="eval-ruby" data-gist-id="viebel/4659664"></div>
-        <br/>
-        <div class="eval-ruby">def letter_frequency(file)
-letters = 'a' .. 'z'
-file .
-split(//) .
-group_by {|letter| letter.downcase} .
-select   {|key, val| letters.include? key} .
-collect  {|key, val| [key, val.length]} 
-end
+    <br/>
+    <div class="eval-ruby">def letter_frequency(file)
+      letters = 'a' .. 'z'
+      file .
+      split(//) .
+      group_by {|letter| letter.downcase} .
+      select   {|key, val| letters.include? key} .
+      collect  {|key, val| [key, val.length]} 
+      end
 
-letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}</div>
-<br/>
-
-
-<h1> SQL </h1>
-<pre><code class="sql" data-editor-type="html">
-    CREATE TABLE play (game, points, day)
-</code></pre>
-
-<pre><code class="sql" data-editor-type="html">
-    INSERT INTO play VALUES ("go", 500, "monday");
-    INSERT INTO play VALUES ("go", 300, "tuesday");
-    INSERT INTO play VALUES ("chess", 1250, "tuesday");
-    INSERT INTO play VALUES ("chess", 1250, "tuesday");
-    INSERT INTO play VALUES ("chess", 50, "sunday");
-    INSERT INTO play VALUES ("chess", 3200, "saturday");
-</code></pre>
-
-<pre><code class="sql" data-editor-type="html">
-    SELECT game, sum(points) as total_points FROM play GROUP BY game HAVING total_points &gt; 10
-</code></pre>
-
-
- 
-<h1> Markdown </h1>
-<h2> HTML transpilation</h2>
-<code class="eval-markdown">
-# This is a title
-`clojure` rocks!
-</code>
-       <br/>
-
-<h2> HTML rendering</h2>
-<code class="eval-markdown" data-editor-type="html">
-# This is a title
-`clojure` rocks!
-</code>
-<br/>
-
-
-<div class="lambda" data-editor-type="html">{+ 1 2 3}</div>
+      letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}</div>
     <br/>
 
 
-<div class="lambda" data-editor-type="html">{div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}</div>
+    <h1> SQL </h1>
+    <pre><code class="sql" data-editor-type="html">
+	CREATE TABLE play (game, points, day)
+    </code></pre>
+
+    <pre><code class="sql" data-editor-type="html">
+	INSERT INTO play VALUES ("go", 500, "monday");
+	INSERT INTO play VALUES ("go", 300, "tuesday");
+	INSERT INTO play VALUES ("chess", 1250, "tuesday");
+	INSERT INTO play VALUES ("chess", 1250, "tuesday");
+	INSERT INTO play VALUES ("chess", 50, "sunday");
+	INSERT INTO play VALUES ("chess", 3200, "saturday");
+    </code></pre>
+
+    <pre><code class="sql" data-editor-type="html">
+	SELECT game, sum(points) as total_points FROM play GROUP BY game HAVING total_points &gt; 10
+    </code></pre>
+
+
+    
+    <h1> Markdown </h1>
+    <h2> HTML transpilation</h2>
+    <code class="eval-markdown">
+      # This is a title
+      `clojure` rocks!
+    </code>
     <br/>
-<div class="lambda" data-editor-type="html">{def amélie {img 
-     {@ id="amelie"
-         src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
-             height="150"
-                 title="Amélie Poulain"
-                     style="box-shadow:0 0 8px black;
-                                border:1px solid white;
-                                           -webkit-transform:rotate(-5deg);
-                                                         -moz-transform:rotate(-5deg);
-                                                                            transform:rotate(-5deg);"}}}
-                                                                            {amélie}</div>
+
+    <h2> HTML rendering</h2>
+    <code class="eval-markdown" data-editor-type="html">
+      # This is a title
+      `clojure` rocks!
+    </code>
     <br/>
- <h1> HTML rendering </h1>
-   <div class="eval-html" data-editor-type="html">
-    &lt;img id="amelie" src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" height="150" title="Amélie Poulain" style="box-shadow:0 0 8px black; border:1px solid white; -webkit-transform:rotate(-5deg); -moz-transform:rotate(-5deg); transform:rotate(-5deg);"&gt;&lt;/img&gt;
+
+
+    <div class="lambda" data-editor-type="html">{+ 1 2 3}</div>
+    <br/>
+
+
+    <div class="lambda" data-editor-type="html">{div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}</div>
+    <br/>
+    <div class="lambda" data-editor-type="html">{def amélie {img 
+      {@ id="amelie"
+      src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
+      height="150"
+      title="Amélie Poulain"
+      style="box-shadow:0 0 8px black;
+      border:1px solid white;
+      -webkit-transform:rotate(-5deg);
+      -moz-transform:rotate(-5deg);
+      transform:rotate(-5deg);"}}}
+      {amélie}</div>
+    <br/>
+    <h1> HTML rendering </h1>
+    <div class="eval-html" data-editor-type="html">
+      &lt;img id="amelie" src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" height="150" title="Amélie Poulain" style="box-shadow:0 0 8px black; border:1px solid white; -webkit-transform:rotate(-5deg); -moz-transform:rotate(-5deg); transform:rotate(-5deg);"&gt;&lt;/img&gt;
     </div>
 
-<h1> BrainFuck </h1>
-<p> BF </p>
+    <h1> BrainFuck </h1>
+    <p> BF </p>
     <div class="brainfuck">
-        +.
-        +++.
-        +++.
-        +++++.
+      +.
+      +++.
+      +++.
+      +++++.
     </div>
-<br>
-<p> Multiplication </p>
+    <br>
+    <p> Multiplication </p>
     <div class="brainfuck">
-        +++>+++++&lt; 
-        [>>>+>+&lt;&lt;&lt;&lt;-]>>>>[&lt;&lt;&lt;&lt;+>>>>-]&lt;
-        [&lt;&lt;
-          [>>>+>+&lt;&lt;&lt;&lt;-]>>>>[&lt;&lt;&lt;&lt;+>>>>-]&lt;
-            [&lt;&lt;+>>-]
-            &lt;-]
-            &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
-            .>.>.>.
+      +++>+++++&lt; 
+      [>>>+>+&lt;&lt;&lt;&lt;-]>>>>[&lt;&lt;&lt;&lt;+>>>>-]&lt;
+      [&lt;&lt;
+      [>>>+>+&lt;&lt;&lt;&lt;-]>>>>[&lt;&lt;&lt;&lt;+>>>>-]&lt;
+      [&lt;&lt;+>>-]
+      &lt;-]
+      &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+      .>.>.>.
     </div>
- 
+    
     <p> Hello World!</p>
     <div class="brainfuck-txt">
-        ++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]&gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;.+++.------.--------.&gt;+.&gt;
+      ++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]&gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;.+++.------.--------.&gt;+.&gt;
     </div>
-  <p>Eval</p>
- <div class="brainfuck" data-gist-id="viebel/9d801a43100c6a88669b641501c2929c"></div>
- <h1> Reagent</h1>
- <pre>
-  <code class="clj">
-(require '[reagent.core :as r])
+    <p>Eval</p>
+    <div class="brainfuck" data-gist-id="viebel/9d801a43100c6a88669b641501c2929c"></div>
+    <h1> Reagent</h1>
+    <pre>
+      <code class="clj">
+	(require '[reagent.core :as r])
 
-(defn child [name]
-    [:p "Hi, I am " name])
+	(defn child [name]
+	[:p "Hi, I am " name])
 
-    (defn childcaller []
-    [child "Foo Bar"])
-(r/render-to-string [child "Foo Bar"])
-</code></pre>
+	(defn childcaller []
+	[child "Foo Bar"])
+	(r/render-to-string [child "Foo Bar"])
+    </code></pre>
 
-<pre><code class="reagent">
-    [child "Foo Bar"]
-</code></pre>
+    <pre><code class="reagent">
+	[child "Foo Bar"]
+    </code></pre>
 
 
-<script>
-        window.klipse_settings = {
-            codemirror_options_in: {
-                lineWrapping: true,
-                autoCloseBrackets: true
-            },
-            codemirror_options_out: {
-                lineWrapping: true
-            },
-            selector: '.clojure,.clj',
-            selector_es2017: '.es2017',
-            selector_eval_js: '.eval-js',
-            selector_eval_markdown: '.eval-markdown',
-            selector_eval_lambdaway: '.lambda',
-            selector_eval_python_client: '.eval-python',
-            selector_eval_html: '.eval-html',
-            selector_eval_php: '.eval-php',
-            selector_sql: '.sql',
-            selector_eval_scheme: '.scheme',
-            selector_eval_ruby: '.eval-ruby',
-            selector_brainfuck: '.brainfuck',
-            selector_brainfuck_txt: '.brainfuck-txt',
-            selector_js: '.clojure-js',
-            selector_jsx: '.jsx',
-            selector_transpile_jsx: '.transpile-jsx',
-            selector_eval_cpp: '.cpp',
-        selector_reagent: '.reagent',
-        };
-        </script>
-        <script>
+    <script>
+      window.klipse_settings = {
+      codemirror_options_in: {
+      lineWrapping: true,
+      autoCloseBrackets: true
+      },
+      codemirror_options_out: {
+      lineWrapping: true
+      },
+      selector: '.clojure,.clj',
+      selector_es2017: '.es2017',
+      selector_eval_js: '.eval-js',
+      selector_eval_markdown: '.eval-markdown',
+      selector_eval_lambdaway: '.lambda',
+      selector_eval_python_client: '.eval-python',
+      selector_eval_html: '.eval-html',
+      selector_eval_php: '.eval-php',
+      selector_sql: '.sql',
+      selector_eval_scheme: '.scheme',
+      selector_eval_ruby: '.eval-ruby',
+      selector_brainfuck: '.brainfuck',
+      selector_brainfuck_txt: '.brainfuck-txt',
+      selector_js: '.clojure-js',
+      selector_jsx: '.jsx',
+      selector_transpile_jsx: '.transpile-jsx',
+      selector_eval_cpp: '.cpp',
+      selector_reagent: '.reagent',
+      };
+    </script>
+    <script>
 
-function addScript(url) {
-    var s = document.createElement('script');
-    s.src = url;
-    document.body.appendChild(s);
-}
-    if(window.location.search.match(/dev=1/)) {
-        alert("Remember to test advanced compilation mode!");
-        addScript("plugin/js/klipse_plugin.js");
-    } else {
-        addScript("plugin_prod/js/klipse_plugin.min.js");
-    }
-        </script>
-     </body>
+      function addScript(url) {
+      var s = document.createElement('script');
+      s.src = url;
+      document.body.appendChild(s);
+      }
+      if(window.location.search.match(/dev=1/)) {
+      alert("Remember to test advanced compilation mode!");
+      addScript("plugin/js/klipse_plugin.js");
+      } else {
+      addScript("plugin_prod/js/klipse_plugin.min.js");
+      }
+    </script>
+  </body>
 </html>

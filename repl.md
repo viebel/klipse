@@ -13,6 +13,7 @@ KLIPSE configuration is done with the url parameters:
 
 * `cljs_in=<cljs_code>` - initial content of the `clojurescript` box ( `code` must be encoded properly)
 * `cljs_in.gist=<gits_id>` - load code from a gist;  e.g. http://app.klipse.tech?cljs_in.gist=viebel/368d3bec58d3ec47e935ad488bafb600&eval_only=1
+* `container=1` - container more useful for UI stuff: instead of the compilation box, you have your klipse container
 * `js_only=1` - display only `input` and `js` boxes
 * `eval_only=1` - display only `input`, `eval` and `print` boxes
 * `static-fns=true` - eval and transpile js code with [static dispatch](https://github.com/clojure/clojurescript/wiki/Compiler-Options#static-fns)

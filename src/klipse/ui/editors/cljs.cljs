@@ -1,15 +1,17 @@
 (ns klipse.ui.editors.cljs
   (:require-macros
-    [klipse.macros :refer [dbg]])
+   [cljs.core.async.macros :refer [go]]
+   [klipse.macros :refer [dbg]])
   (:require
-    [cljs.reader :refer [read-string]]
-    [clojure.string :as string :refer [blank?]]
-    [parinfer-codemirror.editor :refer [start-editor-sync! parinferize!]]
-    [klipse.ui.editors.editor :refer [get-value set-value replace-element-by-editor replace-id-by-editor]]
-    [klipse.ui.editors.common :refer [handle-events]]
-    [klipse.utils :refer [url-parameters]]
-    [om.next :as om :refer-macros [defui]]
-    [om.dom :as dom]))
+   [cljs.core.async :refer [<!]]
+   [cljs.reader :refer [read-string]]
+   [clojure.string :as string :refer [blank?]]
+   [parinfer-codemirror.editor :refer [start-editor-sync! parinferize!]]
+   [klipse.ui.editors.editor :refer [get-value set-value replace-element-by-editor replace-id-by-editor]]
+   [klipse.ui.editors.common :refer [handle-events]]
+   [klipse.utils :refer [url-parameters load-scripts-mem]]
+   [om.next :as om :refer-macros [defui]]
+   [om.dom :as dom]))
 
 (def config-editor
   {:lineNumbers true
@@ -21,8 +23,8 @@
 
 (def placeholder-editor
   (str
-    ";; Write your clojurescript expression \n"
-    ";; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."))
+   ";; Write your clojurescript expression \n"
+   ";; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."))
 
 (defn save-input [component s]
   (when-not (blank? s)
@@ -71,10 +73,19 @@
     (om/transact! component [`(editor/set-mode {:value ~mode})
                              :input])))
 
+(defn load-external-scripts [scripts]
+  (go
+    (let [[status http-status script] (<! (load-scripts-mem scripts))]
+      (if (= :ok status)
+        [:ok :ok]
+        [:error (str "Cannot load script: " script "\n" "Error: " http-status)]))))
+
 (defn use-paredit! [component]
-  (replace-editor! component {:keyMap "subpar"})
-  (om/transact! component ['(editor/set-mode {:value :paredit})
-                           :input]))
+  (go
+    (let [[status err] (<! (load-external-scripts ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/keymap/emacs.min.js" "https://viebel.github.io/klipse/repo/js/subpar.js" "https://viebel.github.io/klipse/repo/js/subpar.core.js"]))]
+      (replace-editor! component {:keyMap "subpar"})
+      (om/transact! component ['(editor/set-mode {:value :paredit})
+                               :input]))))
 
 (defn use-regular-mode! [component]
   (replace-editor! component)

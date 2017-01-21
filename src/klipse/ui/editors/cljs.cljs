@@ -43,11 +43,11 @@
                   :on-change #(save-input component (get-value editor))
                   :on-should-eval #(process-input component (get-value editor))}))
 
-(defn replace-editor! [component]
+(defn replace-editor! [component & [cm-options]]
   (let [editor (om/get-state component :editor)
         editor-wrapper (.getWrapperElement editor)
         value (get-value editor)
-        new-editor (replace-element-by-editor editor-wrapper value config-editor)]
+        new-editor (replace-element-by-editor editor-wrapper value (merge config-editor cm-options))]
     (om/update-state! component assoc :editor new-editor)
     (handle-cm-events component new-editor)))
 
@@ -71,6 +71,11 @@
     (om/transact! component [`(editor/set-mode {:value ~mode})
                              :input])))
 
+(defn use-paredit! [component]
+  (replace-editor! component {:keyMap "subpar"})
+  (om/transact! component ['(editor/set-mode {:value :paredit})
+                           :input]))
+
 (defn use-regular-mode! [component]
   (replace-editor! component)
   (om/transact! component ['(editor/set-mode {:value :regular})
@@ -80,6 +85,7 @@
   (let [editor-modes (get-in (om/props component) [:input :editor-modes])]
     (case (first editor-modes)
       :regular (use-regular-mode! component)
+      :paredit (use-paredit! component)
       :parinfer-paren (use-parinfer! component :paren)
       :parinfer-indent (use-parinfer! component :indent))))
 
@@ -108,6 +114,7 @@
           (let [{:keys [input editor-mode] :or {editor-mode :regular input ""}} (:input (om/props this))
                 editor-class (case editor-mode
                                :regular "mode-regular"
+                               :paredit "mode-paredit"
                                :parinfer-paren "mode-parinfer-paren"
                                :parinfer-indent "mode-parinfer-indent"
                                "mode-regular")]

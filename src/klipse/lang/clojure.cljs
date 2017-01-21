@@ -16,7 +16,7 @@
     [cljs.analyzer :as ana]
     [cljs.reader :refer [read-string]]
     [cljs.compiler :as compiler]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode]]
+    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
     [klipse.lang.clojure.io :as io]
     [cljs.core.async :refer [timeout chan put! <!]]
     [cljs.env :as env]
@@ -229,7 +229,7 @@
 (def eval-opts {:editor-in-mode "clojure"
                   :editor-out-mode "clojure"
                   :eval-fn str-eval-async
-                  :external-scripts [(codemirror-mode-src "clojure")]
+                  :external-scripts [(codemirror-mode-src "clojure") (scripts-src "subpar.core.js") (scripts-src "subpar.js") ]
                   :comment-str ";"})
 
 (def compile-opts {:editor-in-mode "clojure"

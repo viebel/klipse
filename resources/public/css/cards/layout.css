@@ -122,6 +122,13 @@ section .editor-logo.mode-parinfer-paren {
     background-size: 50px;
 }
 
+section .editor-logo.mode-paredit {
+    background-image: url(../../img/paredit.png);
+    height: 50px;
+    width: 50px;
+    background-size: 50px;
+}
+
 #klipse-container-wrapper {
     background-position: right 5px bottom 5px;
     background-size: 40px;

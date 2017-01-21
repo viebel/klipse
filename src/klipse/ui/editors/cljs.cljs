@@ -53,25 +53,25 @@
 
 (def parinfer-count (atom 0))
 
-(defn use-parinfer! [component indent-or-paren]
-  (js/console.log "use-parinfer!" indent-or-paren)
-  (let [editor (replace-editor! component)
-        key- (swap! parinfer-count inc)
+(defn parinferize-editor! [editor indent-or-paren]
+  (let [key- (swap! parinfer-count inc)
         wrapper (.getWrapperElement editor)
         parinfer-mode (case indent-or-paren
                         :indent :indent-mode
-                        :paren :paren-mode)
-        mode (case indent-or-paren
-               :indent :parinfer-indent
-               :paren :parinfer-paren)]
+                        :paren :paren-mode)]
     (set! (.-id wrapper) (str "cm-" "element-id"))
     (parinferize! editor key- parinfer-mode (get-value editor))
-    (start-editor-sync!)
+    (start-editor-sync!)))
+
+(defn use-parinfer! [component indent-or-paren]
+  (parinferize-editor! (replace-editor! component) indent-or-paren)
+  (let [mode (case indent-or-paren
+               :indent :parinfer-indent
+               :paren :parinfer-paren)]
     (om/transact! component [`(editor/set-mode {:value ~mode})
                              :input])))
 
 (defn use-regular-mode! [component]
-  (js/console.info "use-regular-mode!")
   (replace-editor! component)
   (om/transact! component ['(editor/set-mode {:value :regular})
                            :input]))

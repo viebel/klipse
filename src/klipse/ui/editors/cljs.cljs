@@ -78,10 +78,11 @@
                                :regular "mode-regular"
                                :parinfer-indent "mode-parinfer-ident"
                                "mode-regular")]
-            (dom/section #js {:className (str "cljs-editor" " " editor-class)}
+            (dom/section #js {:className (str "cljs-editor")}
                          (dom/textarea #js {:autoFocus true
                                             :value input
                                             :id "code-cljs"
-                                            :placeholder placeholder-editor})))))
+                                            :placeholder placeholder-editor})
+                         (dom/div #js {:className (str "editor-logo" " " editor-class)})))))
 
 (def cljs-editor (om/factory Cljs-editor))

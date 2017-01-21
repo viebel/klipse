@@ -6,7 +6,7 @@
    [cljs.core.async :refer [<!]]
    [cljs.reader :refer [read-string]]
    [clojure.string :as string :refer [blank?]]
-   [parinfer-codemirror.editor :refer [start-editor-sync! parinferize!]]
+   [parinfer-codemirror.editor :refer [parinferize-and-sync!]]
    [klipse.ui.editors.editor :refer [get-value set-value replace-element-by-editor replace-id-by-editor]]
    [klipse.ui.editors.common :refer [handle-events]]
    [klipse.utils :refer [url-parameters load-scripts-mem]]
@@ -53,6 +53,13 @@
     (om/update-state! component assoc :editor new-editor)
     (handle-cm-events component new-editor)))
 
+(defn load-external-scripts [scripts]
+  (go
+    (let [[status http-status script] (<! (load-scripts-mem scripts))]
+      (if (= :ok status)
+        [:ok :ok]
+        [:error (str "Cannot load script: " script "\n" "Error: " http-status)]))))
+
 (def parinfer-count (atom 0))
 
 (defn parinferize-editor! [editor indent-or-paren]
@@ -62,8 +69,7 @@
                         :indent :indent-mode
                         :paren :paren-mode)]
     (set! (.-id wrapper) (str "cm-" "element-id"))
-    (parinferize! editor key- parinfer-mode (get-value editor))
-    (start-editor-sync!)))
+    (parinferize-and-sync! editor key- parinfer-mode (get-value editor))))
 
 (defn use-parinfer! [component indent-or-paren]
   (parinferize-editor! (replace-editor! component) indent-or-paren)
@@ -73,19 +79,15 @@
     (om/transact! component [`(editor/set-mode {:value ~mode})
                              :input])))
 
-(defn load-external-scripts [scripts]
-  (go
-    (let [[status http-status script] (<! (load-scripts-mem scripts))]
-      (if (= :ok status)
-        [:ok :ok]
-        [:error (str "Cannot load script: " script "\n" "Error: " http-status)]))))
-
 (defn use-paredit! [component]
   (go
     (let [[status err] (<! (load-external-scripts ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/keymap/emacs.min.js" "https://viebel.github.io/klipse/repo/js/subpar.js" "https://viebel.github.io/klipse/repo/js/subpar.core.js"]))]
-      (replace-editor! component {:keyMap "subpar"})
-      (om/transact! component ['(editor/set-mode {:value :paredit})
-                               :input]))))
+      (if (= :ok status)
+        (do
+          (replace-editor! component {:keyMap "subpar"})
+          (om/transact! component ['(editor/set-mode {:value :paredit})
+                                   :input]))
+        (js/console.error "cannot load paredit scripts:" err)))))
 
 (defn use-regular-mode! [component]
   (replace-editor! component)

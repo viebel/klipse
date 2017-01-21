@@ -64,7 +64,8 @@
   (componentDidUpdate [this prev-props prev-state]
                       (let [input (get-in (om/props this) [:input :input])
                             editor (om/get-state this :editor)]
-                        (when (and editor
+                        (when (and input
+                                   editor
                                    (not= input (get-value editor))
                           (set-value editor input)))))
 
@@ -72,7 +73,7 @@
                      (om/set-state! this {:editor (init-editor this)}))
 
   (render [this]
-          (let [{:keys [input editing-mode] :or {editing-mode :regular}} (:input (om/props this))
+          (let [{:keys [input editing-mode] :or {editing-mode :regular input ""}} (:input (om/props this))
                 editor-class (case editing-mode
                                :regular "mode-regular"
                                :parinfer-indent "mode-parinfer-ident"

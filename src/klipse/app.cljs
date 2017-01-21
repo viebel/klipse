@@ -40,5 +40,5 @@
               (let [reconciler (control/reconciler {})]
                 (om/add-root! reconciler ui/Layout element)
                 (go
-                  (let [input (dbg (<! (read-src-input)))]
+                  (let [input (<! (read-src-input))]
                     (cljs-editor/process-input reconciler input)))))))

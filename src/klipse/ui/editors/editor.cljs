@@ -25,7 +25,8 @@
   editor)
 
 (defn on-change [editor f]
-  (.on editor "change" f))
+  (.on editor "change" f)
+  editor)
 
 (defn set-option [editor option value]
   (.setOption editor option value)
@@ -74,6 +75,11 @@
                               (clj->js opts))]
     (-> (set-value editor value)
         (beautify mode {:indent? indent? :remove-ending-comments? remove-ending-comments?}))))
+
+(defn replace-id-by-editor [id cm-opts & more-opts]
+  (let [element (gdom/getElement id)
+        value  (aget element "textContent")]
+    (apply replace-element-by-editor element value cm-opts more-opts)))
 
 (defn create-editor-after-element [element value opts & {:keys [remove-ending-comments? indent?] :or  {remove-ending-comments? false indent? false}}]
   (-> (create-div-after element {})

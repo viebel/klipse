@@ -54,22 +54,23 @@
   (let [c (chan)]
     (when (verbose?) (js/console.info "[javascript] evaluating" exp))
     (go
-      (when-not (string/blank? exp)
-        (eval-in-global-scope (setup-container container-id))
-        (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
-          (try
-            (put! c (if (= :ok status)
-                      (try
-                        (if async-code?
-                          (eval-with-logger! c exp)
-                          (my-with-redefs [js/console.log (append-to-chan c)]
-                                          (-> exp
-                                              eval-in-global-scope
-                                              beautify)))
-                        (catch :default o
-                          (str o)))
-                      (str "//Cannot load script: " script "\n"
-                           "//Error: " http-status)))))))
+      (if (string/blank? exp)
+        (put! c "")
+        (do (eval-in-global-scope (setup-container container-id))
+            (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
+              (try
+                (put! c (if (= :ok status)
+                          (try
+                            (if async-code?
+                              (eval-with-logger! c exp)
+                              (my-with-redefs [js/console.log (append-to-chan c)]
+                                              (-> exp
+                                                  eval-in-global-scope
+                                                  beautify)))
+                            (catch :default o
+                              (str o)))
+                          (str "//Cannot load script: " script "\n"
+                               "//Error: " http-status))))))))
     c))
 
 
@@ -89,15 +90,17 @@
   (let [c (chan)]
     (when (verbose?) (js/console.info "[javascript es2017] evaluating" exp))
     (try
-      (when-not (string/blank? exp)
-        (eval-in-global-scope (setup-container container-id))
-        (let [transpiled-exp (babel exp)]
-          (put! c (if async-code?
-                    (eval-with-logger! c transpiled-exp)
-                    (my-with-redefs [js/console.log (append-to-chan c)]
-                                    (-> transpiled-exp
-                                        eval-in-global-scope
-                                        beautify))))))
+      (if (string/blank? exp)
+        (put! c "")
+        (do
+          (eval-in-global-scope (setup-container container-id))
+          (let [transpiled-exp (babel exp)]
+            (put! c (if async-code?
+                      (eval-with-logger! c transpiled-exp)
+                      (my-with-redefs [js/console.log (append-to-chan c)]
+                                      (-> transpiled-exp
+                                          eval-in-global-scope
+                                          beautify)))))))
       (catch :default o
         (put! c (str o))))
     c))

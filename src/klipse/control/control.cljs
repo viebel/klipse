@@ -19,7 +19,7 @@
 ;; Data + Parser + reconciler
 
 (defonce app-state (atom
-                    {:input {:editor-modes (cycle '(:parinfer-indent :regular))
+                    {:input {:editor-modes (cycle '(:parinfer-indent :parinfer-paren :regular))
                              :input ""}
                      :compilation nil
                      :evaluation-js nil

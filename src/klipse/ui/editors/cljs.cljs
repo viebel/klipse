@@ -43,36 +43,45 @@
                   :on-change #(save-input component (get-value editor))
                   :on-should-eval #(process-input component (get-value editor))}))
 
-(def parinfer-count (atom 0))
-
-(defn use-parinfer! [component]
-  (js/console.log "use-parinfer!")
-  (let [editor (om/get-state component :editor)
-        key- (swap! parinfer-count inc)
-        wrapper (.getWrapperElement editor)
-        parinfer-mode nil]
-    (set! (.-id wrapper) (str "cm-" "element-id"))
-    (parinferize! editor key- parinfer-mode (get-value editor))
-    (start-editor-sync!)
-    (om/transact! component ['(editor/set-mode {:value :parinfer-indent})
-                             :input])))
-
-(defn use-regular-mode! [component]
-  (js/console.info "use-regular-mode!")
+(defn replace-editor! [component]
   (let [editor (om/get-state component :editor)
         editor-wrapper (.getWrapperElement editor)
         value (get-value editor)
         new-editor (replace-element-by-editor editor-wrapper value config-editor)]
-    (handle-cm-events component new-editor)
-    (om/update-state! component assoc :editor new-editor)    
-    (om/transact! component ['(editor/set-mode {:value :regular})
+    (om/update-state! component assoc :editor new-editor)
+    (handle-cm-events component new-editor)))
+
+(def parinfer-count (atom 0))
+
+(defn use-parinfer! [component indent-or-paren]
+  (js/console.log "use-parinfer!" indent-or-paren)
+  (let [editor (replace-editor! component)
+        key- (swap! parinfer-count inc)
+        wrapper (.getWrapperElement editor)
+        parinfer-mode (case indent-or-paren
+                        :indent :indent-mode
+                        :paren :paren-mode)
+        mode (case indent-or-paren
+               :indent :parinfer-indent
+               :paren :parinfer-paren)]
+    (set! (.-id wrapper) (str "cm-" "element-id"))
+    (parinferize! editor key- parinfer-mode (get-value editor))
+    (start-editor-sync!)
+    (om/transact! component [`(editor/set-mode {:value ~mode})
                              :input])))
+
+(defn use-regular-mode! [component]
+  (js/console.info "use-regular-mode!")
+  (replace-editor! component)
+  (om/transact! component ['(editor/set-mode {:value :regular})
+                           :input]))
 
 (defn toggle-editor-mode [component]
   (let [editor-modes (get-in (om/props component) [:input :editor-modes])]
     (case (first editor-modes)
       :regular (use-regular-mode! component)
-      :parinfer-indent (use-parinfer! component))))
+      :parinfer-paren (use-parinfer! component :paren)
+      :parinfer-indent (use-parinfer! component :indent))))
 
 (defn init-editor [component]
   (let [my-editor (replace-id-by-editor "code-cljs" config-editor)]
@@ -99,7 +108,8 @@
           (let [{:keys [input editor-mode] :or {editor-mode :regular input ""}} (:input (om/props this))
                 editor-class (case editor-mode
                                :regular "mode-regular"
-                               :parinfer-indent "mode-parinfer-ident"
+                               :parinfer-paren "mode-parinfer-paren"
+                               :parinfer-indent "mode-parinfer-indent"
                                "mode-regular")]
             (dom/section #js {:className (str "cljs-editor")}
                          (dom/div #js {:autoFocus true

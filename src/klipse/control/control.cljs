@@ -1,5 +1,5 @@
 (ns ^:figwheel-no-load klipse.control.control
-  (:require 
+  (:require
     [klipse.utils :refer [url-parameters]]
     [klipse.control.parser :as parser]
     [om.next :as om]))
@@ -23,16 +23,16 @@
    :compilation nil
    :evaluation-js nil
    :evaluation-clj nil
+   :editing-mode nil
    :code-layout (init-layout)}))
 
-(def parser 
-  (om/parser 
-    {:read parser/read 
+(def parser
+  (om/parser
+    {:read parser/read
      :mutate parser/mutate}))
 
 (defn reconciler [initial-state]
-  (om/reconciler 
-    {:state (swap! app-state merge initial-state)
+  (swap! app-state merge initial-state)
+  (om/reconciler
+    {:state app-state
      :parser parser}))
-
-

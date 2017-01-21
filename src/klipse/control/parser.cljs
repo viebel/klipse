@@ -1,13 +1,14 @@
 (ns klipse.control.parser
   (:require-macros
-    [gadjett.core :as gadjett :refer [deftrack dbg]]
-    [cljs.core.async.macros :refer [go]])
+   [klipse.macros :refer [dbg]]
+   [gadjett.core :as gadjett :refer [deftrack]]
+   [cljs.core.async.macros :refer [go]])
   (:require 
-    gadjett.core-fn
-    [cljs.reader :refer [read-string]]
-    [klipse.utils :refer [add-url-parameter url-parameters verbose?]]
-    [klipse.lang.clojure :refer [eval-async compile-async]]
-    [om.next :as om]))
+   gadjett.core-fn
+   [cljs.reader :refer [read-string]]
+   [klipse.utils :refer [add-url-parameter url-parameters verbose?]]
+   [klipse.lang.clojure :refer [eval-async compile-async]]
+   [om.next :as om]))
 
 ;; =============================================================================
 ;; Utils
@@ -58,8 +59,7 @@
 (defmulti mutate om/dispatch)
 
 (defmethod mutate 'input/save [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] 
-             (swap! state assoc :input value))})
+  {:action #(swap! state assoc-in [:input :input] value)})
 
 (defn clean-print-box [state]
   (swap! state assoc :evaluation-js ""))
@@ -67,18 +67,20 @@
 (defn append-print-box [state & args]
   (swap! state update :evaluation-js #(str % (apply str args))))
 
+(defmethod mutate 'editor/set-mode [{:keys [state]} _ {:keys [value]}]
+  {:action #(swap! state assoc-in [:input :editing-mode] value)})
+
 (defmethod mutate 'clj/eval-and-compile [{:keys [state]} _ {:keys [value]}]
-  {:action (fn [] 
-             (go
-               (clean-print-box state)
-               (binding [*print-newline* true
-                         *print-fn* (partial append-print-box state)]
-                 (swap! state assoc
-                        :evaluation-clj (<! (eval-clj value))
-                        ;; we need to prevent from evaluation and compilation to occurs in paralllel - as it would load twince the code of the deps
-                        :compilation (<! (compile-async value {:static-fns (static-fns?)
-                                                               :verbose (verbose?)
-                                                               :external-libs (external-libs)
-                                                               :compile-display-guard (compile-display-guard?)
-                                                               :max-eval-duration (max-eval-duration)
-                                                               :context (eval-context?)}))))))})
+  {:action #(go
+              (clean-print-box state)
+              (binding [*print-newline* true
+                        *print-fn* (partial append-print-box state)]
+                (swap! state assoc
+                       :evaluation-clj (<! (eval-clj value))
+                       ;; we need to prevent from evaluation and compilation to occurs in paralllel - as it would load twince the code of the deps
+                       :compilation (<! (compile-async value {:static-fns (static-fns?)
+                                                              :verbose (verbose?)
+                                                              :external-libs (external-libs)
+                                                              :compile-display-guard (compile-display-guard?)
+                                                              :max-eval-duration (max-eval-duration)
+                                                              :context (eval-context?)})))))})

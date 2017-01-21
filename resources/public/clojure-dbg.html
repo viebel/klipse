@@ -84,9 +84,13 @@
     <br/>
     <script>
       window.klipse_settings = {
-      selector: '.clojure',
-      selector_js: '.clojure'
       };
+      if(window.location.search.match(/transpile=1/)) {
+      window.klipse_settings.selector_js = '.clojure';
+      } else {
+      window.klipse_settings.selector = '.clojure';
+      }
+
     </script>
     <script src="/fig/js/klipse.fig.js"></script>
   </body>

@@ -45,6 +45,8 @@
                   :on-change #(save-input component (get-value editor))
                   :on-should-eval #(process-input component (get-value editor))}))
 
+(defmulti use-editor-mode! (fn [mode _]  mode))
+
 (defn replace-editor! [component & [cm-options]]
   (let [editor (om/get-state component :editor)
         editor-wrapper (.getWrapperElement editor)
@@ -79,7 +81,13 @@
     (om/transact! component [`(editor/set-mode {:value ~mode})
                              :input])))
 
-(defn use-paredit! [component]
+(defmethod use-editor-mode! :parinfer-indent [_ component]
+  (use-parinfer! component :indent))
+
+(defmethod use-editor-mode! :parinfer-paren [_ component]
+  (use-parinfer! component :paren))
+
+(defmethod use-editor-mode! :paredit [_ component]
   (go
     (let [[status err] (<! (load-external-scripts ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/keymap/emacs.min.js" "https://viebel.github.io/klipse/repo/js/subpar.js" "https://viebel.github.io/klipse/repo/js/subpar.core.js"]))]
       (if (= :ok status)
@@ -89,18 +97,14 @@
                                    :input]))
         (js/console.error "cannot load paredit scripts:" err)))))
 
-(defn use-regular-mode! [component]
+(defmethod use-editor-mode! :regular [component]
   (replace-editor! component)
   (om/transact! component ['(editor/set-mode {:value :regular})
                            :input]))
 
-(defn toggle-editor-mode [component]
+(defn switch-editor-mode [component]
   (let [editor-modes (get-in (om/props component) [:input :editor-modes])]
-    (case (first editor-modes)
-      :regular (use-regular-mode! component)
-      :paredit (use-paredit! component)
-      :parinfer-paren (use-parinfer! component :paren)
-      :parinfer-indent (use-parinfer! component :indent))))
+    (use-editor-mode! (first editor-modes) component)))
 
 (defn init-editor [component]
   (let [my-editor (replace-id-by-editor "code-cljs" config-editor)]
@@ -136,7 +140,7 @@
                                        :value input
                                        :id "code-cljs"
                                        :placeholder placeholder-editor})
-                         (dom/div #js {:onClick (partial toggle-editor-mode this)
+                         (dom/div #js {:onClick (partial switch-editor-mode this)
                                        :className (str "editor-logo" " " editor-class)})))))
 
 (def cljs-editor (om/factory Cljs-editor))

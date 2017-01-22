@@ -97,7 +97,7 @@
                                    :input]))
         (js/console.error "cannot load paredit scripts:" err)))))
 
-(defmethod use-editor-mode! :regular [component]
+(defmethod use-editor-mode! :regular [_ component]
   (replace-editor! component)
   (om/transact! component ['(editor/set-mode {:value :regular})
                            :input]))
@@ -107,8 +107,7 @@
     (use-editor-mode! (first editor-modes) component)))
 
 (defn init-editor [component]
-  (let [my-editor (replace-id-by-editor "code-cljs" config-editor)]
-    (handle-cm-events component my-editor)))
+  (replace-id-by-editor "code-cljs" config-editor))
 
 (defui Cljs-editor
   static om/IQuery
@@ -125,7 +124,8 @@
                                    (set-value editor input)))))
 
   (componentDidMount [this]
-                     (om/set-state! this {:editor (init-editor this)}))
+                     (om/set-state! this {:editor (init-editor this)})
+                     (switch-editor-mode this))
 
   (render [this]
           (let [{:keys [input editor-mode] :or {editor-mode :regular input ""}} (:input (om/props this))

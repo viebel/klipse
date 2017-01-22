@@ -16,7 +16,7 @@
     [cljs.analyzer :as ana]
     [cljs.reader :refer [read-string]]
     [cljs.compiler :as compiler]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode]]
+    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
     [klipse.lang.clojure.io :as io]
     [cljs.core.async :refer [timeout chan put! <!]]
     [cljs.env :as env]

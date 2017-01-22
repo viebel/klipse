@@ -19,12 +19,13 @@
 ;; Data + Parser + reconciler
 
 (defonce app-state (atom
-  {:input nil
-   :compilation nil
-   :evaluation-js nil
-   :evaluation-clj nil
-   :editing-mode nil
-   :code-layout (init-layout)}))
+                    {:input {:editor-modes (cycle '(:regular :paredit :parinfer-indent :parinfer-paren))
+                             :input ""}
+                     :compilation nil
+                     :evaluation-js nil
+                     :evaluation-clj nil
+                     :editing-mode nil
+                     :code-layout (init-layout)}))
 
 (def parser
   (om/parser

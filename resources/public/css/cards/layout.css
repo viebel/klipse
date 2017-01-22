@@ -1,172 +1,210 @@
 /*dev card toolbox*/
 
 .toolbox {
-  background-color: #f7f7f7;
-  margin-top: -5px;
-  margin-bottom: 10px;
-  padding: 5px;
+    background-color: #f7f7f7;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    padding: 5px;
 }
 
 .toolbox button {
-  background-color:#ffffff;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-  border-radius:3px;
-  border:1px solid #dcdcdc;
-  display:inline-block;
-  cursor:pointer;
-  color:#666666;
-  font-size:15px;
-  padding:6px 24px;
-  text-decoration:none;
-  text-shadow:0px 1px 0px #ffffff;
+    background-color:#ffffff;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    border-radius:3px;
+    border:1px solid #dcdcdc;
+    display:inline-block;
+    cursor:pointer;
+    color:#666666;
+    font-size:15px;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffffff;
 }
 
 .dev-cards-layout {
-  height: 500px;
+    height: 500px;
 }
 
 .dev-cards-section section {
-  height: 200px;
+    height: 200px;
 }
 
 /***************************************************/
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /*klipse layout*/
 
 .klipse-layout {
-  padding:5px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between 4px;
-  height: 100%;
+    padding:5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between 4px;
+    height: 100%;
+}
+.klipse-item section {
+    position: relative;
 }
 
 .klipse-layout-global .klipse-item {
-  padding: 5px;
-  width:50%;
-  height: 70%;
+    padding: 5px;
+    width:50%;
+    height: 70%;
 }
 
 .klipse-layout-global .klipse-item:nth-child(n+3) {
-  height: 30%;
+    height: 30%;
 }
 
 .klipse-layout-eval-only .klipse-item {
-  padding: 5px;
-  width:100%;
-  height: 70%;
+    padding: 5px;
+    width:100%;
+    height: 70%;
 }
 
 .klipse-layout-eval-only .klipse-item:nth-child(2) {
-  width:50%;
-  height: 30%;
+    width:50%;
+    height: 30%;
 }
 
 .klipse-layout-eval-only .klipse-item:nth-child(3) {
-  width:50%;
-  height: 30%;
+    width:50%;
+    height: 30%;
 }
 .klipse-layout-js-only .klipse-item {
-  padding: 5px;
-  width:100%;
-  height: 40%;
+    padding: 5px;
+    width:100%;
+    height: 40%;
 }
 
 .klipse-layout-js-only .klipse-item:nth-child(2) {
-  height: 60%;
+    height: 60%;
 }
 
 section {
-  height: 100%;
+    height: 100%;
 }
 
 /*cljs editor*/
 
 section.cljs-editor .CodeMirror-empty {
-  color: #a50;
+    color: #a50;
 }
 
-section.cljs-editor .CodeMirror {
-  background-position: right 5px bottom 5px;
-  background-size: 40px;
-  background-repeat: no-repeat;
+section .editor-logo {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    width: 40px;
+    background-size: 40px;
+    background-repeat: no-repeat;
 }
 
-section.cljs-editor.mode-regular .CodeMirror {
-  background-image: url(../../img/clojure.png);
+section .editor-logo.mode-regular {
+    background-image: url(../../img/clojure.png);
+    height: 40px;
 }
 
+section .editor-logo.mode-parinfer-indent {
+    background-image: url(../../img/parinfer-indent.png);
+    height: 30px;
+    width: 50px;
+    background-size: 50px;
+}
+
+section .editor-logo.mode-parinfer-paren {
+    background-image: url(../../img/parinfer-paren.png);
+    height: 30px;
+    width: 50px;
+    background-size: 50px;
+}
+
+section .editor-logo.mode-paredit {
+    background-image: url(../../img/paredit.png);
+    height: 50px;
+    width: 50px;
+    background-size: 50px;
+}
+
+section .editor-logo.mode-loading {
+    background-image: url(../../img/loading.gif);
+    height: 40px;
+    width: 40px;
+    background-size: 40px;
+}
+
+section .editor-logo.mode-error {
+    background-image: url(../../img/error.gif);
+    height: 40px;
+    width: 40px;
+    background-size: 40px;
+}
 
 #klipse-container-wrapper {
-  background-position: right 5px bottom 5px;
-  background-size: 40px;
-  background-repeat: no-repeat;
-  background-image: url(../../img/container.png);
-  border: solid 1px #90B4FE;
-  height: 100%;
-  padding: 15px;
-  overflow: scroll;
-  /* z-index: 9999; */
+    background-position: right 5px bottom 5px;
+    background-size: 40px;
+    background-repeat: no-repeat;
+    background-image: url(../../img/container.png);
+    border: solid 1px #90B4FE;
+    height: 100%;
+    padding: 15px;
+    overflow: scroll;
+    /* z-index: 9999; */
 }
 
-section.cljs-editor.mode-parinfer-ident .CodeMirror {
-  background-image: url(../../img/parinfer.png);
-}
 
 /*js editor*/
 
 section.js-editor .CodeMirror-empty {
-  color: #a50;
+    color: #a50;
 }
 
 section.js-editor .CodeMirror {
-  background-position: right 5px bottom 5px;
-  background-size: 40px;
-  background-repeat: no-repeat;
-  background-image: url(../../img/cljs.png);
+    background-position: right 5px bottom 5px;
+    background-size: 40px;
+    background-repeat: no-repeat;
+    background-image: url(../../img/cljs.png);
 }
 
 
 /*cljs textarea*/
 
 section.cljs-textarea textarea {
-  background-position: right 5px bottom 5px;
-  background-size: 40px;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
+    background-position: right 5px bottom 5px;
+    background-size: 40px;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
 }
 
 section.cljs-textarea textarea {
-  background-image: url(../../img/eval.png);
+    background-image: url(../../img/eval.png);
 }
 
 section.cljs-textarea textarea.ok {
-  background-image: url(../../img/eval.png);
+    background-image: url(../../img/eval.png);
 }
 
 section.cljs-textarea textarea.error {
-  background-image: url(../../img/eval-error.png);
-  color: red;
+    background-image: url(../../img/eval-error.png);
+    color: red;
 }
 
 
 /*js textarea*/
 
 section.js-textarea textarea {
-  background-position: right 5px bottom 5px;
-  background-size: 40px;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
+    background-position: right 5px bottom 5px;
+    background-size: 40px;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
 }
 
 section.js-textarea textarea {
-  background-image: url(../../img/printer.png);
+    background-image: url(../../img/printer.png);
 }
 

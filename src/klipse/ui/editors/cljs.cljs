@@ -7,6 +7,7 @@
    [cljs.reader :refer [read-string]]
    [clojure.string :as string :refer [blank?]]
    [parinfer-codemirror.editor :refer [parinferize-and-sync!]]
+   [klipse.common.registry :refer [codemirror-keymap-src scripts-src]]
    [klipse.ui.editors.editor :refer [get-value set-value replace-element-by-editor replace-id-by-editor]]
    [klipse.ui.editors.common :refer [handle-events]]
    [klipse.utils :refer [url-parameters load-scripts-mem]]
@@ -91,7 +92,7 @@
   (om/transact! component ['(editor/set-mode {:value :loading})
                            :input])
   (go
-    (let [[status err] (<! (load-external-scripts ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/keymap/emacs.min.js" "https://viebel.github.io/klipse/repo/js/subpar.js" "https://viebel.github.io/klipse/repo/js/subpar.core.js"]))]
+    (let [[status err] (<! (load-external-scripts [(codemirror-keymap-src "emacs") (scripts-src "subpar.js") (scripts-src "subpar.core.js") ]))]
       (if (= :ok status)
         (do
           (replace-editor! component {:keyMap "subpar"})

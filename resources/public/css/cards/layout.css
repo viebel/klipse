@@ -129,6 +129,14 @@ section .editor-logo.mode-paredit {
     background-size: 50px;
 }
 
+section .editor-logo.mode-loading {
+    background-image: url(../../img/loading.gif);
+    height: 40px;
+    width: 40px;
+    background-size: 40px;
+}
+
+
 #klipse-container-wrapper {
     background-position: right 5px bottom 5px;
     background-size: 40px;

@@ -88,6 +88,8 @@
   (use-parinfer! component :paren))
 
 (defmethod use-editor-mode! :paredit [_ component]
+  (om/transact! component ['(editor/set-mode {:value :loading})
+                           :input])
   (go
     (let [[status err] (<! (load-external-scripts ["https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/keymap/emacs.min.js" "https://viebel.github.io/klipse/repo/js/subpar.js" "https://viebel.github.io/klipse/repo/js/subpar.core.js"]))]
       (if (= :ok status)
@@ -130,6 +132,7 @@
   (render [this]
           (let [{:keys [input editor-mode] :or {editor-mode :regular input ""}} (:input (om/props this))
                 editor-class (case editor-mode
+                               :loading "mode-loading"
                                :regular "mode-regular"
                                :paredit "mode-paredit"
                                :parinfer-paren "mode-parinfer-paren"

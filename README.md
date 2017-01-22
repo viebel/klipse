@@ -284,6 +284,7 @@ Here are a couple of examples of blogs using the klipse plugin:
 - javascript [Immutable.js: An Introduction with examples written for humans](http://untangled.io/immutable-js-an-introduction-with-examples-written-for-humans/)
 - clojure: [Yet another scheme dialect written in Clojure and ClojureScript](http://liujiacai.net/scheme.clj/)
 - javascript: [Try Partial Lenses with KLIPSE](http://calmm-js.github.io/partial.lenses/)
+- javascript: [Clause.js, a JavaScript contract system, documentation created with klipse](https://clause.js.org)
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 

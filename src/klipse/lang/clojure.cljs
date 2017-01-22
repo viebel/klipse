@@ -229,7 +229,7 @@
 (def eval-opts {:editor-in-mode "clojure"
                   :editor-out-mode "clojure"
                   :eval-fn str-eval-async
-                  :external-scripts [(codemirror-mode-src "clojure") (scripts-src "subpar.core.js") (scripts-src "subpar.js") ]
+                  :external-scripts [(codemirror-mode-src "clojure")]
                   :comment-str ";"})
 
 (def compile-opts {:editor-in-mode "clojure"

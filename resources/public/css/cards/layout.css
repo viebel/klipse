@@ -136,6 +136,12 @@ section .editor-logo.mode-loading {
     background-size: 40px;
 }
 
+section .editor-logo.mode-error {
+    background-image: url(../../img/error.gif);
+    height: 40px;
+    width: 40px;
+    background-size: 40px;
+}
 
 #klipse-container-wrapper {
     background-position: right 5px bottom 5px;

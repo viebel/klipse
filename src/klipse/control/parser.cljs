@@ -67,9 +67,13 @@
 (defn append-print-box [state & args]
   (swap! state update :evaluation-js #(str % (apply str args))))
 
-(defmethod mutate 'editor/set-mode [{:keys [state]} _ {:keys [value]}]
+(defmethod mutate 'editor/consume-mode [{:keys [state]} _ {:keys [value]}]
   {:action (fn []
              (swap! state update-in [:input :editor-modes] rest)
+             (swap! state assoc-in [:input :editor-mode] value))})
+
+(defmethod mutate 'editor/set-mode [{:keys [state]} _ {:keys [value]}]
+  {:action (fn []
              (swap! state assoc-in [:input :editor-mode] value))})
 
 (defmethod mutate 'clj/eval-and-compile [{:keys [state]} _ {:keys [value]}]

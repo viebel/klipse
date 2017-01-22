@@ -79,7 +79,7 @@
   (let [mode (case indent-or-paren
                :indent :parinfer-indent
                :paren :parinfer-paren)]
-    (om/transact! component [`(editor/set-mode {:value ~mode})
+    (om/transact! component [`(editor/consume-mode {:value ~mode})
                              :input])))
 
 (defmethod use-editor-mode! :parinfer-indent [_ component]
@@ -89,7 +89,7 @@
   (use-parinfer! component :paren))
 
 (defmethod use-editor-mode! :paredit [_ component]
-  (om/transact! component ['(editor/set-mode {:value :loading})
+  (om/transact! component ['(editor/consume-mode {:value :loading})
                            :input])
   (go
     (let [[status err] (<! (load-external-scripts [(codemirror-keymap-src "emacs") (scripts-src "subpar.js") (scripts-src "subpar.core.js") ]))]
@@ -98,11 +98,14 @@
           (replace-editor! component {:keyMap "subpar"})
           (om/transact! component ['(editor/set-mode {:value :paredit})
                                    :input]))
-        (js/console.error "cannot load paredit scripts:" err)))))
+        (do
+          (om/transact! component ['(editor/set-mode {:value :error})
+                                   :input])
+          (js/console.error "cannot load paredit scripts:" err))))))
 
 (defmethod use-editor-mode! :regular [_ component]
   (replace-editor! component)
-  (om/transact! component ['(editor/set-mode {:value :regular})
+  (om/transact! component ['(editor/consume-mode {:value :regular})
                            :input]))
 
 (defn switch-editor-mode [component]
@@ -134,6 +137,7 @@
           (let [{:keys [input editor-mode] :or {editor-mode :regular input ""}} (:input (om/props this))
                 editor-class (case editor-mode
                                :loading "mode-loading"
+                               :error "mode-error"
                                :regular "mode-regular"
                                :paredit "mode-paredit"
                                :parinfer-paren "mode-parinfer-paren"

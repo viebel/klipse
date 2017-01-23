@@ -5,11 +5,11 @@
     [purnam.core :refer [!>]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    [klipse.utils :refer [load-scripts]]
+    [klipse.utils :refer [load-scripts verbose?]]
     [cljs-http.client :as http]
     [clojure.string :as string]
     [cljs.core.async :refer [<! chan put!]]
-    [klipse.common.registry :refer [register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src scripts-src register-mode]]))
 
 (def known-external-libs
   {
@@ -46,30 +46,38 @@
     (eval-in-global-scope wrapped-exp)
     ""))
 
-(defn str-eval-js-async [exp {:keys [async-code? external-libs] :or {async-code? false external-libs nil}}]
+(defn setup-container [container-id]
+  (str "klipse_container = document.getElementById('" container-id "');\n"
+       "klipse_container_id = '"container-id "';\n"))
+
+(defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]
+    (when (verbose?) (js/console.info "[javascript] evaluating" exp))
     (go
-      (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
-        (try
-          (put! c (if (= :ok status)
-                    (try
-                      (if async-code?
-                        (eval-with-logger! c exp)
-                        (my-with-redefs [js/console.log (append-to-chan c)]
-                                        (-> exp
-                                            eval-in-global-scope
-                                            beautify)))
-                      (catch :default o
-                        (str o)))
-                    (str "//Cannot load script: " script "\n"
-                         "//Error: " http-status))))))
+      (if (string/blank? exp)
+        (put! c "")
+        (do (eval-in-global-scope (setup-container container-id))
+            (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
+              (try
+                (put! c (if (= :ok status)
+                          (try
+                            (if async-code?
+                              (eval-with-logger! c exp)
+                              (my-with-redefs [js/console.log (append-to-chan c)]
+                                              (-> exp
+                                                  eval-in-global-scope
+                                                  beautify)))
+                            (catch :default o
+                              (str o)))
+                          (str "//Cannot load script: " script "\n"
+                               "//Error: " http-status))))))))
     c))
 
 
 (def opts {:editor-in-mode "javascript"
            :editor-out-mode "javascript"
            :eval-fn str-eval-js-async
-           :external-scripts ["https://viebel.github.io/klipse/repo/js/pretty_format.js"]
+           :external-scripts [(codemirror-mode-src "javascript")  (scripts-src "pretty_format.js")]
            :comment-str "//"})
 
 (register-mode "eval-javascript" "selector_eval_js" opts)
@@ -78,16 +86,21 @@
    (-> (!> js/Babel.transform src #js {:presets #js ["es2017"]})
        (aget "code")))
 
-(defn eval-es2017 [exp {:keys [async-code?] :or {async-code? false}}]
+(defn eval-es2017 [exp {:keys [async-code? container-id] :or {async-code? false}}]
   (let [c (chan)]
+    (when (verbose?) (js/console.info "[javascript es2017] evaluating" exp))
     (try
-      (let [transpiled-exp (babel exp)]
-        (put! c (if async-code?
-                  (eval-with-logger! c transpiled-exp)
-                  (my-with-redefs [js/console.log (append-to-chan c)]
-                                  (-> transpiled-exp
-                                      eval-in-global-scope
-                                      beautify)))))
+      (if (string/blank? exp)
+        (put! c "")
+        (do
+          (eval-in-global-scope (setup-container container-id))
+          (let [transpiled-exp (babel exp)]
+            (put! c (if async-code?
+                      (eval-with-logger! c transpiled-exp)
+                      (my-with-redefs [js/console.log (append-to-chan c)]
+                                      (-> transpiled-exp
+                                          eval-in-global-scope
+                                          beautify)))))))
       (catch :default o
         (put! c (str o))))
     c))
@@ -95,7 +108,7 @@
 (def es2017-opts {:editor-in-mode "javascript"
            :editor-out-mode "javascript"
            :eval-fn eval-es2017
-           :external-scripts ["https://viebel.github.io/klipse/repo/js/pretty_format.js" "https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.18.1/babel.min.js" "https://viebel.github.io/klipse/repo/js/babel_polyfill.min.js"]
+           :external-scripts [(codemirror-mode-src "javascript") (scripts-src "pretty_format.js") (scripts-src "babel.min.js") (scripts-src "babel_polyfill.min.js")]
            :comment-str "//"})
 
 (register-mode "eval-es2017" "selector_es2017" es2017-opts)

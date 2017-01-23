@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Evalbox's Frame</title>
+    <script>
+      window.addEventListener('message', function (e) {
+        // You must verify that the origin of the message's sender matches your
+        // expectations. In this case, we're only planning on accepting messages
+        // from our own origin, so we can simply compare the message event's
+        // origin to the location of this document. If we get a message from an
+        // unexpected host, ignore the message entirely.
+
+        /*if (e.origin !== (window.location.protocol + "//" + window.location.host))
+          return;*/
+
+        var mainWindow = e.source;
+        var result = '';
+        try {
+          result = eval(e.data);
+      } catch (e) {
+      console.error(e);
+          result = 'eval() threw an exception: e';
+        }
+        mainWindow.postMessage(result, e.origin);
+      });
+    </script>
+  </head>
+</html>

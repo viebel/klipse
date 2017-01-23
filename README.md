@@ -2,30 +2,22 @@
 
 KLIPSE is a simple client-side code evaluator pluggable on any web page.
 
-KLIPSE is both a web REPL and a plugin. 
-
 ## Plugin
 
-The klipse plugin is a javascript tag that transforms static code snippets of an html page into live and interactive snippets:
+The klipse plugin is a `javascript` tag (see details [below](https://github.com/viebel/klipse#integration)) that transforms static code snippets of an html page into live and interactive snippets:
 
 1. **Live**: The code is executed in your browser
 2. **Interactive**: You can modify the code and it is evaluated as you type
 
 The code evaluation is done in the browser: no server is involved at all!
 
-The code editing is done with [CodeMirror](http://codemirror.net/).
-
-## Web REPL
-
-The Web REPL is live at http://app.klipse.tech
-
-Here is [the manual for the KLIPSE web repl](https://github.com/viebel/klipse/blob/master/repl.md).
-
-Languages supported in the REPL: `clojure` and `clojurescript`.
 
 # Live demo
 
 With the klipse plugin, the code is evaluated as you type...
+
+Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a web page.
+
 
 |Javascript | Ruby |
 |-------------------------|-------------------------|
@@ -49,15 +41,14 @@ With the klipse plugin, the code is evaluated as you type...
 - JSX
 - EcmaScript2017
 
-Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a web page.
+The code editing inside the interactive snippets is powered by [CodeMirror](http://codemirror.net/).
+
 
 # How does it work?
 
 - javascript: [A new way of blogging about javascript](http://blog.klipse.tech/javascript/2016/06/20/blog-javascript.html)
 - ruby: [A new way of blogging about ruby](http://blog.klipse.tech/ruby/2016/06/20/blog-ruby.html)
 - clojure[script]: [How to klipsify a clojure[script] blog post] (http://blog.klipse.tech/clojure/2016/06/07/klipse-plugin-tuto.html)
-- PHP: [A new way of blogging about PHP](http://blog.klipse.tech/php/2016/06/26/blog-php.html)
-
 
 # Integration
 
@@ -65,8 +56,13 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 
 **You need also to add `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>`.**
 
+Heres is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
+
 
 ## javascript
+
+
+Here is the [full interactive guide](https://book.klipse.tech/interactive_javascript_code_snippets.html) of the klipse `javascript` snippets. 
 
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
@@ -81,6 +77,27 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 
 Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/viebel/50oLnykk/).
 And here are detailed explanations about [a javascript live code editor in a blog post](http://untangled.io/how-to-use-the-live-code-editor/).
+
+## clojure
+
+> Pay attention: for clojure interactive snippets, you must use the **non-minified** version of klipse as for the moment, self-host cljs doesn't support advanced compilation!
+
+Here is the [full interactive guide](https://book.klipse.tech/interactive_clojure[script]_code_snippets.html
+) of the klipse `clojure` snippets.
+
+
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector: '.language-klipse'// css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+```
+
 
 ## python
 
@@ -134,20 +151,6 @@ And here are detailed explanations about [a javascript live code editor in a blo
 ```
 
 
-## clojure
-
-> Pay attention: for clojure interactive snippets, you must use the **non-minified** version of klipse as for the moment, self-host cljs doesn't support advanced compilation!
-
-```html
-<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
-
-<script>
-    window.klipse_settings = {
-        selector: '.language-klipse'// css selector for the html elements you want to klipsify
-    };
-</script>
-<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
-```
 
 
 ## https
@@ -172,7 +175,7 @@ window.klipse_settings = {
           selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
           selector_reagent: '.language-reagent', // selector for reagent snippets
           selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
-          selector_eval_ruby: '.language-klipse-eval-ruby' //selector for ruby evaluation snippets
+          selector_eval_ruby: '.language-klipse-eval-ruby', //selector for ruby evaluation snippets
           selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
           selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
           selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets
@@ -183,7 +186,13 @@ window.klipse_settings = {
 	      selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
           selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
           selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
-          selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets
+          selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets,
+		  clojure_cached_ns_root: '/my-root', // the root of clojure cached namespace
+		  clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
+  		  clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
+		  codemirror_root: '/my-codemirror-root', // the root of codemirror files
+		  scripts_root: '/my-scripts-root', // the root of scripts files (e.g pretty_format.js, opal.js ...)
+		  
 };
 
 ```
@@ -275,13 +284,22 @@ Here are a couple of examples of blogs using the klipse plugin:
 - javascript [Immutable.js: An Introduction with examples written for humans](http://untangled.io/immutable-js-an-introduction-with-examples-written-for-humans/)
 - clojure: [Yet another scheme dialect written in Clojure and ClojureScript](http://liujiacai.net/scheme.clj/)
 - javascript: [Try Partial Lenses with KLIPSE](http://calmm-js.github.io/partial.lenses/)
+- javascript: [Clause.js, a JavaScript contract system, documentation created with klipse](https://clause.js.org)
 - clojure: Reagent deep dive part [1](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [2](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [3](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-3-sequences.html) [4](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-4-application.html)
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 ## Klipse App - Clojure Web Repl
+
 Here is the [information about the Klipse app](https://github.com/viebel/klipse/blob/master/contributing.md)
+
+The Web REPL is live at http://app.klipse.tech
+
+Here is [the manual for the KLIPSE web repl](https://github.com/viebel/klipse/blob/master/repl.md).
+
+Languages supported in the REPL: `clojure` and `clojurescript`.
+
 
 # License
 

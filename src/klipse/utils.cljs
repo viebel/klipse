@@ -1,21 +1,24 @@
 (ns klipse.utils
   (:require-macros
-    [gadjett.core :refer [dbg]]
+    [klipse.macros :refer [dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    [clojure.walk :refer [keywordize-keys]]
-    [cljs-http.client :as http]
-    [cljs.core.async :refer [timeout <!]]
-    [cemerick.url :refer [url]]))
+   [cljs.reader :refer [read-string]]
+   [clojure.walk :refer [keywordize-keys]]
+   [cljs-http.client :as http]
+   [cljs.core.async :refer [timeout <!]]
+   [cemerick.url :refer [url]]))
 
 
 (defn current-url []
   (url (aget js/location "href")))
 
-(defn url-parameters []
+(defn url-parameters* []
   (-> (current-url)
       :query
       keywordize-keys))
+
+(def url-parameters (memoize url-parameters*))
 
 (defn add-url-parameter
   "Returns the current url with an additional parameter.
@@ -124,4 +127,12 @@
 
 (def load-scripts-mem (memoize-async load-scripts))
 
+(defn verbose? []
+  (boolean (read-string (or (:verbose (url-parameters)) "false"))))
 
+(defn klipse-settings* []
+  (->
+   (aget js/window "klipse_settings")
+   (js->clj :keywordize-keys true)))
+
+(def klipse-settings (memoize klipse-settings*))

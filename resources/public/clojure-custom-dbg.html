@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+    <div class="clojure">
+      (require-macros '[cljs.core.async.macros :refer [go go-loop]])
+      (require '[cljs.core.async :refer [chan &lt;! timeout]])
+      (chan)
+    </div>
+
+    <div class="clojure">
+      (defn set-bg-color-element [e c]
+      (set! (.. e -style -backgroundColor) c))
+
+      (set! (.. js/klipse-container -style -width) "200px")
+      (set! (.. js/klipse-container -style -height) "100px")
+      (let [colors ["blue" "red" "yellow" "magenta" "cyan" "green" "purple" "coral" "dodgerblue" "pink"]]
+      (go []
+      (set-bg-color-element js/klipse-container (rand-nth colors))
+      (&lt;! (timeout 3000))
+	        (set-bg-color-element js/klipse-container (rand-nth colors))))
+    </div>
+    
+    
+    <br/>
+    <script>
+      window.klipse_settings = {
+      selector: '.clojure',
+      clojure_cached_macro_ns_regexp: /.*/,
+      clojure_cached_ns_regexp: /.*/,
+      //	codemirror_root: "http:/dsadsa/",
+      cached_ns_root: "/cache-cljs",
+      };
+    </script>
+    <script src="/lib/mirror_extensions.js"></script>
+    <script src="/fig/js/klipse.fig.js"></script>
+  </body>
+</html>

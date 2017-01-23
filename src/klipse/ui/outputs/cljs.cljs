@@ -11,7 +11,7 @@
 
     static om/IQuery
     (query [this]
-      '[:evaluation-clj])
+      [:evaluation-clj])
 
     Object
 

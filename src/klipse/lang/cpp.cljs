@@ -2,7 +2,7 @@
   (:require-macros [purnam.core :refer [!>]])
   (:require 
     [cljs.core.async :refer [chan put! close!]]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
 
 (defn eval-in-chan [s c]
   (try
@@ -27,7 +27,7 @@
 
 (def opts {:editor-in-mode "text/x-c++src"
            :editor-out-mode "text"
-           :external-scripts [(codemirror-mode-src "clike") "https://viebel.github.io/klipse/repo/js/JSCPP.es5.min.js"]
+           :external-scripts [(codemirror-mode-src "clike") (scripts-src "JSCPP.es5.min.js")]
            :eval-fn str-eval-async
            :comment-str "//"})
 

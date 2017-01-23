@@ -1,31 +1,54 @@
 <!DOCTYPE html>
 <html>
-    <head lang="en">
-        <meta charset="UTF-8">
-        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
-        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
-        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
-    </head>
-    <body>
-<div class="eval-js">
-        console.log("CCC")
-        2 + 3
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+    <div class="eval-js">
     </div>
-        <br/>
-<div class="eval-js">
-        console.log("aa")
-        console.log("aa", 1, 2, 34, 4)
-        console.log("bb")
-        2 + 3
-        </div>
-<br/>
+    <div class="eval-js">
+      console.log("CCC")
+      2 + 3
+    </div>
+    <br/>
 
-        <script>
-        window.klipse_settings = {
-            selector_eval_js: '.eval-js'
-        };
-        </script>
-        <script src="/lib/mirror_extensions.js"></script>
-        <script src="/fig/js/klipse.fig.js"></script>
-    </body>
+    <div class="eval-js">
+      klipse_container.innerHTML="hello";
+      2+1
+    </div>
+    <br/>
+
+    <div class="eval-js">
+      klipse_container.innerHTML="foo";
+      [1,2,3]
+    </div>
+    <br/>
+
+    <pre><code class="eval-js">
+	function foo(){
+	if (5 > 2){
+	return 5;
+	} else {
+        return 9;
+	}
+	}
+    </code></pre>
+    <div class="eval-js">
+      console.log("aa")
+      console.log("aa", 1, 2, 34, 4)
+      console.log("bb")
+      2 + 3
+    </div>
+    <br/>
+
+    <script>
+      window.klipse_settings = {
+      selector_eval_js: '.eval-js',
+      };
+    </script>
+    <script src="/fig/js/klipse.fig.js"></script>
+  </body>
 </html>

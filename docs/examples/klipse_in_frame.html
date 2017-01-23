@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title> KLIPSE demo</title>
+
+  <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://viebel.github.io/klipse/examples/main.css">
+
+</head>
+
+<body class="container">
+
+
+<h1> Javascript isolated snippets </h1>
+
+In order to have secured snippets, each <code>klipse-snippet</code> element is embedded into an iframe.
+
+<br>
+
+This approach supports the following features:
+
+<br/>
+<h5>Usual data manipulation stuff:</h5>
+
+<klipse-snippet data-language="javascript">
+  [1,2,3].map((x) => x +1)
+</klipse-snippet>
+
+<h5> sandoboxed dom manipulation :) </h5>
+<br>
+<klipse-snippet data-language="javascript">
+  klipse_container.innerHTML = "hello &lt;b&gt;dev.to&lt;/b&gt;";
+  1 + 2;
+</klipse-snippet>
+
+<h5> The sandbox is secured: you cannot access the document cookies </h5>
+
+<klipse-snippet data-language="javascript">
+document.cookie
+</klipse-snippet>
+
+
+<h5> But you cannot share code or data between snippets :( </h5>
+
+<klipse-snippet data-language="javascript">
+  foo = (name) => `Hello ${name}`
+  foo("Klipse")
+</klipse-snippet>
+
+<klipse-snippet data-language="javascript">
+  foo("Javascript")
+</klipse-snippet>
+
+
+
+
+
+<script src="./klipse_reveal.js">
+  </script>
+
+</body>
+
+</html>

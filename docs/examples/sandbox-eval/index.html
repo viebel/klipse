@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Evalbox</title>
+    <style>
+      body {
+        width: 500px;
+        border: 1px solid #CCC;
+        box-shadow: 0px 0px 5px rgba(0,0,0,0.25);
+        border-width: 0 1px 1px 1px;
+        margin: 0 auto;
+        padding: 1em;
+        overflow: hidden;
+      }
+      html {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font: 2em Helvetica, Arial, Sans-Serif;
+        font-weight: 700;
+        text-align: center;
+        margin: 0;
+      }
+      button {
+        margin: 0;
+      }
+      button + button {
+        float: right;
+      }
+      textarea {
+        display: block;
+        width: 494px;
+        height: 100px;
+        margin-bottom: 1em;
+      }
+      iframe { display: none; }
+    </style>
+  </head>
+  <body>
+    <h1>Evalbox</h1>
+    <p class='lead'>A toy demonstration of sandboxing. Type some JavaScript into
+    the field below; clicking one of the two buttons will run the code through
+    <code>eval()</code> in an <code>iframe</code>. The difference between the
+    sandboxed and unsandboxed versions should quickly become apparent:</p>
+    <textarea id='code'>window.localStorage['sekrit']</textarea>
+
+    <button id='unsafe'>eval() in an unsandboxed frame.</button>
+    <button id='safe'>eval() in a sandboxed frame.</button>
+
+    <iframe id='unsandboxed'
+            src='http://iframe.klipse.iframe:9001/sandbox-eval/frame.html'></iframe>
+    <iframe sandbox='allow-scripts'
+            id='sandboxed'
+            src='http://iframe.klipse.iframe:9001/sandbox-eval/frame.html'></iframe>
+
+    <script>
+      window.localStorage['sekrit'] = '[insert sensitive information here]';
+      var sandboxedFrame = document.getElementById('sandboxed');
+      var unsandboxedFrame = document.getElementById('unsandboxed');
+
+      function evaluate(frame) {
+        var code = document.getElementById('code').value;
+        // Note that we're sending the message to "*", rather than some specific
+        // origin. Sandboxed iframes which lack the 'allow-same-origin' header
+        // don't have an origin which you can target: you'll have to send to any
+        // origin, which might alow some esoteric attacks. Validate your output!
+        frame.contentWindow.postMessage(code, '*');
+      }
+
+      document.getElementById('unsafe').addEventListener('click', function () {
+        evaluate(unsandboxedFrame);
+      });
+      document.getElementById('safe').addEventListener('click', function () {
+        evaluate(sandboxedFrame);
+      });
+
+      // Listen for response messages from the frames.
+      window.addEventListener('message', function (e) {
+        // Normally, you should verify that the origin of the message's sender
+        // was the origin and source you expected. This is easily done for the
+        // unsandboxed frame. The sandboxed frame, on the other hand is more
+        // difficult. Sandboxed iframes which lack the 'allow-same-origin'
+        // header have "null" rather than a valid origin. This means you still
+        // have to be careful about accepting data via the messaging API you
+        // create. Check that source, and validate those inputs!
+        if ((e.origin === "null" && e.source === sandboxedFrame.contentWindow)
+            || (e.origin === (window.location.protocol + "//" + window.location.host)
+                && e.source === unsandboxedFrame.contentWindow)) {
+          alert('Result: ' + e.data);
+        }
+      });
+    </script>
+  </body>
+</html>

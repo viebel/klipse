@@ -36,7 +36,8 @@
 (defn process-input [component s]
   (when-not (blank? s)
     (om/transact! component
-                  [`(clj/eval-and-compile     {:value ~s})
+                  [`(input/save     {:value ~s})
+                   `(clj/eval-and-compile     {:value ~s})
                    :input])))
 
 (defn handle-cm-events [component editor]
@@ -120,7 +121,7 @@
          [:input])
 
   Object
-  #_(componentDidUpdate [this prev-props prev-state]
+  (componentDidUpdate [this prev-props prev-state]
                       (let [input (get-in (om/props this) [:input :input])
                             editor (om/get-state this :editor)]
                         (when (and input
@@ -129,7 +130,6 @@
                                    (set-value editor input)))))
 
   (componentDidMount [this]
-                     (js/console.info "mounted:" (om/props this))
                      (om/set-state! this {:editor (init-editor this)})
                      (switch-editor-mode this))
 

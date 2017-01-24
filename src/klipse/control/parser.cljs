@@ -83,7 +83,7 @@
                         *print-fn* (partial append-print-box state)]
                 (swap! state assoc
                        :evaluation-clj (<! (eval-clj value))
-                       ;; we need to prevent from evaluation and compilation to occurs in paralllel - as it would load twince the code of the deps
+                       ;; we need to prevent from evaluation and compilation to occurs in paralllel - as it would load twice the code of the deps
                        :compilation (<! (compile-async value {:static-fns (static-fns?)
                                                               :verbose (verbose?)
                                                               :external-libs (external-libs)

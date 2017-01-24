@@ -1,4 +1,4 @@
-(defproject klipse "6.5.2"
+(defproject klipse "6.6.0"
   :description "Embeddable multi-language WEB REPL"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.293"]
@@ -26,29 +26,33 @@
   :source-paths ["src" "scripts"]
   :hiera
   {:path "deps-graph.png"
-    :vertical true
-    :show-external false
-    :cluster-depth 2
-    :trim-ns-prefix true
-    :ignore-ns #{cache.build klipse.cards}}
+   :vertical true
+   :show-external false
+   :cluster-depth 2
+   :trim-ns-prefix true
+   :ignore-ns #{cache.build klipse.cards}}
   :cljsbuild {
               :builds {
                        :test {
-                                :source-paths ["test" "src/klipse/cards/test"]
-                                :compiler {
-                                           :output-to "resources/private/test/klipse.testable.js"
-                                           :output-dir "resources/private/test"
-                                           :verbose false
-                                           :optimizations :simple}}
-                      :app {
-                               :source-paths ["src/klipse/run/app"]
-                               :compiler {
-                                          :output-to "resources/public/dev/js/klipse.js"
-                                          :output-dir "resources/public/dev/js"
-                                          :pretty-print true
-                                          :optimize-constants true
-                                          :static-fns true
-                                          ;:elide-asserts true
+                              :source-paths ["test" "src/klipse/cards/test"]
+                              :compiler {
+                                         :output-to "resources/private/test/klipse.testable.js"
+                                         :output-dir "resources/private/test"
+                                         :verbose false
+                                         :optimizations :simple}}
+                       :app {
+                             :source-paths ["src/klipse/run/app"]
+                             :compiler {
+                                        :output-to "resources/public/dev/js/klipse.js"
+                                        :output-dir "resources/public/dev/js"
+                                        :pretty-print true
+                                        :optimize-constants true
+                                        :static-fns true
+                                        ;:elide-asserts true
+                                        :closure-defines {klipse.core/version
+                                                          ~(->> (slurp "project.clj")
+                                                                (re-seq #"\".*\"")
+                                                                (first))}
                                           :optimizations :simple
                                           :verbose false}}
                       :plugin {

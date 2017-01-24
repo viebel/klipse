@@ -1,11 +1,9 @@
 (ns ^:figwheel-no-load klipse.control.control
   (:require
-    [klipse.utils :refer [url-parameters]]
-    [klipse.control.parser :as parser]
-    [om.next :as om]))
-
-;; =============================================================================
-;; Utils
+   [klipse.utils :refer [url-parameters]]
+   [cljs.reader :refer [read-string]]
+   [klipse.control.parser :as parser]
+   [om.next :as om]))
 
 (defn init-layout []
   (let [{:keys [js_only eval_only container]} (url-parameters)]
@@ -15,8 +13,9 @@
       container :with-container
       :else     :global)))
 
-;; =============================================================================
-;; Data + Parser + reconciler
+(defn logger? []
+  (or (boolean (read-string (or (:verbose (url-parameters)) "false")))
+      (boolean (read-string (or (:logger (url-parameters)) "false")))))
 
 (defonce app-state (atom
                     {:input {:editor-modes (cycle '(:regular :paredit :parinfer-indent :parinfer-paren))
@@ -29,11 +28,16 @@
 
 (def parser
   (om/parser
-    {:read parser/read
-     :mutate parser/mutate}))
+   {:read parser/read
+    :mutate parser/mutate}))
+
+(defn config []
+  (as-> {:state app-state
+         :parser parser} $
+    (if-not (logger?)
+      (assoc $ :logger nil)
+      $)))
 
 (defn reconciler [initial-state]
   (swap! app-state merge initial-state)
-  (om/reconciler
-    {:state app-state
-     :parser parser}))
+  (om/reconciler (config)))

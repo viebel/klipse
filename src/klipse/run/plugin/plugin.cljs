@@ -19,7 +19,9 @@
             [klipse.plugin :as plugin]))
 
 (js/console.info "settings: " (aget js/window "klipse_settings"))
+
 (defn ^:export settings []
   (aget js/window "klipse_settings"))
 
-(plugin/init (settings))
+(when (settings)
+  (plugin/init (settings)))

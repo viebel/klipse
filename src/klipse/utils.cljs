@@ -1,7 +1,7 @@
 (ns klipse.utils
   (:require-macros
-    [klipse.macros :refer [dbg]]
-    [cljs.core.async.macros :refer [go go-loop]])
+   [klipse.macros :refer [dbg]]
+   [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [cljs.reader :refer [read-string]]
    [clojure.walk :refer [keywordize-keys]]
@@ -34,13 +34,19 @@
 
 (defn debounce [func wait-in-ms]
   (let [counter (atom 0)]
-    (fn [] 
-      (go
-        (swap! counter inc)
-        (<! (timeout wait-in-ms))
-        (swap! counter dec)
-        (when (zero? @counter)  
-          (func))))))
+    [(fn [] ; a function that will execute `func` after a while if the counter is 0
+       (go
+         (swap! counter inc)
+         (<! (timeout wait-in-ms))
+         (swap! counter dec)
+         (when (zero? @counter)  
+           (func))))
+     (fn [] ; a function that executes `func` immediately
+       (go
+         (func)
+         (swap! counter inc)
+         (<! (timeout wait-in-ms))
+         (swap! counter dec)))]))
 
 (defn gist-path-raw [gist-id]
   (str "https://gist.githubusercontent.com/" gist-id "/raw" "?" (rand)))
@@ -53,8 +59,8 @@
     (when gist-id 
       (let [gist-url (gist-path-raw gist-id)
             {:keys [status body]} (<! (http/get
-                                        gist-url
-                                        {:with-credentials? false}))]
+                                       gist-url
+                                       {:with-credentials? false}))]
         (if-not (= status 200)
           (str "\""
                "Wrong gist path: " gist-url "\n"
@@ -117,13 +123,13 @@
 
 (defn load-scripts [scripts]
   (go-loop [the-scripts scripts]
-           (if (seq the-scripts)
-             (let [script (str (first the-scripts))
-                   [status script] (<! (load-script-mem script))]
-               (if (= :ok status)
-                 (recur (rest the-scripts)))
-               [status script])
-             [:ok])))
+    (if (seq the-scripts)
+      (let [script (str (first the-scripts))
+            [status script] (<! (load-script-mem script))]
+        (if (= :ok status)
+          (recur (rest the-scripts)))
+        [status script])
+      [:ok])))
 
 (def load-scripts-mem (memoize-async load-scripts))
 

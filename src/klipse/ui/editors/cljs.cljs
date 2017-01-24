@@ -36,8 +36,7 @@
 (defn process-input [component s]
   (when-not (blank? s)
     (om/transact! component
-                  [`(input/save   {:value ~s})
-                   `(clj/eval-and-compile     {:value ~s})
+                  [`(clj/eval-and-compile     {:value ~s})
                    :input])))
 
 (defn handle-cm-events [component editor]
@@ -104,9 +103,10 @@
           (js/console.error "cannot load paredit scripts:" err))))))
 
 (defmethod use-editor-mode! :regular [_ component]
-  (replace-editor! component)
-  (om/transact! component ['(editor/consume-mode {:value :regular})
-                           :input]))
+  (let [editor (replace-editor! component)]
+    (om/transact! component ['(editor/consume-mode {:value :regular})
+                             :input])
+    editor))
 
 (defn switch-editor-mode [component]
   (let [editor-modes (get-in (om/props component) [:input :editor-modes])]
@@ -121,17 +121,10 @@
          [:input])
 
   Object
-  (componentDidUpdate [this prev-props prev-state]
-                      (let [input (get-in (om/props this) [:input :input])
-                            editor (om/get-state this :editor)]
-                        (when (and input
-                                   editor
-                                   (not= input (get-value editor))
-                                   (set-value editor input)))))
-
   (componentDidMount [this]
                      (om/set-state! this {:editor (init-editor this)})
-                     (switch-editor-mode this))
+                     (let [new-editor (switch-editor-mode this)]
+                       (process-input this (get-value new-editor))))
 
   (render [this]
           (let [{:keys [input editor-mode] :or {editor-mode :regular input ""}} (:input (om/props this))
@@ -145,9 +138,9 @@
                                "mode-regular")]
             (dom/section #js {:className (str "cljs-editor")}
                          (dom/div #js {:autoFocus true
-                                       :value input
                                        :id "code-cljs"
-                                       :placeholder placeholder-editor})
+                                       :placeholder placeholder-editor}
+                                  input)
                          (dom/div #js {:onClick (partial switch-editor-mode this)
                                        :className (str "editor-logo" " " editor-class)})))))
 

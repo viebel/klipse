@@ -15,8 +15,7 @@
     [cljs.core.async :refer [chan timeout put! <!]]
     [klipse.ui.layout :as ui]
     [klipse.utils :refer [read-input-from-gist gist-path-page url-parameters]]
-    [klipse.control.control :as control]
-    [klipse.ui.editors.cljs :as cljs-editor]))
+    [klipse.control.control :as control]))
 
 
 (defn read-input-from-url []
@@ -35,10 +34,10 @@
       (when-let [gist-id (:cljs_in.gist (url-parameters))]
         (<! (gist-content gist-id))))))
 
-(defonce init (runonce
-            (fn [element]
-              (let [reconciler (control/reconciler {})]
-                (om/add-root! reconciler ui/Layout element)
-                (go
-                  (let [input (<! (read-src-input))]
-                    (cljs-editor/process-input reconciler input)))))))
+(defonce init
+  (runonce
+   (fn [element]
+     (go
+       (let [input (<! (read-src-input))
+             reconciler (control/reconciler input)]
+         (om/add-root! reconciler ui/Layout element))))))

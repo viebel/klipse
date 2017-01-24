@@ -14,7 +14,7 @@
     (js/location.replace (create-url-with-input base-url value)))
 
 (defn handle-events [editor {:keys [on-should-eval on-change idle-msec base-url extra-keys] :or {base-url nil}}]
-  (when on-change (editor/on-change editor on-change))
+;  (when on-change (editor/on-change editor on-change))
   (editor/on-change editor
                     (debounce on-should-eval idle-msec))
   (let [default-extra-keys {"Ctrl-S" #(display-url-with-input base-url (editor/get-value editor))

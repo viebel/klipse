@@ -29,15 +29,11 @@
 
 (defn save-input [component s]
   (when-not (blank? s)
-    (om/transact! component
-                  [`(input/save     {:value ~s})
-                   :input])))
+    (om/transact! component [`(input/save     {:value ~s})])))
 
 (defn process-input [component s]
   (when-not (blank? s)
-    (om/transact! component
-                  [`(clj/eval-and-compile     {:value ~s})
-                   :input])))
+    (om/transact! component [`(clj/eval-and-compile {:value ~s})])))
 
 (defn handle-cm-events [component editor]
   (handle-events editor
@@ -78,8 +74,7 @@
   (let [mode (case indent-or-paren
                :indent :parinfer-indent
                :paren :parinfer-paren)]
-    (om/transact! component [`(editor/consume-mode {:value ~mode})
-                             :input])))
+    (om/transact! component [`(editor/consume-mode {:value ~mode})])))
 
 (defmethod use-editor-mode! :parinfer-indent [_ component]
   (use-parinfer! component :indent))
@@ -88,24 +83,20 @@
   (use-parinfer! component :paren))
 
 (defmethod use-editor-mode! :paredit [_ component]
-  (om/transact! component ['(editor/consume-mode {:value :loading})
-                           :input])
+  (om/transact! component ['(editor/consume-mode {:value :loading})])
   (go
     (let [[status err] (<! (load-external-scripts [(codemirror-keymap-src "emacs") (scripts-src "subpar.js") (scripts-src "subpar.core.js") ]))]
       (if (= :ok status)
         (do
           (replace-editor! component {:keyMap "subpar"})
-          (om/transact! component ['(editor/set-mode {:value :paredit})
-                                   :input]))
+          (om/transact! component ['(editor/set-mode {:value :paredit})]))
         (do
-          (om/transact! component ['(editor/set-mode {:value :error})
-                                   :input])
+          (om/transact! component ['(editor/set-mode {:value :error})])
           (js/console.error "cannot load paredit scripts:" err))))))
 
 (defmethod use-editor-mode! :regular [_ component]
   (let [editor (replace-editor! component)]
-    (om/transact! component ['(editor/consume-mode {:value :regular})
-                             :input])
+    (om/transact! component ['(editor/consume-mode {:value :regular})])
     editor))
 
 (defn switch-editor-mode [component]
@@ -140,7 +131,7 @@
                          (dom/div #js {:autoFocus true
                                        :id "code-cljs"
                                        :placeholder placeholder-editor}
-                                  input)
+                                  (str "hello" input))
                          (dom/div #js {:onClick (partial switch-editor-mode this)
                                        :className (str "editor-logo" " " editor-class)})))))
 

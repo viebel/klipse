@@ -15,8 +15,7 @@
     [cljs.core.async :refer [chan timeout put! <!]]
     [klipse.ui.layout :as ui]
     [klipse.utils :refer [read-input-from-gist gist-path-page url-parameters]]
-    [klipse.control.control :as control]
-    [klipse.ui.editors.cljs :as cljs-editor]))
+    [klipse.control.control :as control]))
 
 
 (defn read-input-from-url []

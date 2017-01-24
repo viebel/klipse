@@ -131,7 +131,7 @@
                          (dom/div #js {:autoFocus true
                                        :id "code-cljs"
                                        :placeholder placeholder-editor}
-                                  (str "hello" input))
+                                  input)
                          (dom/div #js {:onClick (partial switch-editor-mode this)
                                        :className (str "editor-logo" " " editor-class)})))))
 

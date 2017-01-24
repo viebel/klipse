@@ -22,5 +22,6 @@
         the-extra-keys (merge default-extra-keys extra-keys)]
     (when on-change (editor/on-change editor on-change))
     (editor/on-change editor debouncer)
-    (editor/set-option editor "extraKeys" (clj->js the-extra-keys))))
+    (editor/set-option editor "extraKeys" (clj->js the-extra-keys))
+    editor))
 

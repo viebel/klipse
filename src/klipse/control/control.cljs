@@ -38,6 +38,6 @@
       (assoc $ :logger nil)
       $)))
 
-(defn reconciler [initial-state]
-  (swap! app-state merge initial-state)
+(defn reconciler [initial-input]
+  (swap! app-state assoc-in [:input :input] initial-input)
   (om/reconciler (config)))

@@ -35,10 +35,10 @@
       (when-let [gist-id (:cljs_in.gist (url-parameters))]
         (<! (gist-content gist-id))))))
 
-(defonce init (runonce
-            (fn [element]
-              (let [reconciler (control/reconciler {})]
-                (om/add-root! reconciler ui/Layout element)
-                (go
-                  (let [input (<! (read-src-input))]
-                    (cljs-editor/process-input reconciler input)))))))
+(defonce init
+  (runonce
+   (fn [element]
+     (go
+       (let [input (<! (read-src-input))
+             reconciler (control/reconciler input)]
+         (om/add-root! reconciler ui/Layout element))))))

@@ -59,8 +59,8 @@
 
 (def skip-ns-macros #{'cljs.core
                       'cljs.pprint
+                      'cljs.repl
                       'cljs.env.macros
-                      'klipse.lang.clojure.env
                       'cljs.analyzer.macros
                       'cljs.js
                       'cljs.compiler.macros})
@@ -139,7 +139,7 @@
         (src-cb nil)))))
 
 (defn cached-macro-ns-regexp []
-  (:clojure_cached_macro_ns_regexp (klipse-settings) #"cljs\.core\.[async|match].*|clojure\.math\.macros|gadjett\.core|cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*"))
+  (:clojure_cached_macro_ns_regexp (klipse-settings) #"klipse\..*|cljs\.core\.[async|match].*|clojure\.math\.macros|gadjett\.core|cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*"))
 
 (defn cached-macro-ns? [name]
   (re-matches (cached-macro-ns-regexp) (str name)))

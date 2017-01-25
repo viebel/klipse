@@ -92,13 +92,13 @@
         max-eval-duration (max max-eval-duration min-max-eval-duration)
         the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
     (with-redefs [compiler/emits the-emits]
-      (cljs/eval-str (create-state-eval) s
+      (cljs/eval-str (st) s
                         "cljs-in"
                         {
                          :eval eval-for-compilation
                          :ns @current-ns
                          :static-fns static-fns
-                         :*compiler* (set! env/*compiler* (create-state-eval))
+                         :*compiler* (set! env/*compiler* (st))
                          :verbose (verbose?)
                          :load (partial io/load-ns external-libs)
                          }
@@ -120,7 +120,7 @@
                  {:eval my-eval
                   :ns @current-ns
                   :def-emits-var true
-                  :verbose verbose
+                  :verbose (verbose?)
                   :*compiler* (set! env/*compiler* (st))
                   :context :expr
                   :static-fns static-fns

@@ -56,8 +56,10 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 
 **You need also to add `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>`.**
 
-Heres is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
+Here is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
 
+
+If you want to host the javascript tag from your own server, see [host klipse locally]().
 
 ## javascript
 
@@ -289,6 +291,15 @@ Here are a couple of examples of blogs using the klipse plugin:
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Host Klipse locally
+
+In order to serve Klipse from your own server, you have to:
+
+1. Include in your page all the assets that you need from the `dist` folder: `codemirror.css`, `klipse_plugin.js` or `klipse_plugin.min.js`, `javascript.inc.js` (CodeMirror javascript addon), `pretty_format.js` (javascript beautifier)
+2. set `klipse_settings.no_dynamic_scripts=true;`
+
+
+If you need more assets that are usually dynamically loaded by klipse, please download them manually.
 
 ## Klipse App - Clojure Web Repl
 

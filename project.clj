@@ -53,19 +53,23 @@
                                                           ~(->> (slurp "project.clj")
                                                                 (re-seq #"\".*\"")
                                                                 (first))}
-                                          :optimizations :simple
-                                          :verbose false}}
-                      :plugin {
-                               :source-paths ["src/klipse/run/plugin"]
-                               :compiler {
-                                          :output-to "resources/public/plugin/js/klipse_plugin.js"
-                                          :output-dir "resources/public/plugin/js"
-                                          :pretty-print false
-                                          :optimize-constants true
-                                          :static-fns true
-                                          ;:elide-asserts true
-                                          :optimizations :simple
-                                          :verbose false}}
+                                        :optimizations :simple
+                                        :verbose false}}
+                       :plugin {
+                                :source-paths ["src/klipse/run/plugin"]
+                                :compiler {
+                                           :output-to "resources/public/plugin/js/klipse_plugin.js"
+                                           :output-dir "resources/public/plugin/js"
+                                           :pretty-print false
+                                           :optimize-constants true
+                                           :static-fns
+                                           ;:elide-asserts true
+                                           :closure-defines {klipse.core/version
+                                                             ~(->> (slurp "project.clj")
+                                                                   (re-seq #"\".*\"")
+                                                                   (first))}
+                                           :optimizations :simple
+                                           :verbose false}}
                       :plugin-prod {
                                :source-paths ["src/klipse/run/plugin_prod"]
                                :compiler {

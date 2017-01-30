@@ -1,7 +1,7 @@
-(defproject klipse "6.6.0"
+(defproject klipse "6.6.1"
   :description "Embeddable multi-language WEB REPL"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.293"]
+                 [org.clojure/clojurescript "1.9.456"]
                  [org.clojure/core.async "0.2.395"]
                  [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]
@@ -62,7 +62,7 @@
                                            :output-dir "resources/public/plugin/js"
                                            :pretty-print false
                                            :optimize-constants true
-                                           :static-fns
+                                           :static-fns true
                                            ;:elide-asserts true
                                            :closure-defines {klipse.core/version
                                                              ~(->> (slurp "project.clj")

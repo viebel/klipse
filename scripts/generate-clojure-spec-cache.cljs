@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]))
 
 (def nexeres (js/require "nexeres"))
-(def resources (filter #(re-matches #"cljs.env.*|cljs.spec.*|cljs.test.*|cljs.repl.*" %) (.keys nexeres)))
+(def resources (filter #(re-matches #"cljs.*" %) (.keys nexeres)))
 (defn get-resource [x]
   (-> (.get nexeres x)
        js/zlib.inflateSync ))

@@ -31,38 +31,21 @@
 (my.m/m 1)
 </div>
 <br/>
-<div class="clojure">
-`(let [x# 1] x#)
+<div class="klojure">
+    (require '[klipse.lang.clojure.env :as e])
+    (e/doc* 'map)
+</div>
+<br/>
+
+<div class="klojure">
+    (require-macros '[klipse.lang.clojure.env :refer [doc]])
+    (doc map)
 </div>
 <br/>
 <div class="clojure">
     (ns my.ns 
     (:require [clojure.set :as ss]))
-=======
-  <head lang="en">
-    <meta charset="UTF-8">
-    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
-    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
-    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
-  </head>
-  <body>
-    <div class="clojure">
     </div>
-    <div class="clojure">
-      (ns my.ns
-      (:refer-clojure :exclude [distinct group-by update])
-      (:require clojure.string
-      [sqlingvo.core :as sql :refer [sql db select from]]))
-
-
-      (def my-db (db :postgresql))
-
-      (sql (select my-db [:first-name]
-      (from :people)))
-    </div>
-    <br/>
-
-
 
     <div class="clojure">
       (require-macros '[gadjett.core :refer [dbg]])
@@ -81,51 +64,17 @@
       `(1 2 ~(map inc [1 2 3]))
     </div>
     <br/>
-    <div class="clojure">
-      (ns my.m$macros)
-      (defmacro m [x] x)
-      (my.m/m 1)
-    </div>
-    <br/>
-    <div class="clojure">
-      `(let [x# 1] x#)
-    </div>
-    <br/>
-    <div class="clojure">
-      (ns my.ns 
-      (:require [clojure.set :as ss]))
 
-      (str ::ss/xx)
-    </div>
     <br/>
-    <div class="clojure">
-      (ns my.moo$macros)
-      (defmacro dbg[x]
-      `(let [x# ~x]
-      (println (str '~x ": " x#))
-      x#))
-      (with-out-str
-      (my.moo/dbg (map inc [1 2 3])))
-    </div>
-    <br/>
-    <div class="clojure">
-      (ns my.test
-      (:require
-          [cljs.pprint :as pp :refer [pprint]]))
-          (with-out-str (pprint (for [x (range 10)] (range x))))
-    </div>
-<br/>
-<div class="clojure">
-    `(1 2 ~(map inc [1 2 3]))
-</div>
     <br/>
     <script>
       window.klipse_settings = {
+      
       };
       if(window.location.search.match(/transpile=1/)) {
       window.klipse_settings.selector_js = '.clojure';
       } else {
-      window.klipse_settings.selector = '.clojure';
+      window.klipse_settings.selector = '.klojure';
       }
 
     </script>

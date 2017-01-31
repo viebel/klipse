@@ -78,6 +78,10 @@
                                           :pretty-print true
                                           :elide-asserts false
                                           :optimizations :advanced
+                                          :closure-defines {klipse.core/version
+                                                             ~(->> (slurp "project.clj")
+                                                                   (re-seq #"\".*\"")
+                                                                   (first))}
                                           :verbose true}}
                        :figwheel {
                                   :figwheel true

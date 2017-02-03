@@ -2,6 +2,7 @@
   (:require-macros
     [gadjett.core :as gadjett :refer [dbg]]
     [purnam.core :refer [!]]
+    [klipse.macros :refer [with-redefs-safe]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
     klipse.lang.clojure.bundled-namespaces
@@ -13,6 +14,7 @@
     [clojure.string :refer [blank?]]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
+    [cljs.tools.reader :as r]
     [cljs.analyzer :as ana]
     [cljs.reader :refer [read-string]]
     [cljs.compiler :as compiler]
@@ -90,7 +92,9 @@
   (let [c (chan)
         max-eval-duration (max max-eval-duration min-max-eval-duration)
         the-emits (if compile-display-guard (partial my-emits max-eval-duration) original-emits)]
-    (with-redefs [compiler/emits the-emits]
+    (with-redefs [compiler/emits the-emits
+                  *ns*             (create-ns @current-ns)
+                  env/*compiler*   (create-state-eval)]
       (cljs/eval-str (create-state-eval) s
                         "cljs-in"
                         {
@@ -109,7 +113,12 @@
 (defn core-eval-an-exp [s {:keys [static-fns external-libs max-eval-duration] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration}}]
   (let [c (chan)
         max-eval-duration (max max-eval-duration min-max-eval-duration)]
-    (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
+    (with-redefs-safe [;compiler/emits (partial my-emits max-eval-duration)
+                  r/resolve-symbol ana/resolve-symbol
+                  ana/*cljs-ns*    @current-ns
+                  *ns*             (create-ns @current-ns)
+                  ;env/*compiler*   (create-state-eval)
+                       ] 
                   ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
       (cljs/eval-str (create-state-eval)
                      s

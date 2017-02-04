@@ -11,6 +11,7 @@
   (require '[clojure.spec :as s]
   '[clojure.spec.test :as stest]
   '[clojure.spec.impl.gen :as gen])
+  (stest/instrument `map)
 </div>
 <br/>
 <div class="clojure">
@@ -55,7 +56,7 @@
           selector: '.clojure',
         };
         </script>
-        <script src="/lib/mirror_extensions.js"></script>
-        <script src="/fig/js/klipse.fig.js"></script>
+        <!--script src="/fig/js/klipse.fig.js"></script-->
+	<script src="/plugin/js/klipse_plugin.js"></script>
     </body>
 </html>

@@ -27,5 +27,4 @@
      (eval-form `(def ~name) (ns-name the-ns))))
   ([ns name val]
    (when-let [the-ns (find-ns (cond-> ns (instance? Namespace ns) ns-name))]
-     (let [eee (eval-form `(def ~name ~val) (ns-name the-ns))]
-       (js/console.info "eee:" eee)))))
+     (eval-form `(def ~name ~val) (ns-name the-ns)))))

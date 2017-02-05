@@ -11,6 +11,7 @@
     [rewrite-clj.node :as n]
     [rewrite-clj.parser :as p]
     [clojure.string :refer [blank?]]
+    [klipse.lang.clojure.include :refer [create-state-eval]]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
     [cljs.analyzer :as ana]
@@ -30,8 +31,6 @@
 
 
 (defonce ^:private current-ns (atom 'cljs.user))
-
-(defonce create-state-eval (memoize cljs/empty-state))
 
 (defn display [value {:keys [print-length beautify-strings]}]
   (with-redefs [*print-length* print-length]
@@ -83,7 +82,7 @@
 (defn eval-for-compilation [{:keys [source]}]
   source)
 
-; store the original compiler/emits - as I'm afraif things might get wrong with all the with-redefs (especially with core.async. See http://dev.clojure.org/jira/browse/CLJS-1634
+; store the original compiler/emits - as I'm afraid things might get wrong with all the with-redefs (especially with core.async. See http://dev.clojure.org/jira/browse/CLJS-1634
 (def original-emits compiler/emits)
 
 (defn core-compile-an-exp [s {:keys [static-fns external-libs max-eval-duration compile-display-guard] :or {static-fns false external-libs nil max-eval-duration min-max-eval-duration compile-display-guard false}}]

@@ -30,7 +30,6 @@
 </div>
 <br/>
 <div class="clojure">
-  (set! cljs.spec.test$macros/eval (fn [x] x))
   (stest/instrument `foo)
   (foo 1)
 </div>
@@ -56,7 +55,6 @@
           selector: '.clojure',
         };
         </script>
-        <!--script src="/fig/js/klipse.fig.js"></script-->
-	<script src="/plugin/js/klipse_plugin.js"></script>
+        <script src="/fig/js/klipse.fig.js"></script>
     </body>
 </html>

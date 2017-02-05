@@ -6,6 +6,7 @@
    [cljs.reader :refer [read-string]]
    [clojure.string :as s]
    [klipse.utils :refer [url-parameters verbose? klipse-settings]]
+   [klipse.lang.clojure.include :refer [def-a-var]]
    [clojure.walk :as ww]
    [clojure.string :as string :refer [join split lower-case]]
    [cljs-http.client :as http]
@@ -149,24 +150,32 @@
 (defn cached-cljs-ns? [name]
   (re-matches (cached-ns-regexp) (str name)))
 
-(defmethod load-ns :macro [external-libs {:keys [name path]} src-cb]
-  (when (verbose?) (js/console.info "load-ns :macro :" (str name)))
-  (cond
-    (skip-ns-macros name) (do
-                            (when (verbose?) (js/console.info "load-ns :macro skipping:" (str name)))
-                            (src-cb {:lang :clj :source ""}))
-    (cached-macro-ns? name) (do
-                              (when (verbose?) (js/console.info "load-ns :macro cached:" (str name)))
-                              (load-ns-from-cache name src-cb true))
-    (the-ns-map name) (do
-                        (when (verbose?) (js/console.info "load-ns :macro known:" (str name)))
-                        (let [prefix (str (the-ns-map name) "/" path)
-                              filenames (map (partial str prefix) macro-suffixes)]
-                          (try-to-load-ns filenames :clj :source src-cb)))
-    :else (do
-            (when (verbose?) (js/console.info "load-ns :macro external-libs:" (str name))) (src-cb {:lang :clj :source ""})
-            (let [filenames (external-libs-files external-libs macro-suffixes path)]
-              (try-to-load-ns filenames :clj :source src-cb)))))
+(defmethod load-ns :macro [external-libs {:keys [name path]} src-cb-original]
+  (let [src-cb (if (not= name 'cljs.spec.test)
+                 src-cb-original
+                 (fn [& args]
+                   (when (verbose?)
+                     (js/console.info "src-cb: patch cljs.spec.test/eval"))
+                   (apply src-cb-original args)
+                   (def-a-var 'cljs.spec.test$macros 'eval 'identity) ; The spec.test/instrument macro uses eval, which doesn’t exist in ClojureScript. It seems that `identity` as eval works
+))]
+    (when (verbose?) (js/console.info "load-ns :macro :" (str name)))
+    (cond
+      (skip-ns-macros name) (do
+                              (when (verbose?) (js/console.info "load-ns :macro skipping:" (str name)))
+                              (src-cb {:lang :clj :source ""}))
+      (cached-macro-ns? name) (do
+                                (when (verbose?) (js/console.info "load-ns :macro cached:" (str name)))
+                                (load-ns-from-cache name src-cb true))
+      (the-ns-map name) (do
+                          (when (verbose?) (js/console.info "load-ns :macro known:" (str name)))
+                          (let [prefix (str (the-ns-map name) "/" path)
+                                filenames (map (partial str prefix) macro-suffixes)]
+                            (try-to-load-ns filenames :clj :source src-cb)))
+      :else (do
+              (when (verbose?) (js/console.info "load-ns :macro external-libs:" (str name))) (src-cb {:lang :clj :source ""})
+              (let [filenames (external-libs-files external-libs macro-suffixes path)]
+                (try-to-load-ns filenames :clj :source src-cb))))))
 
 
 (def cache-url "https://storage.googleapis.com/app.klipse.tech/fig/js/")

@@ -1,0 +1,1 @@
+gsutil -h "Content-Type:application/javascript" cp scripts/bookmarklet.js gs://app.klipse.tech/bookmarklet.js

@@ -27,7 +27,7 @@ var domain_to_settings_map = {
 };
 
 var default_settings = {
-    selector: 'code, .clojure',
+    selector: '.lang-clojure, .language-clojure, .clojure',
 };
 function domain_to_settings(domain){
     return domain_to_settings_map[domain] || default_settings;

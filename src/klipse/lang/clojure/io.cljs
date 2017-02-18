@@ -1,4 +1,4 @@
-(ns klipse.lang.clojure.io
+﻿(ns klipse.lang.clojure.io
   (:require-macros [gadjett.core :refer [dbg]]
                    [purnam.core :refer [? !>]]
                    [cljs.core.async.macros :refer [go go-loop]])
@@ -173,7 +173,7 @@
                                 filenames (map (partial str prefix) macro-suffixes)]
                             (try-to-load-ns filenames :clj :source src-cb)))
       :else (do
-              (when (verbose?) (js/console.info "load-ns :macro external-libs:" (str name))) (src-cb {:lang :clj :source ""})
+              (when (verbose?) (js/console.info "load-ns :macro external-libs:" (str name)))
               (let [filenames (external-libs-files external-libs macro-suffixes path)]
                 (try-to-load-ns filenames :clj :source src-cb))))))
 

@@ -89,6 +89,15 @@
 	(ns my.ns)
 	(my-func 19)
     </code></pre>
+    <h2>Implicit Macro Loading </h2>
+    <p> <code>klipse-test.b</code> uses macro <code>x</code> from <code>klipse-test.a</code> without explicitly using <code>refer-macros</code></p>
+    <p> This should evaluate to <code>10</code></p>
+    <pre><code class="clojure" data-external-libs="https://raw.githubusercontent.com/viebel/klipse-test/master/src">
+	(ns my.foo
+	(:require [klipse-test.b]))
+
+	klipse-test.b/asdf
+    </code></pre>
     <h2> Printing </h2>
 
     <p>When calling `print`, the result should be appended to the result cell</p>

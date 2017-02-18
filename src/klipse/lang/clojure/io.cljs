@@ -1,4 +1,4 @@
-﻿(ns klipse.lang.clojure.io
+(ns klipse.lang.clojure.io
   (:require-macros [gadjett.core :refer [dbg]]
                    [purnam.core :refer [? !>]]
                    [cljs.core.async.macros :refer [go go-loop]])

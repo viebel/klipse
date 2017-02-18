@@ -65,7 +65,7 @@
                       'cljs.js
                       'cljs.compiler.macros})
 
-(def the-ns-map 
+(def the-ns-map
   '{cljs.test "https://raw.githubusercontent.com/clojure/clojurescript/master/src/main/cljs/"
     clojure.template "https://raw.githubusercontent.com/viebel/clojure/master/src/clj/"})
 
@@ -173,7 +173,7 @@
                                 filenames (map (partial str prefix) macro-suffixes)]
                             (try-to-load-ns filenames :clj :source src-cb)))
       :else (do
-              (when (verbose?) (js/console.info "load-ns :macro external-libs:" (str name))) (src-cb {:lang :clj :source ""})
+              (when (verbose?) (js/console.info "load-ns :macro external-libs:" (str name)))
               (let [filenames (external-libs-files external-libs macro-suffixes path)]
                 (try-to-load-ns filenames :clj :source src-cb))))))
 
@@ -301,4 +301,3 @@
     :else (let [closure-github-path "https://raw.githubusercontent.com/google/closure-library/v20160713/closure/"
                 filenames (map #(str closure-github-path % ".js") ((juxt fix-goog-path identity another-goog-path simple-goog-path) path))]
             (try-to-load-ns filenames :js :source src-cb))))
-

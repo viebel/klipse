@@ -1,6 +1,6 @@
 (defproject klipse "6.7.0"
   :description "Embeddable multi-language WEB REPL"
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  [org.clojure/clojurescript "1.9.456"]
                  [org.clojure/core.async "0.2.395"]
                  [binaryage/devtools "0.8.2"]
@@ -8,7 +8,7 @@
                  [viebel/codemirror-parinfer "0.0.3"]
                  [cljsjs/markdown "0.6.0-beta1-0"]
                  [cljs-http "0.1.42"]
-                 [viebel/gadjett "0.3.2"]
+                 [viebel/gadjett "0.3.4"]
                  [org.omcljs/om "1.0.0-alpha47"]
                  [com.cemerick/url "0.1.1"]
                  [rewrite-cljs "0.4.3"]
@@ -20,7 +20,7 @@
   :clean-targets ^{:protect false} ["resources/public/dev/js"
                                     "resources/public/plugin_prod/js"
                                     "resources/public/plugin/js"]
-  :plugins [[lein-cljsbuild "1.1.1"]
+  :plugins [[lein-cljsbuild "1.1.5"]
             [lein-hiera "0.9.5"]
             [lein-doo "0.1.6"]]
   :source-paths ["src" "scripts"]

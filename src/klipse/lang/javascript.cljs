@@ -1,15 +1,15 @@
 (ns klipse.lang.javascript
   (:require-macros
-    [klipse.macros :refer [my-with-redefs]]
-    [gadjett.core :refer [dbg]]
-    [purnam.core :refer [!>]]
-    [cljs.core.async.macros :refer [go go-loop]])
+   [klipse.macros :refer [my-with-redefs]]
+   [gadjett.core :refer [dbg]]
+   [purnam.core :refer [!>]]
+   [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    [klipse.utils :refer [load-scripts verbose?]]
-    [cljs-http.client :as http]
-    [clojure.string :as string]
-    [cljs.core.async :refer [<! chan put!]]
-    [klipse.common.registry :refer [codemirror-mode-src scripts-src register-mode]]))
+   [klipse.utils :refer [load-scripts verbose?]]
+   [cljs-http.client :as http]
+   [clojure.string :as string]
+   [cljs.core.async :refer [<! chan put!]]
+   [klipse.common.registry :refer [codemirror-mode-src scripts-src register-mode]]))
 
 (def known-external-libs
   {
@@ -76,6 +76,7 @@
 
 (def opts {:editor-in-mode "javascript"
            :editor-out-mode "javascript"
+           :beautify-output? false
            :eval-fn str-eval-js-async
            :external-scripts [(codemirror-mode-src "javascript")  (scripts-src "pretty_format.js")]
            :comment-str "//"})
@@ -83,8 +84,8 @@
 (register-mode "eval-javascript" "selector_eval_js" opts)
 
 (defn babel [src]
-   (-> (!> js/Babel.transform src #js {:presets #js ["es2017"]})
-       (aget "code")))
+  (-> (!> js/Babel.transform src #js {:presets #js ["es2017"]})
+      (aget "code")))
 
 (defn eval-es2017 [exp {:keys [async-code? container-id] :or {async-code? false}}]
   (let [c (chan)]
@@ -106,9 +107,10 @@
     c))
 
 (def es2017-opts {:editor-in-mode "javascript"
-           :editor-out-mode "javascript"
-           :eval-fn eval-es2017
-           :external-scripts [(codemirror-mode-src "javascript") (scripts-src "pretty_format.js") (scripts-src "babel.min.js") (scripts-src "babel_polyfill.min.js")]
-           :comment-str "//"})
+                  :editor-out-mode "javascript"
+                  :beautify-output? false
+                  :eval-fn eval-es2017
+                  :external-scripts [(codemirror-mode-src "javascript") (scripts-src "pretty_format.js") (scripts-src "babel.min.js") (scripts-src "babel_polyfill.min.js")]
+                  :comment-str "//"})
 
 (register-mode "eval-es2017" "selector_es2017" es2017-opts)

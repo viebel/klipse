@@ -4,7 +4,7 @@ KLIPSE is a simple client-side code evaluator pluggable on any web page.
 
 ## Plugin
 
-The klipse plugin is a `javascript` tag (see details [below](https://github.com/viebel/klipse#integration)) that transforms static code snippets of an html page into live and interactive snippets:
+The klipse plugin is a `javascript` element (see details [below](https://github.com/viebel/klipse#integration)) that transforms static code snippets of an html page into live and interactive snippets:
 
 1. **Live**: The code is executed in your browser
 2. **Interactive**: You can modify the code and it is evaluated as you type
@@ -52,14 +52,14 @@ The code editing inside the interactive snippets is powered by [CodeMirror](http
 
 # Integration
 
-In order to integrate the klipse plugin on a blog, library documentation or any other web page, add the following `javascript` tag **at the end of the page body** according to the language of the code snippets:
+In order to integrate the klipse plugin on a blog, library documentation or any other web page, add the following `javascript` element **at the end of the page body** according to the language of the code snippets:
 
 **You need also to add `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>`.**
 
 Here is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
 
 
-If you want to host the javascript tag from your own server, see [host klipse locally]().
+If you want to host the javascript element from your own server, see [host klipse locally]().
 
 ## javascript
 

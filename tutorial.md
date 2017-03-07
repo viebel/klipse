@@ -1,14 +1,14 @@
-## Tutorial
+# Tutorial
 
 Tutorial Summary
 ----------
 
-1. init project
-2. figwheel
-3. compiler functions
-4. om.next
+1. Init project
+2. Figwheel
+3. Compiler functions
+4. Om.next
 
-1- Init Project
+1- Init project
 ----------
 
 Create a new project directory, switch into it, add a `project.clj` configuration file to it.
@@ -77,10 +77,10 @@ lein cljsbuild once dev
 Now open the `index.html` file in a chrome browser, open the console, great! you can see our "Hello world!" log.
 
 
-2- figwheel
+2- Figwheel
 -----------
 
-We use [figwheel](https://github.com/bhauman/lein-figwheel) to make our devlopment more funny. Add figwheel plugin to your `project.clj` and `:figwheel true` configuration to your dev compilation configuration:
+We use [figwheel](https://github.com/bhauman/lein-figwheel) to make our development more fun. Add figwheel plugin to your `project.clj` and `:figwheel true` configuration to your dev compilation configuration:
 
 ``` clojure
 (defproject cljs-compiler "0.1.0-SNAPSHOT"
@@ -106,13 +106,14 @@ Launch figwheel from the terminal:
 lein figwheel
 ```
 
-or
+The REPL doesn't currently have built-in readline support.
+To have a better experience use [rlwrap.](https://github.com/hanslub42/rlwrap)
 
 ```
 rlwrap lein figwheel
 ```
 
-Open `http://localhost:3449/` in chrome, open console, there is our "Hello world!" log. Now, update `core.cljs`:
+Open [http://localhost:3449/](http://localhost:3449/) in chrome, open console, there is our "Hello world!" log. Now, update `core.cljs`:
 
 ``` clojure
 (ns cljs_compiler.core)
@@ -133,10 +134,10 @@ And in the terminal, in the figwheel session:
 ```
 
 
-3- compiler functions
+3- Compiler functions
 ----------
 
-Add to dependencies the `cljs.js` namespace.
+Require the `cljs.js` namespace in `core` namespace.
 Learn more about `cljs.js` [here](https://github.com/clojure/clojurescript/blob/master/src/main/cljs/cljs/js.cljs).
 
 ``` clojure
@@ -145,7 +146,7 @@ Learn more about `cljs.js` [here](https://github.com/clojure/clojurescript/blob/
     [cljs.js :as cljs]))
 ```
 
-We need a callback function as util to handle errors compilation.
+We need a callback function as util to handle errors occurred during compilation.
 
 ``` clojure
 (defn callback [{:keys [value error]}]
@@ -157,7 +158,7 @@ We need a callback function as util to handle errors compilation.
 ```
 
 The function `_compilation` will receive a clojurescript source as a string.
-Return [:error "reason"] in case of error and [:ok "js-code"] in case of success.
+Returns [:error "reason"] in case of error and [:ok "js-code"] in case of success.
 
 ``` clojure
 (defn _compilation [s]
@@ -168,7 +169,7 @@ Return [:error "reason"] in case of error and [:ok "js-code"] in case of success
 ```
 
 The function `_eval` will receive a clojurescript source as a string and evaluate it.
-Return [:error "reason"] in case of error and [:ok "js-code"] in case of success.
+Returns [:error "reason"] in case of error and [:ok value] in case of success.
 
 ``` clojure
 (defn _eval [s]
@@ -180,7 +181,7 @@ Return [:error "reason"] in case of error and [:ok "js-code"] in case of success
     callback))
 ```
 
-The function `_evaluation-js` return the jsonify `_eval` result.
+The function `_evaluation-js` returns the jsonify `_eval` result.
 
 ``` clojure
 (defn _evaluation-js [s]
@@ -188,7 +189,7 @@ The function `_evaluation-js` return the jsonify `_eval` result.
     [status (.stringify js/JSON res nil 4)]))
 ```
 
-The function `_evaluation-clj` return the stringify `_eval` result.
+The function `_evaluation-clj` returns the stringify `_eval` result.
 
 ``` clojure
 (defn _evaluation-clj [s]
@@ -200,18 +201,31 @@ In this step you can test the compilation functions using the repl.
 
 ``` clojure
 (in-ns 'cljs_compiler.core)
-(_compilation "(+ 1 2"))
+(_compilation "(+ 1 2)")
 
-;; => [:ok "(2 + 2);\n"]
+;; => [:ok "(1 + 2);\n"]
+
+(_eval "(+ 1 2)")
+
+;; => [:ok 3]
+
+(_evaluation-js "(clj->js {:a 5})")
+
+;; => [:ok "{\n    \"a\": 5\n}"]
+
+(_evaluation-clj "(+ 1 2)")
+
+;; => [:ok "3"]
+
 ```
 
 
-4- om.next
+4- Om.next
 ----------
 
 [Om.next](https://github.com/omcljs/om/wiki/Quick-Start-(om.next)) is a great client framework based on [React.js](https://facebook.github.io/react/). It wasn't necessary to use it for our small app but it was an opportunity to discover it.
 
-Add om.next dependencies to `project.clj` 
+Add om.next to dependencies in `project.clj` 
 
 ``` clojure
 {
@@ -223,7 +237,7 @@ Add om.next dependencies to `project.clj`
 }
 ```
 
-and to `core.cljs`
+and require it in `core.cljs`
 
 ``` clojure
 (ns cljs_compiler.core
@@ -320,8 +334,8 @@ and of course test all that using the repl:
 ```
 
 
-OK! now you need UI components:
-We build an om component that contains 4 textarea, one for input and one for each compile/eval results.
+OK! Now you need UI components:
+We build an om component that contains 4 textareas, one for input and one for each compile/eval results.
 
 ``` clojure
 (defui CompilerUI
@@ -331,7 +345,6 @@ We build an om component that contains 4 textarea, one for input and one for eac
     '[:compilation :evaluation-js :evaluation-clj])
   
   Object
-  
   (render [this]
     (as->
       (om/props this) $
@@ -342,7 +355,7 @@ We build an om component that contains 4 textarea, one for input and one for eac
         (evaluate-js-ui $)))))
 ```
 
-and our 4 textareas
+Then declare 4 types of textareas before CompilerUI.
 
 ``` clojure
 (defn input-ui [reconciler]
@@ -369,6 +382,27 @@ and our 4 textareas
     (dom/section nil
                  (dom/textarea #js {:value result
                                     :readOnly true}))))
+```
+
+Lastly, add a div with ID `app` and add root to that dom element
+
+``` html
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Eval clojurescript to javascript!</title>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script src="js/main.js"></script>
+    </body>
+</html>
+```
+
+``` clojure
+(om/add-root! reconciler
+              CompilerUI (gdom/getElement "app"))
 ```
 
 Go to [http://localhost:3449/](http://localhost:3449/), you have an awesome clojurescript compiler.

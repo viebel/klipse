@@ -409,7 +409,8 @@ Go to [http://localhost:3449/](http://localhost:3449/), you have an awesome cloj
 
 Appendix
 ----------
-The complete source for core namespace in this tutorial.
+Below is the complete source code for core namespace in this tutorial.
+Or you can download/clone the whole tutorial project from [here.](https://github.com/flyjwayur/simple-cljs-web-compiler)
 
 ``` clojure
 (ns cljs_compiler.core

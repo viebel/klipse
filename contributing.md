@@ -5,7 +5,7 @@ KLIPSE is live [here](http://app.klipse.tech).
 And it looks like this:
 
 
-![KLIPSE screenshot](http://blog.klipse.tech/assets/hello-klipse.png "KLIPSE screenshot")
+![KLIPSE screenshot](https://cloud.githubusercontent.com/assets/11784820/23673439/fde9c7da-037a-11e7-889e-6c3e7ea6394d.png "KLIPSE screenshot")
 
 Basically, [KLIPSE](http://app.klipse.tech) is made of 4 rectangles:
 

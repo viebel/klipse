@@ -12,12 +12,11 @@ Basically, [KLIPSE](http://app.klipse.tech) is made of 4 rectangles:
 1. Top left rectangle: you insert your cljs code
 2. Top right rectangle: you see the generated javascript code from the cljs code
 3. Bottom left rectangle: you see the evaluation of the cljs code as a clojure object
-4. Bottom right rectangle: you see the evaluation of the cljs code as a js object
+4. Bottom right rectangle: you see what you print in your code
 
-By the way, if you go to [this KLIPSE with clojure code](http://app.klipse.tech/?cljs_in=(ns%20my.args%0A%20%20(%3Arequire%20%5Bclojure.string%20%3Aas%20string%5D))%0A%0A(defn%20hello-world%20%5B%26%20%7B%3Akeys%20%5Blanguage%20upper-case%3F%5D%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Aor%20%7Blanguage%20%3Aen%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20upper-case%3F%20false%7D%7D%5D%0A%0A%20%20(let%20%5Bgreeting%20(case%20language%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Afr%20%22bonjour%20monde%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Aen%20%22hello%20world%22)%5D%0A%20%20%20%20(if%20upper-case%3F%0A%20%20%20%20%20%20(string%2Fupper-case%20greeting)%0A%20%20%20%20%20%20greeting)))%0A%0A%0A%5B%0A%20%20(hello-world)%0A%20%20(hello-world%20%3Alanguage%20%3Afr)%0A%20%20(hello-world%20%3Aupper-case%3F%20true)%0A%20%20%5D%0A), you will be able to modify the code of see it in action.
+By the way, if you go to [this KLIPSE with clojure code](http://app.klipse.tech/?cljs_in=(ns%20my.args%0A%20%20(%3Arequire%20%5Bclojure.string%20%3Aas%20string%5D))%0A%0A(defn%20hello-world%20%5B%26%20%7B%3Akeys%20%5Blanguage%20upper-case%3F%5D%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Aor%20%7Blanguage%20%3Aen%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20upper-case%3F%20false%7D%7D%5D%0A%0A%20%20(let%20%5Bgreeting%20(case%20language%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Afr%20%22bonjour%20monde%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Aen%20%22hello%20world%22)%5D%0A%20%20%20%20(if%20upper-case%3F%0A%20%20%20%20%20%20(string%2Fupper-case%20greeting)%0A%20%20%20%20%20%20greeting)))%0A%0A%0A%5B%0A%20%20(hello-world)%0A%20%20(hello-world%20%3Alanguage%20%3Afr)%0A%20%20(hello-world%20%3Aupper-case%3F%20true)%0A%20%20%5D%0A), you will be able to modify the code in the screenshot and see it in action.
 
 Have fun!
-pl
 
 ## Usage - App
 
@@ -99,7 +98,7 @@ export cp=`lein classpath`
 lumo -k . -c $cp
 ```
 
-3. inside lumo, you need to require your namespaces, and the cache will be stored inder `docs/cache-cljs` e.g.:
+3. inside lumo, you need to require your namespaces, and the cache will be stored under `docs/cache-cljs` e.g.:
 
 ```bash
 cljs.user=> (require 'clojure.test.check)

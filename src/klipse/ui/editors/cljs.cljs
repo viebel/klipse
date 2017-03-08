@@ -136,7 +136,7 @@
                                :parinfer-paren "mode-parinfer-paren"
                                :parinfer-indent "mode-parinfer-indent"
                                "mode-regular")]
-            (dom/section #js {:className (str "cljs-editor")}
+            (dom/section #js {:className "cljs-editor"}
                          (dom/div #js {:autoFocus true
                                        :id "code-cljs"
                                        :placeholder placeholder-editor}

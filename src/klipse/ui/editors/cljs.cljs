@@ -127,7 +127,7 @@
                        (process-input this (get-value new-editor))))
 
   (render [this]
-          (let [{:keys [input editor-mode] :or {editor-mode :regular input ""}} (:input (om/props this))
+          (let [{:keys [input editor-mode] :or {input ""}} (:input (om/props this))
                 editor-class (case editor-mode
                                :loading "mode-loading"
                                :error "mode-error"

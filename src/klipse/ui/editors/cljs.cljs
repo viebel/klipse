@@ -25,7 +25,7 @@
 (def placeholder-editor
   (str
    ";; Write your clojurescript expression \n"
-   ";; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."))
+   ";; and press Ctrl-Enter or wait for 3 sec to experience the magic..."))
 
 (defn save-input [component s]
   (when-not (blank? s)

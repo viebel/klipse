@@ -4,5 +4,8 @@
             cljs.env
             clojure.spec ;; it is not required by the app
             clojure.walk
+            clojure.zip
+            clojure.data
+            clojure.set
             klipse.tools))
 

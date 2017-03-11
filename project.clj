@@ -15,7 +15,8 @@
                  [cljsjs/codemirror "5.19.0-0"]
                  [devcards "0.2.2"]
                  [devcards-om-next "0.3.0"]]
-  :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.8"]] }}
+  :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.8"]
+                                  [com.cemerick/piggieback "0.2.1"]] }}
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ^{:protect false} ["resources/public/dev/js"
                                     "resources/public/plugin_prod/js"

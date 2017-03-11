@@ -139,13 +139,13 @@
         (src-cb nil)))))
 
 (defn cached-macro-ns-regexp []
-  (:clojure_cached_macro_ns_regexp (klipse-settings) #"cljs\.reader|cljs\.core\.[async|match].*|clojure\.math\.macros|gadjett\.core|cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*"))
+  (:clojure_cached_macro_ns_regexp (klipse-settings) #"cljs\.reader|cljs\.core\.[async|match].*|clojure\.math\.macros|gadjett\.core|cljs\.test|clojure.test.check.*|reagent\..*|om\..*|cljs\.spec.*|re-frame\..*|net\.cgrand\.macrovich"))
 
 (defn cached-macro-ns? [name]
   (re-matches (cached-macro-ns-regexp) (str name)))
 
 (defn cached-ns-regexp []
-  (:clojure_cached_ns_regexp (klipse-settings) #"cljs\.stacktrace|cljs\.core\.[async|match].*|cljs\.spec.*|clojure.math\.combinatorics|clojure.test.check.*|reagent\..*|om\..*|clojure\.data"))
+  (:clojure_cached_ns_regexp (klipse-settings) #"cljs\.stacktrace|cljs\.core\.[async|match].*|cljs\.spec.*|clojure.math\.combinatorics|clojure.test.check.*|reagent\..*|om\..*|clojure\.data|re-frame\..*|reagent-forms\..*"))
 
 (defn cached-cljs-ns? [name]
   (re-matches (cached-ns-regexp) (str name)))

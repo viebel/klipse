@@ -3,7 +3,7 @@
     [om.next :as om :refer-macros [defui]]
     [om.dom :as dom]))
 
-(def placeholder-textarea ";; Here you will see what your print in your code...")
+(def placeholder-textarea ";; Here you will see what you print in your code...")
 
 (defui Js-textarea
   

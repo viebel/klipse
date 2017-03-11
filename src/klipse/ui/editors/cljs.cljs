@@ -25,7 +25,7 @@
 (def placeholder-editor
   (str
    ";; Write your clojurescript expression \n"
-   ";; and press Ctrl-Enter or wait for 3 sec to experiment the magic..."))
+   ";; and press Ctrl-Enter or wait for 3 sec to experience the magic..."))
 
 (defn save-input [component s]
   (when-not (blank? s)
@@ -127,7 +127,7 @@
                        (process-input this (get-value new-editor))))
 
   (render [this]
-          (let [{:keys [input editor-mode] :or {editor-mode :regular input ""}} (:input (om/props this))
+          (let [{:keys [input editor-mode] :or {input ""}} (:input (om/props this))
                 editor-class (case editor-mode
                                :loading "mode-loading"
                                :error "mode-error"
@@ -136,7 +136,7 @@
                                :parinfer-paren "mode-parinfer-paren"
                                :parinfer-indent "mode-parinfer-indent"
                                "mode-regular")]
-            (dom/section #js {:className (str "cljs-editor")}
+            (dom/section #js {:className "cljs-editor"}
                          (dom/div #js {:autoFocus true
                                        :id "code-cljs"
                                        :placeholder placeholder-editor}

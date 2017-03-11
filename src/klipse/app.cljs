@@ -3,7 +3,7 @@
     [klipse.macros :refer [dbg]]
     [cljs.core.async.macros :refer [go]])
   (:require 
-   [om.next :as om]
+    [om.next :as om]
     ;require codemirror addons here - as in the plugin they are loaded dynamically
     cljsjs.codemirror.mode.clojure
     cljsjs.codemirror.mode.javascript

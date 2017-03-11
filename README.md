@@ -203,14 +203,14 @@ Additionaly, you can configure CodeMirror input (snippet source code) and output
 
 Currently, we support all the settings [CodeMirror Configuration settings](http://codemirror.net/doc/manual.html#config) and part of the [Addons settings](http://codemirror.net/doc/manual.html#addons):  `matchBrackets` and `autoCloseBrackets`.
 
-For instance, you can modify the `identUnit`, `lineWrapping`, `lineNumbers` and `autoCloseBrackets` like this:
+For instance, you can modify the `indentUnit`, `lineWrapping`, `lineNumbers` and `autoCloseBrackets` like this:
 ```javascript
 window.klipse_settings = {
     codemirror_options_in: {
         indentUnit: 8,
         lineWrapping: true,
         lineNumbers: true,
-       autoCloseBrackets: true
+        autoCloseBrackets: true
     },
     codemirror_options_out: {
         lineWrapping: true,
@@ -240,7 +240,7 @@ The following attributes can be added to the DOM element of the snippet:
 #### Clojure only
 
 
-Here is a [live demo](https://book.klipse.tech/interactive_clojure[script]_code_snippets.html) of the diffeent snippet level configuration options.
+Here is a [live demo](https://book.klipse.tech/interactive_clojure[script]_code_snippets.html) of the different snippet level configuration options.
 
 The following data attributes are supported on a klipse snippet DOM element:
 

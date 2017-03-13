@@ -6,7 +6,7 @@
     [klipse.common.registry :refer [selector->mode mode-options]]
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
-    [klipse.utils :refer [load-scripts-mem securize-eval!]]
+    [klipse.utils :refer [load-scripts-mem securize-eval! default-permitted-symbols]]
     [cljs.spec :as s]
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
@@ -144,10 +144,13 @@
           [element (@selector->mode selector-name)])))
 
 (defn ^:export init-clj [settings]
-  (let [{:keys [secured_eval] :as keywordized-settings} (keywordize-keys settings)
+  (let [{:keys [secured_eval secured_permitted_symbols]
+         :as keywordized-settings
+         :or {secured_permitted_symbols (default-permitted-symbols)}}
+        (keywordize-keys settings)
         modes (elements->mode settings)
         elements (seq-from-selector (snippets-selector settings (keys @selector->mode)))]
-    (when secured_eval (securize-eval!))
+    (when secured_eval (securize-eval! secured_permitted_symbols))
     (klipsify-elements elements keywordized-settings modes)))
 
 (defn ^:export init [js-settings]

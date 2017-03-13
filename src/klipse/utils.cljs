@@ -1,4 +1,5 @@
 (ns klipse.utils
+  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
    [klipse.macros :refer [dbg]]
    [cljs.core.async.macros :refer [go go-loop]])
@@ -106,14 +107,20 @@
             res)
           (get @ran args))))))
 
+(defn default-permitted-symbols []
+                                        ; it doesn't work with setTimeout and setInterval
+                                        ; in Firefox, it causes this error: TypeError: 'setTimeout' called on an object that does not implement interface Window.
+  ["console" "setTimeout" "setInterval"])
 
-(defn securize-eval!* []
+(defn securize-eval!* [permitted-symbols]
   ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
   (let [original-eval js/eval]
     (set! js/eval (fn [src]
                     (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
     (set! js/klipse-unsecured-eval original-eval)
-    (set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.keys js/window) (repeat {}))))))
+    (set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.getOwnPropertyNames js/window) (repeat {}))))
+    (doseq [sym permitted-symbols]
+      (aset js/klipse-eval-sandbox sym (aget js/window sym)))))
 
 (def securize-eval! (runonce securize-eval!*))
 

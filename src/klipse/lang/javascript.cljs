@@ -55,7 +55,7 @@
       (if (string/blank? exp)
         (put! c "")
         (do (setup-container! container-id)
-            (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
+            (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs) :secured-eval? true))]
               (try
                 (put! c (if (= :ok status)
                           (try

@@ -110,16 +110,20 @@
 (defn default-permitted-symbols []
                                         ; it doesn't work with setTimeout and setInterval
                                         ; in Firefox, it causes this error: TypeError: 'setTimeout' called on an object that does not implement interface Window.
-  ["console" "setTimeout" "setInterval"])
+  ["console" "setTimeout" "setInterval" "Math" "Date"])
 
-(defn securize-eval!* [permitted-symbols]
+(defn default-forbidden-symbols []
+  ["document" "XMLHttpRequest" "eval"])
+
+(defn securize-eval!* [the-forbidden-symbols]
   ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
   (let [original-eval js/eval]
     (set! js/eval (fn [src]
                     (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
     (set! js/klipse-unsecured-eval original-eval)
-    (set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.getOwnPropertyNames js/window) (repeat {}))))
-    (doseq [sym permitted-symbols]
+    (set! js/klipse-eval-sandbox (clj->js (zipmap the-forbidden-symbols (repeat {}))))
+    #_(set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.getOwnPropertyNames js/window) (repeat {}))))
+    #_(doseq [sym permitted-symbols]
       (aset js/klipse-eval-sandbox sym (aget js/window sym)))))
 
 (def securize-eval! (runonce securize-eval!*))
@@ -132,24 +136,26 @@
 (defn eval-in-global-scope [s]
   (js/eval s))
 
-(defn load-script [script]
+(defn load-script [script & {:keys [secured-eval?] :or {secured-eval? false}}]
   (go
     (js/console.info "loading:" script)
     (let [{:keys [status body]} (<! (http/get script {:with-credentials? false}))]
       (if (= 200 status)
         (do
           (js/console.info "evaluating:" script)
-          (unsecured-eval-in-global-scope body)
+          (if secured-eval?
+            (eval-in-global-scope body)
+            (unsecured-eval-in-global-scope body))
           [:ok script])
         [status script]))))
 
 (def load-script-mem (memoize-async load-script))
 
-(defn load-scripts [scripts]
+(defn load-scripts [scripts & {:keys [secured-eval?] :or {secured-eval? false}}]
   (go-loop [the-scripts scripts]
     (if (seq the-scripts)
       (let [script (str (first the-scripts))
-            [status script] (<! (load-script-mem script))]
+            [status script] (<! (load-script-mem script :secured-eval? secured-eval?))]
         (if (= :ok status)
           (recur (rest the-scripts)))
         [status script])

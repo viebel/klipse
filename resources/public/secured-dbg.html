@@ -9,16 +9,7 @@
     <body>
 
       <h1> Javascript</j1>
-<h2> jQuery</h2>
-External scripts can be loaded properly
-<pre><code class="js" data-external-libs="jQuery">
-$
-</code></pre>
-
-<h2>eval,alert,cookies,ajax etc... are inaccessible </h2>
-<pre><code class="js">
-alert(1)
-</code></pre>
+<h2>eval,cookies,ajax etc... are inaccessible </h2>
 
 <pre><code class="js">
 document.cookie
@@ -26,44 +17,62 @@ document.cookie
 <pre><code class="js">
 XMLHttpRequest
 </code></pre>
+
 <pre><code class="js">
-eval("alert(1)")
+eval("1+2")
 </code></pre>
+
 
 <h2> console.log is accessible </h2>
 <pre><code class="js">
 console.log("inside");
 </code></pre>
 
+<h2> the klipse container is accessible </h2>
+<pre><code class="eval-js">
+klipse_container.innerHTML=`<h2 style="color:red;">foo</h2>`;
+</code></pre>
+    <br/>
 
-
+<h2> data is shared bettween snippets </h2>
+    
 <pre><code class="js">
-klipse_unsecured_eval("alert(1)")
+a = 1
 </code></pre>
 
-
-
 <pre><code class="js">
-    klipse.utils.unsecured_eval_in_global_scope("alert(1)")
+a * 100
 </code></pre>
+
+<h2> External Scripts</h2>
+External scripts can be loaded properly. E.g. jQuery
+<pre><code class="js" data-external-libs="jQuery">
+$
+</code></pre>
+
 
 <h1> Clojure </h1>
 <pre><code class="clj">
-(js/alert 1)
+js/document
 </code></pre>
 
+<pre><code class="clj">
+(def bb 1)
+</code></pre>
+
+<pre><code class="clj">
+(* bb 1000)
+</code></pre>
 
 <br/>
-    <div class="eval-js">
-klipse_container.innerHTML=`<h2 style="color:red;">foo</h2>`;
-    </div>
-    <br/>
+
 
 
       <script>
         window.klipse_settings = {
         selector_eval_js: '.js,.eval-js',
 	selector: '.clj',
+	//security_forbidden_symbols: [],
 	secured_eval: true,
         };
         </script>

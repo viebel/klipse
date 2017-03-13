@@ -118,10 +118,10 @@
 (defn securize-eval!* [the-forbidden-symbols]
   ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
   (let [original-eval js/eval]
-    (set! js/eval (fn [src]
+    (! js/window.eval (fn [src]
                     (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
-    (set! js/klipse-unsecured-eval original-eval)
-    (set! js/klipse-eval-sandbox (clj->js (zipmap the-forbidden-symbols (repeat {}))))
+    (! js/window.klipse_unsecured_eval original-eval)
+    (! js/window.klipse_eval_sandbox (clj->js (zipmap the-forbidden-symbols (repeat {}))))
     #_(set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.getOwnPropertyNames js/window) (repeat {}))))
     #_(doseq [sym permitted-symbols]
       (aset js/klipse-eval-sandbox sym (aget js/window sym)))))
@@ -129,7 +129,7 @@
 (def securize-eval! (runonce securize-eval!*))
 
 (defn unsecured-eval-in-global-scope [s]
-  ((or js/window.klipse-unsecured-eval js/eval) s)) ; we have to use the unsecured eval because external scripts usually manipulate the DOM!
+  ((or (? js/window.klipse_unsecured_eval) js/eval) s)) ; we have to use the unsecured eval because external scripts usually manipulate the DOM!
                                         ;this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
 

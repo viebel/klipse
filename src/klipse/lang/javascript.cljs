@@ -2,7 +2,7 @@
   (:require-macros
    [klipse.macros :refer [my-with-redefs]]
    [gadjett.core :refer [dbg]]
-   [purnam.core :refer [!>]]
+   [purnam.core :refer [!> !]]
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [klipse.utils :refer [load-scripts verbose? eval-in-global-scope]]
@@ -45,8 +45,8 @@
     ""))
 
 (defn setup-container! [container-id]
-  (set! js/klipse-container (js/document.getElementById container-id))
-  (set! js/klipse-container-id container-id))
+  (! js/window.klipse_container (js/document.getElementById container-id))
+  (! js/window.klipse_container-id container-id))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]

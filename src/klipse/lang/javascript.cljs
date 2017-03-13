@@ -46,9 +46,9 @@
     (eval-in-global-scope wrapped-exp)
     ""))
 
-(defn setup-container [container-id]
-  (str "klipse_container = document.getElementById('" container-id "');\n"
-       "klipse_container_id = '"container-id "';\n"))
+(defn setup-container! [container-id]
+  (set! js/klipse-container (js/document.getElementById container-id))
+  (set! js/klipse-container-id container-id))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]
@@ -56,7 +56,7 @@
     (go
       (if (string/blank? exp)
         (put! c "")
-        (do (eval-in-global-scope (setup-container container-id))
+        (do (setup-container! container-id)
             (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
               (try
                 (put! c (if (= :ok status)
@@ -94,7 +94,7 @@
       (if (string/blank? exp)
         (put! c "")
         (do
-          (eval-in-global-scope (setup-container container-id))
+          (setup-container! container-id)
           (let [transpiled-exp (babel exp)]
             (put! c (if async-code?
                       (eval-with-logger! c transpiled-exp)

@@ -106,7 +106,8 @@
             res)
           (get @ran args))))))
 
-(def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
+(def eval-in-global-scope (or js/window.klipse_unsecured_eval js/eval)) ; we have to use the unsecured eval because external scripts usually manipulate the DOM!
+                                        ;this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
 (defn load-script [script]
   (go

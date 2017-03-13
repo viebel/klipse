@@ -5,7 +5,7 @@
    [purnam.core :refer [!>]]
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
-   [klipse.utils :refer [load-scripts verbose?]]
+   [klipse.utils :refer [load-scripts verbose? eval-in-global-scope]]
    [cljs-http.client :as http]
    [clojure.string :as string]
    [cljs.core.async :refer [<! chan put!]]
@@ -16,8 +16,6 @@
    "immutable" "https://raw.githubusercontent.com/facebook/immutable-js/master/dist/immutable.min.js"
    "jQuery" "https://code.jquery.com/jquery-2.2.4.min.js"
    "underscore" "http://underscorejs.org/underscore-min.js"})
-
-(def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
 (defn external-lib-path [lib-name-or-url]
   (get known-external-libs lib-name-or-url lib-name-or-url))

@@ -106,8 +106,24 @@
             res)
           (get @ran args))))))
 
-(def eval-in-global-scope (or js/window.klipse_unsecured_eval js/eval)) ; we have to use the unsecured eval because external scripts usually manipulate the DOM!
+
+(defn securize-eval!* []
+  ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
+  (let [original-eval js/eval]
+    (set! js/eval (fn [src]
+                    (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
+    (set! js/klipse-unsecured-eval original-eval)
+    (set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.keys js/window) (repeat {}))))))
+
+(def securize-eval! (runonce securize-eval!*))
+
+(defn unsecured-eval-in-global-scope [s]
+  ((or js/window.klipse-unsecured-eval js/eval) s)) ; we have to use the unsecured eval because external scripts usually manipulate the DOM!
                                         ;this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
+
+
+(defn eval-in-global-scope [s]
+  (js/eval s))
 
 (defn load-script [script]
   (go
@@ -116,7 +132,7 @@
       (if (= 200 status)
         (do
           (js/console.info "evaluating:" script)
-          (eval-in-global-scope body)
+          (unsecured-eval-in-global-scope body)
           [:ok script])
         [status script]))))
 

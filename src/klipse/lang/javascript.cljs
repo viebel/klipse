@@ -11,7 +11,7 @@
    [cljs.core.async :refer [<! chan put!]]
    [klipse.common.registry :refer [codemirror-mode-src scripts-src register-mode]]))
 
-(set! *warn-on-infer* true)
+;(set! *warn-on-infer* true)
 (def known-external-libs
   {
    "immutable" "https://raw.githubusercontent.com/facebook/immutable-js/master/dist/immutable.min.js"

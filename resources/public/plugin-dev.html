@@ -292,19 +292,19 @@ This should fail with abbreviated results displaed properly
 
     <h2> all the js values should be printed properly </h2>
     <pre><code class="eval-js">
-	a = new Set();
-	a.add(1);
-	a.add(2);
-	x = {a: 1,
-	aa: a,
+	bba = new Set();
+	bba.add(1);
+	bba.add(2);
+	xyyy = {a: 1,
+	aa: bba,
 	str: "Hello World\nand Klipse!",
 	date: new Date(),
 	rrr: /^aa[a]+$/,
 	c: [1/0, NaN, Promise.resolve(1)],
 	arr: new Int32Array(3),
 	d: Symbol("dd")}
-	x.selfRef = x;
-	x
+	xyyy.selfRef = xyyy;
+	xyyy
     </code></pre>
     <h2>containers</h2>
     Each snippet has a container near it that is accessible with `klipse_container`:

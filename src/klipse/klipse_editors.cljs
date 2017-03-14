@@ -141,7 +141,7 @@
         in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
         snippet-args {:loop-msec loop-msec
                       :preamble preamble}
-        state (create-state :container container :result-element result-element :editor-args (dbg editor-args))]
+        state (create-state :container container :result-element result-element :editor-args editor-args)]
     (handle-events in-editor
                    {:idle-msec idle-msec
                     :on-should-eval #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)})

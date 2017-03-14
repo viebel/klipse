@@ -1,4 +1,5 @@
 (ns klipse.utils
+  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
    [klipse.macros :refer [dbg]]
    [cljs.core.async.macros :refer [go go-loop]])
@@ -106,26 +107,56 @@
             res)
           (get @ran args))))))
 
-(def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
+(defn default-permitted-symbols []
+                                        ; it doesn't work with setTimeout and setInterval
+                                        ; in Firefox, it causes this error: TypeError: 'setTimeout' called on an object that does not implement interface Window.
+  ["console" "setTimeout" "setInterval" "Math" "Date"])
 
-(defn load-script [script]
+(defn default-forbidden-symbols []
+  ["document" "XMLHttpRequest" "eval"])
+
+(defn securize-eval!* [the-forbidden-symbols]
+  ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
+  (let [original-eval js/eval]
+    (! js/window.eval (fn [src]
+                    (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
+    (! js/window.klipse_unsecured_eval original-eval)
+    (! js/window.klipse_eval_sandbox (clj->js (zipmap the-forbidden-symbols (repeat {}))))
+    #_(set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.getOwnPropertyNames js/window) (repeat {}))))
+    #_(doseq [sym permitted-symbols]
+      (aset js/klipse-eval-sandbox sym (aget js/window sym)))))
+
+(def securize-eval! (runonce securize-eval!*))
+
+(defn unsecured-eval-in-global-scope [s]
+  ((or (? js/window.klipse_unsecured_eval) js/eval) s)) ; we have to use the unsecured eval because external scripts usually manipulate the DOM!
+                                        ;this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
+
+
+(defn eval-in-global-scope [s]
+  (js/eval s))
+
+(defn load-script [script & {:keys [secured-eval?] :or {secured-eval? false}}]
   (go
     (js/console.info "loading:" script)
     (let [{:keys [status body]} (<! (http/get script {:with-credentials? false}))]
       (if (= 200 status)
         (do
           (js/console.info "evaluating:" script)
-          (eval-in-global-scope body)
+          (if secured-eval?
+            (eval-in-global-scope body)
+            (unsecured-eval-in-global-scope body))
+          (js/console.info "evaluation done:" script)          
           [:ok script])
         [status script]))))
 
 (def load-script-mem (memoize-async load-script))
 
-(defn load-scripts [scripts]
+(defn load-scripts [scripts & {:keys [secured-eval?] :or {secured-eval? false}}]
   (go-loop [the-scripts scripts]
     (if (seq the-scripts)
       (let [script (str (first the-scripts))
-            [status script] (<! (load-script-mem script))]
+            [status script] (<! (load-script-mem script :secured-eval? secured-eval?))]
         (if (= :ok status)
           (recur (rest the-scripts)))
         [status script])

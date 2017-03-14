@@ -2,22 +2,21 @@
   (:require-macros
    [klipse.macros :refer [my-with-redefs]]
    [gadjett.core :refer [dbg]]
-   [purnam.core :refer [!>]]
+   [purnam.core :refer [!> !]]
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
-   [klipse.utils :refer [load-scripts verbose?]]
+   [klipse.utils :refer [load-scripts verbose? eval-in-global-scope]]
    [cljs-http.client :as http]
    [clojure.string :as string]
    [cljs.core.async :refer [<! chan put!]]
    [klipse.common.registry :refer [codemirror-mode-src scripts-src register-mode]]))
 
+(set! *warn-on-infer* true)
 (def known-external-libs
   {
    "immutable" "https://raw.githubusercontent.com/facebook/immutable-js/master/dist/immutable.min.js"
    "jQuery" "https://code.jquery.com/jquery-2.2.4.min.js"
    "underscore" "http://underscorejs.org/underscore-min.js"})
-
-(def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
 (defn external-lib-path [lib-name-or-url]
   (get known-external-libs lib-name-or-url lib-name-or-url))
@@ -46,9 +45,9 @@
     (eval-in-global-scope wrapped-exp)
     ""))
 
-(defn setup-container [container-id]
-  (str "klipse_container = document.getElementById('" container-id "');\n"
-       "klipse_container_id = '"container-id "';\n"))
+(defn setup-container! [container-id]
+  (aset js/window "klipse_container" (js/document.getElementById container-id))
+  (aset js/window "klipse_container_id" container-id))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]
@@ -56,8 +55,8 @@
     (go
       (if (string/blank? exp)
         (put! c "")
-        (do (eval-in-global-scope (setup-container container-id))
-            (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs)))]
+        (do (setup-container! container-id)
+            (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs) :secured-eval? true))]
               (try
                 (put! c (if (= :ok status)
                           (try
@@ -94,7 +93,7 @@
       (if (string/blank? exp)
         (put! c "")
         (do
-          (eval-in-global-scope (setup-container container-id))
+          (setup-container! container-id)
           (let [transpiled-exp (babel exp)]
             (put! c (if async-code?
                       (eval-with-logger! c transpiled-exp)

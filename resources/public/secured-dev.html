@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+
+      <h1> Javascript</j1>
+<h2>eval,cookies,ajax etc... are inaccessible </h2>
+
+<pre><code class="js">
+document.cookie
+</code></pre>
+<pre><code class="js">
+XMLHttpRequest
+</code></pre>
+
+<pre><code class="js">
+eval("1+2")
+</code></pre>
+
+
+<h2> console.log is accessible </h2>
+<pre><code class="js">
+console.log("inside");
+</code></pre>
+
+<h2> the klipse container is accessible </h2>
+<pre><code class="eval-js">
+klipse_container.innerHTML=`<h2 style="color:red;">foo</h2>`;
+</code></pre>
+    <br/>
+
+<h2> data is shared bettween snippets </h2>
+    
+<pre><code class="js">
+a = 1
+</code></pre>
+
+<pre><code class="js">
+a * 100
+</code></pre>
+
+<h2> External Scripts</h2>
+External scripts can be loaded properly. E.g. jQuery
+<pre><code class="js" data-external-libs="jQuery">
+$
+</code></pre>
+
+
+<h1> Clojure </h1>
+<pre><code class="clj">
+js/document
+</code></pre>
+
+<pre><code class="clj">
+(def bb 1)
+</code></pre>
+
+<pre><code class="clj">
+(* bb 1000)
+</code></pre>
+
+<br/>
+
+
+
+      <script>
+        window.klipse_settings = {
+        selector_eval_js: '.js,.eval-js',
+	selector: '.clj',
+	//security_forbidden_symbols: [],
+	secured_eval: true,
+        };
+        </script>
+      <!--script src="/plugin/js/klipse_plugin.js"></script-->
+        <script src="/plugin_prod/js/klipse_plugin.min.js"></script>      
+    </body>
+</html>

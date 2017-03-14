@@ -23,7 +23,6 @@
     [cljs.env :as env]
     [cljs.js :as cljs]))
 
-
 ;; create cljs.user
 ;(set! (.. js/window -cljs -user) #js {})
 ; the following code is advanced compilation friendly
@@ -210,15 +209,18 @@
           second
           str)))
 
+(defn setup-container! [container-id]
+  (aset js/window "klipse_container" (js/document.getElementById container-id))
+  (aset js/window "klipse_container_id" container-id))
+
 (defn str-eval-async [exp {:keys [container-id] :as opts}]
-  (let [c (chan)
-        exp-container (str `(set! js/klipse-container (js/document.getElementById ~container-id)) "\n" `(set! js/klipse-container-id ~container-id))]
+  (let [c (chan)]
     (when (verbose?) (js/console.info "[clojure] evaluating" exp))
     (go
       (if (blank? exp)
         (put! c "")
         (do
-          (<! (eval-async exp-container opts))
+          (setup-container! container-id)
           (binding [*print-newline* true
                     *print-fn* #(put! c %)]
             (put! c (-> (<! (eval-async exp opts))

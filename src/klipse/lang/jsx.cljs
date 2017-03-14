@@ -4,10 +4,8 @@
     [purnam.core :refer [!>]]
     [cljs.core.async.macros :refer [go]])
   (:require
+    [klipse.utils :refer [eval-in-global-scope]]    
     [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
-
-(def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
-
 
 (defn babel [src]
    (-> (!> js/Babel.transform src #js {:presets #js ["react"]})

@@ -292,40 +292,40 @@ This should fail with abbreviated results displaed properly
 
     <h2> all the js values should be printed properly </h2>
     <pre><code class="eval-js">
-	a = new Set();
-	a.add(1);
-	a.add(2);
-	x = {a: 1,
-	aa: a,
+	bba = new Set();
+	bba.add(1);
+	bba.add(2);
+	xyyy = {a: 1,
+	aa: bba,
 	str: "Hello World\nand Klipse!",
 	date: new Date(),
 	rrr: /^aa[a]+$/,
 	c: [1/0, NaN, Promise.resolve(1)],
 	arr: new Int32Array(3),
 	d: Symbol("dd")}
-	x.selfRef = x;
-	x
+	xyyy.selfRef = xyyy;
+	xyyy
     </code></pre>
     <h2>containers</h2>
     Each snippet has a container near it that is accessible with `klipse_container`:
-    <pre><code class="aaeval-js">
+    <pre><code class="eval-js">
 	klipse_container.innerHTML="hello";
 	[1,2,3]
     </code></pre>
 
     <h2> evaluate snippet in a loop </h2>
     <p>This snippet should be evaluated only once</p>
-    <pre><code class="aaeval-js">Date()</code></pre>
+    <pre><code class="eval-js">Date()</code></pre>
     <p>This snippet should be evaluated every second</p>
-    <pre><code class="aaeval-js" data-loop-msec="1000">Date()</code></pre>
+    <pre><code class="eval-js" data-loop-msec="1000">Date()</code></pre>
     <p>This snippet should be evaluated every 5 seconds</p>
-    <pre><code class="aaeval-js" data-loop-msec="5000">Date()</code></pre>
+    <pre><code class="eval-js" data-loop-msec="5000">Date()</code></pre>
     <h2> immutable.js </h2>
-    <div class="aaeval-js" data-external-libs="immutable">
+    <div class="eval-js" data-external-libs="immutable">
       Immutable
     </div>
     <br/>
-    <div class="aaeval-js">
+    <div class="eval-js">
       var m = Immutable.fromJS({a: 10, c: 40});
 
       m.map(x => x * x);
@@ -335,24 +335,24 @@ This should fail with abbreviated results displaed properly
 
     <h2> native javascript </h2>
     <p>Functions should be displayed as empty strings</p>
-    <div class="aaeval-js">
+    <div class="eval-js">
       () => 1
     </div>
-    <div class="aaeval-js">
+    <div class="eval-js">
       [1, 2, 3].reduce(
       function(total, num){ return total + num }
       , 0);
     </div>
     <h2> console.log </h2>
     <code>console.log</code> outputs should be appended to the result cell
-    <div class="aaeval-js">
+    <div class="eval-js">
       console.log("hello");
       console.log("klipse\nand cljs");
       console.log("in 1st snippet");
       2+3;
     </div>
     <br/>
-    <div class="aaeval-js">
+    <div class="eval-js">
       console.log("hello");
       console.log("klipse");
       console.log("in 2nd snippet");
@@ -362,12 +362,12 @@ This should fail with abbreviated results displaed properly
     <h2> async console.log </h2>
     When the call to <code>console.log</code> is asynchronous, you must use <code>data-async-code="true"</code>:
 
-    <pre><code class="aaeval-js" data-async-code="true">
+    <pre><code class="eval-js" data-async-code="true">
 	setTimeout(function() {
 	console.log("1st snippet", 1/0, [1, 2, {a: 2}]);
 	}, 1000);
     </code></pre>
-    <pre><code class="aaeval-js" data-async-code="true">
+    <pre><code class="eval-js" data-async-code="true">
 	setTimeout(function() {
 	console.log("2nd snippet");
 	console.log("2nd snippet - bb");
@@ -420,17 +420,17 @@ This should fail with abbreviated results displaed properly
     </code></pre>
     
     <h2> jQuery </h2>
-    <div class="aaaeval-js" data-external-libs="jQuery">
+    <div class="eval-js" data-external-libs="jQuery">
       $
     </div>
     <br/>
-    <div class="aaeval-js">
+    <div class="eval-js">
       $('div').length
     </div>
     <br/>
   <body>
     <h1> React and jsx </h1>
-    <pre><code class="aaeval-js" data-external-libs="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js, https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js">
+    <pre><code class="eval-js" data-external-libs="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js, https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js">
 	Object.keys(React)
     </code></pre>
     <pre><code class="transpile-jsx">
@@ -457,7 +457,7 @@ This should fail with abbreviated results displaed properly
 	}
 	window.ShoppingList = ShoppingList
     </code></pre>
-    <code><pre class="aaeval-js">
+    <code><pre class="eval-js">
 	ShoppingList
     </code></pre>
     <h1> PHP </h1>
@@ -638,24 +638,24 @@ This should fail with abbreviated results displaed properly
       codemirror_options_out: {
       lineWrapping: true
       },
-      aselector: '.clojure,.clj',
-      aselector_es2017: '.es2017',
+      selector: '.clojure,.clj',
+      selector_es2017: '.es2017',
       selector_eval_js: '.eval-js',
-      aselector_eval_markdown: '.eval-markdown',
-      aselector_eval_lambdaway: '.lambda',
-      aselector_eval_python_client: '.eval-python',
-      aselector_eval_html: '.eval-html',
-      aselector_eval_php: '.eval-php',
-      aselector_sql: '.sql',
-      aselector_eval_scheme: '.scheme',
-      aselector_eval_ruby: '.eval-ruby',
-      aselector_brainfuck: '.brainfuck',
-      aselector_brainfuck_txt: '.brainfuck-txt',
-      aselector_js: '.clojure-js',
-      aselector_jsx: '.jsx',
-      aselector_transpile_jsx: '.transpile-jsx',
-      aselector_eval_cpp: '.cpp',
-      aselector_reagent: '.reagent',
+      selector_eval_markdown: '.eval-markdown',
+      selector_eval_lambdaway: '.lambda',
+      selector_eval_python_client: '.eval-python',
+      selector_eval_html: '.eval-html',
+      selector_eval_php: '.eval-php',
+      selector_sql: '.sql',
+      selector_eval_scheme: '.scheme',
+      selector_eval_ruby: '.eval-ruby',
+      selector_brainfuck: '.brainfuck',
+      selector_brainfuck_txt: '.brainfuck-txt',
+      selector_js: '.clojure-js',
+      selector_jsx: '.jsx',
+      selector_transpile_jsx: '.transpile-jsx',
+      selector_eval_cpp: '.cpp',
+      selector_reagent: '.reagent',
       };
     </script>
     <script>

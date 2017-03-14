@@ -46,9 +46,8 @@
     ""))
 
 (defn setup-container! [container-id]
-  
-  #_(aset js/window "klipse_container" (js/document.getElementById container-id))
-  #_(aset js/window "klipse_container_id" container-id))
+  (aset js/window "klipse_container" (js/document.getElementById container-id))
+  (aset js/window "klipse_container_id" container-id))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]

@@ -32,7 +32,8 @@
 (defn append-to-chan [c]
   (fn [& args]
     (put! c (string/join " "  (map beautify args)))
-    (put! c "\n")))
+    (put! c "\n")
+    js/undefined))
 
 (defn eval-with-logger!
   "Evals an expression where the window.console object is lexically bound to an object that puts the console output on a channel.

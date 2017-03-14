@@ -23,6 +23,7 @@
     [cljs.env :as env]
     [cljs.js :as cljs]))
 
+(set! *warn-on-infer* true)
 
 ;; create cljs.user
 ;(set! (.. js/window -cljs -user) #js {})
@@ -211,8 +212,8 @@
           str)))
 
 (defn setup-container! [container-id]
-  (! js/window.klipse_container (js/document.getElementById container-id))
-  (! js/window.klipse_container_id container-id))
+  (aset js/window "klipse_container" (js/document.getElementById container-id))
+  (aset js/window "klipse_container_id" container-id))
 
 (defn str-eval-async [exp {:keys [container-id] :as opts}]
   (let [c (chan)]

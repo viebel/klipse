@@ -15,7 +15,7 @@
                  [cljsjs/codemirror "5.19.0-0"]
                  [devcards "0.2.2"]
                  [devcards-om-next "0.3.0"]]
-  :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.8"]
+  :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.9"]
                                   [com.cemerick/piggieback "0.2.1"]] }}
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ^{:protect false} ["resources/public/dev/js"
@@ -71,19 +71,34 @@
                                                                    (first))}
                                            :optimizations :simple
                                            :verbose false}}
-                      :plugin-prod {
-                               :source-paths ["src/klipse/run/plugin_prod"]
-                               :compiler {
-                                          :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
-                                          :output-dir "resources/public/plugin_prod/js"
-                                          :pretty-print true
-                                          :elide-asserts false
-                                          :optimizations :advanced
-                                          :closure-defines {klipse.core/version
-                                                             ~(->> (slurp "project.clj")
-                                                                   (re-seq #"\".*\"")
-                                                                   (first))}
-                                          :verbose true}}
+                       :plugin-prod {
+                                     :source-paths ["src/klipse/run/plugin_prod"]
+                                     :compiler {
+                                                :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
+                                                :output-dir "resources/public/plugin_prod/js"
+                                                :pretty-print true
+                                                :elide-asserts false
+                                                :optimizations :advanced
+                                                :closure-defines {klipse.core/version
+                                                                  ~(->> (slurp "project.clj")
+                                                                        (re-seq #"\".*\"")
+                                                                        (first))}
+                                                :verbose true}}
+                       ;:plugin-prod-nice
+                       #_{
+                        :source-paths ["src/klipse/run/plugin_prod"]
+                        :compiler {
+                                   :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
+                                   :output-dir "resources/public/plugin_prod/js"
+                                   :pretty-print true
+                                   :elide-asserts false
+                                   :optimizations :advanced
+                                   :pseudo-names true
+                                   :closure-defines {klipse.core/version
+                                                     ~(->> (slurp "project.clj")
+                                                           (re-seq #"\".*\"")
+                                                           (first))}
+                                   :verbose true}}
                        :figwheel {
                                   :figwheel true
                                   :source-paths ["src"]
@@ -91,7 +106,8 @@
                                              :asset-path "fig/js"
                                              :output-to "resources/public/fig/js/klipse.fig.js"
                                              :output-dir "resources/public/fig/js"
-                                             ;:elide-asserts true
+                                             :infer-externs true
+                                        ;:elide-asserts true
                                              :verbose false}}
                        :devcards {
                                   :figwheel { :devcards true }
@@ -100,6 +116,6 @@
                                              :asset-path "cards/js"
                                              :output-to "resources/public/cards/js/klipse.js"
                                              :output-dir "resources/public/cards/js"
-                                             ;:elide-asserts true
+                                        ;:elide-asserts true
                                              :verbose false}}
                        }})

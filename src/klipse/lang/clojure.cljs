@@ -212,8 +212,8 @@
           str)))
 
 (defn setup-container! [container-id]
-  (aset js/window "klipse_container" (js/document.getElementById container-id))
-  (aset js/window "klipse_container_id" container-id))
+  #_(aset js/window "klipse_container" (js/document.getElementById container-id))
+  #_(aset js/window "klipse_container_id" container-id))
 
 (defn str-eval-async [exp {:keys [container-id] :as opts}]
   (let [c (chan)]

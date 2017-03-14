@@ -146,6 +146,7 @@
           (if secured-eval?
             (eval-in-global-scope body)
             (unsecured-eval-in-global-scope body))
+          (js/console.info "evaluation done:" script)          
           [:ok script])
         [status script]))))
 

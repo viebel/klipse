@@ -11,6 +11,13 @@
       <h1> Javascript</j1>
 <h2>eval,cookies,ajax etc... are inaccessible </h2>
 
+<pre><code class="js" data-gist-id="viebel/55bebdd9f22831de8924eaf74c3c252f">
+</code></pre>
+
+<pre><code class="js" data-external-libs="https://raw.githubusercontent.com/viebel/javascript-toolbelt/master/lib/dom.js">
+get
+</code></pre>
+
 <pre><code class="js">
 document.cookie
 </code></pre>
@@ -28,7 +35,7 @@ eval("1+2")
 console.log("inside");
 </code></pre>
 
-<h2> the klipse container is accessible </h2>
+<h2> the klipse container is not accessible </h2>
 <pre><code class="eval-js">
 klipse_container.innerHTML=`<h2 style="color:red;">foo</h2>`;
 </code></pre>
@@ -45,7 +52,7 @@ a * 100
 </code></pre>
 
 <h2> External Scripts</h2>
-External scripts can be loaded properly. E.g. jQuery
+External scripts like jQuery cannot be loaded
 <pre><code class="js" data-external-libs="jQuery">
 $
 </code></pre>

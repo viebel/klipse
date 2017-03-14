@@ -113,10 +113,13 @@
   ["console" "setTimeout" "setInterval" "Math" "Date"])
 
 (defn default-forbidden-symbols []
-  ["document" "XMLHttpRequest" "eval"])
+  ["document" "XMLHttpRequest" "eval" "window"])
+
+(def secured-eval false)
 
 (defn securize-eval!* [the-forbidden-symbols]
-  ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
+                                        ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
+  (set! secured-eval true)
   (let [original-eval js/eval]
     (! js/window.eval (fn [src]
                     (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
@@ -127,6 +130,13 @@
       (aset js/klipse-eval-sandbox sym (aget js/window sym)))))
 
 (def securize-eval! (runonce securize-eval!*))
+
+(defn setup-container! [container-id]
+  (when-not secured-eval
+    ;; it is not safe to give access to the DOM
+    ;; think about klipse_container.innerHTML='<a href="http://google.com">google</a>';
+    (aset js/window "klipse_container" (js/document.getElementById container-id))
+    (aset js/window "klipse_container_id" container-id)))
 
 (defn unsecured-eval-in-global-scope [s]
   ((or (? js/window.klipse_unsecured_eval) js/eval) s)) ; we have to use the unsecured eval because external scripts usually manipulate the DOM!

@@ -7,7 +7,7 @@
     klipse.lang.clojure.bundled-namespaces
     gadjett.core-fn
     [goog.dom :as gdom]
-    [klipse.utils :refer [url-parameters verbose?]]
+    [klipse.utils :refer [url-parameters verbose? setup-container!]]
     [rewrite-clj.node :as n]
     [rewrite-clj.parser :as p]
     [clojure.string :refer [blank?]]
@@ -208,10 +208,6 @@
   (go (-> (<! (compile-async exp opts))
           second
           str)))
-
-(defn setup-container! [container-id]
-  (aset js/window "klipse_container" (js/document.getElementById container-id))
-  (aset js/window "klipse_container_id" container-id))
 
 (defn str-eval-async [exp {:keys [container-id] :as opts}]
   (let [c (chan)]

@@ -5,7 +5,7 @@
    [purnam.core :refer [!> !]]
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
-   [klipse.utils :refer [load-scripts verbose? eval-in-global-scope]]
+   [klipse.utils :refer [load-scripts verbose? eval-in-global-scope setup-container!]]
    [cljs-http.client :as http]
    [clojure.string :as string]
    [cljs.core.async :refer [<! chan put!]]
@@ -15,7 +15,7 @@
 (def known-external-libs
   {
    "immutable" "https://raw.githubusercontent.com/facebook/immutable-js/master/dist/immutable.min.js"
-   "jQuery" "https://code.jquery.com/jquery-2.2.4.min.js"
+   "jQuery" "https://code.jquery.com/jquery-2.2.4.js"
    "underscore" "http://underscorejs.org/underscore-min.js"})
 
 (defn external-lib-path [lib-name-or-url]
@@ -44,10 +44,6 @@
     (set! js/klipse_snippet_console #js {:log logger})
     (eval-in-global-scope wrapped-exp)
     ""))
-
-(defn setup-container! [container-id]
-  (aset js/window "klipse_container" (js/document.getElementById container-id))
-  (aset js/window "klipse_container_id" container-id))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]

@@ -1,9 +1,15 @@
 *.txt
 *.html
+*.yml
+*.cljs
+*.clj
+*.png
 demos/*
 docs/*
 images/*
 resources/*
 scripts/*
+target/*
 src/*
 test/*
+

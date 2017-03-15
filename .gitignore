@@ -1,6 +1,7 @@
 .DS_Store
 .cljs_node_repl
 .nrepl-port
+*.log
 figwheel_server.log
 klipse-access-logs/
 resources/private/

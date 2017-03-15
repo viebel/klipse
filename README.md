@@ -302,7 +302,7 @@ Ask us any question about the klipse plugin (integration, feature requests...) o
 
 ## User older versions
 
-Since version `6.8.0`, Klipse is published on `npm`. Therefore you can access the klipse files of a specific version from [unpkg](https://unpkg.com) - a cdn for stuff that is published to `npm`.
+Since version `6.8.0`, Klipse is published on [npm](https://www.npmjs.com/package/klipse). Therefore you can access the klipse files of a specific version from [unpkg](https://unpkg.com) - a cdn for stuff that is published to `npm`.
 
 For instance, The urls are for the version `6.8.0` are:
 

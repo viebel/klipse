@@ -25,5 +25,19 @@
   "bugs": {
     "url": "https://github.com/viebel/klipse/issues"
   },
+  "ignore": [
+    "*.txt",
+    "*.md ",
+    "*.clj*",
+    "*.yml",
+    "*.html",
+    "demos",
+    "docs",
+    "images",
+    "resources",
+    "scripts",
+    "src",
+    "test"
+  ],
   "homepage": "https://github.com/viebel/klipse#readme"
 }

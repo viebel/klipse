@@ -113,8 +113,9 @@
   ["console" "setTimeout" "setInterval" "Math" "Date"])
 
 (defn default-forbidden-symbols []
-  ["document" "XMLHttpRequest" "eval" "window"])
+  ["document" "XMLHttpRequest" "eval" "window" "Function"])
 
+(comment (default-forbidden-symbols))
 (def secured-eval false)
 
 (defn securize-eval!* [the-forbidden-symbols]

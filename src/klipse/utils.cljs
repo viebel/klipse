@@ -117,13 +117,16 @@
 
 (comment (default-forbidden-symbols))
 (def secured-eval false)
+(def eval-in-global-scope js/eval) ; this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
+                                   ; if we make it a function (defn eval-in-global-scope[x] (js/eval x)) - code is not shared properly between javascript snippets - see https://github.com/viebel/klipse/issues/246#issue-214278867
 
 (defn securize-eval!* [the-forbidden-symbols]
                                         ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
   (set! secured-eval true)
   (let [original-eval js/eval]
     (! js/window.eval (fn [src]
-                    (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
+                        (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
+    (set! eval-in-global-scope js/eval)
     (! js/window.klipse_unsecured_eval original-eval)
     (! js/window.klipse_eval_sandbox (clj->js (zipmap the-forbidden-symbols (repeat {}))))
     #_(set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.getOwnPropertyNames js/window) (repeat {}))))
@@ -144,8 +147,6 @@
                                         ;this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
 
-(defn eval-in-global-scope [s]
-  (js/eval s))
 
 (defn load-script [script & {:keys [secured-eval?] :or {secured-eval? false}}]
   (go

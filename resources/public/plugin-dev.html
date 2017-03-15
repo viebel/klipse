@@ -140,7 +140,22 @@
     </code>
 
     <h2> The basics </h2>
+    <h2> Sharing Data between snippets </h2>
+    <pre><code class="clojure">
+	(def xyz 1)
+    </code></pre>
+    <pre><code class="clojure">
+	(+ xyz 1)
+    </code></pre>
 
+        <h2> Sharing Code between snippets </h2>
+    <pre><code class="clojure">
+(defn mea [] 1)
+    </code></pre>
+    <pre><code class="clojure">
+(mea)
+    </code></pre>
+    <h2> Simple stuff</h2>
     <div class="clojure">(map inc [1 2 3])</div>
     <br/>
     <span class="clojure"> (defn foo [x] (* x x)) </span>
@@ -289,7 +304,21 @@ This should fail with abbreviated results displaed properly
     <p> When input is empty the output shoud be empty </p>
     <pre><code class="eval-js">
     </code></pre>
+    <h2> Sharing Data between snippets </h2>
+    <pre><code class="eval-js">
+	abcd = 1
+    </code></pre>
+    <pre><code class="eval-js">
+	abcd + 1
+    </code></pre>
 
+        <h2> Sharing Code between snippets </h2>
+    <pre><code class="eval-js">
+	function barbaz() { return 1;}
+    </code></pre>
+    <pre><code class="eval-js">
+	barbaz() + 10;
+    </code></pre>
     <h2> all the js values should be printed properly </h2>
     <pre><code class="eval-js">
 	bba = new Set();

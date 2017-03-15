@@ -1,0 +1,9 @@
+*.txt
+*.html
+demos/*
+docs/*
+images/*
+resources/*
+scripts/*
+src/*
+test/*

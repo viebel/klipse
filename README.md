@@ -61,6 +61,9 @@ Here is an [interactive guide](https://book.klipse.tech/) of the klipse snippets
 
 If you want to host the javascript tag from your own server, see [host klipse locally]().
 
+If you want to use an older version of Klipse, see [use older versions]().
+
+
 ## javascript
 
 
@@ -296,7 +299,19 @@ Here are a couple of examples of blogs using the klipse plugin:
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## User older versions
+
+Since version `6.8.0`, Klipse is published on `npm`. Therefore you can access the klipse files of a specific version from [unpkg](https://unpkg.com) - a cdn for stuff that is published to `npm`.
+
+For instance, The urls are for the version `6.8.0` are:
+
+- javascript mininfied: https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
+- javascript non-minified:  https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
+- css: https://unpkg.com/klipse@6.8.0/dist/codemirror.css
+
 ## Host Klipse locally
+
+You can download klipse with `npm` or `bower`.
 
 In order to serve Klipse from your own server, you have to:
 

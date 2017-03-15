@@ -185,10 +185,11 @@ window.klipse_settings = {
           selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
           selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets
           selector_eval_python_client: '.language-klipse-python', // selector for python evaluation snippets
-	      selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
+	  selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
           selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
           selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
           selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets,
+	  secured_eval: true/false, //secured mode (default: false)
 	  cached_ns_root: '/my-root', // the root of clojure cached namespace
 	  clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
 	  clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
@@ -218,6 +219,10 @@ window.klipse_settings = {
     }
 }
 ```
+
+### Secured mode
+
+Learn mode about [Klipse secured mode](http://blog.klipse.tech/klipse/2017/03/14/secured-eval.html).
 
 #### Clojure only
 

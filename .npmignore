@@ -4,6 +4,7 @@
 *.cljs
 *.clj
 *.png
+*.log
 demos/*
 docs/*
 images/*

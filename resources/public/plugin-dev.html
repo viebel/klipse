@@ -645,6 +645,35 @@ This should fail with abbreviated results displaed properly
     </div>
     <p>Eval</p>
     <div class="brainfuck" data-gist-id="viebel/9d801a43100c6a88669b641501c2929c"></div>
+    <h1> Google Charts </h1>
+    <pre><code class="eval-js" data-async-code="true">
+window.coffeeData = [
+    ['Year', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+    ['2012',  165,      938,         522,             998,           450,      614.6],
+    ['2013',  135,      1120,        599,             1268,          288,      682],
+    ['2014',  157,      1167,        587,             807,           397,      623],
+    ['2015',  139,      1110,        615,             968,           215,      609.4],
+    ['2016',  136,      691,         629,             1026,          366,      569.6]
+  ];
+	  
+</code></pre>
+
+Combo Chart
+<pre><code class="gchart" data-async-code="true">
+{
+  data: coffeeData,
+  options: {
+    title : 'Monthly Coffee Production by Country',
+    legend: {position: 'top', maxLines: 3},	
+hAxis: {title: 'Year'},
+height: 500,
+    seriesType: 'bars',
+    series: {5: {type: 'line'}}
+  },
+  chartType: "ComboChart"
+}
+</code></pre>
+
     <h1> Reagent</h1>
     <pre>
       <code class="clj">
@@ -673,6 +702,7 @@ This should fail with abbreviated results displaed properly
       lineWrapping: true
       },
       selector: '.clojure,.clj',
+      selector_google_charts: '.gchart',
       selector_es2017: '.es2017',
       selector_eval_js: '.eval-js',
       selector_eval_markdown: '.eval-markdown',

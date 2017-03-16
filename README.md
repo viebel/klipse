@@ -60,9 +60,9 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 Here is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
 
 
-If you want to host the javascript tag from your own server, see [Host Klipse locally](README.md#host-klipse-locally).
+If you want to host the javascript tag from your own server, see [host-klipse-locally]().
 
-If you want to use an older version of Klipse, see [Use older versions](README.md#use-older-versions).
+If you want to use an older version of Klipse, see [use-older-versions]().
 
 
 ## javascript
@@ -180,6 +180,7 @@ window.klipse_settings = {
           selector: '.language-klipse', //selector for clojure evaluation snippets
           selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
           selector_reagent: '.language-reagent', // selector for reagent snippets
+		  selector_google_charts: '.language-google-charts' // select for google charts
           selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
           selector_eval_ruby: '.language-klipse-eval-ruby', //selector for ruby evaluation snippets
           selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets

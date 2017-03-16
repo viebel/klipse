@@ -23,9 +23,18 @@ window.coffeeData = [
 
 <br>
 
+<pre><code class="gchart">
+{
+  chartType:'LineChart',
+  dataSourceUrl:'http://spreadsheets.google.com/tq?key=pCQbetd-CptGXxxQIG7VFIQ&pub=1',
+  query:'SELECT A,D WHERE D > 100 ORDER BY D',
+  options: {'title':'Population Density (people/km^2)', 'legend':'none', height: 200}
+}
+</code></pre>
+
 <pre><code class="gchart" data-async-code="true">
 {
-  data: coffeeData,
+  dataTable: coffeeData,
   options: {
     showRowNumber: true,
     width: '100%',
@@ -38,7 +47,7 @@ window.coffeeData = [
 Combo Chart
 <pre><code class="gchart" data-async-code="true">
 {
-  data: coffeeData,
+  dataTable: coffeeData,
   options: {
     title : 'Monthly Coffee Production by Country',
     legend: {position: 'top', maxLines: 3},	
@@ -57,7 +66,6 @@ height: 500,
 	selector_eval_js: '.js',
         };
         </script>
-      <!--script src="/fig/js/klipse.fig.js"></script-->
-      <script src="plugin_prod/js/klipse_plugin.min.js"></script>
+      <script src="/fig/js/klipse.fig.js"></script>
     </body>
 </html>

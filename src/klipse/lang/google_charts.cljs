@@ -23,18 +23,10 @@
       (set! google-charts-loaded true))))
 
 
-(defn draw-chart [data-and-options-js container-id]
-  (let [container (js/document.getElementById container-id)
-        goog-viz (? js/google.visualization)
-        data (!> goog-viz.arrayToDataTable (aget data-and-options-js "data"))
-        options (aget data-and-options-js "options")
-        chart-type (aget data-and-options-js "chartType")
-        chart-constructor (aget goog-viz chart-type)
-        _ (when-not chart-constructor
-            (throw (str "Invalid chartType: " chart-type "\n"
-                        "Check the Google Charts documentation at https://developers.google.com/chart/interactive/docs/")))
-        chart (new chart-constructor container)]
-    (!> chart.draw data options)))
+(defn draw-chart [data-js container-id]
+  (let [chart-constructor (? js/google.visualization.ChartWrapper)
+        chart-wrapper (new chart-constructor data-js)]
+    (!> chart-wrapper.draw)))
 
 (defn parse-js-object [s]
   ;; we don't want to use JSON.parse in order to allow non-quoted keys
@@ -46,7 +38,9 @@
 (defn render* [src {:keys [container-id] :as opts}]
   (try
     (let [container (js/document.getElementById container-id)
+          _ (gdom/setTextContent container "")
           data-options-js (parse-js-object src)]
+      (aset data-options-js "containerId" container-id)
       (draw-chart data-options-js container-id))
     (catch :default e
       (let [container (js/document.getElementById container-id)]

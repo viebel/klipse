@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+
+
+<pre><code class="js" data-async-code="true">
+window.coffeeData = [
+    ['Year', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+    ['2012',  165,      938,         522,             998,           450,      614.6],
+    ['2013',  135,      1120,        599,             1268,          288,      682],
+    ['2014',  157,      1167,        587,             807,           397,      623],
+    ['2015',  139,      1110,        615,             968,           215,      609.4],
+    ['2016',  136,      691,         629,             1026,          366,      569.6]
+  ];
+	  
+</code></pre>
+
+<br>
+
+<pre><code class="gchart" data-async-code="true">
+{
+  data: coffeeData,
+  options: {
+    showRowNumber: true,
+    width: '100%',
+    height: '100%'
+  },
+  chartType: "Table"
+}
+</code></pre>
+
+Combo Chart
+<pre><code class="gchart" data-async-code="true">
+{
+  data: coffeeData,
+  options: {
+    title : 'Monthly Coffee Production by Country',
+    legend: {position: 'top', maxLines: 3},	
+    vAxis: {title: 'Million of Cups'},
+    hAxis: {title: 'Year'},
+    seriesType: 'bars',
+    series: {5: {type: 'line'}}
+  },
+  chartType: "ComboChart"
+}
+</code></pre>
+      <script>
+        window.klipse_settings = {
+        selector_google_charts: '.gchart',
+	selector_eval_js: '.js',
+        };
+        </script>
+        <script src="/fig/js/klipse.fig.js"></script>
+    </body>
+</html>

@@ -3,6 +3,7 @@
             klipse.lang.clojure
             klipse.lang.reagent
             klipse.lang.javascript
+            klipse.lang.google-charts            
             klipse.lang.ruby
             klipse.lang.jsx
             klipse.lang.brainfuck

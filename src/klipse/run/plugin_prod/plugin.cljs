@@ -1,6 +1,7 @@
 (ns klipse.run.plugin-prod.plugin
   (:require klipse.core
             klipse.lang.javascript
+            klipse.lang.google-charts
             klipse.lang.js-compile
             klipse.lang.ruby
             klipse.lang.cpp

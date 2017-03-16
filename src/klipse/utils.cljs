@@ -120,6 +120,28 @@
 (def eval-in-global-scope js/eval) ; this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
                                    ; if we make it a function (defn eval-in-global-scope[x] (js/eval x)) - code is not shared properly between javascript snippets - see https://github.com/viebel/klipse/issues/246#issue-214278867
 
+
+
+
+;; Tests
+
+;; escape parenthesis:
+;; `} alert('hi'); {`
+
+;; get access to Function with constructor
+;;  `x = () => 1
+;;  y = x.constructor
+;;  new y("alert(1)")()`
+
+;; use this to get access to window
+;; `this.document.cookie`
+
+;; use a function that returns this to get access to window
+;; _window = (function(){return this})()
+
+
+
+
 (defn securize-eval!* [the-forbidden-symbols]
                                         ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
   (set! secured-eval true)

@@ -7,7 +7,7 @@
    [cljs.reader :refer [read-string]]
    [clojure.walk :refer [keywordize-keys]]
    [cljs-http.client :as http]
-   [cljs.core.async :refer [timeout <!]]
+   [cljs.core.async :refer [timeout <! chan put!]]
    [cemerick.url :refer [url]]))
 
 
@@ -185,3 +185,17 @@
    (js->clj :keywordize-keys true)))
 
 (def klipse-settings (memoize klipse-settings*))
+
+(defn add-script-tag! [url ]
+  (let [c (chan)]
+    (let [node (js/document.createElement "script")
+          body (aget js/document "body")]
+      (aset node "src" url)
+      (aset node "onerror" #(put! c [:error url]))      
+      (aset node "onload" #(put! c [:ok url]))
+      (aset node "type" "text/javascript")
+      (!> body.appendChild node)
+      c)))
+
+
+(def add-script-tag-once! (runonce add-script-tag!))

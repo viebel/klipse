@@ -8,6 +8,7 @@
     </head>
     <body>
 
+
 <pre><code class="js" data-async-code="true">
 window.coffeeData = [
     ['Year', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
@@ -34,6 +35,21 @@ window.coffeeData = [
 }
 </code></pre>
 
+Combo Chart
+<pre><code class="gchart" data-async-code="true">
+{
+  data: coffeeData,
+  options: {
+    title : 'Monthly Coffee Production by Country',
+    legend: {position: 'top', maxLines: 3},	
+    vAxis: {title: 'Million of Cups'},
+    hAxis: {title: 'Year'},
+    seriesType: 'bars',
+    series: {5: {type: 'line'}}
+  },
+  chartType: "ComboChart"
+}
+</code></pre>
       <script>
         window.klipse_settings = {
         selector_google_charts: '.gchart',

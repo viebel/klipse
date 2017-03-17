@@ -59,6 +59,7 @@
            :editor-out-mode "text"
            :eval-fn render
            :no-result true
+           :min-eval-idle-msec 1000
            :external-scripts [(codemirror-mode-src "javascript") ]
            :comment-str ";"})
 

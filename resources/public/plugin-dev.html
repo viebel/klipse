@@ -658,19 +658,20 @@ window.coffeeData = [
 	  
 </code></pre>
 
-Combo Chart
+Line Chart
 <pre><code class="gchart" data-async-code="true">
-{
-  data: coffeeData,
+ {
+  dataTable: coffeeData,
   options: {
     title : 'Monthly Coffee Production by Country',
-    legend: {position: 'top', maxLines: 3},	
+    legend: {position: 'top', maxLines: 3},
+    vAxis: {title: 'Million of Cups'},
 hAxis: {title: 'Year'},
 height: 500,
     seriesType: 'bars',
     series: {5: {type: 'line'}}
   },
-  chartType: "ComboChart"
+  chartType: "Line"
 }
 </code></pre>
 

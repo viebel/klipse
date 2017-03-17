@@ -1,6 +1,6 @@
 {
   "name": "klipse",
-  "version": "6.8.1",
+  "version": "6.8.3",
   "description": "A simple client-side code evaluator pluggable on any web page: clojure, ruby, javascript, python, scheme, es2017, jsx, brainfuck, c++, reagent",
   "main": "klipse_plugin.min.js",
   "scripts": {

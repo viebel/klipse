@@ -194,7 +194,8 @@ window.klipse_settings = {
 	  selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
           selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
           selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
-          selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets,
+          selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets
+	  selector_brainfuck: '.language-klipse-brainfuck',
 	  secured_eval: true/false, //secured mode (default: false)
 	  cached_ns_root: '/my-root', // the root of clojure cached namespace
 	  clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached

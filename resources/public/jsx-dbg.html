@@ -8,9 +8,16 @@
     </head>
     <body>
 
+
 <pre><code class="js" data-external-libs="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-with-addons.js, https://cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js">
     Object.keys(React)
 </code></pre>
+
+
+<pre><code class="render-jsx">
+    &lt;h1&gt; Hello World! &lt;/h1&gt;
+</code></pre>
+
 <pre><code class="transpile-jsx">
       &lt;div className="shopping-list"&gt;
         &lt;h1&gt;Shopping List for {this.props.name}&lt;/h1&gt;
@@ -33,6 +40,7 @@ class ShoppingList extends React.Component {
   }
 }
 window.ShoppingList = ShoppingList
+
 </code></pre>
 <code><pre class="js">
 ShoppingList
@@ -41,11 +49,11 @@ ShoppingList
       <script>
         window.klipse_settings = {
             selector_eval_js: '.js',
-            selector_jsx: '.jsx',
+        selector_jsx: '.jsx',
+	selector_render_jsx: '.render-jsx',
             selector_transpile_jsx: '.transpile-jsx',
         };
         </script>
-        <script src="/lib/mirror_extensions.js"></script>
         <script src="/fig/js/klipse.fig.js"></script>
     </body>
 </html>

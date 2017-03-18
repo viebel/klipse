@@ -37,6 +37,20 @@
 (defn render-jsx [exp opts]
   (go (render-jsx* exp opts)))
 
+(defn render-react* [exp {:keys [container-id]}]
+  (try
+    (let [wrapped-exp (str "ReactDOM.render(" exp ", document.getElementById('" container-id "'))")]
+      (when (verbose?)
+        (js/console.info "render-react - wrapped expression:" wrapped-exp))
+      (-> wrapped-exp
+          eval-in-global-scope))
+    (catch :default e
+      (let [container (js/document.getElementById container-id)]
+        (gdom/setTextContent container (str e))))))
+
+(defn render-react [exp opts]
+  (go (render-react* exp opts)))
+
 (defn transpile-jsx [exp _]
   (go
     (try
@@ -64,6 +78,14 @@
                   :external-scripts [(codemirror-mode-src "xml") (codemirror-mode-src "javascript") (codemirror-mode-src "jsx") (scripts-src "babel.min.js")]
                   :comment-str "//"})
 
+(def render-react-opts {:editor-in-mode "javascript"
+                        :editor-out-mode "javascript"
+                        :eval-fn render-react
+                        :no-result true
+                        :external-scripts [ (codemirror-mode-src "javascript")]
+                        :comment-str "//"})
+
 (register-mode "eval-jsx" "selector_jsx" eval-opts)
 (register-mode "transpile-jsx" "selector_transpile_jsx" transpile-opts)
 (register-mode "render-jsx" "selector_render_jsx" render-opts)
+(register-mode "render-react" "selector_react" render-react-opts)

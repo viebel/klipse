@@ -187,11 +187,13 @@ window.klipse_settings = {
           selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
           selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
           selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets
+          selector_render_jsx: '.language-render-jsx', // selector for jsx rendering snippets		  
+		  selector_react: '.language-react', //selector for react snippets
           selector_eval_php: '.language-klipse-eval-php', // selector for php evaluation snippets
           selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
           selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets
           selector_eval_python_client: '.language-klipse-python', // selector for python evaluation snippets
-	  selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
+		  selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
           selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
           selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
           selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets

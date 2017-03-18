@@ -40,6 +40,21 @@
       background: #d0dafd;
       color: #339;
       }
+      .klipse-container:not(:empty):before {
+      content: "**** Rendered Component ****";
+      font-weight: bold;
+      font-family: monospace;
+      }
+      .klipse-container:not(:empty) {
+      background-color: #f7ebc6;
+      border-left: 5px solid #f7d87c;
+      display: block;
+      margin-left: -14px;
+      margin-right: -14px;
+      padding-left: 9px;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      }
 
 
     </style>
@@ -491,9 +506,17 @@ This should fail with abbreviated results displaed properly
 	}
 	window.ShoppingList = ShoppingList
     </code></pre>
-    <code><pre class="eval-js">
-	ShoppingList
-    </code></pre>
+    <pre><code class="react">
+React.createElement(ShoppingList)
+</code></pre>
+<pre><code class="render-jsx">
+&lt;i&gt;&lt;ShoppingList&gt;&lt;/ShoppingList&gt;&lt;/i&gt;
+</code></pre>
+    <pre><code class="eval-js" data-async-code="true">
+ReactDOM.render(React.createElement(ShoppingList), klipse_container)
+</code></pre>
+
+
     <h1> PHP </h1>
     <div class="eval-php">print "Hello from PHP!";</div>
     <br/>
@@ -719,6 +742,8 @@ height: 500,
       selector_js: '.clojure-js',
       selector_jsx: '.jsx',
       selector_transpile_jsx: '.transpile-jsx',
+      selector_render_jsx: '.render-jsx',
+      selector_react: '.react', 
       selector_eval_cpp: '.cpp',
       selector_reagent: '.reagent',
       };

@@ -19,6 +19,10 @@
   (let [root (:scripts_root (klipse-settings) "https://viebel.github.io/klipse/repo/js")]
     (str root "/" name)))
 
+(defn wasm-src [name]
+  (let [root (:wasm_root (klipse-settings) "https://viebel.github.io/klipse/repo/wasm")]
+    (str root "/" name)))
+
 (defn register-mode [mode selector opts]
   (js/console.info "register-mode: " mode selector)
   (swap! selector->mode assoc selector mode)

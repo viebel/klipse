@@ -5,23 +5,19 @@
    [cljs.core.async.macros :refer [go]])
   (:require
    [goog.dom :as gdom]
-   [klipse.utils :refer [add-script-tag!]]
+   [klipse.utils :refer [add-script-tag! verbose?]]
    [clojure.string :as string]
    [cljs.core.async :refer [chan close! <! put!]]
    [klipse.common.registry :refer [codemirror-mode-src register-mode wasm-src scripts-src]]))
 
 (defonce *loaded* false)
-(defonce *result-chan* nil)
 
-(defn create-module! [ready-chan result-chan]
+(defn create-module! [ready-chan]
   {:postRun [(fn []
-               (js/console.log "Lua Module loaded")
+               (when (verbose?)
+                 (js/console.log "Lua Module loaded"))
                (put! ready-chan [:ok])
-               (! js/window.evalLua (!> js/Module.cwrap "run_lua" "number" #js ["string"])))]
-   :print (fn [txt]
-            (js/console.log "lua res:" txt)
-            (when-not (= txt "emsc")
-              (put! result-chan txt)))})
+               (! js/window.evalLua (!> js/Module.cwrap "run_lua" "number" #js ["string"])))]})
 
 (defn load-module! []
   (let [xhr (new js/window.XMLHttpRequest)]
@@ -29,7 +25,8 @@
     (! xhr.responseType "arraybuffer")
     (!> xhr.overrideMimeType "application/javascript")
     (! xhr.onload (fn []
-                    (js/console.log "wasm loaded:")
+                    (when (verbose?)
+                      (js/console.log "wasm loaded:"))
                     (! js/window.Module.wasmBinary (aget xhr "response"))
                     (add-script-tag! (scripts-src "emscripten_module.js"))))
     (!> xhr.send nil)))
@@ -37,25 +34,30 @@
 (defn ensure-loaded! []
   (go
     (when-not *loaded*
-      (set! *result-chan* (chan))
       (let [ready-chan (chan)
-            module (create-module! ready-chan *result-chan*)]
+            module (create-module! ready-chan)]
         (! js/window.Module (clj->js module))
         (load-module!)
         (<! ready-chan)
         (set! *loaded* true)))))
 
 (defn eval* [src opts]
-  (try
-    (!> js/window.evalLua src opts)    
-    (catch :default e
-      (str e))))
+  (let [c (chan)]
+    (try
+      (! js/window.Module.print (fn [txt]
+                                  (when (verbose?)
+                                    (js/console.log "lua res:" txt))
+                                  (when-not (= txt "emsc")
+                                    (put! c txt))))
+      (!> js/window.evalLua src opts)
+      c
+      (catch :default e
+        (put! c (str e))))))
 
 (defn eval [src opts]
   (go
     (<! (ensure-loaded!))
-    (eval* src opts)
-    (<! *result-chan*)))
+    (<!  (eval* src opts))))
 
 
 (def opts {:editor-in-mode "text/x-lua"

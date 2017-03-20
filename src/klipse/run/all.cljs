@@ -5,6 +5,7 @@
             klipse.lang.javascript
             klipse.lang.google-charts
             klipse.lang.lua
+            klipse.lang.oblivion
             klipse.lang.ruby
             klipse.lang.jsx
             klipse.lang.brainfuck

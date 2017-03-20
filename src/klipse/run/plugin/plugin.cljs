@@ -3,6 +3,7 @@
             klipse.lang.javascript
             klipse.lang.google-charts
             klipse.lang.lua
+            klipse.lang.oblivion            
             klipse.lang.js-compile
             klipse.lang.ruby
             klipse.lang.cpp

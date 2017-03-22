@@ -43,8 +43,8 @@
            :eval-fn render
            :no-result true
            :min-eval-idle-msec 400
-           :external-scripts [#_"http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.10.0/math.min.js" "https://wzrd.in/standalone/function-plot@1.17.3" #_"http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" (codemirror-mode-src "javascript") #_(scripts-src "function-plot.js")]
-           :comment-str ";"})
-
+           :external-scripts [#_"http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.10.0/math.min.js" (codemirror-mode-src "javascript") (scripts-src "function-plot-with-d3.js")]
+           :comment-str "//"})
+ 
 (register-mode "function-plot" "selector_plot" opts)
 

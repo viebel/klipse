@@ -30,16 +30,29 @@
 
     <p>Another plot </p>
     <pre><code class="plot">
-	{
-
-  grid: true,
+{
+  target: '#built-in-eval-function',
   data: [{
-    fn: 'tan(x)',
-    sampler: 'builtIn',  
-    graphType: 'polyline'
-
-}]
-}	
+    // force the use of builtIn math
+    graphType: 'polyline',
+    fn: function (scope) {
+      // scope.x = Number
+      var x = scope.x
+      return x * 2 + 4
+    }
+  }, {
+    fnType: 'polar',
+    graphType: 'polyline',
+    r: function (scope) {
+      // scope.theta = number
+      var r0 = 0
+      var a = 1
+      var gamma = 0
+      return r0 * Math.cos(scope.theta - gamma) +
+        Math.sqrt(a * a - r0 * r0 * Math.pow(Math.sin(scope.theta - gamma), 2))
+    }
+  }]
+}
     </code></pre>
 <script>
   window.klipse_settings = {
@@ -47,7 +60,6 @@
   selector_eval_js: '.js',
   };
 </script>
-<script src="https://wzrd.in/standalone/function-plot@latest"></script>
 <script src="/fig/js/klipse.fig.js"></script>
 </body>
 </html>

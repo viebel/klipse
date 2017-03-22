@@ -28,10 +28,10 @@
     (render* src opts)))
 
 
-(def opts {:editor-in-mode "text"
+(def opts {:editor-in-mode "ruby"
            :editor-out-mode "text"
            :eval-fn render
-           :external-scripts [(scripts-src "Oblivion.js") ]
+           :external-scripts [(codemirror-mode-src "ruby") (scripts-src "Oblivion.js") ]
            :comment-str ";"})
 
 (register-mode "oblivion" "selector_oblivion" opts)

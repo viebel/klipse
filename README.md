@@ -61,9 +61,9 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
 Here is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
 
 
-If you want to host the javascript tag from your own server, see [host-klipse-locally](#host-klipse-locally).
+If you want to host the javascript tag from your own server, see [Host Klipse Locally](#host-klipse-locally).
 
-If you want to use an older version of Klipse, see [use-older-versions](#use-older-versions).
+If you want to use an older version of Klipse, see [Use Older Versions](#use-older-versions).
 
 
 ## javascript

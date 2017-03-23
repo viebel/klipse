@@ -213,25 +213,7 @@
     <p> The below div should be colorized every 3 seconds</p>
     <div id="klipse-color" style="width:100px; height: 50px; background-color: black;"></div>
     <h2> requiring a namespace </h2>
-    <div class="clojure">
-      (require '[clojure.spec :as s]
-         '[clojure.spec.test :as stest]
-         '[clojure.spec.impl.gen :as gen])
-      (stest/instrument `map)
-    </div>
-    This should fail because we passed an string instead of an integer:
-    <div class="clojure">
-      (defn foo [x] x)
-(s/fdef foo :args (s/cat :x integer?)
-      :ret string?)
-      (stest/instrument `foo)
-(foo "1")
-    </div>
-This should fail with abbreviated results displaed properly
-    <div class="clojure">
-(stest/abbrev-result (first (stest/check `foo)))
-      </div>
-    <h3> clojure.spec </h3>
+
     <h3>clojure.string</h3>
     <span class="clojure">(ns my.ns
       (:require 

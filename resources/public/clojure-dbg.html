@@ -55,7 +55,7 @@
 
 
 
-    <div class="clojure">
+    <div class="kkkclojure">
       (require-macros '[gadjett.core :refer [dbg]])
       (dbg (map inc [1 2 3]))
     </div>
@@ -90,6 +90,17 @@
     </div>
     <br/>
     <div class="clojure">
+      (require '[clojure.spec :as s]
+         '[clojure.spec.test :as stest]
+         '[clojure.spec.impl.gen :as gen])
+(stest/instrument `map)
+(defn foo [x] x)
+(s/fdef foo :args (s/cat :x integer?)
+        :ret string?)
+(stest/instrument `foo)
+(foo 1)  
+      </div>
+    <div class="clojure">
       (ns my.moo$macros)
       (defmacro dbg[x]
       `(let [x# ~x]
@@ -112,6 +123,7 @@
     <br/>
     <script>
       window.klipse_settings = {
+//      clojure_bundled_ns_ignore: /gadjett\..*/
       };
       if(window.location.search.match(/transpile=1/)) {
       window.klipse_settings.selector_js = '.clojure';

@@ -187,12 +187,23 @@
         filenames (map #(str "https://gist.githubusercontent.com/" path %) cljs-suffixes)]
     (try-to-load-ns filenames :clj :source src-cb)))
 
+(defn bundled-ns-ignore-regexp []
+  (:clojure_bundled_ns_ignore_regexp (klipse-settings)))
+
+(defn custom-bundled-ns-ignore? [name]
+  (when-let [regexp (bundled-ns-ignore-regexp)]
+    (re-matches regexp (str name))))
+
+(defn buggy-bundled-ns-ignore? [name]
+  ;; for some reason, during the load of reagent namespaces, a `reagent.dom` object is created - but it's not the real `reagent.dom` namespace
+  ;; cljs.core.async should be loaded from cache - as we use andare for self-host core.async
+  (re-matches #".*reagent.*|cljs.core.async.*" (str name)))
+
 (defn bundled-ns?
   "Checks whether a namespace is present at run-time"
   [name]
-  ; for some reason, during the load of reagent namespaces, a `reagent.dom` object is created - but it's not the real `reagent.dom` namespace
-  ; cljs.core.async should be loaded from cache - as we use andare for self-host core.async
-  (if (re-matches #".*reagent.*|cljs.core.async.*" (str name))
+  (if (or (buggy-bundled-ns-ignore? name)
+          (custom-bundled-ns-ignore? name))
     false
     (!> js/goog.getObjectByName (str (munge name))))) ; (:require goog breaks the build see http://dev.clojure.org/jira/browse/CLJS-1677
 

@@ -8,7 +8,9 @@ The Klipse plugin allows you to embed interactive code snippets in your articles
 
 == Description ==
 
-The Klipse plugin allows you to embed interactive code snippets in your articles.
+The Klipse Wordpress plugin allows you to embed interactive code snippets in your articles.
+
+The Klipse Wordpress plugin is relying on a 3rd party as a service: the Klipse javascript tag that is hosted on google storage and its code is on [github](https://github.com/viebel/klipse).
 
 == Installation ==
 

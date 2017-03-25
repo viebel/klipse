@@ -4,6 +4,7 @@
             klipse.lang.reagent
             klipse.lang.javascript
             klipse.lang.google-charts
+            klipse.lang.function-plot
             klipse.lang.lua
             klipse.lang.oblivion
             klipse.lang.ruby

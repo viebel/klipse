@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+
+
+    <pre><code class="plot">
+{
+   xAxis: {
+    type: 'log',
+    domain: [0.01, 1]
+  },
+  yAxis: {
+    domain: [-100, 100] 
+  },
+  grid: true,
+  data: [{
+    fn: '1/x * cos(1/x)',
+    // to make it look like a definite integral
+    closed: true
+  }]
+}	
+    </code></pre>
+
+
+    <p>Another plot </p>
+    <pre><code class="plot">
+{
+  target: '#built-in-eval-function',
+  data: [{
+    // force the use of builtIn math
+    graphType: 'polyline',
+    fn: function (scope) {
+      // scope.x = Number
+      var x = scope.x
+      return x * 2 + 4
+    }
+  }, {
+    fnType: 'polar',
+    graphType: 'polyline',
+    r: function (scope) {
+      // scope.theta = number
+      var r0 = 0
+      var a = 1
+      var gamma = 0
+      return r0 * Math.cos(scope.theta - gamma) +
+        Math.sqrt(a * a - r0 * r0 * Math.pow(Math.sin(scope.theta - gamma), 2))
+    }
+  }]
+}
+    </code></pre>
+<script>
+  window.klipse_settings = {
+  selector_plot: '.plot',
+  selector_eval_js: '.js',
+  };
+</script>
+<script src="/fig/js/klipse.fig.js"></script>
+</body>
+</html>

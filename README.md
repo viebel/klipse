@@ -92,6 +92,8 @@ And here are detailed explanations about [a javascript live code editor in a blo
 Here is the [full interactive guide](https://book.klipse.tech/interactive_clojure[script]_code_snippets.html
 ) of the klipse `clojure` snippets.
 
+You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klipse.tech/manipulating-the-dom-with-klipse-2/).
+
 
 
 ```html
@@ -284,7 +286,7 @@ To change the style of the Klipse plugin's borders and the console output, you'l
 
 You can see an example of styling Klipse in `demos/styling`. And here is a [live demo](http://htmlpreview.github.io/?https://raw.githubusercontent.com/viebel/klipse/master/demos/styling/klipse.html)
 
-## Community
+## Klipse Community
 
 Here are a couple of examples of blogs using the klipse plugin:
 

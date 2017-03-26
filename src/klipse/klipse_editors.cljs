@@ -7,10 +7,11 @@
    [goog.dom :as gdom]
    [goog.dom :as gdom]
    [cljs.spec :as s]
+   [klipse.utils :refer [verbose?]]
    [klipse.dom-utils :refer [create-div-after value add-event-listener]]
    [cljs.core.async :refer [put! <! chan timeout alts!]]
    [klipse.ui.editors.common :refer [handle-events]]
-   [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value-and-beautify get-value]]))
+   [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value-and-beautify get-selection-when-selected]]))
 
 (defn create-state [& {:keys [result-element container editor-args]}]
   (atom {:eval-counter 0
@@ -39,6 +40,8 @@
   In the case of client side evaluation, the channel is closed after the first message on the channel (this is done implicitly by `go`).
   "
   [eval-fn src-code unsafe-setter {:keys [loop-msec preamble]} state]
+  (when (verbose?)
+    (js/console.info "Evaluating: " src-code))
   (go
     (let [setter (or unsafe-setter any?)]
                                         ; it is important to block until the first evaluation because other klipse snippets might depend on this evaluation. E.g. when a snippet uses a function defined in a previous snippet.
@@ -71,7 +74,7 @@
 (defn eval-in-codemirror-editor [eval-fn result-element editor-source snippet-args mode state]
   (let [editor-args (:editor-args @state)]
     (eval-in-editor eval-fn
-                    (get-value editor-source)
+                    (get-selection-when-selected editor-source)
                     (when result-element #(set-value-and-beautify result-element mode % {:indent? (:indent-output? editor-args)
                                                                                          :remove-ending-comments? false}))
                     snippet-args
@@ -92,7 +95,7 @@
 
 (defn eval-in-html-editor [eval-fn result-element editor-source snippet-args state]
   (eval-in-editor eval-fn
-                  (get-value editor-source)
+                  (get-selection-when-selected editor-source)
                   (when result-element (partial wrap-result-in-html result-element))
                   snippet-args
                   state))
@@ -156,6 +159,3 @@
     (when result-element (gdom/setTextContent result-element default-txt))
     (add-event-listener element "input" #(eval-in-dom-editor eval-fn result-element element snippet-args state))
     #(eval-in-dom-editor eval-fn result-element element snippet-args state)))
-
-(comment
-  (s/instrument #'editor-options))

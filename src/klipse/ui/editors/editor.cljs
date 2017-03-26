@@ -1,14 +1,15 @@
 (ns klipse.ui.editors.editor
   (:use-macros
-    [gadjett.core :only [dbg]]
-    [purnam.core :only [? ! !>]])
+   [gadjett.core :only [dbg]]
+   [purnam.core :only [? ! !>]])
   (:require
-    [goog.dom :as gdom]
-    [klipse.dom-utils :refer [create-div-after]]
-    [gadjett.collections :as gadjett]
-    cljsjs.codemirror
-    cljsjs.codemirror.addon.edit.matchbrackets
-    cljsjs.codemirror.addon.edit.closebrackets))
+   [goog.dom :as gdom]
+   [klipse.dom-utils :refer [create-div-after]]
+   [gadjett.collections :as gadjett]
+   cljsjs.codemirror
+   cljsjs.codemirror.addon.edit.matchbrackets
+   cljsjs.codemirror.addon.edit.closebrackets
+   [clojure.string :refer [blank?]]))
 
 (def code-mirror js/CodeMirror)
 
@@ -19,6 +20,19 @@
 
 (defn get-value [editor]
   (.getValue editor))
+
+(defn get-selection [editor]
+  (.getSelection editor))
+
+(defn get-selection-or-nil [editor]
+  (let [s (get-selection editor)]
+    (if (blank? s)
+      nil
+      s)))
+
+(defn get-selection-when-selected [editor]
+  (or (get-selection-or-nil editor)
+      (get-value editor)))
 
 (defn set-value [editor value] 
   (.setValue editor value)

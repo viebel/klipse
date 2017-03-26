@@ -8,7 +8,7 @@
    [clojure.string :as string :refer [blank?]]
    [parinfer-codemirror.editor :refer [parinferize-and-sync!]]
    [klipse.common.registry :refer [codemirror-keymap-src scripts-src]]
-   [klipse.ui.editors.editor :refer [get-value set-value replace-element-by-editor replace-id-by-editor]]
+   [klipse.ui.editors.editor :refer [get-selection-when-selected get-value set-value replace-element-by-editor replace-id-by-editor]]
    [klipse.ui.editors.common :refer [handle-events]]
    [klipse.utils :refer [url-parameters load-scripts-mem]]
    [om.next :as om :refer-macros [defui]]
@@ -40,10 +40,11 @@
                    :input])))
 
 (defn handle-cm-events [component editor]
+  (set! js/CCC editor)
   (handle-events editor
                  {:idle-msec 3000
                   :on-change #(save-input component (get-value editor))
-                  :on-should-eval #(process-input component (get-value editor))}))
+                  :on-should-eval #(process-input component (get-selection-when-selected editor))}))
 
 (defmulti use-editor-mode! (fn [mode _]  mode))
 

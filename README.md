@@ -54,15 +54,13 @@ The code editing inside the interactive snippets is powered by [CodeMirror](http
 
 # Integration
 
-In order to integrate the klipse plugin on a blog, library documentation or any other web page you have to follow 3 simple steps.
+In order to integrate the klipse plugin on a blog, library documentation or any other web page, you have to follow 3 simple steps.
 
-1. Add the `javascript` library at the **end of the body tag** :
-```html
-    <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
-</body>
-```
-2. Add `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>`
-3. Add style and custom configuration in the `<head>`
+
+1. Make sure you have `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>` (It is required in order to display properly the CodeMirror elements used by Klipse.)
+
+2. Add css and custom configuration somewhere in the page (it could be in the `<head>` or in the `<body>`) **before** the `<script>` element of step #3.
+The selector keys are per language (see below for a list of supported languages) and the value are the CSS selector of the elements that you want to klipsify.
 
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
@@ -72,6 +70,12 @@ In order to integrate the klipse plugin on a blog, library documentation or any 
         selector_eval_js: '.language-klipse-eval-js', // css selector for the html elements you want to klipsify
     };
 </script>
+```
+
+3. Add the `javascript` library at the **end of the body tag** :
+```html
+    <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+</body>
 ```
 
 Here is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.

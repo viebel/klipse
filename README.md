@@ -54,9 +54,25 @@ The code editing inside the interactive snippets is powered by [CodeMirror](http
 
 # Integration
 
-In order to integrate the klipse plugin on a blog, library documentation or any other web page, add the following `javascript` tag **at the end of the page body** according to the language of the code snippets:
+In order to integrate the klipse plugin on a blog, library documentation or any other web page you have to follow 3 simple steps.
 
-**You need also to add `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>`.**
+1. Add the `javascript` library at the **end of the body tag** :
+```html
+    <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+</body>
+```
+2. Add `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>`
+3. Add style and custom configuration in the `<head>`
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_eval_js: '.language-klipse-eval-js', // css selector for the html elements you want to klipsify
+    };
+</script>
+```
 
 Here is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
 

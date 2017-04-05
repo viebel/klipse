@@ -268,6 +268,8 @@ The following attributes can be added to the DOM element of the snippet:
 
 * `data-eval-idle-msec`: (default 20) idle time in msec before the snippet is evaluated
 * `data-loop-msec`: (default `undefined`) the code is run in a loop every `data-loop-msec` msec
+* `data-preamble`: (default `""`) A string containing Clojurescript source code that should be run before the contents of this snippet, eg "(reset! canvas-id :canvas-2)". Useful for hiding implementation details from readers in blog posts, like e.g. setting a `canvas-id` atom to `:canvas-2`, or for performing any other setup operations that need to be done on a per-snippet basis.
+
 
 ### Javascript only
 
@@ -284,7 +286,6 @@ The following data attributes are supported on a klipse snippet DOM element:
 * `data-static-fns`: (default `false`) set to true for using [static dispatch](http://blog.klipse.tech/clojurescript/2016/04/13/static-fns.html)
 * `data-external-libs`: comma separated list of github repositories to resolve dependencies: you need to provide the full list of dependencies (including the dependencies of dependencies recursively). See for instance [Lambda Caclulus with clojure and Klipse](http://blog.klipse.tech/lambda/2016/07/24/lambda-calculus-2.html)
 * `data-print-length`: (default 1000) max number of items in collections to display - useful to prevent browser stuck when evaluating infinite sequences like `(range)`
-* `data-preamble`: (default `""`) A string containing Clojurescript source code that should be run before the contents of this snippet, eg "(reset! canvas-id :canvas-2)". Useful for hiding implementation details from readers in blog posts, like e.g. setting a `canvas-id` atom to `:canvas-2`, or for performing any other setup operations that need to be done on a per-snippet basis.
 * `data-beautify-strings`: (default false) when evaluation result is a string - display the "interior" of the string without escaping the quotes.
 * `data-verbose`: (default false) passed to boostrapped `eval` and `compile` `:verbose` opts
 * `data-max-eval-duration`: (default 1000) max number of milliseconds the snippet code is allowed to run synchronously before being interrupted.

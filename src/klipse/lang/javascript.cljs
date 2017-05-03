@@ -80,7 +80,7 @@
 (register-mode "eval-javascript" "selector_eval_js" opts)
 
 (defn babel [src]
-  (-> (!> js/Babel.transform src #js {:presets #js ["es2017"]})
+  (-> (!> js/Babel.transform src #js {:presets #js ["es2017" "stage-2" "stage-3"]})
       (aget "code")))
 
 (defn eval-es2017 [exp {:keys [async-code? container-id] :or {async-code? false}}]

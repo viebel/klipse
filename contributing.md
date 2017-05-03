@@ -1,6 +1,9 @@
 # KLIPSE [![Circle CI](https://circleci.com/gh/viebel/klipse/tree/master.svg?style=svg)](https://circleci.com/gh/viebel/klipse/tree/master)
 
-KLIPSE is live [here](http://app.klipse.tech).
+KLIPSE is both an app and a plugin
+
+
+The app is live [here](http://app.klipse.tech).
 
 And it looks like this:
 
@@ -33,12 +36,10 @@ Press Ctrl-Enter to evaluate.
 rlwrap lein run -m clojure.main scripts/figwheel.clj
 ```
 
- Open the browser [http://localhost:5014/index-dbg.html](http://localhost:5014/index-dbg.html)
+For the app, open the browser [http://localhost:5014/index-dbg.html](http://localhost:5014/index-dbg.html)
 
- Open the browser [http://localhost:5014/cards.html](http://localhost:5014/cards.html)
+For the plugin, open a test page e.g. http://localhost:5014/js-dbg.html
 
-Currenlty, `cards` is broken :(
- 
  
 ## Tutorial
 

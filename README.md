@@ -54,9 +54,29 @@ The code editing inside the interactive snippets is powered by [CodeMirror](http
 
 # Integration
 
-In order to integrate the klipse plugin on a blog, library documentation or any other web page, add the following `javascript` tag **at the end of the page body** according to the language of the code snippets:
+In order to integrate the klipse plugin on a blog, library documentation or any other web page, you have to follow 3 simple steps.
 
-**You need also to add `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>`.**
+
+1. Make sure you have `<!DOCTYPE html>` at the top of your html file and  `<meta charset="utf-8">` right after your `<head>` (It is required in order to display properly the CodeMirror elements used by Klipse.)
+
+2. Add css and custom configuration somewhere in the page (it could be in the `<head>` or in the `<body>`) **before** the `<script>` element of step #3.
+The selector keys are per language (see below for a list of supported languages) and the value are the CSS selector of the elements that you want to klipsify.
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_eval_js: '.language-klipse-eval-js', // css selector for the html elements you want to klipsify
+    };
+</script>
+```
+
+3. Add the `javascript` library at the **end of the body tag** :
+```html
+    <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+</body>
+```
 
 Here is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
 
@@ -248,6 +268,8 @@ The following attributes can be added to the DOM element of the snippet:
 
 * `data-eval-idle-msec`: (default 20) idle time in msec before the snippet is evaluated
 * `data-loop-msec`: (default `undefined`) the code is run in a loop every `data-loop-msec` msec
+* `data-preamble`: (default `""`) A string containing Clojurescript source code that should be run before the contents of this snippet, eg "(reset! canvas-id :canvas-2)". Useful for hiding implementation details from readers in blog posts, like e.g. setting a `canvas-id` atom to `:canvas-2`, or for performing any other setup operations that need to be done on a per-snippet basis.
+
 
 ### Javascript only
 
@@ -264,7 +286,6 @@ The following data attributes are supported on a klipse snippet DOM element:
 * `data-static-fns`: (default `false`) set to true for using [static dispatch](http://blog.klipse.tech/clojurescript/2016/04/13/static-fns.html)
 * `data-external-libs`: comma separated list of github repositories to resolve dependencies: you need to provide the full list of dependencies (including the dependencies of dependencies recursively). See for instance [Lambda Caclulus with clojure and Klipse](http://blog.klipse.tech/lambda/2016/07/24/lambda-calculus-2.html)
 * `data-print-length`: (default 1000) max number of items in collections to display - useful to prevent browser stuck when evaluating infinite sequences like `(range)`
-* `data-preamble`: (default `""`) A string containing Clojurescript source code that should be run before the contents of this snippet, eg "(reset! canvas-id :canvas-2)". Useful for hiding implementation details from readers in blog posts, like e.g. setting a `canvas-id` atom to `:canvas-2`, or for performing any other setup operations that need to be done on a per-snippet basis.
 * `data-beautify-strings`: (default false) when evaluation result is a string - display the "interior" of the string without escaping the quotes.
 * `data-verbose`: (default false) passed to boostrapped `eval` and `compile` `:verbose` opts
 * `data-max-eval-duration`: (default 1000) max number of milliseconds the snippet code is allowed to run synchronously before being interrupted.

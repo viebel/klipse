@@ -7,7 +7,7 @@
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
     [klipse.utils :refer [load-scripts-mem securize-eval! default-forbidden-symbols]]
-    [cljs.spec :as s]
+    [cljs.spec.alpha :as s]
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]

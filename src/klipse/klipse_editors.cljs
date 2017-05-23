@@ -6,7 +6,7 @@
   (:require
    [goog.dom :as gdom]
    [goog.dom :as gdom]
-   [cljs.spec :as s]
+   [cljs.spec.alpha :as s]
    [klipse.utils :refer [verbose?]]
    [klipse.dom-utils :refer [create-div-after value add-event-listener]]
    [cljs.core.async :refer [put! <! chan timeout alts!]]

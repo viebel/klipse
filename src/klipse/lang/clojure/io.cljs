@@ -151,13 +151,13 @@
   (re-matches (cached-ns-regexp) (str name)))
 
 (defmethod load-ns :macro [external-libs {:keys [name path]} src-cb-original]
-  (let [src-cb (if (not= name 'cljs.spec.test)
+  (let [src-cb (if (not= name 'cljs.spec.test.alpha)
                  src-cb-original
                  (fn [& args]
                    (when (verbose?)
-                     (js/console.info "src-cb: patch cljs.spec.test/eval"))
+                     (js/console.info "src-cb: patch cljs.spec.test.alpha/eval"))
                    (apply src-cb-original args)
-                   (def-a-var 'cljs.spec.test$macros 'eval 'identity) ; The spec.test/instrument macro uses eval, which doesn’t exist in ClojureScript. It seems that `identity` as eval works
+                   (def-a-var 'cljs.spec.test.alpha$macros 'eval 'identity) ; The spec.test/instrument macro uses eval, which doesn’t exist in ClojureScript. It seems that `identity` as eval works
 ))]
     (when (verbose?) (js/console.info "load-ns :macro :" (str name)))
     (cond

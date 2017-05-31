@@ -9,7 +9,9 @@
                  [org.omcljs/om "1.0.0-alpha47"]
                  [com.cemerick/url "0.1.1"]
                  [rewrite-cljs "0.4.3"]
+                 [viebel/re-frame "0.9.3-SNAPSHOT"]
+                 [day8.re-frame/http-fx "0.1.3"]
                  ;[org.clojure/core.match "0.3.0-self-host"]
-                 ;[reagent "0.6.1-SNAPSHOT"]
+                 [viebel/reagent "0.6.2"]
                  ;[org.clojure/math.combinatorics "0.1.3"]
                  ])

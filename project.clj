@@ -2,7 +2,7 @@
   :description "Embeddable multi-language WEB REPL"
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  [org.clojure/clojurescript "1.9.456"]
-                 [org.clojure/core.async "0.2.395"]
+                 [org.clojure/core.async "0.3.443"]
                  [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]
                  [viebel/codemirror-parinfer "0.0.3"]

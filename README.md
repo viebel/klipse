@@ -323,7 +323,8 @@ Here are a couple of examples of blogs using the klipse plugin:
 - clojure: Reagent deep dive part [1](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [2](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [3](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-3-sequences.html) [4](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-4-application.html)
 - clojurescript: [Visualising Bézier Curves](https://040code.github.io/2017/07/12/bezier-in-clojurescript/)
 - clojure: [core.async fun tutorial](http://abhirag.in/articles/batman_clojure.html)
-- 
+- clojurescript: [reagent and reframe playground](https://day8.github.io/re-playground/)
+
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 

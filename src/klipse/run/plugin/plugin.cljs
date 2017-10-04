@@ -21,6 +21,7 @@
             klipse.lang.clojure
             klipse.lang.reagent
             klipse.lang.ocaml
+            klipse.lang.reason
             [klipse.plugin :as plugin]))
 
 (js/console.info "settings: " (aget js/window "klipse_settings"))

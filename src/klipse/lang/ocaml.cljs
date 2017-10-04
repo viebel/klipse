@@ -45,15 +45,13 @@
                 :beautify? false
                 :eval-fn eval-ocaml
                 :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
-                ; oCaml does not know a single line comment
                 })
 
 (def transpile-opts {:editor-in-mode "text/x-ocaml"
                       :editor-out-mode "javascript"
                       :beautify? false
                       :eval-fn transpile-ocaml
-                      :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/ocaml-compiler.js"]
-                      ; oCaml does not know a single line comment
+                      :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js"]
                       })
 
 (register-mode "eval-ocaml" "selector_eval_ocaml" eval-opts)

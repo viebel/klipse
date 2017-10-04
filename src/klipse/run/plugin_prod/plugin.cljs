@@ -17,8 +17,9 @@
             klipse.lang.server-eval
             klipse.lang.markdown
             klipse.lang.lambdaway
-            ; DO NOT include clojure it inflates the build sive and anyway it doesn't work with advanced compilation klipse.lang.clojure
+            ; DO NOT include clojure it inflates the build size and anyway it doesn't work with advanced compilation klipse.lang.clojure
             klipse.lang.html
+            klipse.lang.ocaml
             [klipse.plugin :as plugin]))
 
 (print "settings: " (aget js/window "klipse_settings"))

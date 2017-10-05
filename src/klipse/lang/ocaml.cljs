@@ -45,14 +45,14 @@
                 :beautify? false
                 :eval-fn eval-ocaml
                 :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/stdlibBundle.js" "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
-                })
+                :comment-str #(str "(*" %1 "*)")})
 
 (def transpile-opts {:editor-in-mode "text/x-ocaml"
-                      :editor-out-mode "javascript"
-                      :beautify? false
-                      :eval-fn transpile-ocaml
-                      :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js"]
-                      })
+                     :editor-out-mode "javascript"
+                     :beautify? false
+                     :eval-fn transpile-ocaml
+                     :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js"]
+                     :comment-str #(str "(*" %1 "*)")})
 
 (register-mode "eval-ocaml" "selector_eval_ocaml" eval-opts)
 (register-mode "transpile-ocaml" "selector_transpile_ocaml" transpile-opts)

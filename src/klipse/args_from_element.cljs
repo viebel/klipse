@@ -25,8 +25,11 @@
                          (-> (aget element "dataset")
                              (aget "gistId")) nil)]
       (let [gist-content (<! (read-input-from-gist gist-id))
-            gist-intro (str "loaded from gist: " (gist-path-page gist-id))]
-        (str comment-str gist-intro "\n" gist-content)))))
+            gist-intro (str "loaded from gist: " (gist-path-page gist-id))
+            gist-intro-commented-out (if (string? comment-str)
+                                       (str comment-str gist-intro)
+                                       (comment-str gist-intro))]
+        (str gist-intro-commented-out "\n" gist-content)))))
 
 (defn content [element comment-str]
   (go

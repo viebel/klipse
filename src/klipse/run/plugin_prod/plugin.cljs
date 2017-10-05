@@ -20,6 +20,7 @@
             ; DO NOT include clojure it inflates the build size and anyway it doesn't work with advanced compilation klipse.lang.clojure
             klipse.lang.html
             klipse.lang.ocaml
+            klipse.lang.reason
             [klipse.plugin :as plugin]))
 
 (print "settings: " (aget js/window "klipse_settings"))

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+
+
+    <pre>
+      <code class="eval-reason">
+let a = "Hello " ^ "World!";
+      </code>
+    </pre>
+
+
+    <pre>
+      <code class="eval-reason">
+type person = {name: string, age: int};
+let somePerson = {name: "Guy", age: 30};
+let {name, age} = somePerson;
+      </code>
+    </pre>
+
+    <p> Transpilation </p>
+    <pre>
+      <code class="transpile-reason">
+let rec fib n => {
+  switch n {
+  | 0 => 1
+  | 1 => 1
+  | _ => fib (n-1) + fib (n-2)
+  };
+};
+
+let x = fib 9;
+      </code>
+    </pre>
+    <br/>
+    <script>
+      window.klipse_settings = {
+      selector_transpile_reason: '.transpile-reason',
+      selector_eval_reason: '.eval-reason',
+      };
+    </script>
+    <script src="/fig/js/klipse.fig.js"></script>
+  </body>
+</html>

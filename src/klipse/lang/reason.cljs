@@ -64,7 +64,7 @@
                 :editor-out-mode "javascript"
                 :beautify? false
                 :eval-fn eval-reason
-                :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt.js" "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
+                :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt.js" "https://viebel.github.io/klipse/repo/js/stdlibBundle.js" "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
                 })
 
 (def transpile-opts {:editor-in-mode "text/x-ocaml"

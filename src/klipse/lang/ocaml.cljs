@@ -44,7 +44,7 @@
                 :editor-out-mode "javascript"
                 :beautify? false
                 :eval-fn eval-ocaml
-                :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
+                :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/stdlibBundle.js" "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
                 })
 
 (def transpile-opts {:editor-in-mode "text/x-ocaml"

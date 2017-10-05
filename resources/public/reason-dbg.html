@@ -11,7 +11,9 @@
 
     <pre>
       <code class="eval-reason">
-let a = "Hello " ^ "World!";
+	let square x => x * x;
+
+	let a = square 9;
       </code>
     </pre>
 
@@ -39,9 +41,26 @@ let x = fib 9;
       </code>
     </pre>
     <br/>
+
+    <p> Transpilation to OCaml</p>
+    <pre>
+      <code class="transpile-reason-to-ocaml">
+let rec fib n => {
+  switch n {
+  | 0 => 1
+  | 1 => 1
+  | _ => fib (n-1) + fib (n-2)
+  };
+};
+
+let x = fib 9;
+      </code>
+    </pre>
+    <br/>
     <script>
       window.klipse_settings = {
       selector_transpile_reason: '.transpile-reason',
+      selector_transpile_reason_to_ocaml: '.transpile-reason-to-ocaml',      
       selector_eval_reason: '.eval-reason',
       };
     </script>

@@ -55,6 +55,11 @@
     (let [[_ res] (reason->js exp)]
       res)))
 
+(defn transpile-reason->ocaml [exp _]
+  (go
+    (let [[_ res] (reason->ocaml exp)]
+      res)))
+
 (def eval-opts {:editor-in-mode "text/x-ocaml"
                 :editor-out-mode "javascript"
                 :beautify? false
@@ -67,7 +72,17 @@
                       :beautify? false
                       :eval-fn transpile-reason
                       :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt.js"]
-                      })
+                     })
+
+
+(def transpile->ocaml-opts {:editor-in-mode "text/x-ocaml"
+                      :editor-out-mode "text/x-ocaml"
+                      :beautify? false
+                      :eval-fn transpile-reason->ocaml
+                      :external-scripts [(codemirror-mode-src "mllike")  "https://viebel.github.io/klipse/repo/js/refmt.js"]
+                     })
+
 
 (register-mode "eval-reason" "selector_eval_reason" eval-opts)
 (register-mode "transpile-reason" "selector_transpile_reason" transpile-opts)
+(register-mode "transpile-reason->ocaml" "selector_transpile_reason_to_ocaml" transpile->ocaml-opts)

@@ -19,6 +19,11 @@
     (->> (split s ",")
          (map trim))))
 
+(defn comment-out [src comment-str]
+  (if (string? comment-str)
+    (str comment-str src)
+    (comment-str src)))
+
 (defn content-from-gist [element comment-str]
   (go
     (when-let [gist-id (or
@@ -26,9 +31,7 @@
                              (aget "gistId")) nil)]
       (let [gist-content (<! (read-input-from-gist gist-id))
             gist-intro (str "loaded from gist: " (gist-path-page gist-id))
-            gist-intro-commented-out (if (string? comment-str)
-                                       (str comment-str gist-intro)
-                                       (comment-str gist-intro))]
+            gist-intro-commented-out (comment-out gist-intro comment-str)]
         (str gist-intro-commented-out "\n" gist-content)))))
 
 (defn content [element comment-str]

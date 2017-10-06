@@ -11,18 +11,15 @@
 
     <pre>
       <code class="eval-reason">
-	let square x => x * x;
-
-	let a = square 9;
+let a = 1;
       </code>
     </pre>
 
 
     <pre>
       <code class="eval-reason">
-type person = {name: string, age: int};
-let somePerson = {name: "Guy", age: 30};
-let {name, age} = somePerson;
+external a: int = "" [@@bs.val];
+let b = a; 
       </code>
     </pre>
 
@@ -34,15 +31,15 @@ let {name, age} = somePerson;
     <p> Transpilation </p>
     <pre>
       <code class="transpile-reason">
-let rec fib n => {
-  switch n {
-  | 0 => 1
-  | 1 => 1
-  | _ => fib (n-1) + fib (n-2)
-  };
-};
+let a = 1;
+      </code>
+    </pre>
+    <br/>
 
-let x = fib 9;
+        <pre>
+      <code class="transpile-reason">
+external a: int = "" [@@bs.val];
+let b = a; 
       </code>
     </pre>
     <br/>

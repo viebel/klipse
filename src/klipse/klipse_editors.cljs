@@ -136,6 +136,11 @@
                     :on-should-eval #(eval-in-html-editor eval-fn result-element in-editor snippet-args state)})
     #(eval-in-html-editor eval-fn result-element in-editor snippet-args state)))
 
+(def editors (atom {}))
+(defn add-editor [editor snippet-num]
+  (swap! editors assoc snippet-num editor)
+  (! js/window.klipse_editors (clj->js @editors)))
+
 (defmethod create-editor :code-mirror [_ {:keys [snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result] :as editor-args}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         container  (create-div-after element (klipse-container-attrs snippet-num))
@@ -148,6 +153,7 @@
     (handle-events in-editor
                    {:idle-msec idle-msec
                     :on-should-eval #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)})
+    (add-editor in-editor snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))
 
 (defmethod create-editor :dom [_ {:keys [snippet-num element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec loop-msec preamble no-result] :as editor-args}]

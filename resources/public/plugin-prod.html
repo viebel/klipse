@@ -121,46 +121,36 @@ let a = 1 + 1
 	<h2> Reason Evaluation </h2>
 	<pre>
       <code class="eval-reason">
-let a = "Hello " ^ "World!";
+let a = "Hello " ++ "World!";
       </code>
     </pre>
 
-
+ <p> We should handle errors properly </p>
     <pre>
       <code class="eval-reason">
-type person = {name: string, age: int};
-let somePerson = {name: "Guy", age: 30};
-let {name, age} = somePerson;
+let a = "aaa" ++
       </code>
     </pre>
 
     <h2> Reason Transpilation </h2>
     <pre>
       <code class="transpile-reason">
-let rec fib n => {
-  switch n {
-  | 0 => 1
-  | 1 => 1
-  | _ => fib (n-1) + fib (n-2)
-  };
-};
-
-let x = fib 9;
+let a = "aa" ++ "bb";
       </code>
     </pre>
 
     <h2> Reason Transpilation to OCaml</h2>
     <pre>
       <code class="transpile-reason-to-ocaml">
-let rec fib n => {
-  switch n {
-  | 0 => 1
-  | 1 => 1
-  | _ => fib (n-1) + fib (n-2)
-  };
-};
+let a = "aa" ++ "bb";
+      </code>
+    </pre>
+    <br/>
 
-let x = fib 9;
+        <h2> Ocaml Transpilation to Reason</h2>
+    <pre>
+      <code class="ocaml-to-reason">
+let a x y = x + y
       </code>
     </pre>
     <br/>
@@ -205,9 +195,10 @@ let x = fib 9;
             selector_eval_ruby: '.eval-ruby',
 	    selector_transpile_ocaml: '.transpile-ocaml',
 	    selector_eval_ocaml: '.eval-ocaml',
-            selector_transpile_reason: '.transpile-reason',
-	    selector_transpile_reason_to_ocaml: '.transpile-reason-to-ocaml',
-	    selector_eval_reason: '.eval-reason',
+            selector_transpile_reason_3: '.transpile-reason',
+	    selector_transpile_reason_3_to_ocaml: '.transpile-reason-to-ocaml',
+	    selector_eval_reason_3: '.eval-reason',
+	    selector_ocaml_to_reason: '.ocaml-to-reason',
             selector_js: '.clojure-js'
         };
         </script>

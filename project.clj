@@ -1,4 +1,4 @@
-(defproject klipse "7.2.4"
+(defproject klipse "7.3.0"
   :description "Embeddable multi-language WEB REPL"
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  [org.clojure/clojurescript "1.9.456"]

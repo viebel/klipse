@@ -183,6 +183,8 @@ You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klips
 
 ## ReasonML version 3
 
+> Note: Code Snippets in Reason version 3 will automagically be upgraded to latest Reason version once a new version of Reason is released.
+
 We have 4 kinds of ReasonML snippets:
 
 1. Code Evaluation

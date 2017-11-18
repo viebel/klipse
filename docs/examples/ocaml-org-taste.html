@@ -1,0 +1,488 @@
+<!DOCTYPE HTML>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en"
+      xml:lang="en" >
+  <head>
+    <base href="http://ocaml.org" />
+    <meta charset="utf-8" />
+    
+    <link rel="alternate" hreflang="en" href="taste.html" />
+<link rel="alternate" hreflang="fr" href="taste.fr.html" />
+
+    
+    <title>Code Examples &#8211; OCaml</title>
+    <link href="/img/favicon32x32.ico?" rel="shortcut icon"
+          type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Web Fonts -->
+    <link href="//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" />
+    <link href="//fonts.googleapis.com/css?family=Domine:400,700"
+	  rel="stylesheet" />
+    <link href="//fonts.googleapis.com/css?family=Droid+Sans+Mono"
+	  rel="stylesheet" type="text/css" />
+    <!-- Only part of Bootstrap that we don't load from a CDN is our own customized CSS build. -->
+    <link href="/css/bootstrap.css" rel="stylesheet" media="screen" />
+    <link href="/css/bootstrap_mod.css" rel="stylesheet" media="screen" />
+    <link href="/css/ocamlorg.css" rel="stylesheet" media="screen" />
+    <script src="/js/collapsed-menu.js" type="text/javascript"></script>
+    
+    
+    <script>
+      if (document.implementation.hasFeature('http://www.w3.org/TR/SVG11/feature#Image', '1.1')) {
+      document.documentElement.className = 'svg';
+      }
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar"
+		  onclick="toggleVisibilityMenu('menu-items')">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand"
+	     href="/"
+	     ><img src="/img/colour-logo-white.svg"
+		   class="svg" alt="OCaml"
+		   /><img src="/img/colour-logo-white.png"
+			  class="png" alt="OCaml" /></a>
+          <div id="menu-items" class="nav-collapse collapse">
+                        <ul class="nav">
+              <li class="active"><a href="/learn/">Learn</a></li>
+              <li ><a href="/docs/">Documentation</a></li>
+              <li ><a href="https://opam.ocaml.org/">Packages</a></li>
+              <li ><a href="/community/">Community</a></li>
+            </ul>
+
+            
+            <a
+               href="https://github.com/ocaml/ocaml.org/tree/master/site/learn/taste.md"
+	       title="Edit this page"
+	       class="edit-this-page pull-right"
+	       ><!-- Image in CSS
+	      --><span>Edit this page</span></a>
+	    <script language="JavaScript">
+	      // Preload the hover image
+	      Image1= new Image(33,33);
+	      Image1.src = '/img/edit-hover.svg';
+	      Image2= new Image(33,33);
+	      Image2.src = '/img/edit-hover.png';
+	    </script>
+            
+            <form
+                  id="searchform" class="navbar-search pull-right"
+		  method="get" action="//www.google.com/search">
+              <input type="hidden" name="as_sitesearch" value="ocaml.org" />
+              <input placeholder="Search" class="search-query"
+		     name="q" type="text" />
+            </form>
+          </div>
+        </div>
+      </div>
+      
+    </nav>
+    
+    <!--								-*-html-*- -->
+<div class="container">
+  <div class="row">
+    
+    <div class="span4"></div>
+    <div class="span8">
+      <!--								-*-html-*- -->
+<div class="running-header">
+  
+  <div class="row">
+    <ol class="breadcrumb">
+      <li><a href="/">Home</a><span class="divider"></span></li>
+<li><a href="/learn/">Learn</a><span class="divider"></span></li>
+<li class="active">Code Examples</li>
+
+
+    </ol>
+    <ul class="translations">
+      <li class="active">en</li>
+<li><a href="taste.fr.html">fr</a></li>
+
+    </ul>
+  </div>
+  
+</div>
+
+    </div>
+    <div class="span4">
+      <nav id="nav-secondary">
+        <ul class="nav nav-list">
+          <li class="nav-header"><a href="#">Contents</a></li>
+          <ul><li><a href='#Elementary-functions'>Elementary functions</a>
+</li><li><a href='#Automatic-memory-management'>Automatic memory management</a>
+</li><li><a href='#Polymorphism-sorting-lists'>Polymorphism: sorting lists</a>
+</li><li><a href='#Imperative-features'>Imperative features</a>
+</li><li><a href='#Higher-order-functions'>Higher-order functions</a>
+</li><li><a href='#The-power-of-functions'>The power of functions</a>
+</li><li><a href='#Symbolic-computation'>Symbolic computation</a>
+</li><li><a href='#Elementary-debugging'>Elementary debugging</a>
+</li></ul>
+
+        </ul>
+      </nav>
+    </div>
+    <div id="content-primary" class="span8">
+            <div id='tryocaml' class="content" style='display:none;'>
+        <div class="container">
+          <div class="row">
+            <div id="lesson-message"></div>
+            <div id="languages" style='display:none;'></div>
+            <div id="menu-lessons" style='display:none'>
+              <table class="zebra-striped">
+                <tr><td id="text-x"><code></code></td> <td></td></tr>
+              </table>
+            </div>
+            <div class="span9 ocaml">
+              <div id="toplevel-container">
+                <pre id="output"></pre>
+                <div id="sharp">#</div>
+                <div id="toplevel"></div>
+              </div>
+              <div id="buttons"></div>
+              <div id="graphics-title"></div>
+              <div id="graphics"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id='main-contents' class="content">
+        <!--   -->
+
+<h1 id="Code-Examples">Code Examples</h1>
+
+<p>OCaml possesses an <a href='description.html#Interactivity'>interactive system</a>,
+called “toploop”, that lets you type OCaml code and have it evaluated
+immediately. It is a great way to learn the language and to quickly
+experiment with ideas. Below, we demonstrate the use of the toploop to
+illustrate basic capabilities of the language.</p>
+<p>Some indications for the code below. The prompt at which you type is
+“<code>#</code>”. The code must end with “<code>;;</code>” (this is only an indication to the
+interactive system that the input has to be evaluated and is not really
+part of the OCaml code). The output of the system is displayed in
+<code class='ocaml-output'>this color</code>.</p>
+<p>More code examples are available on the following sites:</p>
+<ul><li><a href='http://pleac.sourceforge.net/pleac_ocaml/'>Pleac</a></li><li><a href='tutorials/99problems.html'>99 Problems (solved)</a></li><li><a href='http://rosettacode.org/wiki/Category:OCaml'>Rosetta</a></li><li><a href='http://langref.org/ocaml'>langref.org</a></li><li><a href='http://www.codecodex.com/wiki/Category:Objective_Caml'>code codex</a></li></ul>
+
+<h2 id="Elementary-functions">Elementary functions</h2>
+
+<p>Let us define the square function and the recursive factorial function.
+Then, let us apply these functions to sample values. Unlike the majority
+of languages, OCaml uses parentheses for grouping but not for the
+arguments of a function.</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>let</span> <span class='ocaml-function'>square</span> <span class='ocaml-variable'>x </span>= x * x</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val square : int -&gt; int = &lt;fun&gt;
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'>square 3</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int = 9
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'><span class='governing'>let rec</span></span> <span class='ocaml-function'>fact</span> <span class='ocaml-variable'>x </span>=
+    <span class='keyword'>if</span> x &lt;= 1 <span class='keyword'>then</span> 1 <span class='keyword'>else</span> x * fact (x - 1)</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val fact : int -&gt; int = &lt;fun&gt;
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'>fact 5</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int = 120
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'>square 120</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int = 14400
+</span></code></pre>
+
+
+<pre><code class="ocamlklipse"/>
+let square x = x * x;;
+let a =  square 3;;
+</code></pre>
+<pre><code class="ocamlklipse"/>
+let rec fact x =
+  if x &lt;= 1 then 1 else x * fact (x - 1);;
+let a = fact 5;;
+</code></pre>
+
+<h2 id="Automatic-memory-management">Automatic memory management</h2>
+
+<p>All allocation and deallocation operations are fully automatic. For
+example, let us consider simply linked lists.</p>
+<p>Lists are predefined in OCaml. The empty list is written <code>[]</code>. The
+constructor that allows prepending an element to a list is written <code>::</code>
+(in infix form).</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>let </span><span class='ocaml-variable'>li</span> = 1 :: 2 :: 3 :: []</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val li : int list = [1; 2; 3]
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'>[1; 2; 3]</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int list = [1; 2; 3]
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'>5 :: li</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int list = [5; 1; 2; 3]
+</span></code></pre>
+
+<h2 id="Polymorphism-sorting-lists">Polymorphism: sorting lists</h2>
+
+<p>Insertion sort is defined using two recursive functions.</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'><span class='governing'>let rec</span></span> <span class='ocaml-function'>sort</span> = <span class='keyword'>function</span>
+    | [] -&gt; []
+    | x :: l -&gt; insert x (sort l)
+  <span class='governing'><span class='governing'>and</span></span> <span class='ocaml-function'>insert</span> <span class='ocaml-variable'>elem </span>= <span class='keyword'>function</span>
+    | [] -&gt; [elem]
+    | x :: l -&gt; <span class='keyword'>if</span> elem &lt; x <span class='keyword'>then</span> elem :: x :: l
+                <span class='keyword'>else</span> x :: insert elem l</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val sort : 'a list -&gt; 'a list = &lt;fun&gt;
+val insert : 'a -&gt; 'a list -&gt; 'a list = &lt;fun&gt;
+</span></code></pre>
+
+<p>Note that the type of the list elements remains unspecified: it is
+represented by a <em>type variable</em> <code>&#39;a</code>. Thus, <code>sort</code> can be applied both
+to a list of integers and to a list of strings.</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'>sort [2; 1; 0]</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int list = [0; 1; 2]
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'>sort [<span class='string'>&quot;yes&quot;</span>; <span class='string'>&quot;ok&quot;</span>; <span class='string'>&quot;sure&quot;</span>; <span class='string'>&quot;ya&quot;</span>; <span class='string'>&quot;yep&quot;</span>]</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : string list = [&quot;ok&quot;; &quot;sure&quot;; &quot;ya&quot;; &quot;yep&quot;; &quot;yes&quot;]
+</span></code></pre>
+
+<h2 id="Imperative-features">Imperative features</h2>
+
+<p>Let us encode polynomials as arrays of integer coefficients. Then, to
+add two polynomials, we first allocate the result array, then fill its
+slots using two successive <code>for</code> loops.</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>let</span> <span class='ocaml-function'>add_polynom</span> <span class='ocaml-variable'>p1 p2 </span>=
+    <span class='governing'>let </span><span class='ocaml-variable'>n1</span> = <span class='ocaml-module'>Array</span>.length p1
+    <span class='governing'><span class='governing'>and</span> </span><span class='ocaml-variable'>n2</span> = <span class='ocaml-module'>Array</span>.length p2 <span class='governing'>in</span>
+    <span class='governing'>let </span><span class='ocaml-variable'>result</span> = <span class='ocaml-module'><span class='ocaml-error-loc'>Array</span></span><span class='ocaml-error-loc'>.create</span> (max n1 n2) 0 <span class='governing'>in</span>
+    <span class='keyword'>for</span> i = 0 <span class='keyword'>to</span> n1 - 1 <span class='keyword'>do</span> result.(i) &lt;- p1.(i) <span class='keyword'>done</span>;
+    <span class='keyword'>for</span> i = 0 <span class='keyword'>to</span> n2 - 1 <span class='keyword'>do</span> result.(i) &lt;- result.(i) + p2.(i) <span class='keyword'>done</span>;
+    result</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'>Warning 3: deprecated: Array.create
+Use Array.make instead.
+</span>val add_polynom : int array -&gt; int array -&gt; int array = &lt;fun&gt;
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'>add_polynom [| 1; 2 |] [| 1; 2; 3 |]</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int array = [|2; 4; 3|]
+</span></code></pre>
+
+<p>OCaml offers updatable memory cells, called <em>references</em>: <code>ref init</code>
+returns a new cell with initial contents <code>init</code>, <code>!cell</code> returns the
+current contents of <code>cell</code>, and <code>cell := v</code> writes the value <code>v</code> into
+<code>cell</code>.</p>
+<p>We may redefine <code>fact</code> using a reference cell and a <code>for</code> loop:</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>let</span> <span class='ocaml-function'>fact</span> <span class='ocaml-variable'>n </span>=
+    <span class='governing'>let </span><span class='ocaml-variable'>result</span> = <span class='keyword'>ref</span> 1 <span class='governing'>in</span>
+    <span class='keyword'>for</span> i = 2 <span class='keyword'>to</span> n <span class='keyword'>do</span>
+      result := i * !result
+    <span class='keyword'>done</span>;
+    !result</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val fact : int -&gt; int = &lt;fun&gt;
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'>fact 5</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int = 120
+</span></code></pre>
+
+<h2 id="Higher-order-functions">Higher-order functions</h2>
+
+<p>There is no restriction on functions, which may thus be passed as
+arguments to other functions. Let us define a function <code>sigma</code> that
+returns the sum of the results of applying a given function <code>f</code> to each
+element of a list:</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'><span class='governing'>let rec</span></span> <span class='ocaml-function'>sigma</span> <span class='ocaml-variable'>f </span>= <span class='keyword'>function</span>
+    | [] -&gt; 0
+    | x :: l -&gt; f x + sigma f l</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val sigma : ('a -&gt; int) -&gt; 'a list -&gt; int = &lt;fun&gt;
+</span></code></pre>
+
+<p>Anonymous functions may be defined using the <code>fun</code> or <code>function</code>
+construct:</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'>sigma (<span class='keyword'>fun</span> x -&gt; x * x) [1; 2; 3]</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int = 14
+</span></code></pre>
+
+<p>Polymorphism and higher-order functions allow defining function
+composition in its most general form:</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>let</span> <span class='ocaml-function'>compose</span> <span class='ocaml-variable'>f g </span>= <span class='keyword'><span class='keyword'>fun</span></span> x -&gt; f (g x)</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val compose : ('a -&gt; 'b) -&gt; ('c -&gt; 'a) -&gt; 'c -&gt; 'b = &lt;fun&gt;
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>let </span><span class='ocaml-variable'>square_o_fact</span> = compose square fact</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val square_o_fact : int -&gt; int = &lt;fun&gt;
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'>square_o_fact 5</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int = 14400
+</span></code></pre>
+
+<h2 id="The-power-of-functions">The power of functions</h2>
+
+<p>The power of functions cannot be better illustrated than by the <code>power</code>
+function:</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'><span class='governing'>let rec</span></span> <span class='ocaml-function'>power</span> <span class='ocaml-variable'>f n </span>= 
+    <span class='keyword'>if</span> n = 0 <span class='keyword'>then</span> <span class='keyword'>fun</span> x -&gt; x 
+    <span class='keyword'>else</span> compose f (power f (n - 1))</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val power : ('a -&gt; 'a) -&gt; int -&gt; 'a -&gt; 'a = &lt;fun&gt;
+</span></code></pre>
+
+<p>The <code>n</code><sup>th</sup> derivative of a function can be computed as in
+mathematics by raising the derivative function to the <code>n</code><sup>th</sup>
+power:</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>let</span> <span class='ocaml-function'>derivative</span> <span class='ocaml-variable'>dx f </span>= <span class='keyword'><span class='keyword'>fun</span></span> x -&gt; (f (x +. dx) -. f x) /. dx</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val derivative : float -&gt; (float -&gt; float) -&gt; float -&gt; float = &lt;fun&gt;
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>let </span>sin<span class='string'>'''</span> = power (derivative 1e-5) 3 sin</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val sin''' : float -&gt; float = &lt;fun&gt;
+</span><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>let </span><span class='ocaml-variable'>pi</span> = 4.0 *. atan 1.0 <span class='governing'>in</span> sin<span class='string'>'''</span> pi</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : float = 0.999998972517346263
+</span></code></pre>
+
+<h2 id="Symbolic-computation">Symbolic computation</h2>
+
+<p>Let us consider simple symbolic expressions made up of integers,
+variables, <code>let</code> bindings, and binary operators. Such expressions can be
+defined as a new data type, as follows:</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'>type</span> <span class='type'>expression</span> =
+    | Num <span class='keyword'>of</span> int
+    | Var <span class='keyword'>of</span> string
+    | Let <span class='keyword'>of</span> string * expression * expression
+    | Binop <span class='keyword'>of</span> string * expression * expression</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>type expression =
+    Num of int
+  | Var of string
+  | Let of string * expression * expression
+  | Binop of string * expression * expression
+</span></code></pre>
+
+<p>Evaluation of these expressions involves an environment that maps
+identifiers to values, represented as a list of pairs.</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'><span class='governing'><span class='governing'>let rec</span></span> <span class='ocaml-function'>eval</span> <span class='ocaml-variable'>env </span>= <span class='keyword'>function</span>
+    | Num i -&gt; i
+    | Var x -&gt; <span class='ocaml-module'>List</span>.assoc x env
+    | Let (x, e1, in_e2) -&gt;
+       <span class='governing'>let </span><span class='ocaml-variable'>val_x</span> = eval env e1 <span class='governing'>in</span>
+       eval ((x, val_x) :: env) in_e2
+    | Binop (op, e1, e2) -&gt;
+       <span class='governing'>let </span><span class='ocaml-variable'>v1</span> = eval env e1 <span class='governing'>in</span>
+       <span class='governing'>let </span><span class='ocaml-variable'>v2</span> = eval env e2 <span class='governing'>in</span>
+       eval_op op v1 v2
+  <span class='governing'><span class='governing'>and</span></span> <span class='ocaml-function'>eval_op</span> <span class='ocaml-variable'>op v1 v2 </span>=
+    <span class='keyword'>match</span> op <span class='keyword'>with</span>
+    | <span class='string'>&quot;+&quot;</span> -&gt; v1 + v2
+    | <span class='string'>&quot;-&quot;</span> -&gt; v1 - v2
+    | <span class='string'>&quot;*&quot;</span> -&gt; v1 * v2
+    | <span class='string'>&quot;/&quot;</span> -&gt; v1 / v2
+    | _ -&gt; <span class='keyword'>failwith</span> (<span class='string'>&quot;Unknown operator: &quot;</span> ^ op)</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>val eval : (string * int) list -&gt; expression -&gt; int = &lt;fun&gt;
+val eval_op : string -&gt; int -&gt; int -&gt; int = &lt;fun&gt;
+</span></code></pre>
+
+<p>As an example, we evaluate the phrase <code>let   x = 1 in x   +       x</code>:</p>
+<pre><code class='ocamltop'><span class='ocaml-prompt'># </span><span class='ocaml-input'>eval [] (Let (<span class='string'>&quot;x&quot;</span>, Num 1, Binop (<span class='string'>&quot;+&quot;</span>, Var <span class='string'>&quot;x&quot;</span>, Var <span class='string'>&quot;x&quot;</span>)))</span><span class='ocaml-prompt'>;;</span><br /><span class='ocaml-output'><span class='ocaml-stdout'></span><span class='ocaml-stderr'></span>- : int = 2
+</span></code></pre>
+
+<p>Pattern matching eases the definition of functions operating on symbolic
+data, by giving function definitions and type declarations similar
+shapes. Indeed, note the close resemblance between the definition of the
+<code>eval</code> function and that of the <code>expression</code> type.</p>
+<h2 id="Elementary-debugging">Elementary debugging</h2>
+
+<p>To conclude, here is the simplest way of spying over functions:</p>
+<pre><code class='ocaml'><span class='governing'><span class='governing'>let rec</span></span> <span class='ocaml-function'>fib</span> <span class='ocaml-variable'>x </span>= <span class='keyword'>if</span> x &lt;= 1 <span class='keyword'>then</span> 1 <span class='keyword'>else</span> fib (x - 1) + fib (x - 2)<span class='ocaml-prompt'>;;</span><br /># #trace fib<span class='ocaml-prompt'>;;</span><br />fib is now traced.
+# fib 3<span class='ocaml-prompt'>;;</span><br />fib &lt;-- 3
+fib &lt;-- 1
+fib --&gt; 1
+fib &lt;-- 2
+fib &lt;-- 0
+fib --&gt; 1
+fib &lt;-- 1
+fib --&gt; 1
+fib --&gt; 2
+fib --&gt; 3
+- : int = 3</code></pre>
+
+<p>Go and <a href='http://try.ocamlpro.com/'>try it in your browser</a> or
+<a href='/docs/install.html'>install</a> it and read some <a href='tutorials/'>tutorials</a>.</p>
+
+      </div>
+    </div>
+    
+    
+  </div>
+</div>
+
+    
+    <footer id="footer" class="navbar navbar-inverse">
+      <div class="navbar-inner">
+	<!-- footer							-*-html-*- -->
+<div class="column">
+  <div class="entry">
+    <h1><a href="/learn/">Learn</a></h1>
+    <ul>
+      <li><a href="/learn/taste.html" >Code Examples</a></li>
+      <li><a href="/learn/tutorials/">Tutorials</a></li>
+      <li><a href="/learn/books.html" >Books</a></li>
+      <li><a href="/learn/success.html">Success Stories</a></li>
+      <li><a href="."></a></li>
+    </ul>
+  </div>
+</div>
+<div class="column">
+  <div class="entry">
+    <h1><a href="/docs/">Documentation</a></h1>
+    <ul>
+      <li><a href="/docs/install.html">Install</a></li>
+      <li><a href="http://caml.inria.fr/pub/docs/manual-ocaml/">Manual</a></li>
+      <li><a href="https://opam.ocaml.org/packages/">Packages</a></li>
+      <li><a href="/releases/index.html">Compiler Releases</a></li>
+      <li><a href="/docs/logos.html"
+	     >Logos</a></li>
+    </ul>
+  </div>
+</div>
+<div class="column">
+  <div class="entry">
+    <h1><a href="/community/">Community</a></h1>
+    <ul>
+      <li><a href="/community/mailing_lists.html">Mailing Lists</a></li>
+      <li><a href="/meetings/" >Meetings</a></li>
+      <li><a href="/community/planet/" >News</a></li>
+      <li><a href="/community/support.html">Support</a></li>
+      <li><a href="http://caml.inria.fr/mantis/my_view_page.php"
+	     target="_blank" >Bug Tracker</a></li>
+    </ul>
+  </div>
+</div>
+
+<div
+     class="column">
+  <div class="entry">
+    <h1>Contact</h1>
+    <ul>
+      <li><a href="https://github.com/ocaml/ocaml.org/issues"
+	     target="_blank" >Website Issues</a></li>
+      <li><a href="/about.html" >About This Site</a></li>
+    <li><a href="https://github.com/ocaml/ocaml.org/"
+	   target="_blank" >Find Us on GitHub</a></li>
+      <li><a href="/contributors.html" >Credits</a></li>
+    </ul>
+  </div>
+</div>
+
+      </div>
+    </footer>
+    
+    <!-- Load javascript from CDN -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
+    
+    <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37808023-1']);
+    _gaq.push(['_setDomainName', 'ocaml.org']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    </script>
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(['setCookieDomain', '*.ocaml.org']);
+      _paq.push(['setDocumentTitle', 'Code Examples']);
+      _paq.push(['setDoNotTrack', true]);
+      _paq.push(['setCustomVariable', 1, 'Page language',
+         'English',
+         'page']);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+
+      (function() {
+        var u=(('https:' == document.location.protocol) ? 'https' : 'http') + '://ocaml.org/piwik/';
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '1']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+        g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img src="//ocaml.org/piwik/piwik.php?idsite=1"
+		      style="border:0;" alt="" /></p></noscript>
+    <!-- End Piwik Code --> <!-- ifndef staging -->
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_eval_ocaml: '.ocamlklipse'
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+
+  </body>
+</html>

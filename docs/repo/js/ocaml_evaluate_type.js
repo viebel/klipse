@@ -211,7 +211,7 @@ Array(a);b[0]=0;for(var
 c=1;c<a;c++)b[c]=d;return b}function
 JL(a){var
 b=b8;if(b.process&&b.process.stdout&&b.process.stdout.write)b.process.stderr.write(a);else{if(a.charCodeAt(a.length-1)==10)a=a.substr(0,a.length-1);var
-											   c=b.console;c&&c.error&&c.error(a)&&throw(a)}}function
+c=b.console;c&&c.error&&c.error(a)}}function
 a8T(e){for(var
 f=q,b=f,a,h,c=0,g=e.length;c<g;c++){a=e.charCodeAt(c);if(a<cC){for(var
 d=c+1;d<g&&(a=e.charCodeAt(d))<cC;d++);if(d-c>xS){b.substr(0,1);f+=b;b=q;f+=e.slice(c,d)}else

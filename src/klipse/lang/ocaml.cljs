@@ -19,7 +19,10 @@
       [:ok js_code])))
 
 (defn eval-with-types [exp]
-  [:ok (js/evaluator.execute exp)])
+  (try
+    [:ok (js/evaluator.execute exp)]
+    (catch :default o
+      [:error (str o)])))
 
 (defn eval-ocaml [exp _]
   (let [c (chan)]
@@ -40,15 +43,14 @@
 
 (defn eval-ocaml-with-types [exp _]
   (let [c (chan)]
-    (my-with-redefs [js/console.log (fn[& args]
+    (my-with-redefs [js/console.error (fn[& args]
                                       (put! c (string/join " "  args))
                                       (put! c "\n"))]
-
                     (try
                       (set! js/exports #js {})
                       (let [[status res] (eval-with-types exp)]
                         (if (= :error status) (put! c res)
-                          (put! c res)))
+                            (put! c res)))
                       (catch :default o
                         (str o))))
     c))

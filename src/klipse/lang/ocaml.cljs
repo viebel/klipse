@@ -75,6 +75,7 @@
    :beautify? false
    :eval-fn eval-ocaml-with-types
    :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/ocaml_evaluate_type.js"]
+   ;; https://github.com/ocsigen/js_of_ocaml/issues/629
    :comment-str comment-out})
 
 (def transpile-opts {:editor-in-mode "text/x-ocaml"

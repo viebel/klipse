@@ -107,17 +107,17 @@
   (str "/* " src " */"))
 
 (def eval-opts {:editor-in-mode "text/x-ocaml"
-                :editor-out-mode "javascript"
+                :editor-out-mode "text/x-ocaml"
                 :beautify? false
                 :eval-fn (partial eval-reason 2)
-                :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt.js" "https://viebel.github.io/klipse/repo/js/stdlibBundle.js" "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
+                :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt.js" "https://viebel.github.io/klipse/repo/js/stdlibBundle.js"]
                 :comment-str comment-out})
 
 (def transpile-opts {:editor-in-mode "text/x-ocaml"
                      :editor-out-mode "javascript"
                      :beautify? false
                      :eval-fn (partial transpile-reason 2)
-                     :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt.js"]
+                     :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt.js"  "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
                      :comment-str comment-out})
 
 
@@ -134,17 +134,17 @@
 (register-mode "transpile-reason->ocaml" "selector_transpile_reason_to_ocaml" transpile->ocaml-opts)
 
 (def eval-3-opts {:editor-in-mode "text/x-ocaml"
-                  :editor-out-mode "javascript"
+                  :editor-out-mode "text/x-ocaml"
                   :beautify? false
                   :eval-fn (partial eval-reason 3)
-                  :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt-3.js" "https://viebel.github.io/klipse/repo/js/stdlibBundle.js" "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
+                  :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt-3.js" "https://viebel.github.io/klipse/repo/js/stdlibBundle.js"]
                   :comment-str comment-out})
 
 (def transpile-3-opts {:editor-in-mode "text/x-ocaml"
                        :editor-out-mode "javascript"
                        :beautify? false
                        :eval-fn (partial transpile-reason 3)
-                       :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt-3.js"]
+                       :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt-3.js"  "https://viebel.github.io/klipse/repo/js/pretty_format.js"]
                        :comment-str comment-out})
 
 (def transpile-3->ocaml-opts {:editor-in-mode "text/x-ocaml"

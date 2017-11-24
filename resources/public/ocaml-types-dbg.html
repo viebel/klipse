@@ -9,6 +9,25 @@
   <body>
 
 
+    <h2> eval with types </h2>
+    <pre>
+      <code class="eval-ocaml-types">
+	let rec fib (n: int): int =
+	match n with
+	| 0 -> 1
+	| 1 -> 1
+	| _ -> (fib (n - 1)) + (fib (n - 2));;
+
+	let a = fib 9;;
+      </code>
+    </pre>
+
+    <pre>
+      <code class="eval-ocaml-types">
+	let a = fib 12;;
+      </code>
+    </pre>
+
     <h2> eval without types </h2>
     
 
@@ -53,10 +72,11 @@
     <br/>
     <script>
       window.klipse_settings = {
-      selector_transpile_ocaml: '.transpile-ocaml',
-      selector_eval_ocaml: '.eval-ocaml',
+//      selector_transpile_ocaml: '.transpile-ocaml',
+//      selector_eval_ocaml: '.eval-ocaml',
+      selector_eval_ocaml_with_types: '.eval-ocaml-types',      
       };
-   </script>
+    </script>
     <script src="/fig/js/klipse.fig.js"></script>
   </body>
 </html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <!--link rel="stylesheet" type="text/css" href="css/codemirror.css"-->
+    <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+  </head>
+  <body>
+
+
+    <pre>
+      <code class="eval-reason">
+let a = 1;
+      </code>
+    </pre>
+
+
+    <pre>
+      <code class="eval-reason">
+let b = 1 + 1;
+      </code>
+    </pre>
+
+    <h2> Dealing with errors </h2>
+    <pre>
+      <code class="eval-reason">
+let b = ;
+      </code>
+    </pre>
+    <h2> A gist </h2>
+<div class="eval-reason" data-gist-id="viebel/c91ebea3f81bc41d3f7ab0d95e7c8ba1"></div>
+
+
+
+
+    <script>
+      window.klipse_settings = {
+      beautify_strings: true,
+codemirror_options_in: {lineWrapping: true, autoCloseBrackets: true},
+codemirror_options_out : {lineWrapping: true},
+      selector_eval_reason_3_with_types: '.eval-reason',
+      };
+    </script>
+    <script src="/fig/js/klipse.fig.js"></script>    
+  </body>
+</html>

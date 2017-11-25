@@ -79,21 +79,25 @@
                       (let [[status res] (reason->js version exp)]
                         (if (= :error status) (put! c res)
                             (put! c (-> res
-                                        eval-in-global-scope))))
+                                        eval-in-global-scope
+                                        str))))
                       (catch :default o
                         (str o))))
     c))
 
 (defn eval-reason-with-types [version exp _]
   (let [c (chan)]
-    (try
-      (let [[status res] (reason->ocaml exp)]
-        (if (= :error status)
-          (put! c res)
-          (let [[status res] (ocaml/eval-with-types res)]
-            (put! c res))))
-      (catch :default o
-        (str o)))
+    (my-with-redefs [js/console.error (fn[& args]
+                                      (put! c (string/join " "  args))
+                                        (put! c "\n"))]
+                    (try
+                      (let [[status res] (dbg (reason-3->ocaml exp))]
+                        (if (= :error status)
+                          (put! c res)
+                          (let [[status res] (dbg (ocaml/eval-with-types res))]
+                            (put! c res))))
+                      (catch :default o
+                        (str o))))
     c))
 
 (defn transpile-reason [version exp _]
@@ -119,7 +123,7 @@
   (str "/* " src " */"))
 
 (def eval-opts {:editor-in-mode "text/x-ocaml"
-                :editor-out-mode "text/x-ocaml"
+                :editor-out-mode "javascript"
                 :beautify? false
                 :eval-fn (partial eval-reason 2)
                 :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt.js" "https://viebel.github.io/klipse/repo/js/stdlibBundle.js"]
@@ -146,16 +150,16 @@
 (register-mode "transpile-reason->ocaml" "selector_transpile_reason_to_ocaml" transpile->ocaml-opts)
 
 (def eval-3-opts {:editor-in-mode "text/x-ocaml"
-                  :editor-out-mode "text/x-ocaml"
+                  :editor-out-mode "javascript"
                   :beautify? false
-                  :eval-fn (partial eval-reason-with-types 3)
+                  :eval-fn (partial eval-reason 3)
                   :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/bs.js" "https://viebel.github.io/klipse/repo/js/refmt-3.js" "https://viebel.github.io/klipse/repo/js/stdlibBundle.js"]
                   :comment-str comment-out})
 
 (def eval-3-with-types-opts {:editor-in-mode "text/x-ocaml"
                   :editor-out-mode "text/x-ocaml"
                   :beautify? false
-                  :eval-fn (partial eval-reason 3)
+                  :eval-fn (partial eval-reason-with-types 3)
                   :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/refmt-3.js" "https://viebel.github.io/klipse/repo/js/ocaml_evaluate_type.js"]
                   :comment-str comment-out})
 

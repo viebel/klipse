@@ -34,8 +34,9 @@
                       (set! js/exports #js {})
                       (let [[status res] (ocaml-to-js exp)]
                         (if (= :error status) (put! c res)
-                          (put! c (-> res
-                                      eval-in-global-scope))))
+                            (put! c (-> res
+                                        eval-in-global-scope
+                                        str))))
                       (catch :default o
                         (str o))))
     c))
@@ -89,7 +90,7 @@
 
 
 (register-mode "eval-ocaml" "selector_eval_ocaml" eval-opts)
+(register-mode "transpile-ocaml" "selector_transpile_ocaml" transpile-opts)
 (register-mode "eval-with-types-opts" "selector_eval_ocaml_with_types" eval-with-types-opts)
 
-(register-mode "transpile-ocaml" "selector_transpile_ocaml" transpile-opts)
 

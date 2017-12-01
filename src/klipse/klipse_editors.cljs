@@ -59,6 +59,13 @@
                   (when-not (and (= c cmd-chan)
                                  (= cmd :reset))
                     (let [res (<! (eval-fn src-code @state))]
+                      (js/console.info (str "res::" res))
+                      (let [code-mirror-dom-node (js/document.querySelector ".CodeMirror")
+                            custom-event (js/CustomEvent.
+                                           "klipse-snippet-evaled"
+                                           (clj->js {:detail {:message "klipse-snippet-evaled-foo"}}))]
+                        (js/console.log "dispatching event..")
+                        (-> code-mirror-dom-node (.dispatchEvent custom-event)))
                       (setter res))
                     (recur)))))
 

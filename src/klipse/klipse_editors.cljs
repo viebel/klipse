@@ -5,7 +5,6 @@
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [goog.dom :as gdom]
-   [goog.dom :as gdom]
    [cljs.spec :as s]
    [klipse.utils :refer [verbose?]]
    [klipse.dom-utils :refer [create-div-after value add-event-listener]]
@@ -128,7 +127,6 @@
         in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
         snippet-args {:loop-msec loop-msec
                       :preamble preamble}
-        
         state (create-state :container container :result-element result-element :editor-args editor-args)]
     (when result-element (gdom/setTextContent result-element default-txt))
     (handle-events in-editor
@@ -144,9 +142,14 @@
 (defmethod create-editor :code-mirror [_ {:keys [snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result] :as editor-args}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         container  (create-div-after element (klipse-container-attrs snippet-num))
-        result-element (when-not no-result (create-editor-after-element element default-txt out-editor-options :indent? false :remove-ending-comments? false)) ; must be called before `element` is replaced
+        _ (create-div-after container {:class "klipse-separator"})
+        result-element (when-not no-result
+                         (create-editor-after-element element default-txt out-editor-options
+                                                      :indent? false
+                                                      :remove-ending-comments? false
+                                                      :klass "klipse-result")) ; must be called before `element` is replaced
 
-        in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
+        in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent? :klass "klipse-snippet")
         snippet-args {:loop-msec loop-msec
                       :preamble preamble}
         state (create-state :container container :result-element result-element :editor-args editor-args)]

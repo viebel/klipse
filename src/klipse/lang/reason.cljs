@@ -94,7 +94,7 @@
                       (let [[status res] (dbg (reason-3->ocaml exp))]
                         (if (= :error status)
                           (put! c res)
-                          (let [[status res] (dbg (ocaml/eval-with-types res))]
+                          (let [[status res] (dbg (ocaml/eval-with-types (str res ";;")))]
                             (put! c res))))
                       (catch :default o
                         (str o))))

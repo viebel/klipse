@@ -353,6 +353,16 @@ The following data attributes are supported on a klipse snippet DOM element:
 ## Styling
 The Klipse plugin can be easily styled with CSS, which can be applied both to the Klipse plugin's own elements, and to the CodeMirror editor's elements. Much of the styling you'll apply will be to CodeMirror, as it contains all the CSS classes to style the code itself. Surrounding CodeMirror is the Klipse plugin, the styles of which control the plugin's borders, and the executed code's output.
 
+## DOM elements
+
+Each klipse snippet is associated with 4 HTML elements:
+
+1. The klipse snippet itself: it has the class `klipse-snippet`.
+2. The result: it has the class `klipse-result`.
+3. A container: it has the class `klipse-container` and is accessible inside the klipse snippet through the global variable `window.klipse_container` (the global variavble is dynamically bound to the correct klipse container).
+4. A separator: it has the class `klipse-separator`.
+
+
 ### Changing the style of CodeMirror
 You can change the theme of the CodeMirror editor simply by modifying its [CSS](http://codemirror.net/doc/manual.html#styling). If you don't want to create your own theme, Farhad Gayour has an awesome [list of ready-made themes](http://farhadg.github.io/code-mirror-themes/) you can select from. Have a look at the different themes by selecting them from the drop-down. Once you've found one you like, head to the [theme repo](https://github.com/FarhadG/code-mirror-themes/tree/master/themes) to copy the CSS, paste it into a CSS file, and link to it from the HTML page containing your Klipse plugin.
 

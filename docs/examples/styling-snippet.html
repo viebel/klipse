@@ -24,6 +24,16 @@
       }
     </style>
 
+    <h1> Intro </h1>
+    Each klipse snippet is associated with 4 HTML elements:
+
+    <ol>
+      <li>The klipse snippet itself: it has the class <code>klipse-snippet</code>.</li>
+      <li> The result: it has the class <code>klipse-result</code>.</li>
+      <li> A container: it has the class <code>klipse-container</code> and is accessible inside the klipse snippet through the global variable <code>klipse_container</code> (the global variable is dynamically bound to the correct klipse container).</li>
+      <li> A separator: it has the class <code>klipse-separator</code>. </li>
+    </ol>
+
     <h1> Javascript </h1>
     <pre><code class="js">
 	a = new Set();
@@ -33,7 +43,7 @@
     </code></pre>
     <br/>
     <div class="js">
-    klipse_container.innerHTML="<div style='background:yellow;'>hello</div>";
+      klipse_container.innerHTML="<div style='background:yellow;'>hello</div>";
 
       2+1
     </div>

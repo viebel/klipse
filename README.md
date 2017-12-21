@@ -359,7 +359,7 @@ Each klipse snippet is associated with 4 HTML elements:
 
 1. The klipse snippet itself: it has the class `klipse-snippet`.
 2. The result: it has the class `klipse-result`.
-3. A container: it has the class `klipse-container` and is accessible inside the klipse snippet through the global variable `window.klipse_container` (the global variavble is dynamically bound to the correct klipse container).
+3. A container: it has the class `klipse-container` and is accessible inside the klipse snippet through the global variable `klipse_container` (the global variable is dynamically bound to the correct klipse container).
 4. A separator: it has the class `klipse-separator`.
 
 

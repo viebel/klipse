@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <!--link rel="stylesheet" type="text/css" href="css/codemirror.css"-->
+    <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+  </head>
+  <body>
+
+
+    <pre>
+      <code class="eval-reason">
+let a = 1;
+      </code>
+    </pre>
+
+
+    <pre>
+      <code class="eval-reason">
+let b = 1 + 1;
+      </code>
+    </pre>
+
+    <p> A gist </p>
+<div class="eval-reason" data-gist-id="viebel/de19a9c8827f887d1f9ae4568decb0de"></div>
+
+
+
+    <p> Transpilation </p>
+    <pre>
+      <code class="transpile-reason">
+let a = 1;
+      </code>
+    </pre>
+    <br/>
+
+        <pre>
+      <code class="transpile-reason">
+external map : ('a => 'b) [@bs] => array 'b = "" [@@bs.send.pipe : array 'a];
+
+let test arr => 
+	arr
+    |> map ((fun x => x + 1) [@bs])
+    |> map ((fun x => x * 4) [@bs]);
+
+      </code>
+    </pre>
+    <br/>
+
+    <p> Transpilation to OCaml</p>
+    <pre>
+      <code class="transpile-reason-to-ocaml">
+let rec fib n => {
+  switch n {
+  | 0 => 1
+  | 1 => 1
+  | _ => fib (n-1) + fib (n-2)
+  };
+};
+
+let x = fib 9;
+      </code>
+    </pre>
+    <br/>
+    <script>
+      window.klipse_settings = {
+      beautify_strings: true,
+codemirror_options_in: {lineWrapping: true, autoCloseBrackets: true},
+codemirror_options_out : {lineWrapping: true},
+      selector_transpile_reason: '.transpile-reason',
+      selector_transpile_reason_to_ocaml: '.transpile-reason-to-ocaml',      
+      selector_eval_reason: '.eval-reason',
+      };
+    </script>
+    <script src="plugin_prod/js/klipse_plugin.min.js"></script>
+    <!--script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js?v=7.2.2"></script-->
+  </body>
+</html>

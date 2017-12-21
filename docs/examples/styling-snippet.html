@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+  </head>
+  <body>
+    <style>
+      .klipse-snippet {
+      width: 50%;
+      float: left;
+      }
+      .klipse-result {
+      width: 50%;
+      float:left;
+      }
+      .klipse-container {
+      clear: both;
+      }
+      .klipse-separator {
+      clear: both;
+      }
+    </style>
+
+    <h1> Intro </h1>
+    Each klipse snippet is associated with 4 HTML elements:
+
+    <ol>
+      <li>The klipse snippet itself: it has the class <code>klipse-snippet</code>.</li>
+      <li> The result: it has the class <code>klipse-result</code>.</li>
+      <li> A container: it has the class <code>klipse-container</code> and is accessible inside the klipse snippet through the global variable <code>klipse_container</code> (the global variable is dynamically bound to the correct klipse container).</li>
+      <li> A separator: it has the class <code>klipse-separator</code>. </li>
+    </ol>
+
+    In this page, we demonstrate how to position the klipse snippet and the klipse container side by side by defining style rules for <code>klipse-snippet</code> and <code>klipse-result</code>. Look at the page source for more details.
+    <h1> Javascript </h1>
+    <pre><code class="js">
+	a = new Set();
+	a.add(1);
+	a.add(2);
+	a
+    </code></pre>
+    <br/>
+    <div class="js">
+      klipse_container.innerHTML="&lt;div style='background:yellow;'&gt;hello&lt;/div&gt;";
+
+      2+1
+    </div>
+
+    <h1> Clojure </h1>
+    <pre><code class="clj">
+	(map inc [1 2 3])
+    </code></pre>
+
+    <script>
+      window.klipse_settings = {
+      selector_eval_js: '.js,.eval-js',
+      selector: '.clj'
+      };
+    </script>
+    <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js?vvv"></script>
+  </body>
+</html>

@@ -47,20 +47,20 @@ Read [KLIPSE Magic](https://github.com/viebel/klipse/blob/master/tutorial.md) to
 
 ## Deploy to Production
 
-####1. Build
+#### 1. Build
 
 ```bash
 lein clean
 lein cljsbuild once app plugin plugin-prod
 ```
-####2. Test
+#### 2. Test
 
 Test that `dev` build works properly => 
 
 Open the browser [http://localhost:5014/test.html](http://localhost:5014/test.html)
  
 
-####3. Deploy to Google Storage
+#### 3. Deploy to Google Storage
 
 Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
 

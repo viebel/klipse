@@ -4,7 +4,7 @@
    [purnam.core :only [? ! !>]])
   (:require
    [goog.dom :as gdom]
-   [klipse.dom-utils :refer [create-div-after]]
+   [klipse.dom-utils :refer [create-div-after add-class]]
    [gadjett.collections :as gadjett]
    cljsjs.codemirror
    cljsjs.codemirror.addon.edit.matchbrackets
@@ -83,9 +83,13 @@
   (-> (set-value editor value)
       (beautify mode opts)))
 
-(defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [indent? remove-ending-comments?] :or {indent? true remove-ending-comments? true}}]
+(defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [klass indent? remove-ending-comments?] :or {indent? true remove-ending-comments? true}}]
   (let [editor (js/CodeMirror (fn [elt]
-                                (gdom/replaceNode elt element))
+                                (let [wrapping-div (gdom/createElement "div")]
+                                  (gdom/appendChild wrapping-div elt)
+                                  (gdom/replaceNode wrapping-div element)
+                                  (when klass
+                                    (add-class wrapping-div klass))))
                               (clj->js opts))]
     (-> (set-value editor value)
         (beautify mode {:indent? indent? :remove-ending-comments? remove-ending-comments?}))))
@@ -95,6 +99,6 @@
         value  (aget element "textContent")]
     (apply replace-element-by-editor element value cm-opts more-opts)))
 
-(defn create-editor-after-element [element value opts & {:keys [remove-ending-comments? indent?] :or  {remove-ending-comments? false indent? false}}]
+(defn create-editor-after-element [element value opts & {:keys [klass remove-ending-comments? indent?] :or  {remove-ending-comments? false indent? false}}]
   (-> (create-div-after element {})
-      (replace-element-by-editor value opts :remove-ending-comments? remove-ending-comments? :indent? indent?)))
+      (replace-element-by-editor value opts :remove-ending-comments? remove-ending-comments? :indent? indent? :klass klass)))

@@ -75,14 +75,14 @@
                           :codemirror-options-out codemirror_options_out
                           :eval-fn (if (= :ok load-status) eval-fn-with-args #(chan))
                           :source-code source-code
-                          :default-txt (if (= :ok load-status) (str comment-str out-placeholder) load-error)
+                          :default-txt (if (= :ok load-status) out-placeholder load-error)
                           :idle-msec idle-msec})))))
 
 (s/def ::dom-element isElement)
 (s/def ::editor-in-mode string?)
 (s/def ::editor-out-mode string?)
 (s/def ::eval-fn fn?)
-(s/def ::comment-str string?)
+(s/def ::comment-str (s/or :fn fn? :str string?))
 (s/def ::eval_idle_msec integer?)
 (s/def ::minimalistic_ui #(or (= % true) (= % false)))
 

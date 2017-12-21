@@ -86,8 +86,76 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
 </code>
 <br/>
 
+<h1>Ocaml</h1>
+<h2>OCaml evaluation</h2>
+    <pre>
+      <code class="eval-ocaml">
+let rec fib (n: int): int =
+match n with
+| 0 -> 1
+| 1 -> 1
+| _ -> (fib (n - 1)) + (fib (n - 2))
 
- <h1> Lambdaway</h2>
+let () =
+Js.log (fib 9)
+
+let a = 1 + 1
+      </code>
+    </pre>
+
+    <h2>Ocaml transpilation</h2>
+        <pre>
+      <code class="transpile-ocaml">
+	let rec fib (n: int): int =
+	match n with
+	| 0 -> 0
+	| 1 -> 1
+	| _ -> (fib (n - 1)) + (fib (n - 2))
+
+	let () =
+	Js.log (fib 6)
+      </code>
+    </pre>
+
+	<h1>Reason</h1>
+	<h2> Reason Evaluation </h2>
+	<pre>
+      <code class="eval-reason">
+let a = "Hello " ++ "World!";
+      </code>
+    </pre>
+
+ <p> We should handle errors properly </p>
+    <pre>
+      <code class="eval-reason">
+let a = "aaa" ++
+      </code>
+    </pre>
+
+    <h2> Reason Transpilation </h2>
+    <pre>
+      <code class="transpile-reason">
+let a = "aa" ++ "bb";
+      </code>
+    </pre>
+
+    <h2> Reason Transpilation to OCaml</h2>
+    <pre>
+      <code class="transpile-reason-to-ocaml">
+let a = "aa" ++ "bb";
+      </code>
+    </pre>
+    <br/>
+
+        <h2> Ocaml Transpilation to Reason</h2>
+    <pre>
+      <code class="ocaml-to-reason">
+let a x y = x + y
+      </code>
+    </pre>
+    <br/>
+
+ <h1> Lambdaway</h1>
 <div class="lambda" data-editor-type="html">
     {+ 1 2 3}
     </div>
@@ -125,6 +193,12 @@ letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair
             selector_eval_html: '.eval-html',
             selector_eval_php: '.eval-php',
             selector_eval_ruby: '.eval-ruby',
+	    selector_transpile_ocaml: '.transpile-ocaml',
+	    selector_eval_ocaml: '.eval-ocaml',
+            selector_transpile_reason_3: '.transpile-reason',
+	    selector_transpile_reason_3_to_ocaml: '.transpile-reason-to-ocaml',
+	    selector_eval_reason_3: '.eval-reason',
+	    selector_ocaml_to_reason: '.ocaml-to-reason',
             selector_js: '.clojure-js'
         };
         </script>

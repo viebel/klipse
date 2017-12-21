@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+
+
+    <pre>
+      <code class="eval-ocaml">
+let rec fib (n: int): int =
+match n with
+| 0 -> 1
+| 1 -> 1
+| _ -> (fib (n - 1)) + (fib (n - 2))
+
+let () =
+Js.log (fib 9)
+      </code>
+    </pre>
+
+
+    <pre>
+      <code class="eval-ocaml">
+let square x = x * x;;
+let b = square 9;
+      </code>
+    </pre>
+
+    <pre>
+      <p> A gist </p>
+<div class="eval-ocaml" data-gist-id="viebel/7dcac7f4c488741ecfbbadec27212d4f"></div>
+</pre>
+    <p> Transpilation </p>
+    <pre>
+      <code class="transpile-ocaml">
+	let rec fib (n: int): int =
+	match n with
+	| 0 -> 0
+	| 1 -> 1
+	| _ -> (fib (n - 1)) + (fib (n - 2))
+
+	let () =
+	Js.log (fib 6)
+      </code>
+    </pre>
+    <br/>
+    <script>
+      window.klipse_settings = {
+      selector_transpile_ocaml: '.transpile-ocaml',
+      selector_eval_ocaml: '.eval-ocaml',
+      };
+    </script>
+    <script src="/fig/js/klipse.fig.js"></script>
+  </body>
+</html>

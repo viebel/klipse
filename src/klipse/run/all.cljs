@@ -15,4 +15,6 @@
             klipse.lang.cpp
             klipse.lang.server-eval
             klipse.lang.php
+            klipse.lang.ocaml
+            klipse.lang.reason
             klipse.run.app.app))

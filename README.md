@@ -41,7 +41,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - BrainFuck
 - JSX
 - EcmaScript2017
-- Google Charts: See [Interactive Business Report with Google Charts](http://blog.klipse.tech/data/2017/03/15/google-charts.html).
+- Google Charts: See [Interactive Business Report with Google Charts](http://blog.klipse.tech/data/2017/03/16/google-charts.html).
 
 The code editing inside the interactive snippets is powered by [CodeMirror](http://codemirror.net/).
 
@@ -50,7 +50,7 @@ The code editing inside the interactive snippets is powered by [CodeMirror](http
 
 - javascript: [A new way of blogging about javascript](http://blog.klipse.tech/javascript/2016/06/20/blog-javascript.html)
 - ruby: [A new way of blogging about ruby](http://blog.klipse.tech/ruby/2016/06/20/blog-ruby.html)
-- clojure[script]: [How to klipsify a clojure[script] blog post] (http://blog.klipse.tech/clojure/2016/06/07/klipse-plugin-tuto.html)
+- clojure[script]: [How to klipsify a clojure[script] blog post](http://blog.klipse.tech/clojure/2016/06/07/klipse-plugin-tuto.html)
 
 # Integration
 
@@ -165,6 +165,63 @@ You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klips
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
+## OCaml
+
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+ 	    selector_eval_ocaml: '.language-klipse-ocaml', // selector for ocaml evaluation snippets
+	    selector_transpile_ocaml: '.language-transpile-ocaml' // selector for ocaml transpilation snippets
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
+
+
+## ReasonML version 3
+
+> Note: Code Snippets in Reason version 3 will automagically be upgraded to latest Reason version once a new version of Reason is released.
+
+We have 4 kinds of ReasonML snippets:
+
+1. Code Evaluation
+2. Transpilation to javascript
+3. Tranpilation to Ocaml
+4. Transpilation from Ocaml
+
+Here is the javascript tag that you need to setup for embedding ReasonML snippets on your page:
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+ 	     selector_transpile_reason_3: '.language-transpile-reason', // selector for reason transpilation snippets
+         selector_transpile_reason_3_to_ocaml: '.language-transpile-reason-to-ocaml', // selector for reason transpilation into ocaml snippets
+         selector_eval_reason_3: '.language-klipse-reason',  // selector for reason evaluation snippets
+         selector_ocaml_to_reason: '.language-klipse-ocaml-to-reason' // selector for ocaml to reason snippets
+   };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
+
+## ReasonML - Old Syntax(deprecated)
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+    	 selector_transpile_reason: '.language-transpile-reason', // selector for reason transpilation snippets
+         selector_transpile_reason_to_ocaml: '.language-transpile-reason-to-ocaml', // selector for reason transpilation into ocaml snippets
+         selector_eval_reason: '.language-klipse-reason' // selector for reason evaluation snippets
+   };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
 
 ## PHP
 
@@ -203,24 +260,30 @@ window.klipse_settings = {
           selector: '.language-klipse', //selector for clojure evaluation snippets
           selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
           selector_reagent: '.language-reagent', // selector for reagent snippets
-		  selector_google_charts: '.language-google-charts' // selector for google charts snippets
-		  selector_oblivion: '.language-oblivion' // selector for oblivion snippets
+ 	  selector_google_charts: '.language-google-charts' // selector for google charts snippets
+	  selector_oblivion: '.language-oblivion' // selector for oblivion snippets
           selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
           selector_eval_ruby: '.language-klipse-eval-ruby', //selector for ruby evaluation snippets
           selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
           selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
           selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets
           selector_render_jsx: '.language-render-jsx', // selector for jsx rendering snippets		  
-		  selector_react: '.language-react', //selector for react snippets
+	  selector_react: '.language-react', //selector for react snippets
           selector_eval_php: '.language-klipse-eval-php', // selector for php evaluation snippets
           selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
           selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets
           selector_eval_python_client: '.language-klipse-python', // selector for python evaluation snippets
-		  selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
+	  selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
           selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
           selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
           selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets
-	  selector_brainfuck: '.language-klipse-brainfuck',
+	  selector_brainfuck: '.language-klipse-brainfuck', // selector for brainfuck snippets
+	  selector_eval_ocaml: '.language-klipse-ocaml', // selector for ocaml evaluation snippets
+          selector_transpile_ocaml: '.language-transpile-ocaml', // selector for ocaml transpilation snippets
+          selector_transpile_reason_3: '.language-transpile-reason', // selector for reason transpilation snippets
+          selector_transpile_reason_3_to_ocaml: '.language-transpile-reason-to-ocaml', // selector for reason transpilation into ocaml snippets
+          selector_eval_reason_3: '.language-klipse-reason', // selector for reason evaluation snippets
+	  selector_ocaml_to_reason: '.language-klipse-ocaml-to-reason' // selector for ocaml to reason snippets
 	  cached_ns_root: '/my-root', // the root of clojure cached namespace
 	  clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
 	  clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
@@ -290,6 +353,16 @@ The following data attributes are supported on a klipse snippet DOM element:
 ## Styling
 The Klipse plugin can be easily styled with CSS, which can be applied both to the Klipse plugin's own elements, and to the CodeMirror editor's elements. Much of the styling you'll apply will be to CodeMirror, as it contains all the CSS classes to style the code itself. Surrounding CodeMirror is the Klipse plugin, the styles of which control the plugin's borders, and the executed code's output.
 
+## DOM elements
+
+Each klipse snippet is associated with 4 HTML elements:
+
+1. The klipse snippet itself: it has the class `klipse-snippet`.
+2. The result: it has the class `klipse-result`.
+3. A container: it has the class `klipse-container` and is accessible inside the klipse snippet through the global variable `klipse_container` (the global variable is dynamically bound to the correct klipse container).
+4. A separator: it has the class `klipse-separator`.
+
+
 ### Changing the style of CodeMirror
 You can change the theme of the CodeMirror editor simply by modifying its [CSS](http://codemirror.net/doc/manual.html#styling). If you don't want to create your own theme, Farhad Gayour has an awesome [list of ready-made themes](http://farhadg.github.io/code-mirror-themes/) you can select from. Have a look at the different themes by selecting them from the drop-down. Once you've found one you like, head to the [theme repo](https://github.com/FarhadG/code-mirror-themes/tree/master/themes) to copy the CSS, paste it into a CSS file, and link to it from the HTML page containing your Klipse plugin.
 
@@ -321,8 +394,20 @@ Here are a couple of examples of blogs using the klipse plugin:
 - javascript: [Try Partial Lenses with KLIPSE](http://calmm-js.github.io/partial.lenses/)
 - javascript: [Clause.js, a JavaScript contract system, documentation created with klipse](https://clause.js.org)
 - clojure: Reagent deep dive part [1](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [2](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [3](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-3-sequences.html) [4](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-4-application.html)
+- clojurescript: [Visualising Bézier Curves](https://040code.github.io/2017/07/12/bezier-in-clojurescript/)
+- clojure: [core.async fun tutorial](http://abhirag.in/articles/batman_clojure.html)
+- clojurescript: [reagent and reframe playground](https://day8.github.io/re-playground/)
+- javascript: [chai unit tests playground](https://e-zchai.firebaseapp.com/)
+- clojure: [polynomial macro](http://markbastian.github.io/posts-output/2017-07-10-polymacro/)
+
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+## Access the CodeMirror editors programmaticaly
+
+Each code snippet is wrapped into a CodeMirror editor.
+
+The CodeMirror editors are accessible via the javascript global variable: `klipse_editors`. This is an array that contains the CodeMirror editors wrapping the original code snippets. For instance, you can modify the content of the code snippet `i` by calling: `klipse_editors[i].setValue('let a = 1');`
 
 ## Use older versions
 

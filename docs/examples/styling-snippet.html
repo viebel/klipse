@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+  </head>
+  <body>
+    <style>
+      .klipse-snippet {
+      width: 50%;
+      float: left;
+      }
+      .klipse-result {
+      width: 50%;
+      float:left;
+      }
+      .klipse-container {
+      clear: both;
+      }
+      .klipse-separator {
+      clear: both;
+      }
+    </style>
+
+    <h1> Javascript </h1>
+    <pre><code class="js">
+	a = new Set();
+	a.add(1);
+	a.add(2);
+	a
+    </code></pre>
+    <br/>
+    <div class="js">
+    klipse_container.innerHTML="<div style='background:yellow;'>hello</div>";
+
+      2+1
+    </div>
+
+    <h1> Clojure </h1>
+    <pre><code class="clj">
+	(map inc [1 2 3])
+    </code></pre>
+
+    <script>
+      window.klipse_settings = {
+      selector_eval_js: '.js,.eval-js',
+      selector: '.clj'
+      };
+    </script>
+    <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+  </body>
+</html>

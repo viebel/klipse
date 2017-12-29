@@ -1,7 +1,7 @@
 (ns klipse.klipse-editors
   (:require-macros
    [gadjett.core :refer [dbg]]
-   [purnam.core :refer [!]]
+   [purnam.core :refer [! !>]]
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [goog.dom :as gdom]
@@ -51,7 +51,14 @@
           (swap! state update-in [:eval-counter] inc)
           (let [evaluation-chan (eval-fn (str preamble src-code) @state)
                 first-result (<! evaluation-chan)]
-            (setter first-result)
+            ;; if first-result is String then continue as normal
+            ;; otherwise dispatch custom event with payload
+            (if (string? first-result)
+              (setter first-result)
+              (when-let [klipse-dom-node (js/document.querySelector ".klipse-container")]
+                (let [event-payload (clj->js {:detail {:state first-result}})]
+                  (!> klipse-dom-node.dispatchEvent
+                      (js/CustomEvent. "klipse-snippet-evaled" event-payload)))))
             (when loop-msec
               (go-loop []
                 (let [[cmd c] (alts! [cmd-chan (timeout loop-msec)])]
@@ -65,7 +72,12 @@
               (let [result (<! evaluation-chan)
                     results (str previous-results result)]
                 (when (some? result) ;exit if the channel is closed
-                  (setter results)
+                  (if (string? result)
+                    (setter results)
+                    (when-let [klipse-dom-node (js/document.querySelector ".klipse-container")]
+                      (let [event-payload (clj->js {:detail {:state result}})]
+                        (!> klipse-dom-node.dispatchEvent
+                            (js/CustomEvent. "klipse-snippet-evaled" event-payload)))))
                   (recur results))))))
         (catch :default e
           (setter e))))))
@@ -102,7 +114,7 @@
 (s/def ::codemirror-options map?)
 (s/def ::editor-mode string?)
 
-(s/fdef editor-options 
+(s/fdef editor-options
         :args (s/cat :in-mode ::editor-mode
                      :out-mode ::editor-mode
                      :options-in ::codemirror-options

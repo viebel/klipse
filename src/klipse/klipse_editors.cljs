@@ -56,7 +56,8 @@
             (if (string? first-result)
               (setter first-result)
               (when-let [klipse-dom-node (js/document.querySelector ".klipse-container")]
-                (let [event-payload (clj->js {:detail {:state first-result}})]
+                (let [event-payload (clj->js {:detail {:result first-result
+                                                       :result-element (:result-element @state)}})]
                   (!> klipse-dom-node.dispatchEvent
                       (js/CustomEvent. "klipse-snippet-evaled" event-payload)))))
             (when loop-msec
@@ -75,7 +76,8 @@
                   (if (string? result)
                     (setter results)
                     (when-let [klipse-dom-node (js/document.querySelector ".klipse-container")]
-                      (let [event-payload (clj->js {:detail {:state result}})]
+                      (let [event-payload (clj->js {:detail {:result result
+                                                             :result-element (:result-element @state)}})]
                         (!> klipse-dom-node.dispatchEvent
                             (js/CustomEvent. "klipse-snippet-evaled" event-payload)))))
                   (recur results))))))

@@ -30,7 +30,7 @@
              (symbol? (first expr))
              (= "fn*" (name (first expr))))
     (let [[[s] & form] (rest expr)]
-      (conj (walk/postwalk-replace {s '%} form) '[%] 'fn))
+      (conj (walk/postwalk-replace {s '%} form) '[%] 'cljs.core/fn))
     expr))
 
 (defn- res [env form]
@@ -56,9 +56,7 @@
   "Qualify symbol s by resolving it or using the current *ns*."
   [env s]
   (if (namespace s)
-    (let [v (resolve env s)]
-      (clojure.core/assert v (str "Unable to resolve: " s))
-      (->sym v))
+    (->sym (ana/resolve-var env s))
     (symbol (str ana/*cljs-ns*) (str s))))
 
 (defmacro def
@@ -321,7 +319,7 @@
   "Returns a regex op that matches zero or one value matching
   pred. Produces a single value (not a collection) if matched."
   [pred-form]
-  `(maybe-impl ~pred-form '~pred-form))
+  `(maybe-impl ~pred-form '~(res &env pred-form)))
 
 (defmacro alt
   "Takes key+pred pairs, e.g.
@@ -386,7 +384,7 @@
 
   Optionally takes :gen generator-fn, which must be a fn of no args
   that returns a test.check generator."
-  [& {:keys [args ret fn gen]}]
+  [& {:keys [args ret fn gen] :or {ret `cljs.core/any?}}]
   (let [env &env]
     `(fspec-impl (spec ~args) '~(res env args)
                            (spec ~ret) '~(res env ret)
@@ -421,7 +419,7 @@
   by calling get-spec with the var or full-qualified symbol.
 
   Once registered, function specs are included in doc, checked by
-  instrument, tested by the runner clojure.spec.test/run-tests, and (if
+  instrument, tested by the runner cljs.spec.test.alpha/run-tests, and (if
   a macro) used to explain errors during macroexpansion.
 
   Note that :fn specs require the presence of :args and :ret specs to
@@ -432,7 +430,7 @@
 
   For example, to register function specs for the symbol function:
 
-  (s/fdef clojure.core/symbol
+  (s/fdef cljs.core/symbol
     :args (s/alt :separate (s/cat :ns string? :n string?)
                  :str string?
                  :sym symbol?)
@@ -479,8 +477,8 @@
                 (gen/large-integer* {:min st# :max et#}))))))
 
 (defmacro int-in
-  "Returns a spec that validates longs in the range from start
-  (inclusive) to end (exclusive)."
+  "Returns a spec that validates fixed precision integers in the
+  range from start (inclusive) to end (exclusive)."
   [start end]
   `(spec (and c/int? #(int-in-range? ~start ~end %))
      :gen #(gen/large-integer* {:min ~start :max (dec ~end)})))
@@ -529,8 +527,10 @@
                       `(get-spec '~(:name (resolve &env sym)))
                       fspec)
             f#     ~sym]
-        (for [args# (gen/sample (gen (:args fspec#)) ~n)]
-          [args# (apply f# args#)])))))
+        (if-let [arg-spec# (c/and fspec# (:args fspec#))]
+          (for [args# (gen/sample (gen arg-spec#) ~n)]
+            [args# (apply f# args#)])
+          (throw (js/Error. "No :args spec found, can't generate")))))))
 
 (defmacro ^:private init-compile-asserts []
   (let [compile-asserts (not (-> env/*compiler* deref :options :elide-asserts))]

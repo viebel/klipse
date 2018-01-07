@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+    <h1> spec.alpha namespace </h1>
+    <div class="klojure">
+(require '[clojure.walk])
+    </div>
+    <div class="klojure">
+(require '[clojure.test.check])
+    </div>
+    <br/>
+    <div class="klojure">
+      (require '[cljs.spec.alpha :as s])
+      (s/def ::aaa any?)
+    </div>
+    <div class="klojure">
+      (require '[clojure.spec.alpha :as s])
+      (s/def ::aaa any?)
+    </div>
+
+    <div class="klojure">
+      (require '[cljs.spec.alpha :as s]
+      '[cljs.spec.test.alpha :as stest]
+      '[cljs.spec.gen.alpha :as gen])
+      (stest/instrument `map)
+      (defn foo [x] x)
+      (s/fdef foo :args (s/cat :x integer?)
+      :ret string?)
+      (stest/instrument `foo)
+      (foo 1)  
+    </div>
+
+  <h1> Old spec namespace </h1>
+    <div class="clojure">
+      (require '[cljs.spec :as s])
+      (s/def ::aaa any?)
+    </div>
+
+    <div class="cclojure">
+      (require '[clojure.spec.impl.gen :as gen])
+      </div>
+    
+    <div class="clojure">
+
+      (require '[clojure.spec :as s]
+      '[clojure.spec.test :as stest]
+      '[clojure.spec.impl.gen :as gen])
+      (stest/instrument `map)
+      (defn foo [x] x)
+      (s/fdef foo :args (s/cat :x integer?)
+      :ret string?)
+      (stest/instrument `foo)
+      (foo 1)  
+    </div>
+    <br/>
+    <script>
+      window.klipse_settings = {
+      cached_ns_root: 'http://localhost:5014/cache-cljs',
+      //      clojure_bundled_ns_ignore: /gadjett\..*/
+      };
+      if(window.location.search.match(/transpile=1/)) {
+      window.klipse_settings.selector_js = '.klojure, .clojure';
+      } else {
+      window.klipse_settings.selector = '.kclojure, .cclojure';
+      }
+
+    </script>
+    <script src="/fig2/js/klipse.fig.js"></script>
+  </body>
+</html>

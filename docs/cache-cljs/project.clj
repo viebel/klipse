@@ -2,7 +2,7 @@
   :description "cache ns for bootstrap cljs"
   :local-repo "local-m2"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.456"]
+                 [org.clojure/clojurescript "1.9.908"]
                  [andare "0.4.0"]
                  [cljs-http "0.1.42"]
                  [viebel/gadjett "0.3.2"]

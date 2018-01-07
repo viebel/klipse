@@ -1,0 +1,1 @@
+{"version":3,"file":"\/Users\/viebel\/prj\/klipse\/resources\/public\/fig2\/js\/klipse\/lang\/clojure\/parinfer.js","sources":["parinfer.cljs"],"lineCount":9,"mappings":";AAAA;;;;AAMA,0DAAA,MAAA,hEAACA;AAED,AAACC","names":["parinfer-codemirror.example\/create-editor!","parinfer-codemirror.editor\/start-editor-sync!"]}

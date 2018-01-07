@@ -1,11 +1,11 @@
-// Compiled by ClojureScript 1.9.542 {:static-fns true, :optimize-constants false}
+// Compiled by ClojureScript 1.9.908 {:static-fns true, :fn-invoke-direct true, :optimize-constants false}
 goog.provide('cljs.source_map.base64_vlq');
 goog.require('cljs.core');
 goog.require('clojure.string');
 goog.require('cljs.source_map.base64');
 goog.require('goog.string.StringBuffer');
 cljs.source_map.base64_vlq.vlq_base_shift = (5);
-cljs.source_map.base64_vlq.vlq_base = ((1) << cljs.source_map.base64_vlq.vlq_base_shift);
+cljs.source_map.base64_vlq.vlq_base = ((1) << (5));
 cljs.source_map.base64_vlq.vlq_base_mask = (cljs.source_map.base64_vlq.vlq_base - (1));
 cljs.source_map.base64_vlq.vlq_continuation_bit = cljs.source_map.base64_vlq.vlq_base;
 cljs.source_map.base64_vlq.to_vlq_signed = (function cljs$source_map$base64_vlq$to_vlq_signed(v){
@@ -27,20 +27,20 @@ return shifted;
 cljs.source_map.base64_vlq.encode_val = (function cljs$source_map$base64_vlq$encode_val(n){
 var sb = (new goog.string.StringBuffer());
 var vlq = cljs.source_map.base64_vlq.to_vlq_signed(n);
-var digit_16753 = (vlq & cljs.source_map.base64_vlq.vlq_base_mask);
-var vlq_16754__$1 = (vlq >>> cljs.source_map.base64_vlq.vlq_base_shift);
+var digit_15555 = (vlq & cljs.source_map.base64_vlq.vlq_base_mask);
+var vlq_15556__$1 = (vlq >>> (5));
 while(true){
-if((vlq_16754__$1 > (0))){
-var digit_16756__$1 = (digit_16753 | cljs.source_map.base64_vlq.vlq_continuation_bit);
-sb.append(cljs.source_map.base64.encode(digit_16756__$1));
+if((vlq_15556__$1 > (0))){
+var digit_15557__$1 = (digit_15555 | cljs.source_map.base64_vlq.vlq_continuation_bit);
+sb.append(cljs.source_map.base64.encode(digit_15557__$1));
 
-var G__16758 = (vlq_16754__$1 & cljs.source_map.base64_vlq.vlq_base_mask);
-var G__16759 = (vlq_16754__$1 >>> cljs.source_map.base64_vlq.vlq_base_shift);
-digit_16753 = G__16758;
-vlq_16754__$1 = G__16759;
+var G__15558 = (vlq_15556__$1 & cljs.source_map.base64_vlq.vlq_base_mask);
+var G__15559 = (vlq_15556__$1 >>> (5));
+digit_15555 = G__15558;
+vlq_15556__$1 = G__15559;
 continue;
 } else {
-sb.append(cljs.source_map.base64.encode(digit_16753));
+sb.append(cljs.source_map.base64.encode(digit_15555));
 }
 break;
 }
@@ -66,14 +66,14 @@ var i__$1 = (i + (1));
 var continuation_QMARK_ = ((digit & cljs.source_map.base64_vlq.vlq_continuation_bit) > (0));
 var digit__$1 = (digit & cljs.source_map.base64_vlq.vlq_base_mask);
 var result__$1 = (result + (digit__$1 << shift));
-var shift__$1 = (shift + cljs.source_map.base64_vlq.vlq_base_shift);
+var shift__$1 = (shift + (5));
 if(continuation_QMARK_){
-var G__16778 = i__$1;
-var G__16779 = result__$1;
-var G__16780 = shift__$1;
-i = G__16778;
-result = G__16779;
-shift = G__16780;
+var G__15560 = i__$1;
+var G__15561 = result__$1;
+var G__15562 = shift__$1;
+i = G__15560;
+result = G__15561;
+shift = G__15562;
 continue;
 } else {
 return (new cljs.core.LazySeq(null,((function (i,result,shift,i__$1,continuation_QMARK_,digit__$1,result__$1,shift__$1,digit,l){
@@ -82,7 +82,7 @@ return cljs.core.cons(cljs.source_map.base64_vlq.from_vlq_signed(result__$1),(fu
 if(clojure.string.blank_QMARK_(s__$1)){
 return null;
 } else {
-return (cljs.source_map.base64_vlq.decode.cljs$core$IFn$_invoke$arity$1 ? cljs.source_map.base64_vlq.decode.cljs$core$IFn$_invoke$arity$1(s__$1) : cljs.source_map.base64_vlq.decode.call(null,s__$1));
+return (cljs.source_map.base64_vlq.decode.cljs$core$IFn$_invoke$arity$1 ? cljs.source_map.base64_vlq.decode.cljs$core$IFn$_invoke$arity$1(s__$1) : cljs.source_map.base64_vlq.decode(s__$1));
 }
 })());
 });})(i,result,shift,i__$1,continuation_QMARK_,digit__$1,result__$1,shift__$1,digit,l))

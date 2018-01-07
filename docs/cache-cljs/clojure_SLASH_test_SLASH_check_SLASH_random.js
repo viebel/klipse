@@ -5,7 +5,7 @@ goog.provide("clojure.test.check.random");
  */
 (function (){
 clojure.test.check.random.IRandom = function(){}; return (
-new cljs.core.Var(function(){return clojure.test.check.random.IRandom;},new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol-symbol","protocol-symbol",(1279552198)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"protocol-info","protocol-info",(1471745843)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"jsdoc","jsdoc",(1745183516)),new cljs.core.Keyword(null,"test","test",(577538877))],[true,cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"IRandom","IRandom",(-1056573795),null),"clojure/test/check/random.cljs",(21),(1),(19),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"methods","methods",(453930866)),cljs.core.PersistentArrayMap.fromArray([cljs.core.with_meta(new cljs.core.Symbol(null,"rand-long","rand-long",(1654086308),null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Returns a random goog.math.Long based on the given immutable RNG.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument"], null)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)], null),cljs.core.with_meta(new cljs.core.Symbol(null,"rand-double","rand-double",(-1487667849),null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Returns a random double between 0.0 (inclusive) and 1.0 (exclusive)\n  based on the given immutable RNG.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument"], null)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)], null),cljs.core.with_meta(new cljs.core.Symbol(null,"split","split",(1041096409),null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Returns two new RNGs [rng1 rng2], which should generate\n  sufficiently independent random data.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument"], null)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)], null),cljs.core.with_meta(new cljs.core.Symbol(null,"split-n","split-n",(671122803),null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Returns a collection of `n` RNGs, which should generate\n  sufficiently independent random data.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument"], null)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null),new cljs.core.Symbol(null,"n","n",(-2092305744),null)], null)], null)], true, false)], null),(19),cljs.core.List.EMPTY,null,cljs.core.list("@interface"),(cljs.core.truth_(clojure.test.check.random.IRandom)?clojure.test.check.random.IRandom.cljs$lang$test:null)])));})()
+new cljs.core.Var(function(){return clojure.test.check.random.IRandom;},new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol-symbol","protocol-symbol",(1279552198)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"protocol-info","protocol-info",(1471745843)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"jsdoc","jsdoc",(1745183516)),new cljs.core.Keyword(null,"test","test",(577538877))],[true,cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"IRandom","IRandom",(-1056573795),null),"clojure/test/check/random.cljs",(21),(1),(19),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"methods","methods",(453930866)),cljs.core.PersistentArrayMap.createAsIfByAssoc([cljs.core.with_meta(new cljs.core.Symbol(null,"rand-long","rand-long",(1654086308),null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Returns a random goog.math.Long based on the given immutable RNG.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument"], null)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)], null),cljs.core.with_meta(new cljs.core.Symbol(null,"rand-double","rand-double",(-1487667849),null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Returns a random double between 0.0 (inclusive) and 1.0 (exclusive)\n  based on the given immutable RNG.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument"], null)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)], null),cljs.core.with_meta(new cljs.core.Symbol(null,"split","split",(1041096409),null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Returns two new RNGs [rng1 rng2], which should generate\n  sufficiently independent random data.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument"], null)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)], null),cljs.core.with_meta(new cljs.core.Symbol(null,"split-n","split-n",(671122803),null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Returns a collection of `n` RNGs, which should generate\n  sufficiently independent random data.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument"], null)),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null),new cljs.core.Symbol(null,"n","n",(-2092305744),null)], null)], null)])], null),(19),cljs.core.List.EMPTY,null,cljs.core.list("@interface"),((clojure.test.check.random.IRandom)?clojure.test.check.random.IRandom.cljs$lang$test:null)])));})()
 ;
 
 /**
@@ -19,21 +19,21 @@ clojure.test.check.random.rand_long = (function clojure$test$check$random$rand_l
 if((!((rng == null))) && (!((rng.clojure$test$check$random$IRandom$rand_long$arity$1 == null)))){
 return rng.clojure$test$check$random$IRandom$rand_long$arity$1(rng);
 } else {
-var x__23054__auto__ = (((rng == null))?null:rng);
-var m__23055__auto__ = (clojure.test.check.random.rand_long[goog.typeOf(x__23054__auto__)]);
-if(!((m__23055__auto__ == null))){
-return m__23055__auto__.call(null,rng);
+var x__22676__auto__ = (((rng == null))?null:rng);
+var m__22677__auto__ = (clojure.test.check.random.rand_long[goog.typeOf(x__22676__auto__)]);
+if(!((m__22677__auto__ == null))){
+return m__22677__auto__.call(null,rng);
 } else {
-var m__23055__auto____$1 = (clojure.test.check.random.rand_long["_"]);
-if(!((m__23055__auto____$1 == null))){
-return m__23055__auto____$1.call(null,rng);
+var m__22677__auto____$1 = (clojure.test.check.random.rand_long["_"]);
+if(!((m__22677__auto____$1 == null))){
+return m__22677__auto____$1.call(null,rng);
 } else {
 throw cljs.core.missing_protocol.call(null,"IRandom.rand-long",rng);
 }
 }
 }
 }); return (
-new cljs.core.Var(function(){return clojure.test.check.random.rand_long;},new cljs.core.Symbol("clojure.test.check.random","rand-long","clojure.test.check.random/rand-long",(-1770336529),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol","protocol",(652470118)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"rand-long","rand-long",(1654086308),null),"clojure/test/check/random.cljs",(13),(1),(19),(20),cljs.core.list(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)),"Returns a random goog.math.Long based on the given immutable RNG.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument",(cljs.core.truth_(clojure.test.check.random.rand_long)?clojure.test.check.random.rand_long.cljs$lang$test:null)])));})()
+new cljs.core.Var(function(){return clojure.test.check.random.rand_long;},new cljs.core.Symbol("clojure.test.check.random","rand-long","clojure.test.check.random/rand-long",(-1770336529),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol","protocol",(652470118)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"rand-long","rand-long",(1654086308),null),"clojure/test/check/random.cljs",(13),(1),(19),(20),cljs.core.list(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)),"Returns a random goog.math.Long based on the given immutable RNG.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument",((clojure.test.check.random.rand_long)?clojure.test.check.random.rand_long.cljs$lang$test:null)])));})()
 ;
 
 /**
@@ -48,21 +48,21 @@ clojure.test.check.random.rand_double = (function clojure$test$check$random$rand
 if((!((rng == null))) && (!((rng.clojure$test$check$random$IRandom$rand_double$arity$1 == null)))){
 return rng.clojure$test$check$random$IRandom$rand_double$arity$1(rng);
 } else {
-var x__23054__auto__ = (((rng == null))?null:rng);
-var m__23055__auto__ = (clojure.test.check.random.rand_double[goog.typeOf(x__23054__auto__)]);
-if(!((m__23055__auto__ == null))){
-return m__23055__auto__.call(null,rng);
+var x__22676__auto__ = (((rng == null))?null:rng);
+var m__22677__auto__ = (clojure.test.check.random.rand_double[goog.typeOf(x__22676__auto__)]);
+if(!((m__22677__auto__ == null))){
+return m__22677__auto__.call(null,rng);
 } else {
-var m__23055__auto____$1 = (clojure.test.check.random.rand_double["_"]);
-if(!((m__23055__auto____$1 == null))){
-return m__23055__auto____$1.call(null,rng);
+var m__22677__auto____$1 = (clojure.test.check.random.rand_double["_"]);
+if(!((m__22677__auto____$1 == null))){
+return m__22677__auto____$1.call(null,rng);
 } else {
 throw cljs.core.missing_protocol.call(null,"IRandom.rand-double",rng);
 }
 }
 }
 }); return (
-new cljs.core.Var(function(){return clojure.test.check.random.rand_double;},new cljs.core.Symbol("clojure.test.check.random","rand-double","clojure.test.check.random/rand-double",(1932486962),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol","protocol",(652470118)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"rand-double","rand-double",(-1487667849),null),"clojure/test/check/random.cljs",(15),(1),(19),(25),cljs.core.list(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)),"Returns a random double between 0.0 (inclusive) and 1.0 (exclusive)\n  based on the given immutable RNG.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument",(cljs.core.truth_(clojure.test.check.random.rand_double)?clojure.test.check.random.rand_double.cljs$lang$test:null)])));})()
+new cljs.core.Var(function(){return clojure.test.check.random.rand_double;},new cljs.core.Symbol("clojure.test.check.random","rand-double","clojure.test.check.random/rand-double",(1932486962),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol","protocol",(652470118)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"rand-double","rand-double",(-1487667849),null),"clojure/test/check/random.cljs",(15),(1),(19),(25),cljs.core.list(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)),"Returns a random double between 0.0 (inclusive) and 1.0 (exclusive)\n  based on the given immutable RNG.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument",((clojure.test.check.random.rand_double)?clojure.test.check.random.rand_double.cljs$lang$test:null)])));})()
 ;
 
 /**
@@ -77,21 +77,21 @@ clojure.test.check.random.split = (function clojure$test$check$random$split(rng)
 if((!((rng == null))) && (!((rng.clojure$test$check$random$IRandom$split$arity$1 == null)))){
 return rng.clojure$test$check$random$IRandom$split$arity$1(rng);
 } else {
-var x__23054__auto__ = (((rng == null))?null:rng);
-var m__23055__auto__ = (clojure.test.check.random.split[goog.typeOf(x__23054__auto__)]);
-if(!((m__23055__auto__ == null))){
-return m__23055__auto__.call(null,rng);
+var x__22676__auto__ = (((rng == null))?null:rng);
+var m__22677__auto__ = (clojure.test.check.random.split[goog.typeOf(x__22676__auto__)]);
+if(!((m__22677__auto__ == null))){
+return m__22677__auto__.call(null,rng);
 } else {
-var m__23055__auto____$1 = (clojure.test.check.random.split["_"]);
-if(!((m__23055__auto____$1 == null))){
-return m__23055__auto____$1.call(null,rng);
+var m__22677__auto____$1 = (clojure.test.check.random.split["_"]);
+if(!((m__22677__auto____$1 == null))){
+return m__22677__auto____$1.call(null,rng);
 } else {
 throw cljs.core.missing_protocol.call(null,"IRandom.split",rng);
 }
 }
 }
 }); return (
-new cljs.core.Var(function(){return clojure.test.check.random.split;},new cljs.core.Symbol("clojure.test.check.random","split","clojure.test.check.random/split",(1649496836),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol","protocol",(652470118)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"split","split",(1041096409),null),"clojure/test/check/random.cljs",(9),(1),(19),(31),cljs.core.list(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)),"Returns two new RNGs [rng1 rng2], which should generate\n  sufficiently independent random data.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument",(cljs.core.truth_(clojure.test.check.random.split)?clojure.test.check.random.split.cljs$lang$test:null)])));})()
+new cljs.core.Var(function(){return clojure.test.check.random.split;},new cljs.core.Symbol("clojure.test.check.random","split","clojure.test.check.random/split",(1649496836),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol","protocol",(652470118)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"split","split",(1041096409),null),"clojure/test/check/random.cljs",(9),(1),(19),(31),cljs.core.list(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null)], null)),"Returns two new RNGs [rng1 rng2], which should generate\n  sufficiently independent random data.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument",((clojure.test.check.random.split)?clojure.test.check.random.split.cljs$lang$test:null)])));})()
 ;
 
 /**
@@ -106,21 +106,21 @@ clojure.test.check.random.split_n = (function clojure$test$check$random$split_n(
 if((!((rng == null))) && (!((rng.clojure$test$check$random$IRandom$split_n$arity$2 == null)))){
 return rng.clojure$test$check$random$IRandom$split_n$arity$2(rng,n);
 } else {
-var x__23054__auto__ = (((rng == null))?null:rng);
-var m__23055__auto__ = (clojure.test.check.random.split_n[goog.typeOf(x__23054__auto__)]);
-if(!((m__23055__auto__ == null))){
-return m__23055__auto__.call(null,rng,n);
+var x__22676__auto__ = (((rng == null))?null:rng);
+var m__22677__auto__ = (clojure.test.check.random.split_n[goog.typeOf(x__22676__auto__)]);
+if(!((m__22677__auto__ == null))){
+return m__22677__auto__.call(null,rng,n);
 } else {
-var m__23055__auto____$1 = (clojure.test.check.random.split_n["_"]);
-if(!((m__23055__auto____$1 == null))){
-return m__23055__auto____$1.call(null,rng,n);
+var m__22677__auto____$1 = (clojure.test.check.random.split_n["_"]);
+if(!((m__22677__auto____$1 == null))){
+return m__22677__auto____$1.call(null,rng,n);
 } else {
 throw cljs.core.missing_protocol.call(null,"IRandom.split-n",rng);
 }
 }
 }
 }); return (
-new cljs.core.Var(function(){return clojure.test.check.random.split_n;},new cljs.core.Symbol("clojure.test.check.random","split-n","clojure.test.check.random/split-n",(2094795070),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol","protocol",(652470118)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"split-n","split-n",(671122803),null),"clojure/test/check/random.cljs",(11),(1),(19),(37),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null),new cljs.core.Symbol(null,"n","n",(-2092305744),null)], null)),"Returns a collection of `n` RNGs, which should generate\n  sufficiently independent random data.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument",(cljs.core.truth_(clojure.test.check.random.split_n)?clojure.test.check.random.split_n.cljs$lang$test:null)])));})()
+new cljs.core.Var(function(){return clojure.test.check.random.split_n;},new cljs.core.Symbol("clojure.test.check.random","split-n","clojure.test.check.random/split-n",(2094795070),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"protocol","protocol",(652470118)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[new cljs.core.Symbol("clojure.test.check.random","IRandom","clojure.test.check.random/IRandom",(-1117896154),null),cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"split-n","split-n",(671122803),null),"clojure/test/check/random.cljs",(11),(1),(19),(37),cljs.core.list(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"rng","rng",(-1571769753),null),new cljs.core.Symbol(null,"n","n",(-2092305744),null)], null)),"Returns a collection of `n` RNGs, which should generate\n  sufficiently independent random data.\n\n  Note: to maintain independence you should not call more than one\n  function in the IRandom protocol with the same argument",((clojure.test.check.random.split_n)?clojure.test.check.random.split_n.cljs$lang$test:null)])));})()
 ;
 
 /**
@@ -170,11 +170,12 @@ new cljs.core.Var(function(){return clojure.test.check.random.mix_gamma_const_3;
 (function (){
 clojure.test.check.random.mix_gamma = (function clojure$test$check$random$mix_gamma(n){
 var z = clojure.test.check.random.longs.bit_or.call(null,clojure.test.check.random.bxoubsr.call(null,clojure.test.check.random.longs._STAR_.call(null,clojure.test.check.random.bxoubsr.call(null,clojure.test.check.random.longs._STAR_.call(null,clojure.test.check.random.bxoubsr.call(null,n,(33)),clojure.test.check.random.mix_gamma_const_1),(33)),clojure.test.check.random.mix_gamma_const_2),(33)),clojure.test.check.random.longs.ONE);
-var z__$1 = (function (){var G__28 = z;
-var G__28__$1 = ((((24) > clojure.test.check.random.longs.bit_count.call(null,clojure.test.check.random.bxoubsr.call(null,z,(1)))))?clojure.test.check.random.longs.bit_xor.call(null,G__28,clojure.test.check.random.mix_gamma_const_3):G__28);
-return G__28__$1;
-})();
-return z__$1;
+var G__27 = z;
+if(((24) > clojure.test.check.random.longs.bit_count.call(null,clojure.test.check.random.bxoubsr.call(null,z,(1))))){
+return clojure.test.check.random.longs.bit_xor.call(null,G__27,clojure.test.check.random.mix_gamma_const_3);
+} else {
+return G__27;
+}
 }); return (
 new cljs.core.Var(function(){return clojure.test.check.random.mix_gamma;},new cljs.core.Symbol("clojure.test.check.random","mix-gamma","clojure.test.check.random/mix-gamma",(-1116283235),null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"private","private",(-558947994)),new cljs.core.Keyword(null,"ns","ns",(441598760)),new cljs.core.Keyword(null,"name","name",(1843675177)),new cljs.core.Keyword(null,"file","file",(-1269645878)),new cljs.core.Keyword(null,"end-column","end-column",(1425389514)),new cljs.core.Keyword(null,"column","column",(2078222095)),new cljs.core.Keyword(null,"line","line",(212345235)),new cljs.core.Keyword(null,"end-line","end-line",(1837326455)),new cljs.core.Keyword(null,"arglists","arglists",(1661989754)),new cljs.core.Keyword(null,"doc","doc",(1913296891)),new cljs.core.Keyword(null,"test","test",(577538877))],[true,cljs.core.with_meta(new cljs.core.Symbol(null,"clojure.test.check.random","clojure.test.check.random",(2043592849),null),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"author","author",(2111686192)),"Gary Fredericks",new cljs.core.Keyword(null,"doc","doc",(1913296891)),"Purely functional and splittable pseudo-random number generators."], null)),new cljs.core.Symbol(null,"mix-gamma","mix-gamma",(1762740944),null),"clojure/test/check/random.cljs",(26),(1),(75),(75),cljs.core.list(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Symbol(null,"n","n",(-2092305744),null)], null)),null,(cljs.core.truth_(clojure.test.check.random.mix_gamma)?clojure.test.check.random.mix_gamma.cljs$lang$test:null)])));})()
 ;
@@ -186,7 +187,7 @@ new cljs.core.Var(function(){return clojure.test.check.random.mix_gamma;},new cl
 clojure.test.check.random.JavaUtilSplittableRandom = (function (gamma,state){
 this.gamma = gamma;
 this.state = state;
-})
+});
 clojure.test.check.random.JavaUtilSplittableRandom.prototype.clojure$test$check$random$IRandom$ = cljs.core.PROTOCOL_SENTINEL;
 
 clojure.test.check.random.JavaUtilSplittableRandom.prototype.clojure$test$check$random$IRandom$rand_long$arity$1 = (function (_){
@@ -213,8 +214,8 @@ return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMP
 clojure.test.check.random.JavaUtilSplittableRandom.prototype.clojure$test$check$random$IRandom$split_n$arity$2 = (function (this$,n){
 var self__ = this;
 var this$__$1 = this;
-var G__29 = n;
-switch (G__29) {
+var G__28 = n;
+switch (G__28) {
 case (0):
 return cljs.core.PersistentVector.EMPTY;
 
@@ -235,10 +236,10 @@ var state_SINGLEQUOTE_ = clojure.test.check.random.longs._PLUS_.call(null,self__
 var state_SINGLEQUOTE__SINGLEQUOTE_ = clojure.test.check.random.longs._PLUS_.call(null,self__.gamma,state_SINGLEQUOTE_);
 var gamma_SINGLEQUOTE_ = clojure.test.check.random.mix_gamma.call(null,state_SINGLEQUOTE__SINGLEQUOTE_);
 var new_rng = (new clojure.test.check.random.JavaUtilSplittableRandom(gamma_SINGLEQUOTE_,clojure.test.check.random.mix_64.call(null,state_SINGLEQUOTE_)));
-var G__31 = state_SINGLEQUOTE__SINGLEQUOTE_;
-var G__32 = cljs.core.conj_BANG_.call(null,ret,new_rng);
-state__$1 = G__31;
-ret = G__32;
+var G__30 = state_SINGLEQUOTE__SINGLEQUOTE_;
+var G__31 = cljs.core.conj_BANG_.call(null,ret,new_rng);
+state__$1 = G__30;
+ret = G__31;
 continue;
 }
 break;
@@ -255,8 +256,8 @@ clojure.test.check.random.JavaUtilSplittableRandom.cljs$lang$type = true;
 
 clojure.test.check.random.JavaUtilSplittableRandom.cljs$lang$ctorStr = "clojure.test.check.random/JavaUtilSplittableRandom";
 
-clojure.test.check.random.JavaUtilSplittableRandom.cljs$lang$ctorPrWriter = (function (this__22602__auto__,writer__22603__auto__,opt__22604__auto__){
-return cljs.core._write.call(null,writer__22603__auto__,"clojure.test.check.random/JavaUtilSplittableRandom");
+clojure.test.check.random.JavaUtilSplittableRandom.cljs$lang$ctorPrWriter = (function (this__22622__auto__,writer__22623__auto__,opt__22624__auto__){
+return cljs.core._write.call(null,writer__22623__auto__,"clojure.test.check.random/JavaUtilSplittableRandom");
 });
 
 (function (){
@@ -272,9 +273,9 @@ new cljs.core.Var(function(){return clojure.test.check.random.golden_gamma;},new
 ;
 (function (){
 clojure.test.check.random.make_java_util_splittable_random = (function clojure$test$check$random$make_java_util_splittable_random(seed){
-return (new clojure.test.check.random.JavaUtilSplittableRandom(clojure.test.check.random.golden_gamma,(function (){var or__20817__auto__ = clojure.test.check.random.longs.__GT_long.call(null,seed);
-if(cljs.core.truth_(or__20817__auto__)){
-return or__20817__auto__;
+return (new clojure.test.check.random.JavaUtilSplittableRandom(clojure.test.check.random.golden_gamma,(function (){var or__21686__auto__ = clojure.test.check.random.longs.__GT_long.call(null,seed);
+if(cljs.core.truth_(or__21686__auto__)){
+return or__21686__auto__;
 } else {
 throw cljs.core.ex_info.call(null,"Bad random seed!",new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"seed","seed",(68613327)),seed], null));
 }
@@ -287,14 +288,14 @@ clojure.test.check.random.next_rng = (function (){var a = cljs.core.atom.call(nu
 return ((function (a){
 return (function (){
 return new cljs.core.Keyword(null,"returned","returned",(-2020439163)).cljs$core$IFn$_invoke$arity$1(cljs.core.swap_BANG_.call(null,a,((function (a){
-return (function (p__33){
-var map__34 = p__33;
-var map__34__$1 = ((((!((map__34 == null)))?((((map__34.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__34.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__34):map__34);
-var state = cljs.core.get.call(null,map__34__$1,new cljs.core.Keyword(null,"state","state",(-1988618099)));
-var vec__36 = clojure.test.check.random.split.call(null,state);
-var r1 = cljs.core.nth.call(null,vec__36,(0),null);
-var r2 = cljs.core.nth.call(null,vec__36,(1),null);
-return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"returned","returned",(-2020439163)),r2,new cljs.core.Keyword(null,"state","state",(-1988618099)),r1], null);
+return (function (p__32){
+var map__33 = p__32;
+var map__33__$1 = ((((!((map__33 == null)))?((((map__33.cljs$lang$protocol_mask$partition0$ & (64))) || ((cljs.core.PROTOCOL_SENTINEL === map__33.cljs$core$ISeq$)))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__33):map__33);
+var state = cljs.core.get.call(null,map__33__$1,new cljs.core.Keyword(null,"state","state",(-1988618099)));
+var vec__35 = clojure.test.check.random.split.call(null,state);
+var r1 = cljs.core.nth.call(null,vec__35,(0),null);
+var r2 = cljs.core.nth.call(null,vec__35,(1),null);
+return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"state","state",(-1988618099)),r1,new cljs.core.Keyword(null,"returned","returned",(-2020439163)),r2], null);
 });})(a))
 ));
 });
@@ -308,23 +309,8 @@ new cljs.core.Var(function(){return clojure.test.check.random.next_rng;},new clj
  */
 (function (){
 clojure.test.check.random.make_random = (function clojure$test$check$random$make_random(var_args){
-var args39 = [];
-var len__23656__auto___42 = arguments.length;
-var i__23657__auto___43 = (0);
-while(true){
-if((i__23657__auto___43 < len__23656__auto___42)){
-args39.push((arguments[i__23657__auto___43]));
-
-var G__44 = (i__23657__auto___43 + (1));
-i__23657__auto___43 = G__44;
-continue;
-} else {
-}
-break;
-}
-
-var G__41 = args39.length;
-switch (G__41) {
+var G__39 = arguments.length;
+switch (G__39) {
 case (0):
 return clojure.test.check.random.make_random.cljs$core$IFn$_invoke$arity$0();
 
@@ -334,7 +320,7 @@ return clojure.test.check.random.make_random.cljs$core$IFn$_invoke$arity$1((argu
 
 break;
 default:
-throw (new Error([cljs.core.str("Invalid arity: "),cljs.core.str(args39.length)].join('')));
+throw (new Error(["Invalid arity: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(arguments.length)].join('')));
 
 }
 }); return (

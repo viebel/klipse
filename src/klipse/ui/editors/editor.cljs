@@ -85,10 +85,11 @@
 
 (defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [klass indent? remove-ending-comments?] :or {indent? true remove-ending-comments? true}}]
   (let [editor (js/CodeMirror (fn [elt]
-                                (let [wrapping-div (gdom/createElement "div")]
-                                  (gdom/appendChild wrapping-div elt)
-                                  (gdom/replaceNode wrapping-div element)
-                                  (when klass
+                                (if-not klass
+                                  (gdom/replaceNode elt element)
+                                  (let [wrapping-div (gdom/createElement "div")]
+                                    (gdom/appendChild wrapping-div elt)
+                                    (gdom/replaceNode wrapping-div element)
                                     (add-class wrapping-div klass))))
                               (clj->js opts))]
     (-> (set-value editor value)

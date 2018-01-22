@@ -51,8 +51,6 @@
           (swap! state update-in [:eval-counter] inc)
           (let [evaluation-chan (eval-fn (str preamble src-code) @state)
                 first-result (<! evaluation-chan)]
-            ;; if first-result is String then continue as normal
-            ;; otherwise dispatch custom event with payload
             (if (string? first-result)
               (setter first-result)
               (setter (second first-result)))
@@ -69,6 +67,8 @@
               (let [result (<! evaluation-chan)
                     results (str previous-results result)]
                 (when (some? result) ;exit if the channel is closed
+                  ;; if first-result is String then continue as normal
+                  ;; otherwise dispatch custom event with payload
                   (if (string? result)
                     (setter results)
                     (when-let [klipse-dom-node (js/document.querySelector ".klipse-container")]

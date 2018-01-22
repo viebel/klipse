@@ -33,7 +33,6 @@
                (put! c [:ok mod])
                (!> js/console.info "success to eval skulpt"))
              (fn [err]
-               (put! c (str "error: " err))
                (put! c [:err err]))))
     c))
 

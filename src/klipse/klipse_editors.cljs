@@ -71,12 +71,14 @@
                   ;; otherwise dispatch custom event with payload
                   (if (string? result)
                     (setter results)
-                    (when-let [klipse-dom-node (js/document.querySelector ".klipse-container")]
-                      (let [event-payload (clj->js {:detail {:result result
-                                                             :hasError (and (= (first result) :err))
-                                                             :resultElement (:result-element @state)}})]
-                        (!> klipse-dom-node.dispatchEvent
-                            (js/CustomEvent. "klipse-snippet-evaled" event-payload)))))
+                    (do
+                      (setter (second results))
+                      (when-let [klipse-dom-node (js/document.querySelector ".klipse-container")]
+                        (let [event-payload (clj->js {:detail {:result result
+                                                               :hasError (and (= (first result) :err))
+                                                               :resultElement (:result-element @state)}})]
+                          (!> klipse-dom-node.dispatchEvent
+                              (js/CustomEvent. "klipse-snippet-evaled" event-payload))))))
                   (recur results))))))
         (catch :default e
           (setter e))))))

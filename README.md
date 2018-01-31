@@ -409,6 +409,8 @@ Each code snippet is wrapped into a CodeMirror editor.
 
 The CodeMirror editors are accessible via the javascript global variable: `klipse_editors`. This is an array that contains the CodeMirror editors wrapping the original code snippets. For instance, you can modify the content of the code snippet `i` by calling: `klipse_editors[i].setValue('let a = 1');`
 
+Here is a [jsfiddle](https://jsfiddle.net/yhuh80ry/2/) that shows it in action.
+
 ## Use older versions
 
 Since version `6.8.0`, Klipse is published on [npm](https://www.npmjs.com/package/klipse). Therefore you can access the klipse files of a specific version from [unpkg](https://unpkg.com) - a cdn for stuff that is published to `npm`.

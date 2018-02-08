@@ -26,14 +26,13 @@
     (->
       (!> js/Sk.misceval.asyncToPromise
           (fn []
-            (put! c "Output\n")
+            (put! c "Output:\n")
             (! js/Sk.TurtleGraphics.target container-id)
             (!> js/Sk.importMainWithBody "<stdin>" false exp true)))
       (.then (fn [mod]
-               (put! c [:ok mod])
-               (!> js/console.info "success to eval skulpt"))
+               (put! c [:ok mod]))
              (fn [err]
-               (put! c [:err err]))))
+               (put! c [:err (str "error:\n" err)]))))
     c))
 
 (def opts {:editor-in-mode "python"

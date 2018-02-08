@@ -67,18 +67,16 @@
               (let [result (<! evaluation-chan)
                     results (str previous-results result)]
                 (when (some? result) ;exit if the channel is closed
-                  ;; if first-result is String then continue as normal
-                  ;; otherwise dispatch custom event with payload
                   (if (string? result)
                     (setter results)
-                    (do
-                      (setter (second results))
+                    (let [hasError (and (= (first result) :err))]
+                      (when hasError (setter (second result)))      ;; only report the :err messages for now
                       (when-let [klipse-dom-node (js/document.querySelector ".klipse-container")]
-                        (let [event-payload (clj->js {:detail {:result result
-                                                               :hasError (and (= (first result) :err))
-                                                               :resultElement (:result-element @state)}})]
-                          (!> klipse-dom-node.dispatchEvent
-                              (js/CustomEvent. "klipse-snippet-evaled" event-payload))))))
+                         (let [event-payload (clj->js {:detail {:result result
+                                                                :hasError hasError
+                                                                :resultElement (:result-element @state)}})]
+                              (!> klipse-dom-node.dispatchEvent
+                                  (js/CustomEvent. "klipse-snippet-evaled" event-payload))))))
                   (recur results))))))
         (catch :default e
           (setter e))))))
@@ -155,9 +153,14 @@
 (defmethod create-editor :code-mirror [_ {:keys [snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result] :as editor-args}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         container  (create-div-after element (klipse-container-attrs snippet-num))
-        result-element (when-not no-result (create-editor-after-element element default-txt out-editor-options :indent? false :remove-ending-comments? false)) ; must be called before `element` is replaced
+        _ (create-div-after container {:class "klipse-separator"})
+        result-element (when-not no-result
+                         (create-editor-after-element element default-txt out-editor-options
+                                                      :indent? false
+                                                      :remove-ending-comments? false
+                                                      :klass "klipse-result")) ; must be called before `element` is replaced
 
-        in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
+        in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent? :klass "klipse-snippet")
         snippet-args {:loop-msec loop-msec
                       :preamble preamble}
         state (create-state :container container :result-element result-element :editor-args editor-args)]

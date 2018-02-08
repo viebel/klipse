@@ -51,9 +51,7 @@
           (swap! state update-in [:eval-counter] inc)
           (let [evaluation-chan (eval-fn (str preamble src-code) @state)
                 first-result (<! evaluation-chan)]
-            (if (string? first-result)
-              (setter first-result)
-              (setter (second first-result)))
+            (setter first-result)
             (when loop-msec
               (go-loop []
                 (let [[cmd c] (alts! [cmd-chan (timeout loop-msec)])]

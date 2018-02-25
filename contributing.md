@@ -53,11 +53,20 @@ Read [KLIPSE Magic](https://github.com/viebel/klipse/blob/master/tutorial.md) to
 lein clean
 lein cljsbuild once app plugin plugin-prod
 ```
-#### 2. Test
+#### 2. Test 
+
+##### 2.1 Test the app
 
 Test that `dev` build works properly => 
 
 Open the browser [http://localhost:5014/test.html](http://localhost:5014/test.html)
+
+##### 2.2 Test the plugin
+
+Production build: http://localhost:5014/plugin-prod.html
+
+Dev build: http://localhost:5014/plugin-prod.html?dev=1
+
  
 
 #### 3. Deploy to Google Storage

@@ -123,6 +123,15 @@ let a = 1 + 1
       <code class="eval-reason">
 let a = "Hello " ++ "World!";
       </code>
+      <h2> Reason with Types </h2>
+      	<pre>
+      <code class="eval-reason-types">
+let a = "Hello " ++ "World!";
+      </code>
+      	<pre>
+      <code class="eval-reason-types">
+let b = a ++ " Klipse ";
+      </code>
     </pre>
 
  <p> We should handle errors properly </p>
@@ -197,7 +206,8 @@ let a x y = x + y
 	    selector_eval_ocaml: '.eval-ocaml',
             selector_transpile_reason_3: '.transpile-reason',
 	    selector_transpile_reason_3_to_ocaml: '.transpile-reason-to-ocaml',
-	    selector_eval_reason_3: '.eval-reason',
+            selector_eval_reason_3: '.eval-reason',
+	    selector_eval_reason_3_with_types: '.eval-reason-types',
 	    selector_ocaml_to_reason: '.ocaml-to-reason',
             selector_js: '.clojure-js'
         };

@@ -91,10 +91,10 @@
                                       (put! c (string/join " "  args))
                                         (put! c "\n"))]
                     (try
-                      (let [[status res] (dbg (reason-3->ocaml exp))]
+                      (let [[status res] (reason-3->ocaml exp)]
                         (if (= :error status)
                           (put! c res)
-                          (let [[status res] (dbg (ocaml/eval-with-types (str res ";;")))]
+                          (let [[status res] (ocaml/eval-with-types (str res ";;"))]
                             (put! c res))))
                       (catch :default o
                         (str o))))

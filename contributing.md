@@ -47,11 +47,16 @@ Read [KLIPSE Magic](https://github.com/viebel/klipse/blob/master/tutorial.md) to
 
 ## Deploy to Production
 
+#### 0. Prepare
+
+Upgrade version in `project.clj` (and in `resources-public/index-dev.html` if needed to update Klipse app).
+Make sure Figwheel is running `rlwrap lein run -m clojure.main scripts/figwheel.clj`
+
+
 #### 1. Build
 
 ```bash
-lein clean
-lein cljsbuild once app plugin plugin-prod
+./scripts/build
 ```
 #### 2. Test 
 

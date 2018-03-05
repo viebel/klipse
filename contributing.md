@@ -68,7 +68,7 @@ Open the browser [http://localhost:5014/test.html](http://localhost:5014/test.ht
 
 ##### 2.2 Test the plugin
 
-Production build: http://localhost:5014/plugin-prod.html
+Production build: http://localhost:5014/plugin-prod.html and http://localhost:5014/plugin-prod-more.html (some of the evaluators are incompatible on the same page)
 
 Dev build: http://localhost:5014/plugin-prod.html?dev=1
 

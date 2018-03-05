@@ -14,7 +14,7 @@
 ;(set! *warn-on-infer* true)
 (def known-external-libs
   {
-   "immutable" "https://raw.githubusercontent.com/facebook/immutable-js/master/dist/immutable.min.js"
+   "immutable" "https://cdnjs.cloudflare.com/ajax/libs/immutable/3.8.2/immutable.js"
    "jQuery" "https://code.jquery.com/jquery-2.2.4.js"
    "underscore" "http://underscorejs.org/underscore-min.js"})
 

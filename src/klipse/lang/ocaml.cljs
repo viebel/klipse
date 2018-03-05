@@ -20,7 +20,7 @@
 
 (defn eval-with-types [exp]
   (try
-    [:ok (js/evaluator.execute exp)]
+    [:ok (!> js/evaluator.execute exp)]
     (catch :default o
       [:error (str o)])))
 

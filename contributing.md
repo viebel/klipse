@@ -82,6 +82,14 @@ Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is inst
 ./scripts/deploy
 ```
 
+#### 4. publish the npm package
+
+Upgrade version number in `package.json` and then:
+
+```bash
+npm publish
+```
+
 ## Update clojurescript analysis cache
 
 Analysis cache and macro precompiled files are stored under `docs/cache-cljs`.

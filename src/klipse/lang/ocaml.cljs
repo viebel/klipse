@@ -74,7 +74,7 @@
 
 (def eval-with-types-opts
   {:editor-in-mode "text/x-ocaml"
-   :editor-out-mode "javascript"
+   :editor-out-mode "text/x-ocaml"
    :beautify? false
    :eval-fn eval-ocaml-with-types
    :external-scripts [(codemirror-mode-src "mllike") "https://viebel.github.io/klipse/repo/js/ocaml_evaluate_type.js"]

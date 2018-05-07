@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+    <h1> Error Handling </h1>
+    <pre><code class="clisp">
+	(in-pac
+    </code></pre>
+    <h1> Working Examples </h1>
+
+    <pre><code class="clisp">
+	(defun foo (x y z) (+ x y z))
+    </code></pre>
+    <pre><code class="clisp">
+	(foo 1 2 3)
+    </code></pre>
+
+    <h2> macros </h2>
+    <pre><code class="clisp">
+	(defmacro my-when (condition &rest body)
+	`(if ,condition (progn ,@body)))
+    </code></pre>
+    <pre><code class="clisp">
+	(my-when (> 10 2) 4)
+    </code></pre>
+    <script>
+      window.klipse_settings = {
+      selector_eval_clisp: '.clisp'
+      };
+    </script>
+    <script src="/fig/js/klipse.fig.js"></script>
+  </body>
+</html>

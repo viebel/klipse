@@ -1,3 +1,5 @@
+// from https://github.com/jscl-project/jscl
+// compiled by t-cool https://github.com/jscl-project/jscl/pull/315#issuecomment-386837289
 (function(){
 'use strict';
 /* This file, unlike the rest of the project is distributed under a permissive

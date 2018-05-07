@@ -37,6 +37,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - C++: evaluation is done with [JSCPP](https://github.com/felixhao28/JSCPP)
 - python: evaluation is done with [Skulpt](http://www.skulpt.org/)
 - scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)
+- common lisp: evaluation is done with [JSCL](https://github.com/jscl-project/jscl)
 - PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
 - BrainFuck
 - JSX
@@ -160,6 +161,18 @@ You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klips
 <script>
     window.klipse_settings = {
         selector_eval_scheme: '.language-klipse-eval-scheme', // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
+## Common Lisp
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_eval_clisp: '.language-klipse-eval-clisp', // css selector for the html elements you want to klipsify
     };
 </script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>

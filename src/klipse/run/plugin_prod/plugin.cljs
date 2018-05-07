@@ -13,6 +13,7 @@
             klipse.lang.sql
             klipse.lang.python
             klipse.lang.scheme
+            klipse.lang.clisp            
             klipse.lang.php
             klipse.lang.server-eval
             klipse.lang.markdown

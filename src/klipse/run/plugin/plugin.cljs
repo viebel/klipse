@@ -12,6 +12,7 @@
             klipse.lang.brainfuck
             klipse.lang.sql
             klipse.lang.scheme
+            klipse.lang.clisp
             klipse.lang.python
             klipse.lang.php
             klipse.lang.markdown

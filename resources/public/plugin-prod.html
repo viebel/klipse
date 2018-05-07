@@ -1,184 +1,207 @@
 <!DOCTYPE html>
 <html>
-    <head lang="en">
-        <meta charset="UTF-8">
-        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
-        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
-        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
-    </head>
-    <body>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
     <p>
-     
-     <h1> javascript </h1>
-    <h2> immutable.js </h2>
- <div class="eval-js" data-external-libs="immutable">
-     Immutable
-        </div>
-        <br/>
-        <div class="eval-js">
-     var m = Immutable.fromJS({a: 10, c: 40});
+      <h1> javascript </h1>
+      <h2> immutable.js </h2>
+      <div class="eval-js" data-external-libs="immutable">
+	Immutable
+      </div>
+      <br/>
+      <div class="eval-js">
+	var m = Immutable.fromJS({a: 10, c: 40});
 
-     m.map(x => x * x);
+	m.map(x => x * x);
 
-        </div>
-        <br/>
+      </div>
+      <br/>
 
-        <h2> native javascript </h2>
-        <div class="eval-js">
-            [1, 2, 3].reduce(
-              function(total, num){ return total + num }
-                , 0);
-        </div>
-        <br/>
-        <h2> jQuery </h2>
- <div class="eval-js" data-external-libs="jQuery">
-     $
-        </div>
-        <br/>
- 
- <div class="eval-js">
-     $('div').length
-        </div>
-        <br/>
-     <body>
- <h1> PHP </h1>
-    <div class="eval-php">
-        print "Hello from PHP!";</div>
-<br/>
-<div class="eval-php">
-    $var = ["a" => 1];
-    var_dump($var);
-</div>
+      <h2> native javascript </h2>
+      <div class="eval-js">
+        [1, 2, 3].reduce(
+        function(total, num){ return total + num }
+        , 0);
+      </div>
+      <br/>
+      <h2> jQuery </h2>
+      <div class="eval-js" data-external-libs="jQuery">
+	$
+      </div>
+      <br/>
+      
+      <div class="eval-js">
+	$('div').length
+      </div>
+      <br/>
+      <body>
+	<h1> PHP </h1>
+	<div class="eval-php">
+          print "Hello from PHP!";</div>
+	<br/>
+	<div class="eval-php">
+	  $var = ["a" => 1];
+	  var_dump($var);
+	</div>
 
-    <div class="eval-php" data-gist-id="viebel/6d6e23270e65dd9a4849c507dba4f712"></div>
+	<div class="eval-php" data-gist-id="viebel/6d6e23270e65dd9a4849c507dba4f712"></div>
         <br/>
- 
-<h1> ruby</h1>
-    <div class="eval-ruby" data-gist-id="viebel/4659664"></div>
+	
+	<h1> ruby</h1>
+	<div class="eval-ruby" data-gist-id="viebel/4659664"></div>
         <br/>
         <div class="eval-ruby">
-def letter_frequency(file)
-letters = 'a' .. 'z'
-file .
-split(//) .
-group_by {|letter| letter.downcase} .
-select   {|key, val| letters.include? key} .
-collect  {|key, val| [key, val.length]} 
-end
+	  def letter_frequency(file)
+	  letters = 'a' .. 'z'
+	  file .
+	  split(//) .
+	  group_by {|letter| letter.downcase} .
+	  select   {|key, val| letters.include? key} .
+	  collect  {|key, val| [key, val.length]} 
+	  end
 
-letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}
+	  letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}
 
-            </div>
-<br/>
+        </div>
+	<br/>
 
-<h1> Markdown </h1>
-<h2> HTML transpilation</h2>
-<code class="eval-markdown">
-# This is a title
-`clojure` rocks!
-</code>
-       <br/>
- 
-<h2> HTML rendering</h2>
-<code class="eval-markdown" data-editor-type="html">
-# This is a title
-`clojure` rocks!
-</code>
-<br/>
+	<h1> Markdown </h1>
+	<h2> HTML transpilation</h2>
+	<code class="eval-markdown">
+	  # This is a title
+	  `clojure` rocks!
+	</code>
+	<br/>
+	
+	<h2> HTML rendering</h2>
+	<code class="eval-markdown" data-editor-type="html">
+	  # This is a title
+	  `clojure` rocks!
+	</code>
+	<br/>
 
-<h1>Ocaml</h1>
-<h2>OCaml evaluation</h2>
-    <pre>
-      <code class="eval-ocaml">
-let rec fib (n: int): int =
-match n with
-| 0 -> 1
-| 1 -> 1
-| _ -> (fib (n - 1)) + (fib (n - 2));;
+	<h1>Ocaml</h1>
+	<h2>OCaml evaluation</h2>
+	<pre>
+	  <code class="eval-ocaml">
+	    let rec fib (n: int): int =
+	    match n with
+	    | 0 -> 1
+	    | 1 -> 1
+	    | _ -> (fib (n - 1)) + (fib (n - 2));;
 
-let b = fib 9;;
+	    let b = fib 9;;
 
-let a = 1 + 1;;
-      </code>
-    </pre>
-    <pre>
-      <code class="eval-ocaml">
-let a = fib (5 + 1);;
-      </code>
-    </pre>
+	    let a = 1 + 1;;
+	  </code>
+	</pre>
+	<pre>
+	  <code class="eval-ocaml">
+	    let a = fib (5 + 1);;
+	  </code>
+	</pre>
 
 	<h1>Reason</h1>
 	<h2> Reason Evaluation </h2>
 	<pre>
-      <code class="eval-reason-types">
-let rec sigma (f, s) =
- switch (s) {
-    | [] => 0
-    | [x, ...l] => f (x) + sigma (f, l)
-    };
-    
-let a =  (sigma ((fun (x) => x * x), [1, 2, 3])); 
-      </code>
-      	<pre>
-      <code class="eval-reason-types">
-let a = "Hello " ++ "World!";
-      </code>
-      	<pre>
-      <code class="eval-reason-types">
-let b = a ++ " Klipse ";
-      </code>
-    </pre>
+	  <code class="eval-reason-types">
+	    let rec sigma (f, s) =
+	    switch (s) {
+	    | [] => 0
+	    | [x, ...l] => f (x) + sigma (f, l)
+	    };
+	    
+	    let a =  (sigma ((fun (x) => x * x), [1, 2, 3])); 
+	  </code>
+      	  <pre>
+	    <code class="eval-reason-types">
+	      let a = "Hello " ++ "World!";
+	    </code>
+      	    <pre>
+	      <code class="eval-reason-types">
+		let b = a ++ " Klipse ";
+	      </code>
+	    </pre>
 
- <h2> We should handle errors properly </h2>
-    <pre>
-      <code class="eval-reason-types">
-let a = "aaa" ++
-      </code>
-    </pre>
+	    <h2> We should handle errors properly </h2>
+	    <pre>
+	      <code class="eval-reason-types">
+		let a = "aaa" ++
+	      </code>
+	    </pre>
+	    <h1>Commom Lisp</h1>
+	    <h2>Error Handling</h2>
+	    <pre><code class="clisp">
+		(in-pac
+	    </code></pre>
+	    <h2> Working Examples </h2>
+	    <pre><code class="clisp">
+		(defun foo (x y z) (+ x y z))
+	    </code></pre>
+	    <pre><code class="clisp">
+		(foo 1 2 3)
+	    </code></pre>
 
- <h1> Lambdaway</h1>
-<div class="lambda" data-editor-type="html">
-    {+ 1 2 3}
-    </div>
-    <br/>
+	    <h2> macros </h2>
+	    <pre><code class="clisp">
+		(defmacro my-when (condition &rest body)
+		`(if ,condition (progn ,@body)))
+	    </code></pre>
+
+	    <pre><code class="clisp">
+		(my-when (> 10 2) 4)
+	    </code></pre>
 
 
-<div class="lambda" data-editor-type="html">
-    {div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}
-    </div>
-    <br/>
-<div class="lambda" data-editor-type="html">
-    {def amélie {img 
-     {@ id="amelie"
-         src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
-             height="150"
-                 title="Amélie Poulain"
-                     style="box-shadow:0 0 8px black;
-                                border:1px solid white;
-                                           -webkit-transform:rotate(-5deg);
-                                                         -moz-transform:rotate(-5deg);
-                                                                            transform:rotate(-5deg);"}}}
-                                                                            {amélie}
-    </div>
-    <br/>
- <h1> HTML rendering </h1>
-   <div class="eval-html" data-editor-type="html">
-    &lt;img id="amelie" src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" height="150" title="Amélie Poulain" style="box-shadow:0 0 8px black; border:1px solid white; -webkit-transform:rotate(-5deg); -moz-transform:rotate(-5deg); transform:rotate(-5deg);"&gt;&lt;/img&gt;
-    </div>
+	    <h1> Lambdaway</h1>
+	    <div class="lambda" data-editor-type="html">
+	      {+ 1 2 3}
+	    </div>
+	    <br/>
 
-        <script>
-        window.klipse_settings = {
-            selector_eval_js: '.eval-js',
-            selector_eval_markdown: '.eval-markdown',
-            selector_eval_lambdaway: '.lambda',
-            selector_eval_html: '.eval-html',
-            selector_eval_php: '.eval-php',
-            selector_eval_ruby: '.eval-ruby',
-            selector_eval_reason_3_with_types: '.eval-reason-types',
-	    selector_eval_ocaml_with_types: '.eval-ocaml',
-            selector_js: '.clojure-js'
-        };
-        </script>
-        <script src="plugin_prod/js/klipse_plugin.min.js"></script>
-    </body>
+
+	    <div class="lambda" data-editor-type="html">
+	      {div {@ style="text-align:center;font:bold 2em georgia;color:red;"} √(3{sup 2}+4{sup 2}) = {sqrt {+ {* 3 3} {* 4 4}}}}
+	    </div>
+	    <br/>
+	    <div class="lambda" data-editor-type="html">
+	      {def amélie {img 
+	      {@ id="amelie"
+              src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
+              height="150"
+              title="Amélie Poulain"
+              style="box-shadow:0 0 8px black;
+              border:1px solid white;
+              -webkit-transform:rotate(-5deg);
+              -moz-transform:rotate(-5deg);
+              transform:rotate(-5deg);"}}}
+              {amélie}
+	    </div>
+	    <br/>
+	    <h1> HTML rendering </h1>
+	    <div class="eval-html" data-editor-type="html">
+	      &lt;img id="amelie" src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" height="150" title="Amélie Poulain" style="box-shadow:0 0 8px black; border:1px solid white; -webkit-transform:rotate(-5deg); -moz-transform:rotate(-5deg); transform:rotate(-5deg);"&gt;&lt;/img&gt;
+	    </div>
+
+            <script>
+              window.klipse_settings = {
+              selector_eval_js: '.eval-js',
+              selector_eval_markdown: '.eval-markdown',
+              selector_eval_lambdaway: '.lambda',
+              selector_eval_html: '.eval-html',
+              selector_eval_php: '.eval-php',
+              selector_eval_ruby: '.eval-ruby',
+              selector_eval_reason_3_with_types: '.eval-reason-types',
+	      selector_eval_ocaml_with_types: '.eval-ocaml',
+	      selector_eval_clisp: '.clisp',
+              selector_js: '.clojure-js'
+              };
+            </script>
+            <script src="plugin_prod/js/klipse_plugin.min.js"></script>
+      </body>
 </html>

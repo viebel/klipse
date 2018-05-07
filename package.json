@@ -1,7 +1,7 @@
 {
   "name": "klipse",
-  "version": "7.3.4",
-  "description": "A simple client-side code evaluator pluggable on any web page: clojure, ruby, javascript, python, scheme, es2017, jsx, brainfuck, c++, reagent",
+  "version": "7.4.0",
+  "description": "A simple client-side code evaluator pluggable on any web page: clojure, ruby, javascript, python, scheme, es2017, jsx, brainfuck, c++, reagent, ocaml, reason, common lisp",
   "main": "klipse_plugin.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

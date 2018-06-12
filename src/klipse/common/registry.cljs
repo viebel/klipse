@@ -8,12 +8,14 @@
 (def mode-options (atom {}))
 
 (defn codemirror-mode-src [mode]
-  (let [root (:codemirror_root (klipse-settings) "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/mode")]
-    (str root "/" mode "/" mode ".min.js")))
+  (if-let [root (:codemirror_root (klipse-settings))]
+    (str root "/" mode "/" mode ".js")
+    (str "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/mode" "/" mode "/" mode ".min.js")))
 
 (defn codemirror-keymap-src [mode]
-  (let [root (:codemirror_root (klipse-settings) "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/keymap")]
-    (str root "/" mode ".min.js")))
+  (if-let [root (:codemirror_root (klipse-settings))]
+    (str root "/keymap/"  mode ".js")
+    (str "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/keymap" "/" mode ".min.js")))
 
 (defn scripts-src [name]
   (let [root (:scripts_root (klipse-settings) "https://viebel.github.io/klipse/repo/js")]

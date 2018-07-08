@@ -45,6 +45,12 @@
     (eval-in-global-scope wrapped-exp)
     ""))
 
+(defn stopify-compile [source]
+  (!> js/stopify.stopifyLocally source))
+
+(defn stopify-run [obj]
+  (js-invoke obj "run" (fn [x] x)))
+
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]
     (when (verbose?) (js/console.info "[javascript] evaluating" exp))
@@ -60,7 +66,9 @@
                               (eval-with-logger! c exp)
                               (my-with-redefs [js/console.log (append-to-chan c)]
                                               (-> exp
+                                                  stopify-compile
                                                   eval-in-global-scope
+                                                  stopify-run
                                                   beautify)))
                             (catch :default o
                               (str o)))
@@ -73,7 +81,9 @@
            :editor-out-mode "javascript"
            :beautify-output? false
            :eval-fn str-eval-js-async
-           :external-scripts [(codemirror-mode-src "javascript")  (scripts-src "pretty_format.js")]
+           :external-scripts [(codemirror-mode-src "javascript")
+                              (scripts-src "stopify-full.bundle.js")
+                              (scripts-src "pretty_format.js")]
            :comment-str "//"})
 
 (register-mode "eval-javascript" "selector_eval_js" opts)
@@ -105,7 +115,11 @@
                   :editor-out-mode "javascript"
                   :beautify-output? false
                   :eval-fn eval-es2017
-                  :external-scripts [(codemirror-mode-src "javascript") (scripts-src "pretty_format.js") (scripts-src "babel.min.js") (scripts-src "babel_polyfill.min.js")]
+                  :external-scripts [(codemirror-mode-src "javascript")
+                                     (scripts-src "pretty_format.js")
+                                     (scripts-src "babel.min.js")
+                                     (scripts-src "stopify-full.bundle.js")
+                                     (scripts-src "babel_polyfill.min.js")]
                   :comment-str "//"})
 
 (register-mode "eval-es2017" "selector_es2017" es2017-opts)

@@ -98,6 +98,7 @@
         (when (seq filenames)
           (let [filename (first filenames)
                 {:keys [status body]} (<! (http/get (filename-of filename (cache-buster?)) {:with-credentials? false}))]
+            (js/console.info "status" status "body" body)
             (if (= 200 status)
               (do (src-cb {:lang lang src-key (transform body) :file filename})
                   :success)

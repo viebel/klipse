@@ -1,12 +1,11 @@
 (ns klipse.cards.test.eval
   (:require-macros 
     [cljs.core.async.macros :refer [go]]
-    [cljs.test :refer [is are async]])
+    [cljs.test :refer [deftest is are async]])
   (:require 
     [cljs.core.async :refer [<!]]
     [clojure.string :as string]
-    [klipse.lang.clojure :refer [eval result-as-str]]
-    [devcards.core :as dc :refer-macros [defcard deftest]]))
+    [klipse.lang.clojure :refer [the-eval result-as-str split-expressions]]))
 
 (defn remove-chars [s]
   (if (string? s)
@@ -25,7 +24,7 @@
   (async done
          (go
            (are [input-clj message]
-                (= :error (first (<! (eval input-clj))))
+                (= :error (first (<! (the-eval input-clj))))
                 "(+ 1 2"
                 "(a)")
            (done))))
@@ -34,7 +33,7 @@
   "eval with several expressions"
   (async done
          (go (are [input-clj output-clj]
-                  (b= (<! (eval input-clj)) [:ok output-clj])
+                  (b= (<! (the-eval input-clj)) [:ok output-clj])
                   ;       "(if (> 100 10) 1 2)" 1
                   " (def x 12)
                   (+ x 5)" 17
@@ -56,7 +55,7 @@
   "eval with macros"
   (async done
          (go (are [input-clj output-clj]
-                  (b= (<! (eval input-clj)) [:ok output-clj])
+                  (b= (<! (the-eval input-clj)) [:ok output-clj])
 
                   "(ns my.hello) 
                   (defmacro hello 
@@ -70,7 +69,7 @@
   "eval with namespaces"
   (async done
          (go (are [input-clj output-clj]
-                  (b= (eval input-clj) [:ok output-clj])
+                  (b= (the-eval input-clj) [:ok output-clj])
                   "(ns my-ns (:require [clojure.string :as string])) (string/blank? \"HELLO!!\")" false
                   "(ns my-ns (:require [replumb.core :as replumb])) (replumb/read-eval-call {} identity \"(+ 2 3)\")" '{:value "5", :warning "my-ns is a single segment namespace at line 1 ", :form (+ 2 3), :success? true})
              (done))))
@@ -79,7 +78,7 @@
   "eval with types"
   (async done
          (go (are [input-clj output-clj]
-                  (a= (str (second (<! (eval input-clj)))) output-clj)
+                  (a= (str (second (<! (the-eval input-clj)))) output-clj)
                   "(type 1)" "function Number() {[native code]}")
              (done))))
 
@@ -89,7 +88,7 @@
   "eval with functions"
   (async done
          (go (are [input-clj output-clj]
-                  (a= (str (second (<! (eval input-clj)))) output-clj)
+                  (a= (str (second (<! (the-eval input-clj)))) output-clj)
                   "(ns my.func) (defn foo [] 1)" "#'my.func/foo"
                   )
              (done))))
@@ -99,7 +98,7 @@
   "eval with vars"
   (async done
          (go (are [input-clj output-clj]
-                  (b= (str (second (<! (eval input-clj)))) output-clj)
+                  (b= (str (second (<! (the-eval input-clj)))) output-clj)
                   "(ns my.vars) (def a 1)" "#'my.vars/a"
                   "(ns my.vars) (def b 1) b" "1"
                   )
@@ -109,11 +108,19 @@
   "eval properly code that is related to ns"
   (async done
          (go (are [input-clj output-clj]
-                 (a= (second (<! (eval input-clj))) output-clj)
+                 (a= (second (<! (the-eval input-clj))) output-clj)
                "(ns my.foo) ::foo" :my.foo/foo
 
                )
              (done))))
+
+(deftest split-expressions-test
+         (are [in out]
+           (= out (split-expressions in))
+           "(+ 1 2)" ["(+ 1 2)"]
+           "(+ 1 2)    (+ 2 3)" ["(+ 1 2)" "(+ 2 3)"]
+           ":foo" [":foo"]
+           "::foo" ["::foo"]))
 
 ;;;; DISPLAY
 (deftest display-evaluation-with-errors

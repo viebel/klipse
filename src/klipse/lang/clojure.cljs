@@ -1,6 +1,6 @@
 (ns klipse.lang.clojure
   (:require-macros
-    [gadjett.core :as gadjett :refer [dbg]]
+    [gadjett.core :refer [dbg]]
     [purnam.core :refer [!]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
@@ -14,8 +14,11 @@
     [klipse.lang.clojure.include :refer [create-state-eval]]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
-    [cljs.analyzer :as ana]
+    [cljs.analyzer]
     [cljs.reader :refer [read-string]]
+    [cljs.tools.reader :as r]
+    [cljs.tools.reader.reader-types :as rt]
+    [clojure.string :as s]
     [cljs.compiler :as compiler]
     [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
     [klipse.lang.clojure.io :as io]
@@ -125,7 +128,59 @@
                        (put! c res))))
     c))
 
+(defn- read-chars
+  [reader]
+  (loop [res []]
+    (if-let [ch (rt/read-char reader)]
+      (recur (conj res ch))
+      res)))
+
+(defn reader-content [r]
+  (apply str (read-chars r)))
+
+(defn first-exp-and-rest [s]
+  (let [sentinel (js-obj)
+        reader (rt/string-push-back-reader s)
+        res (r/read reader false sentinel)]
+    (if (= sentinel res)
+      ["" ""]
+      (let [rest-s (reader-content reader)
+            first-exp (subs s 0 (- (count s) (count rest-s)))]
+        [(s/replace first-exp #"^[\s\n]*" "")
+         rest-s]))))
+
+
 (defn split-expressions [s]
+  (loop [s s res []]
+    (if (empty? s)
+      res
+      (let [[exp rest-s] (first-exp-and-rest s)]
+        (if (empty? exp)
+          (recur rest-s res)
+          (recur rest-s (conj res exp)))))))
+
+(comment
+  (js/alert 1)
+  (split-expressions "::a")
+  (first-exp-and-rest "::a")
+  (r/read (rt/string-push-back-reader "::a"))
+
+  (let [s "::aa"
+        sentinel (js-obj)
+        reader (rt/string-push-back-reader s)
+        res (r/read reader false sentinel)]
+    (if (= sentinel res)
+      ["" ""]
+      (let [rest-s (reader-content reader)
+            first-exp (subs s 0 (- (count s) (count rest-s)))]
+        [(s/replace first-exp #"^[\s\n]*" "")
+         rest-s])))
+
+  )
+
+
+
+#_(defn split-expressions [s]
   (->> (p/parse-string-all s)
        n/children
        (map n/string)
@@ -146,7 +201,7 @@
               (populate-err res opts)
               (recur (rest exps) res)))
           last-res))
-      (catch :default e
+      (catch js/Object e
         (populate-err {:error e} opts)))))
 
 (defn ns-exp?
@@ -180,17 +235,17 @@
     (-> (<! (core-eval s opts))
         (result-as-str opts))))
 
-(defn eval
+(defn the-eval
   "used for testing"
-  ([s] (eval s {}))
+  ([s] (the-eval s {}))
   ([s opts] (go (-> (<! (core-eval s opts))
                     read-result))))
 
 (defn eval-and-callback
-  "to be called from javacript"
+  "to be called from javascript"
   ^{:export true}
   [s cb]
-  (go (-> (<! (eval s))
+  (go (-> (<! (the-eval s))
           clj->js
           cb)))
 

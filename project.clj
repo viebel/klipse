@@ -1,7 +1,8 @@
 (defproject klipse "7.4.0"
   :description "Embeddable multi-language WEB REPL"
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
-                 [org.clojure/clojurescript "1.10.339"]
+                 [org.clojure/clojurescript "1.10.238"]
+                 [org.clojure/tools.reader "1.3.0"]
                  [org.clojure/core.async "0.2.395"]
                  [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]
@@ -11,7 +12,7 @@
                  [viebel/gadjett "0.5.2"]
                  [org.omcljs/om "1.0.0-alpha47"]
                  [com.cemerick/url "0.1.1"]
-                 [rewrite-cljs "0.4.3"]
+                 [rewrite-cljs "0.4.4"]
                  [cljsjs/codemirror "5.19.0-0"]
                  [devcards "0.2.2"]
                  [devcards-om-next "0.3.0"]]
@@ -23,7 +24,7 @@
                                     "resources/public/plugin/js"]
   :plugins [[lein-cljsbuild "1.1.5"]
             [lein-hiera "0.9.5"]
-            [lein-doo "0.1.6"]]
+            [lein-doo "0.1.10"]]
   :source-paths ["src" "scripts"]
   :hiera
   {:path "deps-graph.png"

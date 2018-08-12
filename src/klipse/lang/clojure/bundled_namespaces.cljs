@@ -2,7 +2,7 @@
   (:require cljs.analyzer.api
             cljs.analyzer
             cljs.env
-            clojure.spec ;; it is not required by the app
+            clojure.spec.alpha
             clojure.walk
             clojure.zip
             clojure.data

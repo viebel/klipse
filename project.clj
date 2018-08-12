@@ -1,14 +1,14 @@
 (defproject klipse "7.4.0"
   :description "Embeddable multi-language WEB REPL"
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
-                 [org.clojure/clojurescript "1.9.456"]
+                 [org.clojure/clojurescript "1.10.339"]
                  [org.clojure/core.async "0.2.395"]
                  [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]
                  [viebel/codemirror-parinfer "0.0.3"]
                  [cljsjs/markdown "0.6.0-beta1-0"]
                  [cljs-http "0.1.42"]
-                 [viebel/gadjett "0.3.4"]
+                 [viebel/gadjett "0.5.2"]
                  [org.omcljs/om "1.0.0-alpha47"]
                  [com.cemerick/url "0.1.1"]
                  [rewrite-cljs "0.4.3"]

@@ -202,12 +202,14 @@
 (defn core-eval [s opts]
   (go
     (try
-      (loop [exps (split-expressions s) last-res nil]
-        (if (seq exps)
-          (let [res (<! (core-eval-an-exp (first exps) opts))]
+      (loop [[exp rest-exps] (first-exp-and-rest s)
+             last-res nil]
+        (if (not (empty? exp))
+          (let [res (<! (core-eval-an-exp exp opts))]
             (if (:error res)
               (populate-err res opts)
-              (recur (rest exps) res)))
+              (recur (first-exp-and-rest rest-exps)
+                     res)))
           last-res))
       (catch js/Object e
         (populate-err {:error e} opts)))))

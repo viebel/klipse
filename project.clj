@@ -41,6 +41,7 @@
                                          :output-to "resources/private/test/klipse.testable.js"
                                          :output-dir "resources/private/test"
                                          :verbose false
+                                         :target :nodejs
                                          :optimizations :simple}}
                        :app {
                              :source-paths ["src/klipse/run/app"]

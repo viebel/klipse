@@ -19,6 +19,7 @@ jobs:
 
     steps:
     - checkout
+    - run: node -v
 
     # Download and cache dependencies
     - restore_cache:

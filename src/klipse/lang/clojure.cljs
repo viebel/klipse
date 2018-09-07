@@ -14,7 +14,7 @@
     [klipse.lang.clojure.include :refer [create-state-eval]]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
     [clojure.pprint :as pprint]
-    [cljs.analyzer]
+    [cljs.analyzer :as ana]
     [cljs.reader :refer [read-string]]
     [cljs.tools.reader :as r]
     [cljs.tools.reader.reader-types :as rt]
@@ -34,6 +34,12 @@
 
 (defonce ^:private current-ns (atom 'cljs.user))
 
+(defn- current-alias-map
+  []
+  (->> (merge (get-in @(create-state-eval) [::ana/namespaces @current-ns :requires])
+              (get-in @(create-state-eval) [::ana/namespaces @current-ns :require-macros]))
+       (remove (fn [[k v]] (= k v)))
+       (into {})))
 (defn display [value {:keys [print-length beautify-strings]}]
   (with-redefs [*print-length* print-length]
     (with-out-str (pprint/pprint
@@ -111,21 +117,21 @@
   (let [c (chan)
         max-eval-duration (max max-eval-duration min-max-eval-duration)]
     (with-redefs [compiler/emits (partial my-emits max-eval-duration)]
-                  ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
-      (cljs/eval-str (create-state-eval)
-                     s
-                     "my.klipse"
-                     {:eval my-eval
-                      :ns @current-ns
-                      :def-emits-var true
-                      :verbose (verbose?)
-                      :*compiler* (set! env/*compiler* (create-state-eval))
-                      :context :expr
-                      :static-fns static-fns
-                      :load (partial io/load-ns external-libs)}
-                     (fn [res]
-                       (update-current-ns res)
-                       (put! c res))))
+                 ; we have to set `env/*compiler*` because `binding` and core.async don't play well together (https://www.reddit.com/r/Clojure/comments/4wrjw5/withredefs_doesnt_play_well_with_coreasync/) and the code of `eval-str` uses `binding` of `env/*compiler*`.
+                 (cljs/eval-str (create-state-eval)
+                                s
+                                "my.klipse"
+                                {:eval my-eval
+                                 :ns @current-ns
+                                 :def-emits-var true
+                                 :verbose (verbose?)
+                                 :*compiler* (set! env/*compiler* (create-state-eval))
+                                 :context :expr
+                                 :static-fns static-fns
+                                 :load (partial io/load-ns external-libs)}
+                                (fn [res]
+                                  (update-current-ns res)
+                                  (put! c res))))
     c))
 
 (defn- read-chars
@@ -139,15 +145,17 @@
   (apply str (read-chars r)))
 
 (defn first-exp-and-rest [s]
-  (let [sentinel (js-obj)
-        reader (rt/string-push-back-reader s)
-        res (r/read reader false sentinel)]
-    (if (= sentinel res)
-      ["" ""]
-      (let [rest-s (reader-content reader)
-            first-exp (subs s 0 (- (count s) (count rest-s)))]
-        [(s/replace first-exp #"^[\s\n]*" "")
-         rest-s]))))
+  (binding [r/*alias-map* (current-alias-map)
+            *ns* @current-ns]
+    (let [sentinel (js-obj)
+          reader (rt/string-push-back-reader s)
+          res (r/read reader false sentinel)]
+      (if (= sentinel res)
+        ["" ""]
+        (let [rest-s (reader-content reader)
+              first-exp (subs s 0 (- (count s) (count rest-s)))]
+          [(s/replace first-exp #"^[\s\n]*" "")
+           rest-s])))))
 
 
 (defn split-expressions [s]
@@ -220,7 +228,7 @@
       (loop [exps (split-expressions s) all-res ""]
         (if (seq exps)
           (let [exp (first exps)
-                ;_ (when (ns-exp? exp) (<! (core-eval-an-exp exp opts)))
+                _ (when (ns-exp? exp) (<! (core-eval-an-exp exp opts)))
                 res (<! (core-compile-an-exp exp opts))]
             (if (:error res)
               res

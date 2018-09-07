@@ -1,4 +1,5 @@
 .DS_Store
+.cpcache/
 .cljs_node_repl
 .nrepl-port
 *.log

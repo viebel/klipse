@@ -34,7 +34,7 @@ jobs:
         key: v1-dependencies-{{ checksum "project.clj" }}
 
     # run tests, build
-    - run: lein do node test
+    - run: lein doo node test once
 
     # Uberjar is probably fairly unnecessary, but in the interest of
     # exercising more of CircleCI...

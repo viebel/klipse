@@ -15,16 +15,6 @@
                 :preloads '[devtools.preload]
                 :output-to "resources/public/fig/js/klipse.fig.js"
                 :output-dir "resources/public/fig/js"
-                :source-map-timestamp true }}
-    #_{:id "devcards"
-     :figwheel { :devcards true }
-     :source-paths ["src"]
-     :compiler {:main 'klipse.cards.cards
-                :asset-path "cards/js"
-                :output-to "resources/public/cards/js/klipse.js"
-                :output-dir "resources/public/cards/js"
-                :verbose false}}
-    
-    ]})
+                :source-map-timestamp true }}]})
 
 (ra/cljs-repl)

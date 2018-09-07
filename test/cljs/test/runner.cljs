@@ -1,8 +1,8 @@
 (ns test.runner
   (:require
     [doo.runner :refer-macros [doo-tests]]
-    [klipse.cards.test.eval]
-    [klipse.cards.test.compile]))
+    [klipse.eval-test]
+    [klipse.compile-test]))
 
-(doo-tests 'klipse.cards.test.eval
-           'klipse.cards.test.compile)
+(doo-tests 'klipse.eval-test
+           'klipse.compile-test)

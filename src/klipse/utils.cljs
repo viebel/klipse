@@ -12,7 +12,8 @@
 
 
 (defn current-url []
-  (url (aget js/location "href")))
+  (if-let [loc (js* "typeof(location) === 'undefined' ? '' : loc;")]
+    (url (aget loc "href"))))
 
 (defn url-parameters* []
   (-> (current-url)
@@ -180,9 +181,10 @@
   (boolean (read-string (or (:verbose (url-parameters)) "false"))))
 
 (defn klipse-settings* []
-  (->
-   (aget js/window "klipse_settings")
-   (js->clj :keywordize-keys true)))
+  (let [w (js* "typeof(window) === 'undefined' ? {} : window;")]
+    (->
+      (aget w "klipse_settings")
+      (js->clj :keywordize-keys true))))
 
 (def klipse-settings (memoize klipse-settings*))
 

@@ -12,10 +12,7 @@
                  [viebel/gadjett "0.5.2"]
                  [org.omcljs/om "1.0.0-alpha47"]
                  [com.cemerick/url "0.1.1"]
-                 [rewrite-cljs "0.4.4"]
-                 [cljsjs/codemirror "5.19.0-0"]
-                 [devcards "0.2.2"]
-                 [devcards-om-next "0.3.0"]]
+                 [cljsjs/codemirror "5.19.0-0"]]
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.9"]
                                   [com.cemerick/piggieback "0.2.1"]] }}
   :jvm-opts ["-Xms356M" "-Xmx1G"]
@@ -31,18 +28,17 @@
    :vertical true
    :show-external false
    :cluster-depth 2
-   :trim-ns-prefix true
-   :ignore-ns #{cache.build klipse.cards}}
+   :trim-ns-prefix true}
   :cljsbuild {
               :builds {
                        :test {
-                              :source-paths ["test" "src/klipse/cards/test"]
+                              :source-paths ["src" "test/cljs"]
                               :compiler {
                                          :output-to "resources/private/test/klipse.testable.js"
-                                         :output-dir "resources/private/test"
                                          :verbose false
                                          :target :nodejs
-                                         :optimizations :simple}}
+                                         :main test.runner
+                                         :optimizations :none}}
                        :app {
                              :source-paths ["src/klipse/run/app"]
                              :compiler {
@@ -110,14 +106,4 @@
                                              :output-dir "resources/public/fig/js"
                                              :infer-externs true
                                         ;:elide-asserts true
-                                             :verbose false}}
-                       :devcards {
-                                  :figwheel { :devcards true }
-                                  :source-paths ["src"]
-                                  :compiler {:main "klipse.cards.cards"
-                                             :asset-path "cards/js"
-                                             :output-to "resources/public/cards/js/klipse.js"
-                                             :output-dir "resources/public/cards/js"
-                                        ;:elide-asserts true
-                                             :verbose false}}
-                       }})
+                                             :verbose false}}}})

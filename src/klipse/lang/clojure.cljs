@@ -8,8 +8,6 @@
     gadjett.core-fn
     [goog.dom :as gdom]
     [klipse.utils :refer [url-parameters verbose? setup-container!]]
-    [rewrite-clj.node :as n]
-    [rewrite-clj.parser :as p]
     [clojure.string :refer [blank?]]
     [klipse.lang.clojure.include :refer [create-state-eval]]
     [klipse.lang.clojure.guard :refer [min-max-eval-duration my-emits watchdog]]
@@ -29,7 +27,7 @@
 ;; create cljs.user
 ;(set! (.. js/window -cljs -user) #js {})
 ; the following code is advanced compilation friendly
-(js* "window.cljs.user = {}")
+(js* "if(typeof window !== \"undefined\") {window.cljs.user = {}}")
 
 
 (defonce ^:private current-ns (atom 'cljs.user))
@@ -185,14 +183,6 @@
          rest-s])))
 
   )
-
-
-
-#_(defn split-expressions [s]
-  (->> (p/parse-string-all s)
-       n/children
-       (map n/string)
-       (remove (partial re-matches #"\s*"))))
 
 (defn populate-err [res {:keys [result-element container]}]
   (when (and container (not result-element))

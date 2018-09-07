@@ -8,7 +8,7 @@ jobs:
     docker:
     # specify the version you desire here
     - image: circleci/clojure:lein-2.7.1
-    - image: circleci/node
+    - image: circleci/node:10.9.0
 
     working_directory: ~/klipse
 

@@ -9,7 +9,7 @@ jobs:
     environment:
       LEIN_ROOT: "true"
       JVM_OPTS: -Xmx3200m
-      steps:
+    steps:
         - checkout
         - restore_cache:
           keys:

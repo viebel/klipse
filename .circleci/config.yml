@@ -1,5 +1,26 @@
 version: 2
 jobs:
   build:
-    steps:
-      - run: lein doo node test once
+    docker:
+      - image: circleci/clojure:lein-2.7.1
+
+    working_directory: ~/klipse
+
+    environment:
+      LEIN_ROOT: "true"
+      JVM_OPTS: -Xmx3200m
+      steps:
+        - checkout
+        - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "project.clj" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+        - run: lein deps
+
+        - save_cache:
+          paths:
+           - ~/.m2
+          key: v1-dependencies-{{ checksum "project.clj" }}
+        - run: lein doo node test once

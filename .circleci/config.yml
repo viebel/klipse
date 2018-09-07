@@ -1,26 +1,43 @@
+# Clojure CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-clojure/ for more details
+#
 version: 2
 jobs:
   build:
     docker:
-      - image: circleci/clojure:lein-2.7.1
+    # specify the version you desire here
+    - image: circleci/clojure:lein-2.7.1
 
     working_directory: ~/klipse
 
     environment:
       LEIN_ROOT: "true"
+      # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
+
     steps:
-        - checkout
-        - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "project.clj" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+    - checkout
 
-        - run: lein deps
+    # Download and cache dependencies
+    - restore_cache:
+        keys:
+        - v1-dependencies-{{ checksum "project.clj" }}
+        # fallback to using the latest cache if no exact match is found
+        - v1-dependencies-
 
-        - save_cache:
-          paths:
-           - ~/.m2
-          key: v1-dependencies-{{ checksum "project.clj" }}
-        - run: lein doo node test once
+    - run: lein deps
+
+    - save_cache:
+        paths:
+        - ~/.m2
+        key: v1-dependencies-{{ checksum "project.clj" }}
+
+    # run tests, build
+    - run: lein do node test
+
+    # Uberjar is probably fairly unnecessary, but in the interest of
+    # exercising more of CircleCI...
+    - store_artifacts:
+        path: target/uberjar/cci-demo-clojure.jar
+        destination: uberjar

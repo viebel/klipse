@@ -7,10 +7,14 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-<div class="clojure">
-  (require '[clojure.spec :as s]
-  '[clojure.spec.test :as stest]
-  '[clojure.spec.impl.gen :as gen])
+    <div class="clojure">
+        (require '[clojure.spec.alpha :as s])
+    </div>
+
+    <div class="klojure">
+  (require '[clojure.spec.alpha :as s]
+  '[clojure.spec.alpha.test :as stest]
+  '[clojure.spec.alpha.impl.gen :as gen])
   (stest/instrument `map)
 </div>
 <br/>
@@ -44,16 +48,13 @@
 <br/>
 <br/>
        <script>
-         window.klipse_settings = {
-	   codemirror_options_in: {
-                lineWrapping: true,
-                autoCloseBrackets: true
-            },
-            codemirror_options_out: {
-                lineWrapping: true
-            },
-          selector: '.clojure',
-        };
+        window.klipse_settings = {
+      selector: '.clojure',
+      //clojure_cached_macro_ns_regexp: /.*/,
+      //clojure_cached_ns_regexp: /.*/,
+      //	codemirror_root: "http:/dsadsa/",
+      cached_ns_root: "http://localhost:9990/docs/cache-cljs",
+      };
         </script>
         <script src="/fig/js/klipse.fig.js"></script>
     </body>

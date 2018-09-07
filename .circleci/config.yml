@@ -8,6 +8,7 @@ jobs:
     docker:
     # specify the version you desire here
     - image: circleci/clojure:lein-2.7.1
+    - image: circleci/node
 
     working_directory: ~/klipse
 
@@ -35,9 +36,3 @@ jobs:
 
     # run tests, build
     - run: lein doo node test once
-
-    # Uberjar is probably fairly unnecessary, but in the interest of
-    # exercising more of CircleCI...
-    - store_artifacts:
-        path: target/uberjar/cci-demo-clojure.jar
-        destination: uberjar

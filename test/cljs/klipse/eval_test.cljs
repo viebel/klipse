@@ -13,7 +13,7 @@
     (string/replace s #"\n|\s" "")
     s))
 
-(use-fixtures :each
+#_(use-fixtures :each
               {:before (fn [] (reset-state-eval!))})
 
 (defn a= [& args]
@@ -23,6 +23,9 @@
   (and (= status-a status-b)
        (a= a b)))
 
+(deftest foo
+  (async done
+    (js/setTimeout (fn [] (is false) (done)) 100)))
 
 (deftest test-eval-error
   "eval with expected failures"

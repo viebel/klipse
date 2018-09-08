@@ -1,11 +1,11 @@
 (ns klipse.compile-test
-  (:require-macros 
-   [cljs.core.async.macros :refer [go]]
-   [cljs.test :refer [is are async deftest]])
+  (:require-macros
+    [cljs.core.async.macros :refer [go]])
   (:require
-   [cljs.core.async :refer [<!]]
-   [clojure.string :as string]
-   [klipse.lang.clojure :refer [str-compile]]))
+    [cljs.test :refer [is are async deftest]]
+    [cljs.core.async :refer [<!]]
+    [clojure.string :as string]
+    [klipse.lang.clojure :refer [str-compile]]))
 
 
 (defn remove-chars [s]
@@ -22,7 +22,6 @@
   "compile with success"
   (async done
          (go
-           (println "aaa" (<! (str-compile "(+ 1 2)")))
            (are [input output]
                (a= (second (<! (str-compile input))) output)
                "(ns my-project.my-ns) (def x 1) (def y 2)" "goog.provide(\"my_project.my_ns\");my_project.my_ns.x = (1); my_project.my_ns.y = (2);"

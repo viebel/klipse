@@ -2,7 +2,16 @@
   (:require
    [cljs.js :as cljs]))
 
-(defonce create-state-eval (memoize cljs/empty-state))
+
+(def st (atom nil))
+(defn create-state-eval []
+  (if @st
+    @st
+    (do (reset! st (cljs/empty-state))
+        st)))
+
+(defn reset-state-eval! []
+  (reset! st nil))
 
 
 (defn eval-form

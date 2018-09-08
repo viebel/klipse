@@ -3,7 +3,7 @@
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  [org.clojure/clojurescript "1.10.238"]
                  [org.clojure/tools.reader "1.3.0"]
-                 [org.clojure/core.async "0.2.395"]
+                 [org.clojure/core.async "0.4.474"]
                  [binaryage/devtools "0.8.2"]
                  [im.chit/purnam "0.5.2"]
                  [viebel/codemirror-parinfer "0.0.3"]
@@ -18,7 +18,8 @@
   :jvm-opts ["-Xms356M" "-Xmx1G"]
   :clean-targets ^{:protect false} ["resources/public/dev/js"
                                     "resources/public/plugin_prod/js"
-                                    "resources/public/plugin/js"]
+                                    "resources/public/plugin/js"
+                                    "resources/private"]
   :plugins [[lein-cljsbuild "1.1.5"]
             [lein-hiera "0.9.5"]
             [lein-doo "0.1.10"]]

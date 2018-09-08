@@ -1,7 +1,6 @@
 (ns klipse.eval_special_test
-  (:require-macros 
-    [cljs.test :refer [is are deftest]])
-  (:require 
+  (:require
+    [cljs.test :refer [is are deftest]]
     [clojure.string :as string]
     [klipse.lang.clojure :refer [the-eval str-compile]]))
 

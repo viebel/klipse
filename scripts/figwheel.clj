@@ -9,7 +9,7 @@
    :all-builds
    [{:id "figwheel"
      :figwheel true
-     :source-paths ["src"]
+     :source-paths ["src" "lib"]
      :compiler {:main 'klipse.run.all
                 :asset-path "fig/js"
                 :preloads '[devtools.preload]

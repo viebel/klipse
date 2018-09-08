@@ -33,7 +33,7 @@
   :cljsbuild {
               :builds {
                        :test {
-                              :source-paths ["src" "test/cljs"]
+                              :source-paths ["lib" "test/cljs"]
                               :compiler {
                                          :output-to "resources/private/test/klipse.testable.js"
                                          :verbose false
@@ -41,7 +41,7 @@
                                          :main test.runner
                                          :optimizations :none}}
                        :app {
-                             :source-paths ["src/klipse/run/app"]
+                             :source-paths ["lib" "src/klipse/run/app"]
                              :compiler {
                                         :output-to "resources/public/dev/js/klipse.js"
                                         :output-dir "resources/public/dev/js"
@@ -56,7 +56,7 @@
                                         :optimizations :simple
                                         :verbose false}}
                        :plugin {
-                                :source-paths ["src/klipse/run/plugin"]
+                                :source-paths ["lib" "src/klipse/run/plugin"]
                                 :compiler {
                                            :output-to "resources/public/plugin/js/klipse_plugin.js"
                                            :output-dir "resources/public/plugin/js"
@@ -71,7 +71,7 @@
                                            :optimizations :simple
                                            :verbose false}}
                        :plugin-prod {
-                                     :source-paths ["src/klipse/run/plugin_prod"]
+                                     :source-paths ["lib" "src/klipse/run/plugin_prod"]
                                      :compiler {
                                                 :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
                                                 :output-dir "resources/public/plugin_prod/js"
@@ -85,7 +85,7 @@
                                                 :verbose true}}
                        ;:plugin-prod-nice
                        #_{
-                        :source-paths ["src/klipse/run/plugin_prod"]
+                        :source-paths ["lib" "src/klipse/run/plugin_prod"]
                         :compiler {
                                    :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
                                    :output-dir "resources/public/plugin_prod/js"
@@ -100,7 +100,7 @@
                                    :verbose true}}
                        :figwheel {
                                   :figwheel true
-                                  :source-paths ["src"]
+                                  :source-paths ["lib" "src"]
                                   :compiler {:main "klipse.run.all"
                                              :asset-path "fig/js"
                                              :output-to "resources/public/fig/js/klipse.fig.js"

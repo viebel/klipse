@@ -23,7 +23,7 @@
   :plugins [[lein-cljsbuild "1.1.5"]
             [lein-hiera "0.9.5"]
             [lein-doo "0.1.10"]]
-  :source-paths ["src" "scripts"]
+  :source-paths ["scripts"]
   :hiera
   {:path "deps-graph.png"
    :vertical true

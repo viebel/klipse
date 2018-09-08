@@ -5,7 +5,7 @@
     [cljs.test :refer [is are async deftest]]
     [cljs.core.async :refer [<!]]
     [clojure.string :as string]
-    [klipse.lang.clojure :refer [str-compile]]))
+    [klipse-clj.lang.clojure :refer [str-compile]]))
 
 
 (defn remove-chars [s]

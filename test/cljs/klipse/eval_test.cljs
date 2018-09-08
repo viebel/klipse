@@ -3,10 +3,10 @@
     [cljs.core.async.macros :refer [go]])
   (:require
     [cljs.test :refer [deftest is are async use-fixtures]]
-    [klipse.lang.clojure.include :refer [reset-state-eval!]]
+    [klipse-clj.lang.clojure.include :refer [reset-state-eval!]]
     [cljs.core.async :refer [<!]]
     [clojure.string :as string]
-    [klipse.lang.clojure :refer [the-eval result-as-str split-expressions]]))
+    [klipse-clj.lang.clojure :refer [the-eval result-as-str split-expressions]]))
 
 (defn remove-chars [s]
   (if (string? s)
@@ -23,9 +23,6 @@
   (and (= status-a status-b)
        (a= a b)))
 
-(deftest foo
-  (async done
-    (js/setTimeout (fn [] (is false) (done)) 100)))
 
 (deftest test-eval-error
   "eval with expected failures"

@@ -2,7 +2,7 @@
   (:require
     [cljs.test :refer [is are deftest]]
     [clojure.string :as string]
-    [klipse.lang.clojure :refer [the-eval str-compile]]))
+    [klipse-clj.lang.clojure :refer [the-eval str-compile]]))
 
 (defn remove-chars [s]
   (string/replace s #"\n|\s" ""))

@@ -12,6 +12,7 @@
                  [viebel/re-frame "0.9.3-SNAPSHOT"]
                  [viebel/http-fx "0.1.4-SNAPSHOT"]
                  [com.andrewmcveigh/cljs-time "0.5.0"]
+                 [org.clojure/test.check "0.10.0-alpha3"]
                  ;[org.clojure/core.match "0.3.0-self-host"]
                  [viebel/reagent "0.6.2"]
                  [viebel/poppea "0.2.1"]

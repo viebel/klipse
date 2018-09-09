@@ -11,22 +11,24 @@
         (require '[clojure.spec.alpha :as s])
     </div>
 
-    <div class="klojure">
+    <div class="clojure">
   (require '[clojure.spec.alpha :as s]
-  '[clojure.spec.alpha.test :as stest]
-  '[clojure.spec.alpha.impl.gen :as gen])
-  (stest/instrument `map)
+  '[clojure.spec.test.alpha :as stest]
+  '[clojure.spec.gen.alpha :as gen])
 </div>
 <br/>
 <div class="clojure">
   (s/def ::x integer?)
   </div>
 <br/>
+    <div class="clojure">
+        (stest/instrument `map)
+    </div>
 <div class="clojure">
   (defn foo [x] x)
     (s/fdef foo :args (s/cat :x ::x)
   :ret string?)
-    (-> (s/get-spec `foo) :args s/describe)
+    (s/describe (s/get-spec `foo))
 </div>
 <br/>
 <div class="clojure">
@@ -56,6 +58,7 @@
       cached_ns_root: "http://localhost:9990/docs/cache-cljs",
       };
         </script>
-        <script src="/fig/js/klipse.fig.js"></script>
+    <script src="/cljs-out/dev-main.js"></script>
+
     </body>
 </html>

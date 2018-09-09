@@ -20,3 +20,4 @@ docs/cache-cljs/local-m2/
 .idea/
 *.iml
 out/
+.rebel_readline_history

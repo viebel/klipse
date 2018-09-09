@@ -1,8 +1,9 @@
 (ns klipse.lang.clojure
-  (:require [klipse-clj.lang.clojure :refer [str-eval-sync str-compile-sync]]
-            [klipse-clj.lang.clojure/io :refer [*klipse-settings* *verbose?* *cache-buster?*]]
+  (:require [klipse-clj.lang.clojure :refer [str-eval-async str-compile-async]]
+            [klipse-clj.lang.clojure.io :refer [*klipse-settings* *verbose?* *cache-buster?*]]
+            [cljs.reader :refer [read-string]]
             [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
-            [klipse.utils :refer [url-parameters verbose? klipse-settings]]))
+            [klipse.utils :refer [url-parameters verbose? klipse-settings setup-container!]]))
 
 
 (set! *klipse-settings* (klipse-settings))
@@ -11,7 +12,7 @@
 
 (def eval-opts {:editor-in-mode   "clojure"
                 :editor-out-mode  "clojure"
-                :eval-fn          (fn [exp opts] (str-eval-async exp (assoc opts :setup-container-fn setup-container-fn! :verbose (verbose?))))
+                :eval-fn          (fn [exp opts] (str-eval-async exp (assoc opts :setup-container-fn setup-container! :verbose (verbose?))))
                 :external-scripts [(codemirror-mode-src "clojure")]
                 :comment-str      ";"})
 

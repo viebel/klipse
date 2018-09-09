@@ -54,7 +54,7 @@
       (catch :default e
         (put! c (str e))))))
 
-(defn eval [src opts]
+(defn the-eval [src opts]
   (go
     (<! (ensure-loaded!))
     (<!  (eval* src opts))))
@@ -62,9 +62,9 @@
 
 (def opts {:editor-in-mode "text/x-lua"
            :editor-out-mode "text"
-           :eval-fn eval
+           :eval-fn the-eval
            :external-scripts [(codemirror-mode-src "lua") ]
            :comment-str "--"})
 
-(register-mode "lua" "selector_lua" opts)
+(register-mode   "lua" "selector_lua" opts)
 

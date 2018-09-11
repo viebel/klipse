@@ -12,7 +12,7 @@
            org.omcljs/om              {:mvn/version "1.0.0-alpha47"}
            com.cemerick/url           {:mvn/version "0.1.1"}
            cljsjs/codemirror          {:mvn/version "5.19.0-0"}}
- :aliases {:test     {:extra-paths ["test]"]}
+ :aliases {:test     {:extra-paths ["test"]}
            :figwheel {:extra-deps {com.bhauman/figwheel-main       {:mvn/version "0.1.9"}
                                    com.bhauman/rebel-readline-cljs {:mvn/version "0.1.4"}}
                       :main-opts  ["-m" "figwheel.main"]}}}

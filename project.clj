@@ -1,8 +1,7 @@
 (defproject klipse "7.5.0"
   :description "Embeddable multi-language WEB REPL"
   :resource-paths ["scripts" "src" "resources" "target"]
-  :clean-targets ^{:protect false} ["resources/public/dev/js"
-                                    "resources/public/plugin_prod/js"
+  :clean-targets ^{:protect false} ["resources/public/plugin_prod/js"
                                     "resources/public/plugin/js"]
   :min-lein-version "2.8.1"
   :middleware [lein-tools-deps.plugin/resolve-dependencies-with-deps-edn]

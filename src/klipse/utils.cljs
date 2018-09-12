@@ -1,7 +1,7 @@
 (ns klipse.utils
   (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
-   [klipse.macros :refer [dbg]]
+   [gadjett.core :refer [dbg]]
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [cljs.reader :refer [read-string]]

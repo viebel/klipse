@@ -1,7 +1,6 @@
 (ns klipse.control.parser
   (:require-macros
-   [klipse.macros :refer [dbg]]
-   [gadjett.core :as gadjett :refer [deftrack]]
+   [gadjett.core :as gadjett :refer [deftrack dbg]]
    [cljs.core.async.macros :refer [go]])
   (:require 
    gadjett.core-fn

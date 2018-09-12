@@ -30,15 +30,15 @@ Insert your code in the top left area.
 Press Ctrl-Enter to evaluate.
 
 
-## Run Locally: figwheel + devcards
+## Run Locally: figwheel 
 
 ```bash
-rlwrap lein run -m clojure.main scripts/figwheel.clj
+clj -A:figwheel --build dev --repl
 ```
 
 For the app, open the browser [http://localhost:5014/index-dbg.html](http://localhost:5014/index-dbg.html)
 
-For the plugin, open a test page e.g. http://localhost:5014/js-dbg.html
+For the plugin, open a test page e.g. http://localhost:5014/clojure-dbg.html
 
  
 ## Tutorial

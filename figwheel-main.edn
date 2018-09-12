@@ -1,0 +1,2 @@
+{:ring-server-options {:port 5014}
+ :load-warninged-code true}

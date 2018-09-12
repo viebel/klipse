@@ -7,22 +7,28 @@
         <link rel="stylesheet" type="text/css" href="css/codemirror.css">
     </head>
     <body>
-<div class="clojure">
-  (require '[clojure.spec :as s]
-  '[clojure.spec.test :as stest]
-  '[clojure.spec.impl.gen :as gen])
-  (stest/instrument `map)
+    <div class="clojure">
+        (require '[clojure.spec.alpha :as s])
+    </div>
+
+    <div class="clojure">
+  (require '[clojure.spec.alpha :as s]
+  '[clojure.spec.test.alpha :as stest]
+  '[clojure.spec.gen.alpha :as gen])
 </div>
 <br/>
 <div class="clojure">
   (s/def ::x integer?)
   </div>
 <br/>
+    <div class="clojure">
+        (stest/instrument `map)
+    </div>
 <div class="clojure">
   (defn foo [x] x)
     (s/fdef foo :args (s/cat :x ::x)
   :ret string?)
-    (-> (s/get-spec `foo) :args s/describe)
+    (s/describe (s/get-spec `foo))
 </div>
 <br/>
 <div class="clojure">
@@ -44,17 +50,15 @@
 <br/>
 <br/>
        <script>
-         window.klipse_settings = {
-	   codemirror_options_in: {
-                lineWrapping: true,
-                autoCloseBrackets: true
-            },
-            codemirror_options_out: {
-                lineWrapping: true
-            },
-          selector: '.clojure',
-        };
+        window.klipse_settings = {
+      selector: '.clojure',
+      //clojure_cached_macro_ns_regexp: /.*/,
+      //clojure_cached_ns_regexp: /.*/,
+      //	codemirror_root: "http:/dsadsa/",
+      cached_ns_root: "http://localhost:9990/docs/cache-cljs",
+      };
         </script>
-        <script src="/fig/js/klipse.fig.js"></script>
+    <script src="/cljs-out/dev-main.js"></script>
+
     </body>
 </html>

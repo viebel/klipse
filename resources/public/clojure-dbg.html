@@ -17,6 +17,23 @@
     </div>
     <br/>
     <div class="clojure">
+        (def x ::foo)
+        x
+    </div>
+    <div class="clojure">
+        (require '[clojure.set :as sss])
+    </div>
+    <div class="clojure">
+        (def x ::sss/foo)
+        x
+    </div>
+    <div class="clojure">
+    (ns foo.core
+    (:require [clojure.set :as ppp]))
+        (def a ::ppp/koko)
+        a
+    </div>
+    <div class="clojure">
       (def y 1)
       (+ y y)
     </div>
@@ -132,6 +149,6 @@
       }
 
     </script>
-    <script src="/fig/js/klipse.fig.js"></script>
+    <script src="/cljs-out/dev-main.js"></script>
   </body>
 </html>

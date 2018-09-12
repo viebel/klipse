@@ -1,2 +1,3 @@
 {:ring-server-options {:port 5014}
+ :open-url "http://localhost:5014/clojure-dbg.html"
  :load-warninged-code true}

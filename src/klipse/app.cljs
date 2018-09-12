@@ -1,6 +1,6 @@
 (ns klipse.app
   (:require-macros
-    [klipse.macros :refer [dbg]]
+    [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go]])
   (:require 
     [om.next :as om]

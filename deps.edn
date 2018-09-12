@@ -9,7 +9,7 @@
            viebel/codemirror-parinfer {:mvn/version "0.0.3"}
            cljsjs/markdown            {:mvn/version "0.6.0-beta1-0"}
            cljs-http                  {:mvn/version "0.1.42"}
-           viebel/gadjett             {:mvn/version "0.5.2"}
+           viebel/gadjett             {:mvn/version "0.5.4"}
            org.omcljs/om              {:mvn/version "1.0.0-alpha47"}
            com.cemerick/url           {:mvn/version "0.1.1"}
            cljsjs/codemirror          {:mvn/version "5.19.0-0"}}

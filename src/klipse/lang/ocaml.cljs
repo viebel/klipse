@@ -1,7 +1,6 @@
 (ns klipse.lang.ocaml
   (:require-macros
-   [gadjett.core :refer [dbg]]
-   [klipse.macros :refer [my-with-redefs]]
+   [gadjett.core :refer [dbg my-with-redefs]]
    [purnam.core :refer [!>]]
    [cljs.core.async.macros :refer [go]])
   (:require

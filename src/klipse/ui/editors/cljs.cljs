@@ -1,7 +1,7 @@
 (ns klipse.ui.editors.cljs
   (:require-macros
    [cljs.core.async.macros :refer [go]]
-   [klipse.macros :refer [dbg]])
+   [gadjett.core :refer [dbg]])
   (:require
    [cljs.core.async :refer [<!]]
    [cljs.reader :refer [read-string]]

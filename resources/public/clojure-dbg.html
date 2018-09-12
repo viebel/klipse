@@ -21,9 +21,6 @@
         x
     </div>
     <div class="clojure">
-        (require '[clojure.set :as sss])
-    </div>
-    <div class="clojure">
         (def x ::sss/foo)
         x
     </div>
@@ -99,33 +96,7 @@
       `(let [x# 1] x#)
     </div>
     <br/>
-    <div class="clojure">
-      (ns my.ns 
-      (:require [clojure.set :as ss]))
-
-      (str ::ss/xx)
-    </div>
     <br/>
-    <div class="clojure">
-      (require '[clojure.spec :as s]
-         '[clojure.spec.test :as stest]
-         '[clojure.spec.impl.gen :as gen])
-(stest/instrument `map)
-(defn foo [x] x)
-(s/fdef foo :args (s/cat :x integer?)
-        :ret string?)
-(stest/instrument `foo)
-(foo 1)  
-      </div>
-    <div class="clojure">
-      (ns my.moo$macros)
-      (defmacro dbg[x]
-      `(let [x# ~x]
-      (println (str '~x ": " x#))
-      x#))
-      (with-out-str
-      (my.moo/dbg (map inc [1 2 3])))
-    </div>
     <br/>
     <div class="clojure">
       (ns my.test

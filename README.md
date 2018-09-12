@@ -1,4 +1,4 @@
-# KLIPSE [![Circle CI](https://circleci.com/gh/viebel/klipse/tree/master.svg?style=svg)](https://circleci.com/gh/viebel/klipse/tree/master) [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/klipse-67458228-ba92-4d52-9511-bfde20964896) [![npm version](https://badge.fury.io/js/klipse.svg)](https://badge.fury.io/js/klipse)
+# KLIPSE 
 
 KLIPSE is a simple client-side code evaluator pluggable on any web page.
 

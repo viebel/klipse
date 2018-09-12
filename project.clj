@@ -15,23 +15,7 @@
           :show-external false
           :cluster-depth 2
           :trim-ns-prefix true}
-  :cljsbuild {:builds {:app {
-                             :source-paths ["src/klipse/run/app"]
-                             :compiler {
-                                        :output-to "resources/public/dev/js/klipse.js"
-                                        :output-dir "resources/public/dev/js"
-                                        :pretty-print true
-                                        :optimize-constants true
-                                        :static-fns true
-                                        ;:elide-asserts true
-                                        :closure-defines {klipse.core/version
-                                                          ~(->> (slurp "project.clj")
-                                                             (re-seq #"\".*\"")
-                                                             (first))}
-                                        :optimizations :simple
-                                        :verbose false}}
-                       :plugin {
-                                :source-paths ["src/klipse/run/plugin"]
+  :cljsbuild {:builds {:plugin {:source-paths ["src/klipse/run/plugin"]
                                 :compiler {
                                            :output-to "resources/public/plugin/js/klipse_plugin.js"
                                            :output-dir "resources/public/plugin/js"

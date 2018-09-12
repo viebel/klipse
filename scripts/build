@@ -1,5 +1,5 @@
 lein clean
-lein cljsbuild once plugin app plugin-prod
+lein cljsbuild once plugin plugin-prod
 ./scripts/add_license resources/public/plugin_prod/js/klipse_plugin.min.js
 ./scripts/add_license resources/public/plugin/js/klipse_plugin.js
 

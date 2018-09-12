@@ -1,8 +1,7 @@
 (defproject klipse "7.5.0"
   :description "Embeddable multi-language WEB REPL"
   :resource-paths ["scripts" "src" "resources" "target"]
-  :clean-targets ^{:protect false} ["resources/public/dev/js"
-                                    "resources/public/plugin_prod/js"
+  :clean-targets ^{:protect false} ["resources/public/plugin_prod/js"
                                     "resources/public/plugin/js"]
   :min-lein-version "2.8.1"
   :middleware [lein-tools-deps.plugin/resolve-dependencies-with-deps-edn]
@@ -15,23 +14,7 @@
           :show-external false
           :cluster-depth 2
           :trim-ns-prefix true}
-  :cljsbuild {:builds {:app {
-                             :source-paths ["src/klipse/run/app"]
-                             :compiler {
-                                        :output-to "resources/public/dev/js/klipse.js"
-                                        :output-dir "resources/public/dev/js"
-                                        :pretty-print true
-                                        :optimize-constants true
-                                        :static-fns true
-                                        ;:elide-asserts true
-                                        :closure-defines {klipse.core/version
-                                                          ~(->> (slurp "project.clj")
-                                                             (re-seq #"\".*\"")
-                                                             (first))}
-                                        :optimizations :simple
-                                        :verbose false}}
-                       :plugin {
-                                :source-paths ["src/klipse/run/plugin"]
+  :cljsbuild {:builds {:plugin {:source-paths ["src/klipse/run/plugin"]
                                 :compiler {
                                            :output-to "resources/public/plugin/js/klipse_plugin.js"
                                            :output-dir "resources/public/plugin/js"

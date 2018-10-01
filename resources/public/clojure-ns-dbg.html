@@ -8,22 +8,9 @@
   </head>
   <body>
     <div class="clojure">
-      (doc map)
-      (if 1 2 3)
-    </div>
-    <br/>
-    <div class="clojure">
-      (def x 1)
-      (dbg x)
-    </div>
-    <br/>
-    <div class="clojure">
-        (def x ::foo)
-        x
-    </div>
-    <div class="clojure">
-    (require '[clojure.set :as ppp]))
-    (def a ::ppp/koko)
+    (ns foo.core
+    (:require [clojure.set :as ppp]))
+        (def a ::ppp/koko)
         a
     </div>
     <div class="clojure">
@@ -36,9 +23,41 @@
     </div>
     <br/>
     <div class="clojure">
+      (ns my.m$macros)
+      (defmacro m [x] x)
+      (my.m/m 1)
+    </div>
+    <br/>
+    <div class="clojure">
       `(let [x# 1] x#)
     </div>
     <br/>
+    <div class="clojure">
+      (ns my.ns 
+      (:require [clojure.set :as ss]))
+    </div>
+    <div class="clojure">
+      (ns my.ns
+      (:refer-clojure :exclude [distinct group-by update])
+      (:require clojure.string
+      [sqlingvo.core :as sql :refer [sql db select from]]))
+
+
+      (def my-db (db :postgresql))
+
+      (sql (select my-db [:first-name]
+      (from :people)))
+    </div>
+    <br/>
+
+
+
+    <div class="clojure">
+      (require-macros '[gadjett.core :refer [dbg]])
+      (dbg (map inc [1 2 3]))
+    </div>
+    <br/>
+
 
     <div class="clojure">
       (require 'goog.dom)
@@ -51,10 +70,23 @@
     </div>
     <br/>
     <div class="clojure">
+      (ns my.m$macros)
+      (defmacro m [x] x)
+      (my.m/m 1)
+    </div>
+    <br/>
+    <div class="clojure">
       `(let [x# 1] x#)
     </div>
     <br/>
     <br/>
+    <br/>
+    <div class="clojure">
+      (ns my.test
+      (:require
+      [cljs.pprint :as pp :refer [pprint]]))
+      (with-out-str (pprint (for [x (range 10)] (range x))))
+    </div>
     <br/>
     <div class="clojure">
       `(1 2 ~(map inc [1 2 3]))

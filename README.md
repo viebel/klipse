@@ -33,7 +33,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 
 - javascript: evaluation is done with the javascript function `eval` and pretty printing of the result is done with [pretty-format](https://github.com/thejameskyle/pretty-format)
 - clojure[script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
-- ruby: evaluation is done with [Opal](http://opalrb.org/)
+- ruby: evaluation is done with [Opal](http://opalrb.com/)
 - C++: evaluation is done with [JSCPP](https://github.com/felixhao28/JSCPP)
 - python: evaluation is done with [Skulpt](http://www.skulpt.org/)
 - scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)

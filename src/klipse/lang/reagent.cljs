@@ -3,11 +3,10 @@
    [gadjett.core :as gadjett :refer [dbg]])
   (:require
    [goog.dom :as gdom]
-   [cljs.reader :refer [read-string]]
    [clojure.string :as string]
    [cljs.core.async :refer [chan close!]]
    [klipse.common.registry :refer [codemirror-mode-src register-mode]]
-   [klipse-clj.lang.clojure :refer [str-eval-async split-expressions]]))
+   [klipse-clj.lang.clojure :refer [str-eval-async split-expressions read-string]]))
 
 
 (defn eval-reagent [src {:keys [container-id container] :as opts}]

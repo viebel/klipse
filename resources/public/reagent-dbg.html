@@ -36,6 +36,10 @@
        [:p "hello " txt])
     [foo "Foo Bar"]
 </code></pre>
+<pre><code class="reagent">
+    (defn hello [name]
+  [:p (str "Hello " @(atom 1) "!")])
+</code></pre>
 
 <pre><code class="reagent">
 (def c (r/atom 1))

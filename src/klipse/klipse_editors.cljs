@@ -6,11 +6,12 @@
   (:require
    [goog.dom :as gdom]
    [cljs.spec.alpha :as s]
+   [klipse-clj.lang.clojure :refer [completions]]
    [klipse.utils :refer [verbose?]]
    [klipse.dom-utils :refer [create-div-after value add-event-listener]]
    [cljs.core.async :refer [put! <! chan timeout alts!]]
    [klipse.ui.editors.common :refer [handle-events]]
-   [klipse.ui.editors.editor :refer [create-editor-after-element replace-element-by-editor set-value-and-beautify get-selection-when-selected]]))
+   [klipse.ui.editors.editor :refer [trigger-autocomplete current-token create-editor-after-element replace-element-by-editor set-value-and-beautify get-selection-when-selected]]))
 
 (defn create-state [& {:keys [result-element container editor-args]}]
   (atom {:eval-counter 0
@@ -155,6 +156,7 @@
         state (create-state :container container :result-element result-element :editor-args editor-args)]
     (handle-events in-editor
                    {:idle-msec idle-msec
+                    :on-completion #(trigger-autocomplete in-editor (completions (current-token in-editor)))
                     :on-should-eval #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)})
     (add-editor in-editor snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))

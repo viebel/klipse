@@ -91,8 +91,8 @@
         end (.-ch cursor)
         line (.-line cursor)]
     (clj->js {:list (rest completions)
-              :from (js/CodeMirror.Pos line (dbg start))
-              :to   (js/CodeMirror.Pos line (dbg end))})))
+              :from (js/CodeMirror.Pos line start)
+              :to   (js/CodeMirror.Pos line end)})))
 
 (defn current-token [editor]
   (let [cursor (.getCursor editor)

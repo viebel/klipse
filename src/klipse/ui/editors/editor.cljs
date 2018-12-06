@@ -9,6 +9,7 @@
    cljsjs.codemirror
    cljsjs.codemirror.addon.edit.matchbrackets
    cljsjs.codemirror.addon.edit.closebrackets
+   cljsjs.codemirror.addon.hint.show-hint
    [clojure.string :refer [blank?]]))
 
 (def code-mirror js/CodeMirror)
@@ -82,6 +83,29 @@
 (defn set-value-and-beautify [editor mode value opts]
   (-> (set-value editor value)
       (beautify mode opts)))
+
+(defn list-completions [completions editor]
+  (let [cursor (.getCursor editor)
+        token (.getTokenAt editor cursor)
+        start (.-start token)
+        end (.-ch cursor)
+        line (.-line cursor)]
+    (clj->js {:list (rest completions)
+              :from (js/CodeMirror.Pos line (dbg start))
+              :to   (js/CodeMirror.Pos line (dbg end))})))
+
+(defn current-token [editor]
+  (let [cursor (.getCursor editor)
+        token (.getTokenAt editor cursor)]
+    (.-string token)))
+
+(defn trigger-autocomplete [editor completions]
+  (let [hint-fn (partial list-completions completions)]
+    (js/setTimeout
+      (fn []
+        (.showHint editor (clj->js {:hint           hint-fn
+                                    :completeSingle true})))
+      100)))
 
 (defn replace-element-by-editor [element value {:keys [mode] :as opts} & {:keys [klass indent? remove-ending-comments?] :or {indent? true remove-ending-comments? true}}]
   (let [editor (js/CodeMirror (fn [elt]

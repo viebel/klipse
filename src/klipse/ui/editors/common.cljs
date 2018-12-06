@@ -13,10 +13,11 @@
 (defn refresh-with-code [base-url value]
   (js/location.replace (create-url-with-input base-url value)))
 
-(defn handle-events [editor {:keys [on-should-eval on-change idle-msec base-url extra-keys] :or {base-url nil}}]
+(defn handle-events [editor {:keys [on-completion on-should-eval on-change idle-msec base-url extra-keys] :or {base-url nil}}]
   (let [[debouncer runner] (debounce on-should-eval idle-msec)
         default-extra-keys {"Ctrl-S" #(display-url-with-input base-url (editor/get-value editor))
                             "Ctrl-R" #(refresh-with-code base-url (editor/get-value editor))
+                            "Tab" on-completion
                             "Ctrl-Enter" runner
                             "Cmd-Enter" runner}
         the-extra-keys (merge default-extra-keys extra-keys)]

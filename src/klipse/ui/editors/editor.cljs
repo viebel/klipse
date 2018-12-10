@@ -85,19 +85,19 @@
       (beautify mode opts)))
 
 (defn list-completions [completions editor]
-  (let [cursor (.getCursor editor)
-        token (.getTokenAt editor cursor)
-        start (.-start token)
-        end (.-ch cursor)
-        line (.-line cursor)]
+  (let [cursor (!> editor.getCursor)
+        token (!> editor.getTokenAt cursor)
+        start (? token.start)
+        end (? cursor.ch)
+        line (? cursor.line)]
     (clj->js {:list (rest completions)
               :from (js/CodeMirror.Pos line start)
               :to   (js/CodeMirror.Pos line end)})))
 
 (defn current-token [editor]
-  (let [cursor (.getCursor editor)
-        token (.getTokenAt editor cursor)]
-    (.-string token)))
+  (let [cursor (!> editor.getCursor)
+        token (!> editor.getTokenAt cursor)]
+    (? token.string)))
 
 (defn trigger-autocomplete [editor completions]
   (let [hint-fn (partial list-completions completions)]

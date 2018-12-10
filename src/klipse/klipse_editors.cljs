@@ -6,7 +6,6 @@
   (:require
    [goog.dom :as gdom]
    [cljs.spec.alpha :as s]
-   [klipse-clj.lang.clojure :refer [completions]]
    [klipse.utils :refer [verbose?]]
    [klipse.dom-utils :refer [create-div-after value add-event-listener]]
    [cljs.core.async :refer [put! <! chan timeout alts!]]
@@ -156,7 +155,7 @@
         state (create-state :container container :result-element result-element :editor-args editor-args)]
     (handle-events in-editor
                    {:idle-msec idle-msec
-                    :on-completion #(trigger-autocomplete in-editor (completions (current-token in-editor)))
+                    ;:on-completion #(trigger-autocomplete in-editor (!> js/window.klipse_clj.lang.clojure.completions (current-token in-editor)))
                     :on-should-eval #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)})
     (add-editor in-editor snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))

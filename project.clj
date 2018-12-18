@@ -1,4 +1,4 @@
-(defproject klipse "7.6.9"
+(defproject klipse "7.7.0"
   :description "Embeddable multi-language WEB REPL"
   :resource-paths ["scripts" "src" "resources" "target"]
   :clean-targets ^{:protect false} ["resources/public/plugin_prod/js"

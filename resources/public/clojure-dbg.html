@@ -8,6 +8,30 @@
   </head>
   <body>
     <div class="clojure">
+    (require 'clojure.core.specs.alpha)
+    </div>
+    <div class="clojure">
+      (let [a])
+    </div>
+    <div class="clojure">
+    (def a 123a)
+    </div>
+    <div class="clojure">
+    (map 1 [1 2 3])
+    </div>
+    <div class="clojure">
+    (mapv 1 [1 2 3])
+    </div>
+    <div class="clojure">
+    (require 'clojure.core.specs.alpha)
+    </div>
+    <div class="clojure">
+      (require '[cljs.tools.reader :as reader])
+      (require '[cljs.tools.reader.reader-types :as reader-types])
+      (reader/read+string (reader-types/source-logging-push-back-reader "(def a    1)"))
+    </div>
+            
+    <div class="clojure">
       (if 1 2 3)
     </div>
     <br/>

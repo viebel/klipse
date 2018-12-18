@@ -1,4 +1,6 @@
 rm -rf resources/public/plugin/
+rm -rf resources/public/plugin_prod/
+
 clojure  -A:figwheel  --build-once plugin
 clojure  -A:figwheel  --build-once plugin_prod
 

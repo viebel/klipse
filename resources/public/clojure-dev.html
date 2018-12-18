@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+    <div class="clojure">
+    (require 'clojure.core.specs.alpha)
+    </div>
+    <div class="clojure">
+      (let [a])
+    </div>
+    <div class="clojure">
+    (def a 123a)
+    </div>
+    <div class="clojure">
+    (map 1 [1 2 3])
+    </div>
+    <div class="clojure">
+    (mapv 1 [1 2 3])
+    </div>
+    <div class="clojure">
+    (require 'clojure.core.specs.alpha)
+    </div>
+    <div class="clojure">
+      (require '[cljs.tools.reader :as reader])
+      (require '[cljs.tools.reader.reader-types :as reader-types])
+      (reader/read+string (reader-types/source-logging-push-back-reader "(def a    1)"))
+    </div>
+            
+    <div class="clojure">
+      (if 1 2 3)
+    </div>
+    <br/>
+    <div class="clojure">
+      (doc when)
+    </div>
+    <br>
+    <div class="clojure">
+      (doc map)
+    </div>
+    <br>
+    <div class="clojure">
+      (def x 1)
+      (dbg x)
+    </div>
+    <br/>
+    <div class="clojure">
+        (def x ::foo)
+        x
+    </div>
+    <div class="clojure">
+    (require '[clojure.set :as ppp])
+    (def a ::ppp/koko)
+        a
+    </div>
+    <div class="clojure">
+      (def y 1)
+      (+ y y)
+    </div>
+    <br/>
+    <div class="clojure">
+      `(1 2 ~(map inc [1 2 3]))
+    </div>
+    <br/>
+    <div class="clojure">
+      `(let [x# 1] x#)
+    </div>
+    <br/>
+
+    <div class="clojure">
+      (require 'goog.dom)
+      (goog.dom/setTextContent js/klipse-container "hello")
+      [1 2 3]
+    </div>
+    <br/>
+    <div class="clojure">
+      `(1 2 ~(map inc [1 2 3]))
+    </div>
+    <br/>
+    <div class="clojure">
+      `(let [x# 1] x#)
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <div class="clojure">
+      `(1 2 ~(map inc [1 2 3]))
+    </div>
+    <br/>
+    <script>
+      window.klipse_settings = {
+//      clojure_bundled_ns_ignore: /gadjett\..*/
+      };
+      if(window.location.search.match(/transpile=1/)) {
+      window.klipse_settings.selector_js = '.clojure';
+      } else {
+      window.klipse_settings.selector = '.clojure';
+      }
+
+    </script>
+    <script src="plugin/js/klipse_plugin.js"></script>
+  </body>
+</html>

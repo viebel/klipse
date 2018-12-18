@@ -4,6 +4,7 @@
   :min-lein-version "2.8.1"
   :middleware [lein-tools-deps.plugin/resolve-dependencies-with-deps-edn]
   :lein-tools-deps/config {:config-files [:install :user :project]}
+;  :dependencies [[org.clojure/clojurescript "1.10.492"]]
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-hiera "0.9.5"]
             [lein-tools-deps "0.4.1"]]

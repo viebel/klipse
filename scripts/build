@@ -1,6 +1,14 @@
-lein clean
-lein cljsbuild once plugin plugin-prod
+rm -rf resources/public/plugin/
+clojure  -A:figwheel  --build-once plugin
+clojure  -A:figwheel  --build-once plugin_prod
+
+mkdir -p resources/public/plugin/js
+mkdir -p resources/public/plugin_prod/js
+
+cp resources/public/plugin/public/cljs-out/plugin-main.js           resources/public/plugin/js/klipse_plugin.js
+cp resources/public/plugin_prod/public/cljs-out/plugin_prod-main.js resources/public/plugin_prod/js/klipse_plugin.min.js
+
 ./scripts/add_license resources/public/plugin_prod/js/klipse_plugin.min.js
 ./scripts/add_license resources/public/plugin/js/klipse_plugin.js
 
-cp resources/public/css/codemirror.css resources/public/plugin/js/klipse_plugin.js resources/public/plugin_prod/js/klipse_plugin.min.js dist
+cp resources/public/css/codemirror.css resources/public/plugin/js/klipse_plugin.js resources/public/plugin_prod/js/klipse_plugin.min.js dist/

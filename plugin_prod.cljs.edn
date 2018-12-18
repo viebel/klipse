@@ -1,0 +1,10 @@
+^{:target-dir "resources/public/plugin_prod"
+  #_:build-inputs #_{:pretty-print false
+                :optimize-constants true
+                :static-fns true
+;                :closure-defines {klipse.core/version "7.7.0"}
+                :optimizations simple
+                :verbose false}}
+
+{:main klipse.run.plugin-prod.plugin
+ :optimizations :advanced}

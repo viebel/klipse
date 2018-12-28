@@ -31,10 +31,11 @@
                                      :source-paths ["src/klipse/run/plugin_prod"]
                                      :compiler {
                                                 :output-to "resources/public/plugin_prod/js/klipse_plugin.min.js"
+                                                :source-map "resources/public/plugin_prod/js/klipse_plugin.min.js.map"
                                                 :output-dir "resources/public/plugin_prod/js"
                                                 :pretty-print true
                                                 :elide-asserts false
-                                                :optimizations :advanced
+                                                :optimizations :simple
                                                 :closure-defines {klipse.core/version
                                                                   ~(->> (slurp "project.clj")
                                                                      (re-seq #"\".*\"")

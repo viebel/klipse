@@ -25,9 +25,9 @@
 
       <h2> native javascript </h2>
       <div class="eval-js">
-        [1, 2, 3].reduce(
+        console.log([1, 2, 3].reduce(
         function(total, num){ return total + num }
-        , 0);
+        , 0));
       </div>
       <br/>
       <h2> jQuery </h2>
@@ -35,7 +35,7 @@
 	$
       </div>
       <br/>
-      
+
       <div class="eval-js">
 	$('div').length
       </div>
@@ -52,7 +52,7 @@
 
 	<div class="eval-php" data-gist-id="viebel/6d6e23270e65dd9a4849c507dba4f712"></div>
         <br/>
-	
+
 	<h1> ruby</h1>
 	<div class="eval-ruby" data-gist-id="viebel/4659664"></div>
         <br/>
@@ -63,7 +63,7 @@
 	  split(//) .
 	  group_by {|letter| letter.downcase} .
 	  select   {|key, val| letters.include? key} .
-	  collect  {|key, val| [key, val.length]} 
+	  collect  {|key, val| [key, val.length]}
 	  end
 
 	  letter_frequency("aabbcccdfdfsfd").sort_by {|key, val| -val}.each {|pair| p pair}
@@ -78,7 +78,7 @@
 	  `clojure` rocks!
 	</code>
 	<br/>
-	
+
 	<h2> HTML rendering</h2>
 	<code class="eval-markdown" data-editor-type="html">
 	  # This is a title
@@ -116,8 +116,8 @@
 	    | [] => 0
 	    | [x, ...l] => f (x) + sigma (f, l)
 	    };
-	    
-	    let a =  (sigma ((fun (x) => x * x), [1, 2, 3])); 
+
+	    let a =  (sigma ((fun (x) => x * x), [1, 2, 3]));
 	  </code>
       	  <pre>
 	    <code class="eval-reason-types">
@@ -171,9 +171,9 @@
 	    </div>
 	    <br/>
 	    <div class="lambda" data-editor-type="html">
-	      {def amélie {img 
+	      {def amélie {img
 	      {@ id="amelie"
-              src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" 
+              src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg"
               height="150"
               title="Amélie Poulain"
               style="box-shadow:0 0 8px black;

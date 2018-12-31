@@ -5,7 +5,10 @@
 
 
 (defn add-class [element klass]
-  (!> element.classList.add klass))
+  (if (coll? klass)
+    (doseq [k klass]
+          (!> element.classList.add k))
+    (!> element.classList.add klass)))
 
 (defn create-div-after [element attrs]
     (let [div (gdom/createDom "div" (clj->js attrs) (gdom/createTextNode ""))]

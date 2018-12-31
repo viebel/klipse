@@ -143,7 +143,8 @@
   (swap! editors assoc snippet-num editor)
   (! js/window.klipse_editors (clj->js @editors)))
 
-(defmethod create-editor :code-mirror [_ {:keys [snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result] :as editor-args}]
+(defmethod create-editor :code-mirror [_ {:keys [mode snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result] :as editor-args}]
+  (dbg editor-args)
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         container  (create-div-after element (klipse-container-attrs snippet-num))
         _ (create-div-after container {:class "klipse-separator"})
@@ -151,9 +152,9 @@
                          (create-editor-after-element element default-txt out-editor-options
                                                       :indent? false
                                                       :remove-ending-comments? false
-                                                      :klass "klipse-result")) ; must be called before `element` is replaced
+                                                      :klass ["klipse-result" (str "klipse-" mode)])) ; must be called before `element` is replaced
 
-        in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent? :klass "klipse-snippet")
+        in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent? :klass ["klipse-snippet" (str "klipse-" mode)])
         snippet-args {:loop-msec loop-msec
                       :preamble preamble}
         state (create-state :container container :result-element result-element :editor-args editor-args)]

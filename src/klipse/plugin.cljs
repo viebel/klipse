@@ -52,7 +52,10 @@
 (defn klipsify-with-opts
   "returns a channel c with a function f.
   f returns a channel that will be ready to read when the snippet is evaluated."
-  [element {:keys [no_dynamic_scripts eval_idle_msec minimalistic_ui editor_type print_length beautify_strings eval_context codemirror_options_in codemirror_options_out] :or {beautify_strings false print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}} {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? beautify-output? min-eval-idle-msec external-scripts default-editor no-result] :as lang-opts :or {min-eval-idle-msec 0 beautify? true beautify-output? true external-scripts []}}]
+  [element
+   {:keys [no_dynamic_scripts eval_idle_msec minimalistic_ui editor_type print_length beautify_strings eval_context codemirror_options_in codemirror_options_out] :or {beautify_strings false print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}}
+   {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? beautify-output? min-eval-idle-msec external-scripts default-editor no-result] :as lang-opts :or {min-eval-idle-msec 0 beautify? true beautify-output? true external-scripts []}}
+   mode]
   (go (when element
         (let [eval-args (eval-args-from-element element {:eval-context eval_context :print-length print_length :beautify-strings beautify_strings})
               eval-fn-with-args #(eval-fn %1 (merge eval-args %2))
@@ -62,6 +65,7 @@
               [load-status load-error] (<! (load-external-scripts (collify external-scripts) no_dynamic_scripts))]
           (create-editor the-editor-type
                          {:element element
+                          :mode mode
                           :snippet-num (snippet-num!)
                           :loop-msec loop-msec
                           :async-code? async-code?
@@ -101,12 +105,12 @@
   [element general-settings mode]
   (if-let [opts (@mode-options mode)]
     ;; weird piece of code - see klipsify-with-opts docstring
-    (go (<! ((<! (klipsify-with-opts element general-settings opts)))))
+    (go (<! ((<! (klipsify-with-opts element general-settings opts mode)))))
     (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
 
 (defn ^:export klipsify-no-eval [element general-settings mode]
   (if-let [opts (@mode-options mode)]
-    (klipsify-with-opts element general-settings opts)
+    (klipsify-with-opts element general-settings opts mode)
     (go #(go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options))))))
 
 (defn edit-elements [elements general-settings modes]

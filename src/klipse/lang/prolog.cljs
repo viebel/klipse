@@ -42,33 +42,32 @@
       [:ok true]
       [:error (str res)])))
 
-(defn answer* [cnt callback result-element]
+(defn answer* [cnt num-solutions callback]
   (let [my-session @session]
     (!> my-session.answer
         (fn [ans]
           (case ans
-            false (if (zero? cnt)
-                    (callback "No match.")
-                    (callback "Done."))
+            false (if (zero? num-solutions)
+                    (callback "No solutions.")
+                    (callback (str "Found " num-solutions " solutions.")))
             nil (js/setTimeout
                  #(do
-                    (callback {:data (str "No match after "  (* (inc cnt) 1000) " tries. Continuing to try...\n")
+                    (callback {:data (str num-solutions " solutions after "  (* (inc cnt) 1000) " tries. Continuing to try...\n")
                                :remove-previous-results true})
-                    (answer* (inc cnt) callback result-element))
+                    (answer* (inc cnt) num-solutions callback))
                   100)
             (do
               (callback (str (!> js/pl.format_answer ans) "\n"))
-              (answer* (inc cnt) callback result-element)))))))
+              (answer* (inc cnt) (inc num-solutions) callback)))))))
 
-(defn query [exp {:keys [result-element]}]
-  (set! js/eee result-element)
+(defn query [exp _]
   (let [c (chan)]
     (try
       (init)
       (let [[status res] (query*  exp)]
         (if (= :error status)
           (put! c res)
-          (answer* 0 #(put! c %) result-element)))
+          (answer* 0 0 #(put! c %))))
       (catch :default o
         (put! c (str o))))
     c))

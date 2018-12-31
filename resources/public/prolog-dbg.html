@@ -8,10 +8,37 @@
   </head>
   <body>
     <style type="text/css">
-      .klipse-snippet.klipse-prolog-rules::before {
+      .klipse-snippet.klipse-prolog-rules  {
+      padding-left: 40px;
+      background-image: url(./rules.png);
+      background-position: left 0px top 0px;
+      background-repeat: no-repeat;
+      background-size: 24px;
+      }
+      .klipse-result.klipse-prolog-rules  {
+      padding-left: 40px;
+      }
+      .sklipse-prolog-rules > .CodeMirror {
+      border: solid 1px green;
+      }
+      .klipse-snippet.klipse-prolog-query {
+      padding-left: 40px;
+      background-image: url(./query.png);
+      background-position: left 0px top 0px;
+      background-repeat: no-repeat;
+      background-size: 29px;
+      }
+      .klipse-result.klipse-prolog-query  {
+      padding-left: 40px;
+      }
+
+      .sklipse-prolog-query > .CodeMirror {
+      border: solid 1px orange;
+      }
+      .sklipse-snippet.klipse-prolog-rules::before {
       content: "Rules"
       }
-      .klipse-snippet.klipse-prolog-query::before {
+      .sklipse-snippet.klipse-prolog-query::before {
       content: "Query"
       }
       </style>
@@ -90,7 +117,20 @@ fruits_in(Xs, X) :- member(X, Xs), fruit(X).
 fruits_in([carrot, apple, banana, broccoli, orange], X).
     </div>
     <br/>
-
+    <div class="rules">
+bro(a,b).
+bro(b,c).
+bro2(X,Y):- bro(X,Y);bro(Y,X).
+brother(X,Y):- bro2(X,Z), bro2(Z,Y).
+    </div>
+    <div class="query">
+brother(a,X).
+    </div>
+        <div class="query">
+brother(X, Y).
+    </div>
+    <br/>
+    
     <div class="rules">
 :- use_module(library(dom)).
 :- use_module(library(lists)).

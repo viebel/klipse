@@ -14,6 +14,7 @@
             klipse.lang.scheme
             klipse.lang.clisp
             klipse.lang.python
+            klipse.lang.prolog
             klipse.lang.php
             klipse.lang.markdown
             klipse.lang.lambdaway

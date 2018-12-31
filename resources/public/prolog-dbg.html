@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+    <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  </head>
+  <body>
+    <style type="text/css">
+#table {
+	box-shadow: 0px 0px 10px #bfbfbf;
+	border: 5px solid white;
+	border-radius: 5px;
+	font-size: 30px;
+	text-align: center;
+	text-shadow: 0px 0px 5px #2c0d5a;
+	color: white;
+	margin: 0px auto;
+	width: 400px;
+}
+
+#table > div {
+	overflow: hidden;
+}
+
+#table > div:nth-child(even) > div:nth-child(odd), #table > div:nth-child(odd) > div:nth-child(even) {
+	background-color: #442178;
+	box-shadow: inset 0px 0px 5px #2c0d5a;
+}
+
+#table > div:nth-child(even) > div:nth-child(even), #table > div:nth-child(odd) > div:nth-child(odd) {
+	background-color: #977bc1;
+}
+
+#table > div > div {
+	float: left;
+	padding-top: 6px;
+	height: 44px;
+	width: 50px;
+}
+
+.knight {
+	background-image: url("http://tau-prolog.org//content/examples/resources/knights-tour/knight.png");
+	background-position: center center;
+	background-repeat: no-repeat;
+	font-size: 0px;
+}
+</style>
+    <div class="rules">
+	% load lists module
+	:- use_module(library(lists)).
+
+	% fruit/1
+	fruit(apple). fruit(pear). fruit(banana).
+
+	% fruits_in/2
+	fruits_in(Xs, X) :- member(X, Xs), fruit(X).
+    </div>
+    <br/>
+    <div class="query">
+      fruits_in([carrot, apple, banana, broccoli, orange], X).
+    </div>
+    <br/>
+    <div class="query">
+      fruits_in([carrot], Y).
+    </div>
+    <br/>
+
+        <div class="rules">
+% load lists module
+:- use_module(library(lists)).
+
+% fruit/1
+fruit(apple). fruit(pear). fruit(banana). fruit(orange).
+
+% fruits_in/2
+fruits_in(Xs, X) :- member(X, Xs), fruit(X).
+    </div>
+    <br/>
+    <div class="query">
+fruits_in([carrot, apple, banana, broccoli, orange], X).
+    </div>
+    <br/>
+
+    <div class="rules">
+:- use_module(library(dom)).
+:- use_module(library(lists)).
+:- use_module(library(system)).
+
+% mov/2
+mov( 1, 2). mov( 1,-2). mov(-1, 2). mov(-1,-2).
+mov( 2, 1). mov( 2,-1). mov(-2, 1). mov(-2,-1).
+
+% jump/2
+jump((X0,Y0), (X1,Y1)) :-
+	mov(X,Y),
+	X1 is X0+X,
+	Y1 is Y0+Y,
+	X1 >= 1, X1 =< 8,
+	Y1 >= 1, Y1 =< 8.
+
+% tour/2
+tour(Init, Tour) :-
+	tour(Init, [], 1, Tour).
+
+% tour/4
+tour(Position, Visited, N, Tour) :-
+	fill_cell(Position, N),
+	jump(Position, Next),
+%	sleep(50),
+	M is N+1,
+	\+(member(Next, Visited)),
+	( tour(Next, [Position|Visited], M, Tour) ; 
+	  fill_cell(Next, ''), fail).
+
+% fill_cell/2
+fill_cell((Row, Col), Content) :-
+	remove_knight,
+	number_chars(Row, [AtomRow]),
+	number_chars(Col, [AtomCol]),
+	atom_concat(col, AtomRow, ColRow),
+	atom_concat(ColRow, AtomCol, Id),
+	get_by_id(Id, Cell),
+	html(Cell, Content),
+	add_class(Cell, knight).
+
+% remove_knight/0
+remove_knight :-
+	get_by_class(knight, Knight), !, remove_class(Knight, knight).
+remove_knight.      
+		       </div>
+    <div class="query">
+      tour((1,1), _).
+      </div>
+    <div id="table">
+	<div id="row1"><div class="col" id="col11"></div><div class="col" id="col12"></div><div class="col" id="col13"></div><div class="col" id="col14"></div><div class="col" id="col15"></div><div class="col" id="col16"></div><div class="col" id="col17"></div><div class="col" id="col18"></div></div>
+	<div id="row2"><div class="col" id="col21"></div><div class="col" id="col22"></div><div class="col" id="col23"></div><div class="col" id="col24"></div><div class="col" id="col25"></div><div class="col" id="col26"></div><div class="col" id="col27"></div><div class="col" id="col28"></div></div>
+	<div id="row3"><div class="col" id="col31"></div><div class="col" id="col32"></div><div class="col" id="col33"></div><div class="col" id="col34"></div><div class="col" id="col35"></div><div class="col" id="col36"></div><div class="col" id="col37"></div><div class="col" id="col38"></div></div>
+	<div id="row4"><div class="col" id="col41"></div><div class="col" id="col42"></div><div class="col" id="col43"></div><div class="col" id="col44"></div><div class="col" id="col45"></div><div class="col" id="col46"></div><div class="col" id="col47"></div><div class="col" id="col48"></div></div>
+	<div id="row5"><div class="col" id="col51"></div><div class="col" id="col52"></div><div class="col" id="col53"></div><div class="col" id="col54"></div><div class="col" id="col55"></div><div class="col" id="col56"></div><div class="col" id="col57"></div><div class="col" id="col58"></div></div>
+	<div id="row6"><div class="col" id="col61"></div><div class="col" id="col62"></div><div class="col" id="col63"></div><div class="col" id="col64"></div><div class="col" id="col65"></div><div class="col" id="col66"></div><div class="col" id="col67"></div><div class="col" id="col68"></div></div>
+	<div id="row7"><div class="col" id="col71"></div><div class="col" id="col72"></div><div class="col" id="col73"></div><div class="col" id="col74"></div><div class="col" id="col75"></div><div class="col" id="col76"></div><div class="col" id="col77"></div><div class="col" id="col78"></div></div>
+	<div id="row8"><div class="col" id="col81"></div><div class="col" id="col82"></div><div class="col" id="col83"></div><div class="col" id="col84"></div><div class="col" id="col85"></div><div class="col" id="col86"></div><div class="col" id="col87"></div><div class="col" id="col88"></div></div>
+</div>
+ 
+ <script>
+      window.klipse_settings = {
+      selector_prolog_rules: '.rules',
+      selector_prolog_query: '.query',
+      };
+    </script>
+    <script src="/cljs-out/dev-main.js"></script>
+  </body>
+</html>

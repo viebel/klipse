@@ -51,7 +51,8 @@
             (put! cmd-chan :reset))
           (swap! state update-in [:eval-counter] inc)
           (let [evaluation-chan (eval-fn (str preamble src-code) @state)
-                first-result (<! evaluation-chan)]
+                result (<! evaluation-chan)
+                first-result (if (string? result) result (:data result))]
             (setter first-result)
             (when loop-msec
               (go-loop []
@@ -63,8 +64,10 @@
                     (recur)))))
 
             (go-loop [previous-results first-result]
-              (let [result (<! evaluation-chan)
-                    results (str previous-results result)]
+              (let [raw-result (<! evaluation-chan)
+                    result (if (map? raw-result) (:data raw-result) raw-result)
+                    remove-previous-results? (and (map? raw-result) (:remove-previous-results raw-result))
+                    results (str (when-not remove-previous-results? previous-results) result)]
                 (when (some? result) ;exit if the channel is closed
                   (setter results)
                   (recur results))))))
@@ -141,7 +144,6 @@
   (! js/window.klipse_editors (clj->js @editors)))
 
 (defmethod create-editor :code-mirror [_ {:keys [snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result] :as editor-args}]
-  (dbg editor-args)
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         container  (create-div-after element (klipse-container-attrs snippet-num))
         _ (create-div-after container {:class "klipse-separator"})

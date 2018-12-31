@@ -1,0 +1,21 @@
+<script src="https://viebel.github.io/klipse/repo/js/tau-prolog.js"></script>
+
+<script>
+var session = pl.create();
+
+var parsed = session.consult(`
+	% load lists module
+	:- use_module(library(lists)).
+
+	% fruit/1
+	fruit(apple). fruit(pear). fruit(banana).
+
+	% fruits_in/2
+	fruits_in(Xs, X) :- member(X, Xs), fruit(X).
+`);
+var callback = function( answer ) { console.log( pl.format_answer( answer ) ); };
+
+var parsed = session.query("fruits_in([carrot, apple, banana, broccoli], X).");
+session.answer( callback );
+
+</script>

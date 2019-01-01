@@ -144,7 +144,6 @@
   (! js/window.klipse_editors (clj->js @editors)))
 
 (defmethod create-editor :code-mirror [_ {:keys [mode snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result] :as editor-args}]
-  (dbg editor-args)
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         container  (create-div-after element (klipse-container-attrs snippet-num))
         _ (create-div-after container {:class "klipse-separator"})

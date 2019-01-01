@@ -5,6 +5,7 @@
     <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
     <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
     <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="css/prolog.css">
   </head>
   <body>
     <p>
@@ -187,6 +188,19 @@
 	    <div class="eval-html" data-editor-type="html">
 	      &lt;img id="amelie" src="http://epsilonwiki.free.fr/lambdaway/data/amelie_poulain.jpg" height="150" title="Amélie Poulain" style="box-shadow:0 0 8px black; border:1px solid white; -webkit-transform:rotate(-5deg); -moz-transform:rotate(-5deg); transform:rotate(-5deg);"&gt;&lt;/img&gt;
 	    </div>
+	    <h1> Prolog </h1>
+	    <div class="prolog-rules">
+	      bro(a,b).
+	      bro(b,c).
+	      bro2(X,Y):- bro(X,Y);bro(Y,X).
+	      brother(X,Y):- bro2(X,Z), bro2(Z,Y).
+	    </div>
+	    <div class="prolog-query">
+	      brother(a,X).
+	    </div>
+            <div class="prolog-query">
+	      brother(X, Y).
+	    </div>
 
             <script>
               window.klipse_settings = {
@@ -199,6 +213,8 @@
               selector_eval_reason_3_with_types: '.eval-reason-types',
 	      selector_eval_ocaml_with_types: '.eval-ocaml',
 	      selector_eval_clisp: '.clisp',
+	      selector_prolog_rules: '.prolog-rules',
+	      selector_prolog_query: '.prolog-query',
               selector_js: '.clojure-js'
               };
             </script>

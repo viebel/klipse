@@ -77,7 +77,7 @@
                  :editor-out-mode "text"
                  :beautify? true
                  :eval-fn consult
-                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.js" "https://viebel.github.io/klipse/repo/js/logtalk.js"]
+                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.js" "https://viebel.github.io/klipse/repo/js/codemirror-logtalk.js"]
                  :comment-str "%"})
 
 
@@ -85,7 +85,7 @@
                  :editor-out-mode "text"
                  :beautify? true
                  :eval-fn query
-                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.js"]
+                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.js" "https://viebel.github.io/klipse/repo/js/codemirror-logtalk.js"]
                  :comment-str "%"})
 
 

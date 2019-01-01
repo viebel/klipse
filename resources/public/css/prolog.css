@@ -1,0 +1,23 @@
+.klipse-snippet.klipse-prolog-rules  {
+    padding-left: 40px;
+    background-image: url(./rules.png);
+    background-position: left 0px top 0px;
+    background-repeat: no-repeat;
+    background-size: 24px;
+}
+.klipse-result.klipse-prolog-rules  {
+    padding-left: 40px;
+}
+.sklipse-prolog-rules > .CodeMirror {
+    border: solid 1px green;
+}
+.klipse-snippet.klipse-prolog-query {
+    padding-left: 40px;
+    background-image: url(./query.png);
+    background-position: left 0px top 0px;
+    background-repeat: no-repeat;
+    background-size: 29px;
+}
+.klipse-result.klipse-prolog-query  {
+    padding-left: 40px;
+}

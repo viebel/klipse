@@ -73,17 +73,17 @@
     c))
 
 
-(def rules-opts {:editor-in-mode "text"
+(def rules-opts {:editor-in-mode "logtalk"
                  :editor-out-mode "text"
-                 :beautify? false
+                 :beautify? true
                  :eval-fn consult
-                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.js"]
+                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.js" "https://viebel.github.io/klipse/repo/js/logtalk.js"]
                  :comment-str "%"})
 
 
-(def query-opts {:editor-in-mode "text"
+(def query-opts {:editor-in-mode "logtalk"
                  :editor-out-mode "text"
-                 :beautify? false
+                 :beautify? true
                  :eval-fn query
                  :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.js"]
                  :comment-str "%"})

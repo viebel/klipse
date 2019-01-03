@@ -35,24 +35,22 @@
         (put! c (str o))))
     c))
 
-(defn query* [exp]
-  (let [my-session @session
-        res (!> my-session.query exp)]
+(defn query* [thread exp]
+  (let [res (!> thread.query exp)]
     (if (= true res)
       [:ok true]
       [:error (str res)])))
 
-(defn pl-answer []
-  (let [my-session @session
-        c (chan)]
-    (!> my-session.answer (fn [answer]
-                            (put! c (if (nil? answer) "nil" answer))))
+(defn pl-answer [thread]
+  (let [c (chan)]
+    (!> thread.answer (fn [answer]
+                        (put! c (if (nil? answer) "nil" answer))))
     c))
 
-(defn answer* [c]
+(defn answer* [thread c]
   (go-loop [cnt 0
             num-solutions 0]
-    (let [ans (<! (pl-answer))]
+    (let [ans (<! (pl-answer thread))]
       (case ans
         false (if (zero? num-solutions)
                 (put! c "No solutions.")
@@ -66,18 +64,20 @@
           (if (< cnt 30)
             (do
               (put! c (str (!> js/pl.format_answer ans) "\n"))
-              #_(<! (timeout 100))
+              (<! (timeout 100))
               (recur (inc cnt) (inc num-solutions)))
             (put! c (str "Found " num-solutions " so far, they might be more..."))))))))
 
 (defn query [exp _]
-  (let [c (chan)]
+  (let [c (chan)
+        Thread (? js/pl.type.Thread) ; to understand the difference between threads and sessions, see https://github.com/jariazavalverde/tau-prolog/issues/64
+        thread (new Thread @session)]
     (try
       (init)
-      (let [[status res] (query*  exp)]
+      (let [[status res] (query* thread exp)]
         (if (= :error status)
           (put! c res)
-          (answer* c)))
+          (answer* thread c)))
       (catch :default o
         (put! c (str o))))
     c))

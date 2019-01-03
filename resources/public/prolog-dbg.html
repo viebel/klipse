@@ -95,7 +95,15 @@ brother(a,X).
         <div class="query">
 brother(X, Y).
     </div>
-    <br/>
+	<br/>
+        <div class="rules">
+	  numeral(0).
+	  numeral(succ(X)) :- numeral(X).
+	</div>
+        <div class="query">
+	  numeral(X).
+    </div>
+	
     
     <div class="rules">
 :- use_module(library(dom)).

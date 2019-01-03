@@ -26,7 +26,7 @@
 
 (def opts {:editor-in-mode "text/x-sql"
            :eval-fn str-eval-async
-           :external-scripts [(codemirror-mode-src "sql") (scripts-src "sql-formatter.min.js") (scripts-src "sql.js") "https://gist.githubusercontent.com/viebel/fc86366093c27aca0adc103b1d20190d/raw"]
+           :external-scripts [(codemirror-mode-src "sql") (scripts-src "sql-formatter.min.js") (scripts-src "sql.js") "https://gist.githubusercontent.com/viebel/fc86366093c27aca0adc103b1d20190d/raw"]; https://github.com/kripken/sql.js/
            :comment-str "--"})
 
 (register-mode "eval-sql" "selector_sql" opts)

@@ -19,8 +19,8 @@
   (let [root (:scripts_root (klipse-settings) "https://viebel.github.io/klipse/repo/js")]
     (str root "/" name)))
 
-;(def stopify-src "/home/rachit/git/Stopify/stopify/dist/stopify-full.bundle.js")
-(def stopify-src (scripts-src "stopify-full.bundle.js"))
+(def stopify-src "stopify-full.bundle.js")
+;(def stopify-src (scripts-src "stopify-full.bundle.js"))
 
 (defn wasm-src [name]
   (let [root (:wasm_root (klipse-settings) "https://viebel.github.io/klipse/repo/wasm")]

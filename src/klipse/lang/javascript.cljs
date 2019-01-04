@@ -45,21 +45,28 @@
     (eval-in-global-scope wrapped-exp)
     ""))
 
-(defn stopify-compile-and-eval [source]
-  (let [compilerOpts #js {:externals #js ["Immutable" "$" "_" "document" "window"]}
-        asyncRun (!> js/stopify.stopifyLocally source)]
-    (do
-      (!> js/console.info asyncRun.code)
-      ( asyncRun.run identity))))
-
 (defn stopify-compile [source]
-  (let [compilerOpts #js {:externals #js ["Immutable" "$" "_" "document" "window" "console"]}]
-        (!> js/stopify.stopifyLocally source)))
+  (let [asyncRun (!> js/stopify.stopifyLocally source)]
+    (do
+      ;; Define globals
+      (goog.object/set asyncRun.g "console" js/console)
+      (goog.object/set asyncRun.g "window" js/window)
+      (goog.object/set asyncRun.g "alert" js/alert)
+      (goog.object/set asyncRun.g "Set" js/Set)
+      (goog.object/set asyncRun.g "Symbol" js/Symbol)
+      (goog.object/set asyncRun.g "Date" js/Date)
+      (goog.object/set asyncRun.g "Int32Array" js/Int32Array)
+      (goog.object/set asyncRun.g "Promise" js/Promise)
+      (goog.object/set asyncRun.g "klipse_container" js/klipse_container)
+      ;; Set the function called on the last expression
+      (goog.object/set asyncRun.g "callbackLast" js/console.log)
+      asyncRun)))
 
 (defn stopify-run [asyncRun]
   (do
     (!> js/console.info asyncRun.code)
-    (!> asyncRun.run identity)))
+    (!> asyncRun.run identity)
+    ""))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]
@@ -77,7 +84,6 @@
                               (my-with-redefs [js/console.log (append-to-chan c)]
                                               (-> exp
                                                   stopify-compile
-                                                  eval-in-global-scope
                                                   stopify-run
                                                   beautify)))
                             (catch :default o
@@ -115,9 +121,7 @@
                       (eval-with-logger! c transpiled-exp)
                       (my-with-redefs [js/console.log (append-to-chan c)]
                                       (-> transpiled-exp
-                                          stopify-compile
                                           eval-in-global-scope
-                                          stopify-run
                                           beautify)))))))
       (catch :default o
         (put! c (str o))))

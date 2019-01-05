@@ -22,17 +22,17 @@
   (init)
   (let [c (chan)]
     (!> js/Sk.configure #js {:output #(put! c %)
-                             :read builtin-read })
-    (-> 
+                             :read   builtin-read})
+    (->
       (!> js/Sk.misceval.asyncToPromise
           (fn []
             (put! c "Output:\n")
             (! js/Sk.TurtleGraphics.target container-id)
             (!> js/Sk.importMainWithBody "<stdin>" false exp true)))
       (.then (fn [mod]
-               (!> js/console.info "success to eval skulpt: "))
+               (put! c [:ok mod]))
              (fn [err]
-               (put! c (str "error: " err)))))
+               (put! c [:err (str "error:\n" err)]))))
     c))
 
 (def opts {:editor-in-mode "python"

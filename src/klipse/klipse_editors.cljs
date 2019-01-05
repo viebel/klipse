@@ -69,7 +69,16 @@
                     remove-previous-results? (and (map? raw-result) (:remove-previous-results raw-result))
                     results (str (when-not remove-previous-results? previous-results) result)]
                 (when (some? result) ;exit if the channel is closed
-                  (setter results)
+                  (if (string? result)
+                    (setter results)
+                    (let [hasError (and (= (first result) :err))]
+                      (when hasError (setter (second result)))      ;; only report the :err messages for now
+                      (when-let [klipse-dom-node (js/document.querySelector ".klipse-container")]
+                         (let [event-payload (clj->js {:detail {:result result
+                                                                :hasError hasError
+                                                                :resultElement (:result-element @state)}})]
+                              (!> klipse-dom-node.dispatchEvent
+                                  (js/CustomEvent. "klipse-snippet-evaled" event-payload))))))
                   (recur results))))))
         (catch :default e
           (setter e))))))
@@ -106,7 +115,7 @@
 (s/def ::codemirror-options map?)
 (s/def ::editor-mode string?)
 
-(s/fdef editor-options 
+(s/fdef editor-options
         :args (s/cat :in-mode ::editor-mode
                      :out-mode ::editor-mode
                      :options-in ::codemirror-options

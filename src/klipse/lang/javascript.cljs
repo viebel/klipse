@@ -34,17 +34,6 @@
     (put! c "\n")
     js/undefined))
 
-(defn eval-with-logger!
-  "Evals an expression where the window.console object is lexically bound to an object that puts the console output on a channel.
-  Returns the empty string.
-  It works fine also with asynchronous code."
-  [c exp]
-  (let [logger (append-to-chan c)
-        wrapped-exp (str "(function(console) {" exp "}(window.klipse_snippet_console))")]
-    (set! js/klipse_snippet_console #js {:log logger})
-    (eval-in-global-scope wrapped-exp)
-    ""))
-
 (defn stopify-compile [source]
   (let [asyncRun (!> js/stopify.stopifyLocally source)]
     (do
@@ -62,7 +51,18 @@
   (do
     (!> js/console.info asyncRun.code)
     (!> asyncRun.run stopify-cb)
-    js/undefined))
+    ""))
+
+(defn eval-with-logger!
+  "Evals an expression where the window.console object is lexically bound to an object that puts the console output on a channel.
+  Returns the empty string.
+  It works fine also with asynchronous code."
+  [c exp]
+  (let [logger (append-to-chan c)
+        wrapped-exp (str "(function(console) {" exp "}(window.klipse_snippet_console))")]
+    (set! js/klipse_snippet_console #js {:log logger})
+    (eval-in-global-scope wrapped-exp)
+    ""))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]
@@ -83,8 +83,7 @@
                               (my-with-redefs [js/console.log (append-to-chan c)]
                                               (-> exp
                                                   stopify-compile
-                                                  stopify-run
-                                                  beautify)))
+                                                  stopify-run)))
                             (catch :default o
                               (str o)))
                           (str "//Cannot load script: " script "\n"

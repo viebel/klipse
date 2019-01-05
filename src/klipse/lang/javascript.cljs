@@ -48,25 +48,15 @@
 (defn stopify-compile [source]
   (let [asyncRun (!> js/stopify.stopifyLocally source)]
     (do
-      ;; Define globals
-      (goog.object/set asyncRun.g "console" js/console)
-      (goog.object/set asyncRun.g "window" js/window)
-      (goog.object/set asyncRun.g "alert" js/alert)
-      (goog.object/set asyncRun.g "Set" js/Set)
-      (goog.object/set asyncRun.g "Symbol" js/Symbol)
-      (goog.object/set asyncRun.g "Date" js/Date)
-      (goog.object/set asyncRun.g "Int32Array" js/Int32Array)
-      (goog.object/set asyncRun.g "Promise" js/Promise)
-      (goog.object/set asyncRun.g "klipse_container" js/klipse_container)
       ;; Set the function called on the last expression
-      (goog.object/set asyncRun.g "callbackLast" js/console.log)
+      (aset asyncRun.g "callbackLast" js/console.log)
       asyncRun)))
 
 (defn stopify-run [asyncRun]
   (do
     (!> js/console.info asyncRun.code)
     (!> asyncRun.run identity)
-    ""))
+    js/undefined))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]
   (let [c (chan)]
@@ -75,7 +65,10 @@
       (if (string/blank? exp)
         (put! c "")
         (do (setup-container! container-id)
-            (let [[status http-status script] (<! (load-scripts (map external-lib-path external-libs) :secured-eval? false))]
+            (let [[status http-status script]
+                  (<! (load-scripts
+                        (map external-lib-path external-libs)
+                        :secured-eval? false))]
               (try
                 (put! c (if (= :ok status)
                           (try
@@ -121,7 +114,8 @@
                       (eval-with-logger! c transpiled-exp)
                       (my-with-redefs [js/console.log (append-to-chan c)]
                                       (-> transpiled-exp
-                                          eval-in-global-scope
+                                          stopify-compile
+                                          stopify-run
                                           beautify)))))))
       (catch :default o
         (put! c (str o))))

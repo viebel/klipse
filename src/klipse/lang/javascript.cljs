@@ -52,10 +52,16 @@
       (aset asyncRun.g "callbackLast" js/console.log)
       asyncRun)))
 
+;; Stopify runtime captures exceptions. The callback handles them correctly.
+(defn stopify-cb [result]
+  (if (= (aget result "type") "exception")
+    (js/console.log "Exception: " (aget result "value"))
+    js/undefined))
+
 (defn stopify-run [asyncRun]
   (do
     (!> js/console.info asyncRun.code)
-    (!> asyncRun.run identity)
+    (!> asyncRun.run stopify-cb)
     js/undefined))
 
 (defn str-eval-js-async [exp {:keys [async-code? external-libs container-id] :or {async-code? false external-libs nil}}]

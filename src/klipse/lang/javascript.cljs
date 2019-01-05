@@ -8,7 +8,7 @@
    [cljs-http.client :as http]
    [clojure.string :as string]
    [cljs.core.async :refer [<! chan put!]]
-   [klipse.common.registry :refer [stopify-src codemirror-mode-src scripts-src register-mode]]))
+   [klipse.common.registry :refer [codemirror-mode-src scripts-src register-mode]]))
 
 ;(set! *warn-on-infer* true)
 (def known-external-libs
@@ -49,7 +49,7 @@
 
 (defn stopify-run [asyncRun]
   (do
-    (!> js/console.info asyncRun.code)
+    #_(!> js/console.info asyncRun.code)
     (!> asyncRun.run stopify-cb)
     ""))
 
@@ -96,7 +96,7 @@
            :beautify-output? false
            :eval-fn str-eval-js-async
            :external-scripts [(codemirror-mode-src "javascript")
-                              stopify-src
+                              "https://viebel.github.io/klipse/repo/js/stopify-full.bundle.js"
                               (scripts-src "pretty_format.js")]
            :comment-str "//"})
 
@@ -119,8 +119,7 @@
                       (eval-with-logger! c transpiled-exp)
                       (my-with-redefs [js/console.log (append-to-chan c)]
                                       (-> transpiled-exp
-                                          stopify-compile
-                                          stopify-run
+                                          eval-in-global-scope
                                           beautify)))))))
       (catch :default o
         (put! c (str o))))
@@ -133,7 +132,6 @@
                   :external-scripts [(codemirror-mode-src "javascript")
                                      (scripts-src "pretty_format.js")
                                      (scripts-src "babel.min.js")
-                                     stopify-src
                                      (scripts-src "babel_polyfill.min.js")]
                   :comment-str "//"})
 

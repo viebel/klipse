@@ -40,10 +40,26 @@
     console.log("2nd snippet - bb");
     }, 500);
 </code></pre>
+<h2> Infinite loops</h2>
+<pre><code class="js">
+    x = 0;
+    while(true) {
+    x = x + 1;
+    if(x % 1e6 === 0) {
+    console.log(x);
+    x = 0;
+    }
+    }
+</code></pre>
 
 <h2> jQuery</h2>
 <pre><code class="js" data-external-libs="jQuery">
 $
+</code></pre>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+<h2> lodash </h2>
+<pre><code class="js">
+_.map([1,2,3], x => x + 1)
 </code></pre>
 
 <h2>alert </h2>

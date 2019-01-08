@@ -37,6 +37,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - C++: evaluation is done with [JSCPP](https://github.com/felixhao28/JSCPP)
 - python: evaluation is done with [Skulpt](http://www.skulpt.org/)
 - scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)
+- prolog: evaluation is done with [Tau Prolog](http://tau-prolog.org/)
 - common lisp: evaluation is done with [JSCL](https://github.com/jscl-project/jscl)
 - PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
 - BrainFuck
@@ -165,6 +166,31 @@ You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klips
 </script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
+
+## Prolog
+
+Prolog code snippets are separated into two kinds:
+
+- Rules
+- Queries
+
+In the query, you must ommit the `?-` characters.
+
+See [A new way of blogging about Prolog](http://blog.klipse.tech/prolog/2019/01/01/blog-prolog.html) for a full example and guide.
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/prolog.css">
+
+<script>
+    window.klipse_settings = {
+        selector_prolog_rules: '.language-prolog-rules', // css selector for the html elements that contain prolog rules
+        selector_prolog_query: '.language-prolog-query', // css selector for the html elements that contain prolog queries
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js?v=7.7.1-a"></script>
+```
+
 ## Common Lisp
 
 ```html
@@ -399,6 +425,7 @@ Here are a couple of examples of blogs using the klipse plugin:
 - ruby: [jessewaites.com - interactive ruby snippets](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)
 - clojure: [z.caudate.me - live documentation with klipse](http://z.caudate.me/klipse-demo/)
 - ruby, javascript, clojure: [blog.klipse.tech](blog.klipse.tech)
+- prolog: [A new way of blogging about Prolog](http://blog.klipse.tech/prolog/2019/01/01/blog-prolog.html)
 - clojure documentation: [Anonymous functions in clojure](http://clojurebridge.github.io/community-docs/docs/clojure/anonymous-function/)
 - javascript: [Untangled.io - Advanced ES6 destructuring techniques with live examples](http://untangled.io/in-depth-es6-destructuring-with-assembled-avengers/)
 - clojure: [Klipse for Kids: A fun way to learn computer programming](http://kids.klipse.tech/)

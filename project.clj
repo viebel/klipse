@@ -1,4 +1,4 @@
-(defproject klipse "7.7.2"
+(defproject klipse "7.7.3"
   :description "Embeddable multi-language WEB REPL"
   :resource-paths ["scripts" "src" "resources" "target"]
   :min-lein-version "2.8.1"

@@ -10,7 +10,7 @@
    [cljs.core.async :refer [chan close! <! put!]]
    [klipse.common.registry :refer [codemirror-mode-src register-mode wasm-src scripts-src]]))
 
-(defonce *loaded* false)
+(defonce ^:dynamic *loaded* false)
 
 (defn create-module! [ready-chan]
   {:postRun [(fn []

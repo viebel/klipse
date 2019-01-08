@@ -18,7 +18,7 @@
 
 (defn consult* [exp]
   (let [my-session @session
-        res (!> my-session.consult exp)]
+        res (!> my-session.consult exp #js {:reconsult false})]
     (if (= true res)
       [:ok true]
       [:error (str res)])))
@@ -76,16 +76,16 @@
 (def rules-opts {:editor-in-mode "logtalk"
                  :editor-out-mode "text"
                  :beautify? true
-                 :eval-fn consult
-                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.js" "https://viebel.github.io/klipse/repo/js/codemirror-logtalk.js"]
+                 :eval-fn (fn [& args] (apply consult args))
+                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.0.2.56.js" "https://viebel.github.io/klipse/repo/js/codemirror-logtalk.js"]
                  :comment-str "%"})
 
 
 (def query-opts {:editor-in-mode "logtalk"
                  :editor-out-mode "text"
                  :beautify? true
-                 :eval-fn query
-                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.js" "https://viebel.github.io/klipse/repo/js/codemirror-logtalk.js"]
+                 :eval-fn (fn [& args] (apply query args))
+                 :external-scripts ["https://viebel.github.io/klipse/repo/js/tau-prolog.0.2.56.js" "https://viebel.github.io/klipse/repo/js/codemirror-logtalk.js"]
                  :comment-str "%"})
 
 

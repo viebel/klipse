@@ -47,7 +47,21 @@
 	background-repeat: no-repeat;
 	font-size: 0px;
 }
-</style>
+    </style>
+    <h2> No reconsult </h2>
+    <div class="rules">
+    man(david).
+    </div>
+    <div class="query">
+    man(X).
+    </div>
+    <div class="rules">
+    man(frank).
+    </div>
+    <div class="query">
+    man(X).
+    </div>
+    <h2> Classical examples with fruits </h2>
     <div class="rules">
 	% load lists module
 	:- use_module(library(lists)).
@@ -128,6 +142,11 @@ tour(Position, Visited, N, Tour) :-
 	( tour(Next, [Position|Visited], M, Tour) ; 
 	  fill_cell(Next, ''), fail).
 
+tour(Position, Visited, 64, [Position|Visited]) :- !.
+
+
+
+		       
 % fill_cell/2
 fill_cell((Row, Col), Content) :-
 	remove_knight,

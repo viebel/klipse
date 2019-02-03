@@ -9,10 +9,10 @@
                 :time_created 1468951584000 })
 
 
-(defn *init-repl* [language]
+(defn init-repl* [language]
   (js/ReplitClient. "api.repl.it" 80 language token))
 
-(def init-repl (memoize *init-repl*))
+(def init-repl (memoize init-repl*))
 (defn evaluate [repl c exp]
   (->
     (!> repl.evaluate exp 

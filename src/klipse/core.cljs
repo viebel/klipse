@@ -7,7 +7,7 @@
 
 (goog-define version "n/a")
 
-(def version "7.7.3")
+(def version "7.8.0")
 (js/console.info "Klipse " version)
 (js/console.info "Clojurescript "  *clojurescript-version*)
 

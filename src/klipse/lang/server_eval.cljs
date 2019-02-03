@@ -1,6 +1,6 @@
 (ns klipse.lang.server-eval
-  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
+    [purnam.core :refer [? ! !>]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require 
     [klipse.lang.replit :refer [connect-and-evaluate]]

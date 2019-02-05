@@ -43,7 +43,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - BrainFuck
 - JSX
 - EcmaScript2017
-- Google Charts: See [Interactive Business Report with Google Charts](http://blog.klipse.tech/data/2017/03/16/google-charts.html).
+- Google Charts: See [Interactive Business Report with Google Charts](http://blog.klipse.tech/data/2017/03/15/google-charts.html).
 
 The code editing inside the interactive snippets is powered by [CodeMirror](http://codemirror.net/).
 

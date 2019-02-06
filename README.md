@@ -414,6 +414,10 @@ To change the style of the Klipse plugin's borders and the console output, you'l
 
 You can see an example of styling Klipse in `demos/styling`. And here is a [live demo](http://htmlpreview.github.io/?https://raw.githubusercontent.com/viebel/klipse/master/demos/styling/klipse.html)
 
+## Interactive slides with Klipse
+
+You can build interactive slides by integrating Klipse with [Reveal.js](https://github.com/hakimel/reveal.js/) using this  [template for reveal.js and Klipse](https://github.com/timothypratley/asciidoctor-revealjs-klipse).
+
 ## Klipse Community
 
 Here are a couple of examples of blogs using the klipse plugin:

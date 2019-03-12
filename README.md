@@ -2,6 +2,8 @@
 
 KLIPSE is a simple client-side code evaluator pluggable on any web page.
 
+If you like this stuff, please consider a (small donation) on [Patreon](https://www.patreon.com/bePatron?u=18227864).
+
 
 ## Plugin
 
@@ -489,6 +491,8 @@ Languages supported in the REPL: `clojure` and `clojurescript`.
 
 
 # License
+
+If you like this stuff, please consider a (small donation) on [Patreon](https://www.patreon.com/bePatron?u=18227864).
 
 See the [LICENSE](https://github.com/viebel/klipse/blob/master/LICENSE.txt) file for license rights and limitations (GNU General Public License v3.0).
 

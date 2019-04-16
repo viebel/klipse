@@ -1,11 +1,11 @@
 (ns klipse.lang.prolog
   (:require-macros
-   [gadjett.core :refer [dbg my-with-redefs]]
+   [gadjett.core :refer [dbg]]
    [purnam.core :refer [!> ?]]
-   [cljs.core.async.macros :refer [go]])
+   [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [clojure.string :as string]
-   [cljs.core.async :refer [chan put!]]
+   [cljs.core.async :refer [chan put! timeout]]
    [klipse.utils :refer [runonce]]
    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
 
@@ -35,39 +35,49 @@
         (put! c (str o))))
     c))
 
-(defn query* [exp]
-  (let [my-session @session
-        res (!> my-session.query exp)]
+(defn query* [thread exp]
+  (let [res (!> thread.query exp)]
     (if (= true res)
       [:ok true]
       [:error (str res)])))
 
-(defn answer* [cnt num-solutions callback]
-  (let [my-session @session]
-    (!> my-session.answer
-        (fn [ans]
-          (case ans
-            false (if (zero? num-solutions)
-                    (callback "No solutions.")
-                    (callback (str "Found " num-solutions " solutions.")))
-            nil (js/setTimeout
-                 #(do
-                    (callback {:data (str num-solutions " solutions after "  (* (inc cnt) 1000) " tries. Continuing to try...\n")
-                               :remove-previous-results true})
-                    (answer* (inc cnt) num-solutions callback))
-                  100)
+(defn pl-answer [thread]
+  (let [c (chan)]
+    (!> thread.answer (fn [answer]
+                        (put! c (if (nil? answer) "nil" answer))))
+    c))
+
+(defn answer* [thread c]
+  (go-loop [cnt 0
+            num-solutions 0]
+    (let [ans (<! (pl-answer thread))]
+      (case ans
+        false (if (zero? num-solutions)
+                (put! c "No solutions.")
+                (put! c (str "Found " num-solutions " solutions.")))
+        "nil" (do
+              (put! c {:data (str num-solutions " solutions after "  (* (inc cnt) 1000) " tries. Continuing to try...\n")
+                       :remove-previous-results true})
+              (<! (timeout 100))
+              (recur (inc cnt) num-solutions))
+        (do
+          (if (< cnt 30)
             (do
-              (callback (str (!> js/pl.format_answer ans) "\n"))
-              (answer* (inc cnt) (inc num-solutions) callback)))))))
+              (put! c (str (!> js/pl.format_answer ans) "\n"))
+              (<! (timeout 100))
+              (recur (inc cnt) (inc num-solutions)))
+            (put! c (str "Found " num-solutions " so far, they might be more..."))))))))
 
 (defn query [exp _]
-  (let [c (chan)]
+  (let [c (chan)
+        Thread (? js/pl.type.Thread) ; to understand the difference between threads and sessions, see https://github.com/jariazavalverde/tau-prolog/issues/64
+        thread (new Thread @session)]
     (try
       (init)
-      (let [[status res] (query*  exp)]
+      (let [[status res] (query* thread exp)]
         (if (= :error status)
           (put! c res)
-          (answer* 0 0 #(put! c %))))
+          (answer* thread c)))
       (catch :default o
         (put! c (str o))))
     c))

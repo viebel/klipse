@@ -1,5 +1,4 @@
 (ns klipse.lang.oblivion
-  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
    [gadjett.core :as gadjett :refer [dbg]]
    [cljs.core.async.macros :refer [go]])
@@ -8,16 +7,17 @@
    [klipse.utils :refer [add-script-tag!]]
    [clojure.string :as string]
    [cljs.core.async :refer [chan close! <! put!]]
-   [klipse.common.registry :refer [scripts-src codemirror-mode-src register-mode]]))
+   [klipse.common.registry :refer [scripts-src codemirror-mode-src register-mode]]
+   [applied-science.js-interop :as j]))
 
 
 (defn render* [src {:keys [container] :as opts}]
   (try
     (let [_ (gdom/setTextContent container "")
-          [stdout svgout] (!> js/Oblivion.Compile src 2)]
+          [stdout svgout] (j/call js/Oblivion :Compile src 2)]
       (if (string? stdout) ; success
         (do
-          (! container.innerHTML svgout)
+          (j/assoc! container :innerHTML svgout)
           stdout)
         (str stdout)))
     (catch :default e

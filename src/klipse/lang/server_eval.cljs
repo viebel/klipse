@@ -1,14 +1,14 @@
 (ns klipse.lang.server-eval
   (:require-macros
-    [purnam.core :refer [? ! !>]]
     [cljs.core.async.macros :refer [go go-loop]])
-  (:require 
-    [klipse.lang.replit :refer [connect-and-evaluate]]
-    [klipse.utils :refer [runonce]]
-    [cljs.core.async :refer [chan <! >! put!]]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+  (:require
+   [klipse.lang.replit :refer [connect-and-evaluate]]
+   [klipse.utils :refer [runonce]]
+   [cljs.core.async :refer [chan <! >! put!]]
+   [klipse.common.registry :refer [codemirror-mode-src register-mode]]
+   [applied-science.js-interop :as j]))
 
-(when (? js/window.ReplitClient)
+(when (j/get js/window :ReplitClient)
   (def min-eval-idle-msec 3000); throttle to protect the server
   (def python
     {:selector "selector_eval_python"

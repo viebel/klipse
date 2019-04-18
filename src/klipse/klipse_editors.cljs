@@ -1,10 +1,10 @@
 (ns klipse.klipse-editors
   (:require-macros
    [gadjett.core :refer [dbg]]
-   [purnam.core :refer [! !>]]
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [goog.dom :as gdom]
+   [applied-science.js-interop :as j]
    [gadjett.collections :refer [compactize-map]]
    [cljs.spec.alpha :as s]
    [klipse.utils :refer [verbose?]]
@@ -94,7 +94,7 @@
   (let [wrapped-res (if (= (type res) js/Error)
                       (str "<div class=\"klipse-error\">" res "</div>")
                       res)]
-    (! elem.innerHTML wrapped-res)))
+    (j/assoc! elem :innerHTML wrapped-res)))
 
 (defn eval-in-html-editor [eval-fn result-element editor-source snippet-args state]
   (eval-in-editor eval-fn
@@ -141,7 +141,7 @@
 (def editors (atom {}))
 (defn add-editor [editor snippet-num]
   (swap! editors assoc snippet-num editor)
-  (! js/window.klipse_editors (clj->js @editors)))
+  (j/assoc! js/window :klipse_editors (clj->js @editors)))
 
 (defmethod create-editor :code-mirror [_ {:keys [mode snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result] :as editor-args}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
@@ -160,7 +160,7 @@
     (handle-events in-editor
                    (compactize-map {:idle-msec idle-msec
                                     :on-completion (when (= "clojure" editor-in-mode)
-                                                     #(trigger-autocomplete in-editor (!> js/window.klipse_clj.lang.clojure.completions (current-token in-editor))))
+                                                     #(trigger-autocomplete in-editor (j/call (j/get-in js/window [:klipse_clj :lang :clojure] :completions) (current-token in-editor))))
                                     :on-should-eval #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)}))
     (add-editor in-editor snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))

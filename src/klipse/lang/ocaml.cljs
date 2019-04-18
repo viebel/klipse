@@ -1,12 +1,12 @@
 (ns klipse.lang.ocaml
   (:require-macros
    [gadjett.core :refer [dbg my-with-redefs]]
-   [purnam.core :refer [!>]]
    [cljs.core.async.macros :refer [go]])
   (:require
    [clojure.string :as string]
    [cljs.core.async :refer [chan put!]]
-   [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+   [klipse.common.registry :refer [codemirror-mode-src register-mode]]
+   [applied-science.js-interop :as j]))
 
 (def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
@@ -19,7 +19,7 @@
 
 (defn eval-with-types [exp]
   (try
-    [:ok (!> js/evaluator.execute exp)]
+    [:ok (j/call js/evaluator :execute exp)]
     (catch :default o
       [:error (str o)])))
 

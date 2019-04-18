@@ -1,5 +1,4 @@
 (ns klipse.utils
-  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
    [gadjett.core :refer [dbg]]
    [cljs.core.async.macros :refer [go go-loop]])
@@ -8,7 +7,8 @@
    [clojure.walk :refer [keywordize-keys]]
    [cljs-http.client :as http]
    [cljs.core.async :refer [timeout <! chan put!]]
-   [cemerick.url :refer [url]]))
+   [cemerick.url :refer [url]]
+   [applied-science.js-interop :as j]))
 
 
 (defn current-url []
@@ -125,11 +125,11 @@
                                         ;inspired by https://blog.risingstack.com/writing-a-javascript-framework-sandboxed-code-evaluation/
   (set! secured-eval true)
   (let [original-eval js/eval]
-    (! js/window.eval (fn [src]
+    (j/assoc! js/window :eval (fn [src]
                         (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
     (set! eval-in-global-scope js/eval)
-    (! js/window.klipse_unsecured_eval original-eval)
-    (! js/window.klipse_eval_sandbox (clj->js (zipmap the-forbidden-symbols (repeat {}))))
+    (j/assoc! js/window :klipse_unsecured_eval original-eval)
+    (j/assoc! js/window :klipse_eval_sandbox (clj->js (zipmap the-forbidden-symbols (repeat {}))))
     #_(set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.getOwnPropertyNames js/window) (repeat {}))))
     #_(doseq [sym permitted-symbols]
       (aset js/klipse-eval-sandbox sym (aget js/window sym)))))
@@ -144,7 +144,7 @@
     (aset js/window "klipse_container_id" container-id)))
 
 (defn unsecured-eval-in-global-scope [s]
-  ((or (? js/window.klipse_unsecured_eval) js/eval) s)) ; we have to use the unsecured eval because external scripts usually manipulate the DOM!
+  ((or (j/get js/window :klipse_unsecured_eval) js/eval) s)) ; we have to use the unsecured eval because external scripts usually manipulate the DOM!
                                         ;this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
 
@@ -196,7 +196,7 @@
       (aset node "onerror" #(put! c [:error url]))      
       (aset node "onload" #(put! c [:ok url]))
       (aset node "type" "text/javascript")
-      (!> body.appendChild node)
+      (j/call body :appendChild node)
       c)))
 
 

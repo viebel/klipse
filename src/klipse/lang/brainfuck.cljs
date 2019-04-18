@@ -1,11 +1,11 @@
 (ns klipse.lang.brainfuck
   (:require-macros
     [gadjett.core :refer [dbg]]
-    [purnam.core :refer [!>]]
     [cljs.core.async.macros :refer [go]])
   (:require
-    [clojure.string :refer [split-lines join]]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
+   [clojure.string :refer [split-lines join]]
+   [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
+   [applied-science.js-interop :as j]))
 
 (defn boldify-head [data head]
   (let [head-value (str "<strong>" (nth data head) "</strong>")]
@@ -37,7 +37,7 @@
                      (filter identity)
                      first
                      second)]
-      [:ok (-> (!> js/window.brainfuck x input)
+      [:ok (-> (j/call js/window :brainfuck x input)
                (js->clj :keywordize-keys true)
                to-html)])
     (catch :default o
@@ -45,7 +45,7 @@
 
 (defn bf-txt [x]
   (try
-    [:ok (!> js/brainfuck.text x)]
+    [:ok (j/call js/brainfuck :text x)]
     (catch :default o
       [:error (str o)])))
 

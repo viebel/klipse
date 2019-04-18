@@ -1,15 +1,15 @@
 (ns klipse.lang.jsx
   (:require-macros
    [gadjett.core :refer [dbg]]
-   [purnam.core :refer [!>]]
    [cljs.core.async.macros :refer [go]])
   (:require
    [goog.dom :as gdom]
-   [klipse.utils :refer [eval-in-global-scope verbose?]]    
-   [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
+   [klipse.utils :refer [eval-in-global-scope verbose?]]
+   [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
+   [applied-science.js-interop :as j]))
 
 (defn babel [src]
-  (-> (!> js/Babel.transform src #js {:presets #js ["react"]})
+  (-> (j/call js/Babel :transform src #js {:presets #js ["react"]})
       (aget "code")))
 
 (defn eval-jsx [exp _]

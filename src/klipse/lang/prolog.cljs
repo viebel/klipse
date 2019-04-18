@@ -1,24 +1,24 @@
 (ns klipse.lang.prolog
   (:require-macros
    [gadjett.core :refer [dbg my-with-redefs]]
-   [purnam.core :refer [!> ?]]
    [cljs.core.async.macros :refer [go]])
   (:require
    [clojure.string :as string]
    [cljs.core.async :refer [chan put!]]
    [klipse.utils :refer [runonce]]
-   [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+   [klipse.common.registry :refer [codemirror-mode-src register-mode]]
+   [applied-science.js-interop :as j]))
 
 
 (def session (atom nil))
 (defn init []
   (when (not @session)
-    (reset! session (!> js/pl.create))))
+    (reset! session (j/call js/pl :create))))
 
 
 (defn consult* [exp]
   (let [my-session @session
-        res (!> my-session.consult exp)]
+        res (j/call my-session :consult exp)]
     (if (= true res)
       [:ok true]
       [:error (str res)])))
@@ -37,14 +37,14 @@
 
 (defn query* [exp]
   (let [my-session @session
-        res (!> my-session.query exp)]
+        res (j/call my-session :query exp)]
     (if (= true res)
       [:ok true]
       [:error (str res)])))
 
 (defn answer* [cnt num-solutions callback]
   (let [my-session @session]
-    (!> my-session.answer
+    (j/call my-session :answer
         (fn [ans]
           (case ans
             false (if (zero? num-solutions)
@@ -57,7 +57,7 @@
                     (answer* (inc cnt) num-solutions callback))
                   100)
             (do
-              (callback (str (!> js/pl.format_answer ans) "\n"))
+              (callback (str (j/call js/pl :format_answer ans) "\n"))
               (answer* (inc cnt) (inc num-solutions) callback)))))))
 
 (defn query [exp _]

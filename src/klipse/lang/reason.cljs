@@ -1,13 +1,13 @@
 (ns klipse.lang.reason
   (:require-macros
    [gadjett.core :refer [dbg my-with-redefs]]
-   [purnam.core :refer [!> ?]]
    [cljs.core.async.macros :refer [go]])
   (:require
    [klipse.lang.ocaml :as ocaml]
    [clojure.string :as string]
    [cljs.core.async :refer [chan put!]]
-   [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+   [klipse.common.registry :refer [codemirror-mode-src register-mode]]
+   [applied-science.js-interop :as j]))
 
 (def eval-in-global-scope js/eval); this is the trick to make `eval` work in the global scope: http://perfectionkills.com/global-eval-what-are-the-options/
 
@@ -31,13 +31,13 @@
              js/printRE)]
     (catch :default e
       [:error (str
-               "Line " (? e.location.startLine)
+               "Line " (j/get-in e [:location :startLine])
                ":"
-               (? e.location.startLineStartChar)
+               (j/get-in e [:location :startLineStartChar])
                "-"
-               (? e.location.endLineEndChar)
+               (j/get-in e [:location :endLineEndChar])
                "  "
-               (-> (string/split (? e.message) ": ")
+               (-> (string/split (j/get e :message) ": ")
                    second))])))
 
 (defn reason-3->ocaml [src]
@@ -46,13 +46,13 @@
              js/printML)]
     (catch :default e
       [:error (str
-               "Line " (? e.location.startLine)
+               "Line " (j/get-in e [:location :startLine])
                ":"
-               (? e.location.startLineStartChar)
+               (j/get-in e [:location :startLineStartChar])
                "-"
-               (? e.location.endLineEndChar)
+               (j/get-in e [:location :endLineEndChar])
                "  "
-               (-> (string/split (? e.message) ": ")
+               (-> (string/split (j/get e :message) ": ")
                    second))])))
 
 

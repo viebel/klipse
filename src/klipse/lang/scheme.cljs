@@ -1,26 +1,26 @@
 (ns klipse.lang.scheme
-  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
     [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
-    [cljs.core.async :refer [<! put! chan]]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
+   [cljs.core.async :refer [<! put! chan]]
+   [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
+   [applied-science.js-interop :as j]))
 
 (defn display [result]
   (if (aget result "inspect")
-    (!> result.inspect)
+    (j/call result :inspect)
     (str result)))
 
 (defn create-interpreter [on-error]
-  (let [klass (? js/BiwaScheme.Interpreter)]
+  (let [klass (j/get js/BiwaScheme :Interpreter)]
     (new klass on-error)))
 
 (defn str-eval-async [exp _]
   (let [c (chan)
         interpreter (create-interpreter (fn [err] (put! c (str err))))]
     (set! js/window.exp exp)
-    (put! c (-> (!> interpreter.evaluate exp)
+    (put! c (-> (j/call interpreter :evaluate exp)
                 display))
     c))
 

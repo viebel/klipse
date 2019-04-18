@@ -1,5 +1,4 @@
 (ns klipse.lang.function-plot
-  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
    [gadjett.core :as gadjett :refer [dbg]]
    [cljs.core.async.macros :refer [go]])
@@ -9,13 +8,14 @@
    [clojure.string :as string]
    [klipse.lang.javascript :refer [str-eval-js-async]]
    [cljs.core.async :refer [chan close! <! put!]]
-   [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
+   [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
+   [applied-science.js-interop :as j]))
 
 
 (defn draw-chart [data-js container-id]
-  (let [chart-constructor (? js/google.visualization.ChartWrapper)
+  (let [chart-constructor (j/get-in js/google [:visualization :ChartWrapper])
         chart-wrapper (new chart-constructor data-js)]
-    (!> chart-wrapper.draw)))
+    (j/call chart-wrapper :draw)))
 
 (defn parse-js-object [s]
   ;; we don't want to use JSON.parse in order to allow non-quoted keys
@@ -28,7 +28,7 @@
   (try
     (let [data (parse-js-object src)]
       (aset data "target" (str "#" container-id))
-      (!> js/window.functionPlot data))
+      (j/call js/window :functionPlot data))
     (catch :default e
       (gdom/setTextContent container (str e)))))
 

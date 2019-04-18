@@ -1,5 +1,4 @@
 (ns klipse.lang.google-charts
-  (:use-macros [purnam.core :only [? ! !>]])
   (:require-macros
    [gadjett.core :as gadjett :refer [dbg]]
    [cljs.core.async.macros :refer [go]])
@@ -9,24 +8,25 @@
    [clojure.string :as string]
    [klipse.lang.javascript :refer [str-eval-js-async]]
    [cljs.core.async :refer [chan close! <! put!]]
-   [klipse.common.registry :refer [codemirror-mode-src register-mode]]))
+   [klipse.common.registry :refer [codemirror-mode-src register-mode]]
+   [applied-science.js-interop :as j]))
 
 (defonce google-charts-loaded false)
 (defn ensure-google-charts-loaded! []
   (go
     (when-not google-charts-loaded
       (<! (add-script-tag! "https://www.gstatic.com/charts/loader.js"))
-      (!> js/google.charts.load "current" (clj->js {:packages ["corechart" "table"]}))
+      (j/call-in js/google [:charts :load]) "current" (clj->js {:packages ["corechart" "table"]})
       (let [c (chan)]
-        (!> js/google.charts.setOnLoadCallback #(put! c :ok))
+        (j/call-in js/google [:charts :setOnLoadCallback]) #(put! c :ok)
         (<! c))
       (set! google-charts-loaded true))))
 
 
 (defn draw-chart [data-js container-id]
-  (let [chart-constructor (? js/google.visualization.ChartWrapper)
+  (let [chart-constructor (j/get-in js/google [:visualization :ChartWrapper])
         chart-wrapper (new chart-constructor data-js)]
-    (!> chart-wrapper.draw)))
+    (j/call chart-wrapper :draw)))
 
 (defn parse-js-object [s]
   ;; we don't want to use JSON.parse in order to allow non-quoted keys

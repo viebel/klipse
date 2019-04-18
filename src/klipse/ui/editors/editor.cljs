@@ -1,7 +1,6 @@
 (ns klipse.ui.editors.editor
   (:use-macros
-   [gadjett.core :only [dbg]]
-   [purnam.core :only [? ! !>]])
+   [gadjett.core :only [dbg]])
   (:require
    [goog.dom :as gdom]
    [klipse.dom-utils :refer [create-div-after add-class]]
@@ -10,7 +9,8 @@
    cljsjs.codemirror.addon.edit.matchbrackets
    cljsjs.codemirror.addon.edit.closebrackets
    cljsjs.codemirror.addon.hint.show-hint
-   [clojure.string :refer [blank?]]))
+   [clojure.string :refer [blank?]]
+   [applied-science.js-interop :as j]))
 
 (def code-mirror js/CodeMirror)
 
@@ -58,7 +58,7 @@
 
 (defmethod beautify-language "text/x-sql" [editor _]
   (->> (get-value editor)
-       (!> js/sqlFormatter.format)
+       (j/call js/sqlFormatter :format)
        (set-value editor)))
 
 (defn fix-comments-lines [editor mode]
@@ -69,8 +69,8 @@
     editor))
 
 (defn do-indent [editor]
-  (!> editor.operation #(dotimes [line (!> editor.lineCount)]
-                          (!> editor.indentLine line "smart")))
+  (j/call editor :operation #(dotimes [line (j/call editor :lineCount)]
+                               (j/call editor :indentLine line "smart")))
   editor)
 
 (defn beautify [editor mode {:keys [indent? remove-ending-comments?]}]
@@ -85,19 +85,19 @@
       (beautify mode opts)))
 
 (defn list-completions [completions editor]
-  (let [cursor (!> editor.getCursor)
-        token (!> editor.getTokenAt cursor)
-        start (? token.start)
-        end (? cursor.ch)
-        line (? cursor.line)]
+  (let [cursor (j/call editor :getCursor)
+        token (j/call editor :getTokenAt cursor)
+        start (j/get token :start)
+        end (j/get cursor :ch)
+        line (j/get cursor :line)]
     (clj->js {:list (rest completions)
               :from (js/CodeMirror.Pos line start)
               :to   (js/CodeMirror.Pos line end)})))
 
 (defn current-token [editor]
-  (let [cursor (!> editor.getCursor)
-        token (!> editor.getTokenAt cursor)]
-    (? token.string)))
+  (let [cursor (j/call editor :getCursor)
+        token (j/call editor :getTokenAt cursor)]
+    (j/get token :string)))
 
 (defn trigger-autocomplete [editor completions]
   (let [hint-fn (partial list-completions completions)]

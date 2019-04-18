@@ -1,15 +1,15 @@
 (ns klipse.lang.cpp
-  (:require-macros [purnam.core :refer [!>]])
-  (:require 
-    [cljs.core.async :refer [chan put! close!]]
-    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]))
+  (:require
+   [cljs.core.async :refer [chan put! close!]]
+   [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
+   [applied-science.js-interop :as j]))
 
 (defn eval-in-chan [s c]
   (try
     (let [config  (clj->js {:stdio
                             {:write #(put! c %)}})
           input ""; for the moment, we don't support input to cpp programs
-          exitCode (!> js/JSCPP.run s input config)]
+          exitCode (j/call js/JSCPP :run s input config)]
       (if (= 0 exitCode)
         [:ok 0]
         [:error exitCode]))

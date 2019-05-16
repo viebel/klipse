@@ -2,7 +2,7 @@
 
 Klipse is a Javacript plugin for embedding interactive code snippets in tech blogs. See examples at https://blog.klipse.tech/ 
 
-Technically, Klipse is a small piece of javascript code tha evaluates code snippets in the browser and it is pluggable on any web page.
+Technically, Klipse is a small piece of javascript code that evaluates code snippets in the browser and it is pluggable on any web page.
 
 If you like this stuff, please consider a (small donation) on [Patreon](https://www.patreon.com/bePatron?u=18227864).
 

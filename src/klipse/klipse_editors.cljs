@@ -160,7 +160,7 @@
     (handle-events in-editor
                    (compactize-map {:idle-msec idle-msec
                                     :on-completion (when (= "clojure" editor-in-mode)
-                                                     #(trigger-autocomplete in-editor (j/call (j/get-in js/window [:klipse_clj :lang :clojure] :completions) (current-token in-editor))))
+                                                     #(trigger-autocomplete in-editor (j/call-in js/window [:klipse_clj :lang :clojure :completions] (current-token in-editor))))
                                     :on-should-eval #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)}))
     (add-editor in-editor snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))

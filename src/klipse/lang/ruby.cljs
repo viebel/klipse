@@ -14,7 +14,7 @@
 (def load-opal-parser-once (runonce load-opal-parser))
 
 (defn not-enumerable [obj]
-  (if (or (number? obj) (string? obj)) true))
+  (or (number? obj) (string? obj)))
 
 (defn str-eval-async [exp _]
   (go

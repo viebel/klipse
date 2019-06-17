@@ -18,7 +18,7 @@
     (load-opal-parser-once)
     (try
       (let [res (j/call js/Opal :eval exp)]
-        (j/call res :$inspect))
+        (.apply (aget res "$inspect") res)) ;; we use `apply` because `j/call` is buggy (doesn't work with primitive types)
       (catch js/Object e
         (str e)))))
 

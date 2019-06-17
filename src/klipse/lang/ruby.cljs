@@ -13,15 +13,12 @@
 
 (def load-opal-parser-once (runonce load-opal-parser))
 
-(defn not-enumerable [obj]
-  (or (number? obj) (string? obj)))
-
 (defn str-eval-async [exp _]
   (go
     (load-opal-parser-once)
     (try
       (let [res (j/call js/Opal :eval exp)]
-        (if (not-enumerable res) (str res) (j/call res :$inspect)))
+        (.apply (aget res "$inspect") res)) ;; we use `apply` because `j/call` is buggy (doesn't work with primitive types)
       (catch js/Object e
         (str e)))))
 

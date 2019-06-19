@@ -1,4 +1,4 @@
-# KLIPSE 
+# Klipse
 
 Klipse is a Javacript plugin for embedding interactive code snippets in tech blogs. See examples at https://blog.klipse.tech/ 
 
@@ -111,7 +111,7 @@ Here is the [full interactive guide](https://book.klipse.tech/interactive_javasc
 Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/viebel/50oLnykk/).
 And here are detailed explanations about [a javascript live code editor in a blog post](http://untangled.io/how-to-use-the-live-code-editor/).
 
-## clojure
+## clojure and clojurescript in a web page
 
 > Pay attention: for clojure interactive snippets, you must use the **non-minified** version of klipse as for the moment, self-host cljs doesn't support advanced compilation!
 
@@ -133,6 +133,23 @@ You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klips
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
 ```
 
+## clojurescript project
+
+If you want to integrate Klipse inside a Clojuresccript  project, it is recommended to consume Klipse as a Clojurescript library like any other Clojurescript lib, just like this [![Clojars](https://img.shields.io/clojars/v/viebel/klipse.svg)](https://clojars.org/viebel/klipse). 
+
+Inside your code you have to require two namespaces and call a function:
+
+```clojure
+(ns my.project
+  (:require [klipse.run.plugin.plugin] ;; this namespace initializes Klipse. We require it for its side effects
+            [klipse.plugin :as klipse-plugin]))
+
+(klipse-plugin/init #js {:selector ".language-klipse"
+                         :selector_reagent ".language-reagent"})))
+  
+```
+
+Here is an example of a [tiny reagent demo project](https://gitlab.com/viebel/clojurescript-reagent-klipse-demo) that integrates Klipse as a Clojurescript library.
 
 ## python
 

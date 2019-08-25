@@ -47,6 +47,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - BrainFuck
 - JSX
 - EcmaScript2017
+- SQL: See [Best SQL Tutorial](https://blog.klipse.tech/javascript/2016/11/07/best-sql-tutorial.html)
 - Google Charts: See [Interactive Business Report with Google Charts](http://blog.klipse.tech/data/2017/03/15/google-charts.html).
 
 The code editing inside the interactive snippets is powered by [CodeMirror](http://codemirror.net/).
@@ -296,6 +297,19 @@ Here is the javascript tag that you need to setup for embedding ReasonML snippet
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
+## SQL
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_sql: '.language-klipse-sql', // css selector for the html elements you want to klipsify
+        editor_type: 'html', // will cause output to render as HTML tables instead of text
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
 
 
 

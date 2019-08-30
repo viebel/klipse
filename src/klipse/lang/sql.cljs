@@ -1,13 +1,11 @@
 (ns klipse.lang.sql
   (:require-macros
-    [gadjett.core :refer [dbg]]
-    [cljs.core.async.macros :refer [go go-loop]])
+   [gadjett.core :refer [dbg]]
+   [cljs.core.async.macros :refer [go]])
   (:require
-   [klipse.utils :refer [runonce runonce-async]]
-   [cljs.core.async :refer [<! timeout chan put!]]
+   [klipse.utils :refer [runonce]]
    [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
    [applied-science.js-interop :as j]))
-
 
 (def db nil)
 
@@ -25,6 +23,7 @@
           e))))
 
 (def opts {:editor-in-mode "text/x-sql"
+           :default-editor "html"
            :eval-fn str-eval-async
            :external-scripts [(codemirror-mode-src "sql") (scripts-src "sql-formatter.min.js") (scripts-src "sql.js") "https://gist.githubusercontent.com/viebel/fc86366093c27aca0adc103b1d20190d/raw"]; https://github.com/kripken/sql.js/
            :comment-str "--"})

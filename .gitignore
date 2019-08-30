@@ -21,3 +21,4 @@ docs/cache-cljs/local-m2/
 *.iml
 out/
 .rebel_readline_history
+pom.xml*

@@ -21,7 +21,7 @@
     INSERT INTO play VALUES ("chess", 3200, "saturday");
   </code></pre>
 
-  <pre><code class="sql">
+  <pre><code class="sql" data-editor-type="html">
     SELECT game, sum(points) as total_points FROM play GROUP BY game HAVING total_points &gt; 10
   </code></pre>
 
@@ -31,5 +31,6 @@
    };
   </script>
   <script src="/cljs-out/dev-main.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/sql.css">
 </body>
 </html>

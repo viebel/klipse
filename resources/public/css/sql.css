@@ -1,0 +1,49 @@
+
+.klipse-result table{
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.klipse-result th{
+  padding: 3px;
+  border:2px solid #000000;
+}
+
+.klipse-result td{
+  padding: 3px;
+  border:1px solid #000000;
+}
+
+.klipse-result table{
+  margin: 10px 10px 0px 10px;
+}
+
+.klipse-result table
+{
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  font-size: 12px;
+  text-align: left;
+}
+.klipse-result table {
+  border: 1px solid black;
+}
+
+.klipse-result  table
+{
+  font-size: 13px;
+  font-weight: normal;
+  padding: 8px;
+  background: #b9c9fe;
+  color: #039;
+}
+.klipse-result table
+{
+  padding: 8px;
+  background: #e8edff;
+  color: #669;
+}
+.klipse-result tr:hover td
+{
+  background: #d0dafd;
+  color: #339;
+}

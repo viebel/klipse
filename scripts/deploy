@@ -6,6 +6,8 @@ echo "uploading to google storage"
 gsutil -h "Content-Encoding:gzip" -h "Content-Type:application/javascript" cp resources/public/plugin/js/klipse_plugin.js.gz gs://app.klipse.tech/plugin/js/klipse_plugin.js
 gsutil -h "Content-Encoding:gzip" -h "Content-Type:application/javascript" cp resources/public/plugin_prod/js/klipse_plugin.min.js.gz gs://app.klipse.tech/plugin_prod/js/klipse_plugin.min.js
 
+# if you need to copy a css file, run the following command:
+# gsutil -h "Content-Type:text/css" cp resources/public/css/sql.css gs://app.klipse.tech/css/sql.css
 gunzip resources/public/plugin/js/klipse_plugin.js.gz
 gunzip resources/public/plugin_prod/js/klipse_plugin.min.js.gz
 

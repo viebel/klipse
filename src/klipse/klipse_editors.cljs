@@ -122,10 +122,15 @@
        (merge codemirror-options-out))])
 
 
-(defmulti create-editor (fn [type _] type))
+(defmulti create-editor
+  "Creates editor (both input editors and output editors)
+  ** :code-mirror: The input editor is codemirror. The output editor is codemirror
+  ** :html: The input editor is codemirror. The output editor is html
+  ** :dom: The input editor is plain text. The output editor is plain text "
+  (fn [type _] type))
 
 (defmethod create-editor :html [_ {:keys [snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result] :as editor-args}]
-  (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
+  (let [[in-editor-options _] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
         container (create-div-after element (klipse-container-attrs snippet-num))
         result-element (when-not no-result (create-div-after element (klipse-result-attrs snippet-num)))
         in-editor (replace-element-by-editor element source-code in-editor-options :indent? indent?)
@@ -165,7 +170,7 @@
     (add-editor in-editor snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))
 
-(defmethod create-editor :dom [_ {:keys [snippet-num element out-editor-options source-code in-editor-options eval-fn default-txt idle-msec loop-msec preamble no-result] :as editor-args}]
+(defmethod create-editor :dom [_ {:keys [snippet-num element eval-fn default-txt loop-msec preamble no-result] :as editor-args}]
   (let [container  (create-div-after element (klipse-container-attrs snippet-num))
         result-element (when-not no-result (create-div-after element (klipse-result-attrs snippet-num)))
         snippet-args {:loop-msec loop-msec

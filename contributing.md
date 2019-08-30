@@ -35,7 +35,7 @@ Upgrade version in `project.clj`.
 
 Production build: http://localhost:5014/plugin-prod.html and http://localhost:5014/plugin-prod-more.html (some of the evaluators are incompatible on the same page)
 
-Dev build: http://localhost:5014/plugin-prod.html?dev=1
+Dev build: http://localhost:5014/plugin-dev.html?dev=1
 
  
 

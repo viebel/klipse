@@ -44,6 +44,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - prolog: evaluation is done with [Tau Prolog](http://tau-prolog.org/)
 - common lisp: evaluation is done with [JSCL](https://github.com/jscl-project/jscl)
 - PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
+- SQL: evaluation is done with [sql.js](https://github.com/kripken/sql.js). See [SQL example](https://blog.klipse.tech/javascript/2016/11/07/best-sql-tutorial.html)
 - BrainFuck
 - JSX
 - EcmaScript2017
@@ -283,6 +284,20 @@ Here is the javascript tag that you need to setup for embedding ReasonML snippet
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
+## SQL
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/sql.css">
+
+<script>
+    window.klipse_settings = {
+     selector_sql: '.sql',
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
+
 ## PHP
 
 ```html
@@ -316,40 +331,45 @@ Here are the settings for the klipse plugin a page level:
 
 ```javascript
 window.klipse_settings = {
-          eval_idle_msec: 20, // idle time in msec before the snippet is evaluated
-          selector: '.language-klipse', //selector for clojure evaluation snippets
-          selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
-          selector_reagent: '.language-reagent', // selector for reagent snippets
- 	  selector_google_charts: '.language-google-charts' // selector for google charts snippets
-	  selector_oblivion: '.language-oblivion' // selector for oblivion snippets
-          selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
-          selector_eval_ruby: '.language-klipse-eval-ruby', //selector for ruby evaluation snippets
-          selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
-          selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
-          selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets
-          selector_render_jsx: '.language-render-jsx', // selector for jsx rendering snippets		  
-	  selector_react: '.language-react', //selector for react snippets
-          selector_eval_php: '.language-klipse-eval-php', // selector for php evaluation snippets
-          selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
-          selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets
-          selector_eval_python_client: '.language-klipse-python', // selector for python evaluation snippets
-	  selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
-          selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
-          selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
-          selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets
-	  selector_brainfuck: '.language-klipse-brainfuck', // selector for brainfuck snippets
-	  selector_eval_ocaml: '.language-klipse-ocaml', // selector for ocaml evaluation snippets
-          selector_transpile_ocaml: '.language-transpile-ocaml', // selector for ocaml transpilation snippets
-          selector_transpile_reason_3: '.language-transpile-reason', // selector for reason transpilation snippets
-          selector_transpile_reason_3_to_ocaml: '.language-transpile-reason-to-ocaml', // selector for reason transpilation into ocaml snippets
-          selector_eval_reason_3: '.language-klipse-reason', // selector for reason evaluation snippets
-	  selector_ocaml_to_reason: '.language-klipse-ocaml-to-reason' // selector for ocaml to reason snippets
-	  cached_ns_root: '/my-root', // the root of clojure cached namespace
-	  clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
-	  clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
-	  codemirror_root: '/my-codemirror-root', // the root of codemirror files
-	  scripts_root: '/my-scripts-root', // the root of scripts files (e.g pretty_format.js, opal.js ...)
-	  
+     eval_idle_msec: 20, // idle time in msec before the snippet is evaluated
+     selector: '.language-klipse', //selector for clojure evaluation snippets
+     selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
+     selector_reagent: '.language-reagent', // selector for reagent snippets
+     selector_google_charts: '.language-google-charts' // selector for google charts snippets
+	 selector_oblivion: '.language-oblivion' // selector for oblivion snippets
+     selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
+     selector_eval_ruby: '.language-klipse-eval-ruby', //selector for ruby evaluation snippets
+     selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
+     selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
+     selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets
+     selector_render_jsx: '.language-render-jsx', // selector for jsx rendering snippets		  
+	 selector_react: '.language-react', //selector for react snippets
+     selector_eval_php: '.language-klipse-eval-php', // selector for php evaluation snippets
+     selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
+     selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets
+     selector_eval_python_client: '.language-klipse-python', // selector for python evaluation snippets
+	 selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
+     selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
+     selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
+     selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets
+	 selector_brainfuck: '.language-klipse-brainfuck', // selector for brainfuck snippets
+	 selector_eval_ocaml: '.language-klipse-ocaml', // selector for ocaml evaluation snippets
+     selector_transpile_ocaml: '.language-transpile-ocaml', // selector for ocaml transpilation snippets
+     selector_transpile_reason_3: '.language-transpile-reason', // selector for reason transpilation snippets
+     selector_transpile_reason_3_to_ocaml: '.language-transpile-reason-to-ocaml', // selector for reason transpilation into ocaml snippets
+     selector_eval_reason_3: '.language-klipse-reason', // selector for reason evaluation snippets
+	 selector_ocaml_to_reason: '.language-klipse-ocaml-to-reason' // selector for ocaml to reason snippets
+	 cached_ns_root: '/my-root', // the root of clojure cached namespace
+	 clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
+	 clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
+	 codemirror_root: '/my-codemirror-root', // the root of codemirror files
+	 scripts_root: '/my-scripts-root', // the root of scripts files (e.g pretty_format.js, opal.js ...)
+	 editor_type: 'code-mirror', //the type of the editor for the klipse result (the element where the evaluation of the snippet is displayed). Allowed values:
+                                 // "code-mirror": The input editor is codemirror. The output editor is codemirror
+                                 // "html": The input editor is codemirror. The output editor is html
+                                 // "dom": The input editor is plain text. The output editor is plain text
+
+ 
 };
 
 ```
@@ -386,7 +406,11 @@ The following attributes can be added to the DOM element of the snippet:
 
 * `data-eval-idle-msec`: (default 20) idle time in msec before the snippet is evaluated
 * `data-loop-msec`: (default `undefined`) the code is run in a loop every `data-loop-msec` msec
-* `data-preamble`: (default `""`) A string containing Clojurescript source code that should be run before the contents of this snippet, eg "(reset! canvas-id :canvas-2)". Useful for hiding implementation details from readers in blog posts, like e.g. setting a `canvas-id` atom to `:canvas-2`, or for performing any other setup operations that need to be done on a per-snippet basis.
+* `data-preamble`: (default `""`) A string containing Clojurescript source code that should be run before the contents of this snippet, eg "(reset! canvas-id :canvas-2)". Useful for hiding implementation details from readers in blog posts, like e.g. setting a `canvas-id` atom to `:canvas-2`, or for performing any other setup operations that need to be done on a per-snippet basis
+* `data-editor-type`: (default `"code-mirror"`) the type of the editor for the klipse result (the element where the evaluation of the snippet is displayed). Allowed values:
+  ** "code-mirror": The input editor is codemirror. The output editor is codemirror
+  ** "html": The input editor is codemirror. The output editor is html
+  ** "dom": The input editor is plain text. The output editor is plain text
 
 
 ### Javascript only

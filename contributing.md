@@ -54,3 +54,8 @@ Upgrade version number in `package.json` and then:
 ```bash
 npm publish
 ```
+## 5. Deploy to clojars
+
+```bash
+lein with-profile deploy deploy clojars
+```

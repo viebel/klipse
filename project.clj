@@ -1,13 +1,17 @@
-(defproject klipse "7.9.0"
+(defproject viebel/klipse "7.9.1"
   :description "Embeddable multi-language WEB REPL"
+  :license "GPL-3.0"
+  :url "https://github.com/viebel/klipse"
   :resource-paths ["scripts" "src" "resources" "target"]
   :min-lein-version "2.8.1"
   :middleware [lein-tools-deps.plugin/resolve-dependencies-with-deps-edn]
   :lein-tools-deps/config {:config-files [:install :user :project]}
-;  :dependencies [[org.clojure/clojurescript "1.10.492"]]
+  :profiles {:deploy {:resource-paths ^:replace ["src"]
+                      :lein-tools-deps/config ^:replace {:config-files [:install :user]}}}
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-hiera "0.9.5"]
             [lein-tools-deps "0.4.1"]]
+  :clean-targets ^{:protect false} ["targets"]
   :hiera {:path "deps-graph.png"
           :vertical true
           :show-external false

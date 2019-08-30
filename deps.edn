@@ -4,8 +4,7 @@
         viebel/klipse-clj          #_{:git/url "https://github.com/viebel/klipse-clj.git"
                                       :sha "642bd2815fd046369a60120954b7cad929cde711"} #_{:local/root "/Users/viebel/prj/klipse-clj"} {:mvn/version "10.1.3"}
         org.clojure/core.async {:mvn/version "0.4.474"}
-        appliedscience/js-interop {:git/url "https://github.com/appliedsciencestudio/js-interop/"
-                                   :sha "43168deb16122965da08f525f8774c30b04cfcc8"}#_{:mvn/version "0.1.13"}
+        appliedscience/js-interop {:mvn/version "0.1.20"}
         viebel/codemirror-parinfer {:mvn/version "0.0.3"}
         cljsjs/markdown {:mvn/version "0.6.0-beta1-0"}
         cljs-http {:mvn/version "0.1.42"}

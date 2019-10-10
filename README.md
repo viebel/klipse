@@ -80,6 +80,16 @@ The selector keys are per language (see below for a list of supported languages)
 ```
 
 3. Add the `javascript` library at the **end of the body tag** :
+
+For Clojure:
+
+```html
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+</body>
+```
+
+For other languages:
+
 ```html
     <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 </body>

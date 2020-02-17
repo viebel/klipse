@@ -2,7 +2,7 @@
  :deps {org.clojure/clojure {:mvn/version "1.9.0"}
         org.clojure/clojurescript  #_{:git/url "https://github.com/clojure/clojurescript" :sha "6ccb629e365f46a9516e4defeced652cce9d4d35"} {:mvn/version "1.10.520"}
         viebel/klipse-clj          #_{:git/url "https://github.com/viebel/klipse-clj.git"
-                                      :sha "642bd2815fd046369a60120954b7cad929cde711"} #_{:local/root "/Users/viebel/prj/klipse-clj"} {:mvn/version "10.1.5"}
+                                      :sha "642bd2815fd046369a60120954b7cad929cde711"} #_{:local/root "/Users/viebel/prj/klipse-clj"} {:mvn/version "10.1.6"}
         org.clojure/core.async {:mvn/version "0.4.474"}
         appliedscience/js-interop {:mvn/version "0.1.20"}
         viebel/codemirror-parinfer {:mvn/version "0.0.3"}

@@ -5,11 +5,14 @@ Klipse is written in Clojurescript.
 
 # How to run locally
 
-
+from the terminal:
 
 ```bash
 clj -A:figwheel --build dev --repl
 ```
+
+
+From cider, you should tell cider to launch clj with `:fig-cider` alias so that figwheel-main libs are loadeine that cider builds.
 
 Then, open the browser [http://localhost:5014/js-dbg.html](http://localhost:5014/js-dbg.html)
 

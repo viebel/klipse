@@ -13,4 +13,5 @@ cp resources/public/plugin_prod/public/cljs-out/plugin_prod-main.js resources/pu
 ./scripts/add_license resources/public/plugin_prod/js/klipse_plugin.min.js
 ./scripts/add_license resources/public/plugin/js/klipse_plugin.js
 
-cp resources/public/css/codemirror.css resources/public/plugin/js/klipse_plugin.js resources/public/plugin_prod/js/klipse_plugin.min.js dist/
+cp resources/public/plugin/js/klipse_plugin.js resources/public/plugin_prod/js/klipse_plugin.min.js dist/
+sed 's#https://viebel.github.io/klipse/fonts/##g' resources/public/css/codemirror.css > dist/codemirror.css

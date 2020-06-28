@@ -21,6 +21,12 @@ You might need to refreh the test page to make sure the code changes were applie
  
 See [How to add a language to Klipse](https://github.com/viebel/klipse/wiki/How-to-add-a-language-to-klipse) to learn how to add a language to Klipse.
 
+# How to install locally
+
+```bash
+lein with-profile deploy install
+```
+
 ## How to deploy to production
 
 ## 0. Prepare

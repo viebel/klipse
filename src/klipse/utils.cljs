@@ -201,3 +201,16 @@
 
 
 (def add-script-tag-once! (runonce add-script-tag!))
+
+(defn zip-colls [& cs]
+  (partition (count cs)
+             (apply interleave cs)))
+
+(defn fill-range [coll n]
+  (reduce
+    (fn [res i]
+      (if (not-empty (filter #(= % i) res))
+        res
+        (cons i res)))
+    coll
+    (reverse (range n))))

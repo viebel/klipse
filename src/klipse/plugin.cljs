@@ -6,12 +6,12 @@
     [klipse.common.registry :refer [selector->mode mode-options]]
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
-    [klipse.utils :refer [load-scripts-mem securize-eval! default-forbidden-symbols]]
+    [klipse.utils :refer [load-scripts-mem securize-eval! default-forbidden-symbols zip-colls fill-range verbose?]]
     [cljs.spec.alpha :as s]
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
-    [cljs.core.async :refer [chan <! timeout]]
+    [cljs.core.async :refer [chan <! >! timeout sliding-buffer alts!]]
     [gadjett.collections :refer [collify compactize-map]]))
 
 (def out-placeholder "the evaluation will appear here (soon)...")
@@ -55,7 +55,8 @@
   [element
    {:keys [no_dynamic_scripts eval_idle_msec minimalistic_ui editor_type print_length beautify_strings eval_context codemirror_options_in codemirror_options_out] :or {beautify_strings false print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}}
    {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? beautify-output? min-eval-idle-msec external-scripts default-editor no-result] :as lang-opts :or {min-eval-idle-msec 0 beautify? true beautify-output? true external-scripts []}}
-   mode]
+   mode
+   channel]
   (go (when element
         (let [eval-args (eval-args-from-element element {:eval-context eval_context :print-length print_length :beautify-strings beautify_strings})
               eval-fn-with-args #(eval-fn %1 (merge eval-args %2))
@@ -80,7 +81,8 @@
                           :eval-fn (if (= :ok load-status) eval-fn-with-args #(chan))
                           :source-code source-code
                           :default-txt (if (= :ok load-status) out-placeholder load-error)
-                          :idle-msec idle-msec})))))
+                          :idle-msec idle-msec
+                          :on-eval-channel channel})))))
 
 (s/def ::dom-element isElement)
 (s/def ::editor-in-mode string?)
@@ -90,7 +92,7 @@
 (s/def ::eval_idle_msec integer?)
 (s/def ::minimalistic_ui #(or (= % true) (= % false)))
 
-(s/def ::options (s/keys :req-un [::editor-in-mode ::editor-out-mode ::eval-fn ::comment-str])) 
+(s/def ::options (s/keys :req-un [::editor-in-mode ::editor-out-mode ::eval-fn ::comment-str]))
 (s/def ::klipse-settings (s/keys :opt-un [::eval_idle_msec ::minimalistic_ui]))
 
 (s/fdef klipsify-with-opts
@@ -105,24 +107,60 @@
   [element general-settings mode]
   (if-let [opts (@mode-options mode)]
     ;; weird piece of code - see klipsify-with-opts docstring
-    (go (<! ((<! (klipsify-with-opts element general-settings opts mode)))))
+    (go (<! ((<! (klipsify-with-opts element general-settings opts mode (chan (sliding-buffer 0)))))))
     (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
 
-(defn ^:export klipsify-no-eval [element general-settings mode]
+(defn ^:export klipsify-no-eval [element general-settings mode channel]
   (if-let [opts (@mode-options mode)]
-    (klipsify-with-opts element general-settings opts mode)
+    (klipsify-with-opts element general-settings opts mode channel)
     (go #(go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options))))))
 
 (defn edit-elements [elements general-settings modes]
   (go
-    (loop [elements elements eval-fns []]
-      (if (seq elements)
-        (let [element (first elements)]
-          (if-let [mode (modes element)]
-            (let [eval-fn (<! (klipsify-no-eval element general-settings mode))]
-              (recur (rest elements) (conj eval-fns eval-fn)))
-            (recur (rest elements) eval-fns)))
-        eval-fns))))
+    (let [valid-elements (filter modes elements)
+          ; these channels are posted to whenever an edit is made
+          event-chans (mapv (fn [_] (chan 10)) valid-elements)
+          eval-fns (loop [elements valid-elements
+                          event-chans event-chans
+                          eval-fns []]
+                     (if (seq elements)
+                       (let [element (first elements)
+                             event-chan (first event-chans)]
+                         (let [eval-fn (<! (klipsify-no-eval element general-settings (modes element) event-chan))]
+                           (recur (rest elements) (rest event-chans) (conj eval-fns eval-fn))))
+                       eval-fns))
+          n (count eval-fns)
+          chan->idx (into {}
+                          (map vec (zip-colls event-chans (range))))]
+
+      ; subprocess that reloads other editors
+      (go
+        ; "edits" keeps track of the order in which user edits the editors
+        ; we reload them in the rough order in which user made edits to them
+        (loop [edits []
+               [_ channel] (alts! event-chans)]
+
+          (let [idx (chan->idx channel)
+                next-edits (conj edits idx)
+                ; ignore current editor, it has already been eval'd
+                order (filter #(not= idx %)
+                              (loop [order ()
+                                     invocations (reverse edits)]
+                                (cond
+                                  (empty? invocations) (fill-range order n)
+                                  (= (count order) n) order
+                                  true (let [iv (first invocations)]
+                                         (recur
+                                           (if (not-empty (filter #(= % iv) order))
+                                             order
+                                             (cons iv order))
+                                           (rest invocations))))))]
+            (if (verbose?)
+              (js/console.info "reloading order: " (clj->js order)))
+            (doseq [o order]
+              ((eval-fns o)))
+            (recur next-edits (alts! event-chans)))))
+      eval-fns)))
 
 (defn klipsify-elements [elements general-settings modes]
   (go

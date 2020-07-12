@@ -11,7 +11,7 @@
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
-    [cljs.core.async :refer [chan <! >! timeout sliding-buffer alts!]]
+    [cljs.core.async :refer [chan <! >! timeout dropping-buffer alts!]]
     [gadjett.collections :refer [collify compactize-map]]))
 
 (def out-placeholder "the evaluation will appear here (soon)...")
@@ -40,7 +40,7 @@
       "html" :html
       :code-mirror)))
 
-(defn load-external-scripts [scripts no-dynamic-scritps?]  
+(defn load-external-scripts [scripts no-dynamic-scritps?]
   (go
     (if no-dynamic-scritps?
       [:ok :ok]
@@ -107,7 +107,7 @@
   [element general-settings mode]
   (if-let [opts (@mode-options mode)]
     ;; weird piece of code - see klipsify-with-opts docstring
-    (go (<! ((<! (klipsify-with-opts element general-settings opts mode (chan (sliding-buffer 0)))))))
+    (go (<! ((<! (klipsify-with-opts element general-settings opts mode (chan (dropping-buffer 0)))))))
     (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
 
 (defn ^:export klipsify-no-eval [element general-settings mode channel]
@@ -119,7 +119,9 @@
   (go
     (let [valid-elements (filter modes elements)
           ; these channels are posted to whenever an edit is made
-          event-chans (mapv (fn [_] (chan 10)) valid-elements)
+          event-chans (mapv (fn [_] (chan (if (general-settings :re_evaluate_all_snippets_on_change)
+                                            10
+                                            (dropping-buffer 0)))) valid-elements)
           eval-fns (loop [elements valid-elements
                           event-chans event-chans
                           eval-fns []]
@@ -134,32 +136,33 @@
                           (map vec (zip-colls event-chans (range))))]
 
       ; subprocess that reloads other editors
-      (go
-        ; "edits" keeps track of the order in which user edits the editors
-        ; we reload them in the rough order in which user made edits to them
-        (loop [edits []
-               [_ channel] (alts! event-chans)]
+      (if (general-settings :re_evaluate_all_snippets_on_change)
+        (go
+          ; "edits" keeps track of the order in which user edits the editors
+          ; we reload them in the rough order in which user made edits to them
+          (loop [edits []
+                 [_ channel] (alts! event-chans)]
 
-          (let [idx (chan->idx channel)
-                next-edits (conj edits idx)
-                ; ignore current editor, it has already been eval'd
-                order (filter #(not= idx %)
-                              (loop [order ()
-                                     invocations (reverse edits)]
-                                (cond
-                                  (empty? invocations) (fill-range order n)
-                                  (= (count order) n) order
-                                  true (let [iv (first invocations)]
-                                         (recur
-                                           (if (not-empty (filter #(= % iv) order))
-                                             order
-                                             (cons iv order))
-                                           (rest invocations))))))]
-            (if (verbose?)
-              (js/console.info "reloading order: " (clj->js order)))
-            (doseq [o order]
-              ((eval-fns o)))
-            (recur next-edits (alts! event-chans)))))
+            (let [idx (chan->idx channel)
+                  next-edits (conj edits idx)
+                  ; ignore current editor, it has already been eval'd
+                  order (filter #(not= idx %)
+                                (loop [order ()
+                                       invocations (reverse edits)]
+                                  (cond
+                                    (empty? invocations) (fill-range order n)
+                                    (= (count order) n) order
+                                    true (let [iv (first invocations)]
+                                           (recur
+                                             (if (not-empty (filter #(= % iv) order))
+                                               order
+                                               (cons iv order))
+                                             (rest invocations))))))]
+              (if (verbose?)
+                (js/console.info "reloading order: " (clj->js order)))
+              (doseq [o order]
+                ((eval-fns o)))
+              (recur next-edits (alts! event-chans))))))
       eval-fns)))
 
 (defn klipsify-elements [elements general-settings modes]

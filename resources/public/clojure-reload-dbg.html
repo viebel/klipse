@@ -22,9 +22,8 @@
     </div>
     <script>
       window.klipse_settings = {
-        eval_idle_msec: 1500
-        // minimalistic_ui: true
-//      clojure_bundled_ns_ignore: /gadjett\..*/
+        eval_idle_msec: 1500,
+        re_evaluate_all_snippets_on_change: true
       };
       if(window.location.search.match(/transpile=1/)) {
       window.klipse_settings.selector_js = '.clojure';

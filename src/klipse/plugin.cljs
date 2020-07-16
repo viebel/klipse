@@ -56,7 +56,7 @@
    {:keys [no_dynamic_scripts eval_idle_msec minimalistic_ui editor_type print_length beautify_strings eval_context codemirror_options_in codemirror_options_out] :or {beautify_strings false print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}}
    {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? beautify-output? min-eval-idle-msec external-scripts default-editor no-result] :as lang-opts :or {min-eval-idle-msec 0 beautify? true beautify-output? true external-scripts []}}
    mode
-   channel]
+   on-edit-cb]
   (go (when element
         (let [eval-args (eval-args-from-element element {:eval-context eval_context :print-length print_length :beautify-strings beautify_strings})
               eval-fn-with-args #(eval-fn %1 (merge eval-args %2))
@@ -82,7 +82,7 @@
                           :source-code source-code
                           :default-txt (if (= :ok load-status) out-placeholder load-error)
                           :idle-msec idle-msec
-                          :on-eval-channel channel})))))
+                          :on-edit-cb on-edit-cb})))))
 
 (s/def ::dom-element isElement)
 (s/def ::editor-in-mode string?)
@@ -107,12 +107,12 @@
   [element general-settings mode]
   (if-let [opts (@mode-options mode)]
     ;; weird piece of code - see klipsify-with-opts docstring
-    (go (<! ((<! (klipsify-with-opts element general-settings opts mode (chan (dropping-buffer 0)))))))
+    (go (<! ((<! (klipsify-with-opts element general-settings opts mode #())))))
     (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
 
-(defn ^:export klipsify-no-eval [element general-settings mode channel]
+(defn ^:export klipsify-no-eval [element general-settings mode on-edit-cp]
   (if-let [opts (@mode-options mode)]
-    (klipsify-with-opts element general-settings opts mode channel)
+    (klipsify-with-opts element general-settings opts mode on-edit-cp)
     (go #(go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options))))))
 
 (defn edit-elements [elements general-settings modes]
@@ -121,48 +121,31 @@
           ; these channels are posted to whenever an edit is made
           event-chans (mapv (fn [_] (chan (if (general-settings :re_evaluate_all_snippets_on_change)
                                             10
-                                            (dropping-buffer 0)))) valid-elements)
+                                            (dropping-buffer 1)))) valid-elements)
           eval-fns (loop [elements valid-elements
                           event-chans event-chans
-                          eval-fns []]
+                          eval-fns []
+                          curr-idx 0]
                      (if (seq elements)
                        (let [element (first elements)
                              event-chan (first event-chans)]
-                         (let [eval-fn (<! (klipsify-no-eval element general-settings (modes element) event-chan))]
-                           (recur (rest elements) (rest event-chans) (conj eval-fns eval-fn))))
-                       eval-fns))
-          n (count eval-fns)
-          chan->idx (into {}
-                          (map vec (zip-colls event-chans (range))))]
+                         (let [eval-fn (<! (klipsify-no-eval element general-settings (modes element) #(go
+                                                                                                         (>! event-chan curr-idx))))]
+                           (recur (rest elements) (rest event-chans) (conj eval-fns eval-fn) (inc curr-idx))))
+                       eval-fns))]
 
-      ; subprocess that reloads other editors
+      ; sub process that reloads other editors
       (if (general-settings :re_evaluate_all_snippets_on_change)
         (go
-          ; "edits" keeps track of the order in which user edits the editors
-          ; we reload them in the rough order in which user made edits to them
-          (loop [edits []
-                 [_ channel] (alts! event-chans)]
+          ; We reevaluate all the other snippets in the order they appear in
+          ; code once a snippet is edited
+          (loop [[idx _] (alts! event-chans)]
 
-            (let [idx (chan->idx channel)
-                  next-edits (conj edits idx)
-                  ; ignore current editor, it has already been eval'd
-                  order (filter #(not= idx %)
-                                (loop [order ()
-                                       invocations (reverse edits)]
-                                  (cond
-                                    (empty? invocations) (fill-range order n)
-                                    (= (count order) n) order
-                                    true (let [iv (first invocations)]
-                                           (recur
-                                             (if (not-empty (filter #(= % iv) order))
-                                               order
-                                               (cons iv order))
-                                             (rest invocations))))))]
-              (if (verbose?)
-                (js/console.info "reloading order: " (clj->js order)))
-              (doseq [o order]
-                ((eval-fns o)))
-              (recur next-edits (alts! event-chans))))))
+            ; ignore current editor, it has already been eval'd
+            (doseq [[fn _] (filter #(not= idx (second %))
+                               (zip-colls eval-fns (range)))]
+              (fn))
+            (recur (alts! event-chans)))))
       eval-fns)))
 
 (defn klipsify-elements [elements general-settings modes]

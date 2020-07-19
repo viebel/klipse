@@ -139,8 +139,9 @@
         state (create-state :container container :result-element result-element :editor-args editor-args)]
     (when result-element (gdom/setTextContent result-element default-txt))
     (handle-events in-editor
-                   {:idle-msec idle-msec
-                    :on-should-eval #((on-edit-cb)
+                   {:idle-msec      idle-msec
+                    :on-should-eval #(do
+                                       (on-edit-cb)
                                        (eval-in-html-editor eval-fn result-element in-editor snippet-args state))})
     #(eval-in-html-editor eval-fn result-element in-editor snippet-args state)))
 
@@ -164,11 +165,12 @@
                       :preamble preamble}
         state (create-state :container container :result-element result-element :editor-args editor-args)]
     (handle-events in-editor
-                   (compactize-map {:idle-msec idle-msec
-                                    :on-completion (when (= "clojure" editor-in-mode)
-                                                     #(trigger-autocomplete in-editor (j/call-in js/window [:klipse_clj :lang :clojure :completions] (current-token in-editor))))
-                                    :on-should-eval #((on-edit-cb)
-                                                      (eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state))}))
+                   (compactize-map {:idle-msec      idle-msec
+                                    :on-completion  (when (= "clojure" editor-in-mode)
+                                                      #(trigger-autocomplete in-editor (j/call-in js/window [:klipse_clj :lang :clojure :completions] (current-token in-editor))))
+                                    :on-should-eval #(do
+                                                       (on-edit-cb)
+                                                       (eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state))}))
     (add-editor in-editor snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))
 

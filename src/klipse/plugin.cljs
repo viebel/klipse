@@ -110,9 +110,9 @@
     (go (<! ((<! (klipsify-with-opts element general-settings opts mode #())))))
     (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
 
-(defn ^:export klipsify-no-eval [element general-settings mode on-edit-cp]
+(defn ^:export klipsify-no-eval [element general-settings mode on-edit-cb]
   (if-let [opts (@mode-options mode)]
-    (klipsify-with-opts element general-settings opts mode on-edit-cp)
+    (klipsify-with-opts element general-settings opts mode on-edit-cb)
     (go #(go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options))))))
 
 (defn edit-elements [elements general-settings modes]

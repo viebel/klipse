@@ -118,34 +118,35 @@
 (defn edit-elements [elements general-settings modes]
   (go
     (let [valid-elements (filter modes elements)
-          ; these channels are posted to whenever an edit is made
-          event-chans (mapv (fn [_] (chan (if (general-settings :re_evaluate_all_snippets_on_change)
-                                            10
-                                            (dropping-buffer 1)))) valid-elements)
+          ; this channel is posted to whenever an edit is made
+          event-chan (chan (if (general-settings :re_evaluate_all_snippets_on_change)
+                              10
+                              (dropping-buffer 1)))
           eval-fns (loop [elements valid-elements
-                          event-chans event-chans
                           eval-fns []
                           curr-idx 0]
                      (if (seq elements)
-                       (let [element (first elements)
-                             event-chan (first event-chans)]
+                       (let [element (first elements)]
                          (let [eval-fn (<! (klipsify-no-eval element general-settings (modes element) #(go
                                                                                                          (>! event-chan curr-idx))))]
-                           (recur (rest elements) (rest event-chans) (conj eval-fns eval-fn) (inc curr-idx))))
+                           (recur (rest elements) (conj eval-fns eval-fn) (inc curr-idx))))
                        eval-fns))]
-
+      (println eval-fns)
       ; sub process that reloads other editors
-      (if (general-settings :re_evaluate_all_snippets_on_change)
-        (go
-          ; We reevaluate all the other snippets in the order they appear in
-          ; code once a snippet is edited
-          (loop [[idx _] (alts! event-chans)]
+      (go
+        ; We reevaluate all the other snippets in the order they appear on page
+        ; code once a snippet is edited
+        (loop [idx (<! event-chan)]
+          ; evaluate edited snippet
+          ((eval-fns idx))
 
-            ; ignore current editor, it has already been eval'd
-            (doseq [[fn _] (filter #(not= idx (second %))
-                               (zip-colls eval-fns (range)))]
-              (fn))
-            (recur (alts! event-chans)))))
+          (if (general-settings :re_evaluate_all_snippets_on_change)
+            ; evaluate rest of the editors in the order in which they appear in page
+            (doseq [[f _] (filter #(not= idx (second %))
+                                  (zip-colls eval-fns (range)))]
+              (f))
+            (recur (<! event-chan)))))
+
       eval-fns)))
 
 (defn klipsify-elements [elements general-settings modes]

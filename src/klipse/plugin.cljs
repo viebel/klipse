@@ -119,9 +119,7 @@
   (go
     (let [valid-elements (filter modes elements)
           ; this channel is posted to whenever an edit is made
-          event-chan (chan (if (general-settings :re_evaluate_all_snippets_on_change)
-                              10
-                              (dropping-buffer 1)))
+          event-chan (chan 10)
           eval-fns (loop [elements valid-elements
                           eval-fns []
                           curr-idx 0]
@@ -131,21 +129,17 @@
                                                                                                          (>! event-chan curr-idx))))]
                            (recur (rest elements) (conj eval-fns eval-fn) (inc curr-idx))))
                        eval-fns))]
-      (println eval-fns)
       ; sub process that reloads other editors
       (go
-        ; We reevaluate all the other snippets in the order they appear on page
-        ; code once a snippet is edited
         (loop [idx (<! event-chan)]
           ; evaluate edited snippet
           ((eval-fns idx))
 
           (if (general-settings :re_evaluate_all_snippets_on_change)
-            ; evaluate rest of the editors in the order in which they appear in page
-            (doseq [[f _] (filter #(not= idx (second %))
-                                  (zip-colls eval-fns (range)))]
-              (f))
-            (recur (<! event-chan)))))
+            ; evaluate all the editors in the order in which they appear in page
+            (doseq [f eval-fns]
+              (f)))
+          (recur (<! event-chan))))
 
       eval-fns)))
 

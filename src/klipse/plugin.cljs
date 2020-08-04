@@ -6,12 +6,12 @@
     [klipse.common.registry :refer [selector->mode mode-options]]
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
     [klipse.klipse-editors :refer [create-editor]]
-    [klipse.utils :refer [load-scripts-mem securize-eval! default-forbidden-symbols zip-colls fill-range verbose?]]
+    [klipse.utils :refer [load-scripts-mem securize-eval! default-forbidden-symbols]]
     [cljs.spec.alpha :as s]
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
-    [cljs.core.async :refer [chan <! >! timeout dropping-buffer alts!]]
+    [cljs.core.async :refer [chan <! >! timeout]]
     [gadjett.collections :refer [collify compactize-map]]))
 
 (def out-placeholder "the evaluation will appear here (soon)...")
@@ -117,29 +117,25 @@
 
 (defn edit-elements [elements general-settings modes]
   (go
-    (let [valid-elements (filter modes elements)
-          ; this channel is posted to whenever an edit is made
+    (let [; this channel is posted to whenever an edit is made
           event-chan (chan 10)
-          eval-fns (loop [elements valid-elements
-                          eval-fns []
-                          curr-idx 0]
+          eval-fns (loop [elements elements eval-fns [] curr-idx 0]
                      (if (seq elements)
                        (let [element (first elements)]
-                         (let [eval-fn (<! (klipsify-no-eval element general-settings (modes element) #(go
-                                                                                                         (>! event-chan curr-idx))))]
-                           (recur (rest elements) (conj eval-fns eval-fn) (inc curr-idx))))
+                         (if-let [mode (modes element)]
+                           (let [eval-fn (<! (klipsify-no-eval element general-settings mode #(go
+                                                                                                (>! event-chan curr-idx))))]
+                             (recur (rest elements) (conj eval-fns eval-fn) (inc curr-idx)))
+                           (recur (rest elements) eval-fns curr-idx)))
                        eval-fns))]
       ; sub process that reloads other editors
-      (go
-        (loop [idx (<! event-chan)]
-          ; evaluate edited snippet
-          ((eval-fns idx))
-
-          (if (general-settings :re_evaluate_all_snippets_on_change)
-            ; evaluate all the editors in the order in which they appear in page
-            (doseq [f eval-fns]
-              (f)))
-          (recur (<! event-chan))))
+      (if (general-settings :re_evaluate_all_snippets_on_change)
+        (go
+          ; `idx` is the index of element that was edited, ignored for now
+         (loop [idx (<! event-chan)]
+           (doseq [f eval-fns]
+             (f))
+           (recur (<! event-chan)))))
 
       eval-fns)))
 

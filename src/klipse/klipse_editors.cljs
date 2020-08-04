@@ -9,7 +9,7 @@
    [cljs.spec.alpha :as s]
    [klipse.utils :refer [verbose?]]
    [klipse.dom-utils :refer [create-div-after value add-event-listener]]
-   [cljs.core.async :refer [put! <! >! chan timeout alts!]]
+   [cljs.core.async :refer [put! <! chan timeout alts!]]
    [klipse.ui.editors.common :refer [handle-events]]
    [klipse.ui.editors.editor :refer [trigger-autocomplete current-token create-editor-after-element replace-element-by-editor set-value-and-beautify get-selection-when-selected]]))
 
@@ -140,7 +140,8 @@
     (when result-element (gdom/setTextContent result-element default-txt))
     (handle-events in-editor
                    {:idle-msec      idle-msec
-                    :on-should-eval on-edit-cb})
+                    :on-should-eval #(do (eval-in-html-editor eval-fn result-element in-editor snippet-args state)
+                                         (on-edit-cb))})
     #(eval-in-html-editor eval-fn result-element in-editor snippet-args state)))
 
 (def editors (atom {}))
@@ -166,7 +167,8 @@
                    (compactize-map {:idle-msec      idle-msec
                                     :on-completion  (when (= "clojure" editor-in-mode)
                                                       #(trigger-autocomplete in-editor (j/call-in js/window [:klipse_clj :lang :clojure :completions] (current-token in-editor))))
-                                    :on-should-eval on-edit-cb}))
+                                    :on-should-eval #(do (eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)
+                                                         (on-edit-cb))}))
     (add-editor in-editor snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))
 

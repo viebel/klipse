@@ -376,6 +376,7 @@ window.klipse_settings = {
 	 clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
 	 codemirror_root: '/my-codemirror-root', // the root of codemirror files
 	 scripts_root: '/my-scripts-root', // the root of scripts files (e.g pretty_format.js, opal.js ...)
+	 re_evaluate_all_snippets_on_change: false, // Whether all snippets should be reevaluated when any one snippet is edited, since snippets might depend on each other
 	 editor_type: 'code-mirror', //the type of the editor for the klipse result (the element where the evaluation of the snippet is displayed). Allowed values:
                                  // "code-mirror": The input editor is codemirror. The output editor is codemirror
                                  // "html": The input editor is codemirror. The output editor is html

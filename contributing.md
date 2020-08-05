@@ -54,7 +54,15 @@ Upgrade version number in `package.json` and then:
 npm publish
 ```
 
-## 4. Commit and push
+## 4. Commit, tag and push
+
+```bash
+git commit -am 'cut version 7.10.0'
+git tag v7.10.10
+git push -tags
+```
+
+Release a new version on github
 
 ## 5. Deploy to clojars
 

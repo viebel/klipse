@@ -62,7 +62,7 @@ git tag v7.10.10
 git push -tags
 ```
 
-Release a new version on github
+Draft a new release on [github](https://github.com/viebel/klipse/releases)
 
 ## 5. Deploy to clojars
 

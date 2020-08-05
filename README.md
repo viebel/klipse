@@ -348,36 +348,36 @@ window.klipse_settings = {
      selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
      selector_reagent: '.language-reagent', // selector for reagent snippets
      selector_google_charts: '.language-google-charts' // selector for google charts snippets
-	 selector_oblivion: '.language-oblivion' // selector for oblivion snippets
+     selector_oblivion: '.language-oblivion' // selector for oblivion snippets
      selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
      selector_eval_ruby: '.language-klipse-eval-ruby', //selector for ruby evaluation snippets
      selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
      selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
      selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets
      selector_render_jsx: '.language-render-jsx', // selector for jsx rendering snippets		  
-	 selector_react: '.language-react', //selector for react snippets
+     selector_react: '.language-react', //selector for react snippets
      selector_eval_php: '.language-klipse-eval-php', // selector for php evaluation snippets
      selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
      selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets
      selector_eval_python_client: '.language-klipse-python', // selector for python evaluation snippets
-	 selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
+     selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
      selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
      selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
-     selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets
-	 selector_brainfuck: '.language-klipse-brainfuck', // selector for brainfuck snippets
-	 selector_eval_ocaml: '.language-klipse-ocaml', // selector for ocaml evaluation snippets
+     selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets 
+     selector_brainfuck: '.language-klipse-brainfuck', // selector for brainfuck snippets
+     selector_eval_ocaml: '.language-klipse-ocaml', // selector for ocaml evaluation snippets
      selector_transpile_ocaml: '.language-transpile-ocaml', // selector for ocaml transpilation snippets
      selector_transpile_reason_3: '.language-transpile-reason', // selector for reason transpilation snippets
      selector_transpile_reason_3_to_ocaml: '.language-transpile-reason-to-ocaml', // selector for reason transpilation into ocaml snippets
      selector_eval_reason_3: '.language-klipse-reason', // selector for reason evaluation snippets
-	 selector_ocaml_to_reason: '.language-klipse-ocaml-to-reason' // selector for ocaml to reason snippets
-	 cached_ns_root: '/my-root', // the root of clojure cached namespace
-	 clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
-	 clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
-	 codemirror_root: '/my-codemirror-root', // the root of codemirror files
-	 scripts_root: '/my-scripts-root', // the root of scripts files (e.g pretty_format.js, opal.js ...)
-	 re_evaluate_all_snippets_on_change: false, // Whether all snippets should be reevaluated when any one snippet is edited, since snippets might depend on each other
-	 editor_type: 'code-mirror', //the type of the editor for the klipse result (the element where the evaluation of the snippet is displayed). Allowed values:
+     selector_ocaml_to_reason: '.language-klipse-ocaml-to-reason' // selector for ocaml to reason snippets
+     cached_ns_root: '/my-root', // the root of clojure cached namespace
+     clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
+     clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
+     codemirror_root: '/my-codemirror-root', // the root of codemirror files
+     scripts_root: '/my-scripts-root', // the root of scripts files (e.g pretty_format.js, opal.js ...)
+     re_evaluate_all_snippets_on_change: false, // Whether all snippets should be reevaluated when any one snippet is edited, since snippets might depend on each other
+     editor_type: 'code-mirror', //the type of the editor for the klipse result (the element where the evaluation of the snippet is displayed). Allowed values:
                                  // "code-mirror": The input editor is codemirror. The output editor is codemirror
                                  // "html": The input editor is codemirror. The output editor is html
                                  // "dom": The input editor is plain text. The output editor is plain text

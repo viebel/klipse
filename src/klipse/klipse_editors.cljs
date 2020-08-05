@@ -141,7 +141,7 @@
     (handle-events in-editor
                    {:idle-msec      idle-msec
                     :on-should-eval #(do (eval-in-html-editor eval-fn result-element in-editor snippet-args state)
-                                         (on-edit-cb))})
+                                         (on-edit-cb snippet-num))})
     #(eval-in-html-editor eval-fn result-element in-editor snippet-args state)))
 
 (def editors (atom {}))
@@ -168,7 +168,7 @@
                                     :on-completion  (when (= "clojure" editor-in-mode)
                                                       #(trigger-autocomplete in-editor (j/call-in js/window [:klipse_clj :lang :clojure :completions] (current-token in-editor))))
                                     :on-should-eval #(do (eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)
-                                                         (on-edit-cb))}))
+                                                         (on-edit-cb snippet-num))}))
     (add-editor in-editor snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))
 

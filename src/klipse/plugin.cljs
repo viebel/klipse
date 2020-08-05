@@ -1,7 +1,7 @@
 (ns klipse.plugin
   (:require-macros
     [gadjett.core :refer [dbg]]
-    [cljs.core.async.macros :refer [go]])
+    [cljs.core.async.macros :refer [go go-loop]])
   (:require
     [klipse.common.registry :refer [selector->mode mode-options]]
     [klipse.args-from-element :refer [editor-args-from-element eval-args-from-element content]]
@@ -15,6 +15,10 @@
     [gadjett.collections :refer [collify compactize-map]]))
 
 (def out-placeholder "the evaluation will appear here (soon)...")
+
+(def event-chan
+  "This channel is posted to a snippet number whenever an edit is made on a snippet"
+  (chan 10))
 
 (def snippet-counter (atom 0))
 
@@ -55,8 +59,7 @@
   [element
    {:keys [no_dynamic_scripts eval_idle_msec minimalistic_ui editor_type print_length beautify_strings eval_context codemirror_options_in codemirror_options_out] :or {beautify_strings false print_length 1000 eval_idle_msec 20 minimalistic_ui false codemirror_options_in {} codemirror_options_out {}}}
    {:keys [editor-in-mode editor-out-mode eval-fn comment-str beautify? beautify-output? min-eval-idle-msec external-scripts default-editor no-result] :as lang-opts :or {min-eval-idle-msec 0 beautify? true beautify-output? true external-scripts []}}
-   mode
-   on-edit-cb]
+   mode]
   (go (when element
         (let [eval-args (eval-args-from-element element {:eval-context eval_context :print-length print_length :beautify-strings beautify_strings})
               eval-fn-with-args #(eval-fn %1 (merge eval-args %2))
@@ -82,7 +85,7 @@
                           :source-code source-code
                           :default-txt (if (= :ok load-status) out-placeholder load-error)
                           :idle-msec idle-msec
-                          :on-edit-cb on-edit-cb})))))
+                          :on-edit-cb #(go (>! event-chan %))})))))
 
 (s/def ::dom-element isElement)
 (s/def ::editor-in-mode string?)
@@ -107,43 +110,38 @@
   [element general-settings mode]
   (if-let [opts (@mode-options mode)]
     ;; weird piece of code - see klipsify-with-opts docstring
-    (go (<! ((<! (klipsify-with-opts element general-settings opts mode #())))))
+    (go (<! ((<! (klipsify-with-opts element general-settings opts mode)))))
     (go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options)))))
 
-(defn ^:export klipsify-no-eval [element general-settings mode on-edit-cb]
+(defn ^:export klipsify-no-eval [element general-settings mode]
   (if-let [opts (@mode-options mode)]
-    (klipsify-with-opts element general-settings opts mode on-edit-cb)
+    (klipsify-with-opts element general-settings opts mode)
     (go #(go (js/console.error "cannot find options for mode: " mode ". Supported modes: " (keys @mode-options))))))
 
 (defn edit-elements [elements general-settings modes]
   (go
-    (let [; this channel is posted to whenever an edit is made
-          event-chan (chan 10)
-          eval-fns (loop [elements elements eval-fns [] curr-idx 0]
-                     (if (seq elements)
-                       (let [element (first elements)]
-                         (if-let [mode (modes element)]
-                           (let [eval-fn (<! (klipsify-no-eval element general-settings mode #(go
-                                                                                                (>! event-chan curr-idx))))]
-                             (recur (rest elements) (conj eval-fns eval-fn) (inc curr-idx)))
-                           (recur (rest elements) eval-fns curr-idx)))
-                       eval-fns))]
-      ; sub process that reloads other editors
-      (if (general-settings :re_evaluate_all_snippets_on_change)
-        (go
-          ; `idx` is the index of element that was edited, ignored for now
-         (loop [idx (<! event-chan)]
-           (doseq [f eval-fns]
-             (f))
-           (recur (<! event-chan)))))
+    (loop [elements elements eval-fns []]
+      (if (seq elements)
+        (let [element (first elements)]
+          (if-let [mode (modes element)]
+            (let [eval-fn (<! (klipsify-no-eval element general-settings mode))]
+              (recur (rest elements) (conj eval-fns eval-fn)))
+            (recur (rest elements) eval-fns)))
+        eval-fns))))
 
-      eval-fns)))
+(defn eval-snippets-on-change [{:keys [re_evaluate_all_snippets_on_change]} eval-fns]
+  (when re_evaluate_all_snippets_on_change
+    (go-loop [_idx (<! event-chan)]  ;; `idx` is the index of element that was edited, ignored for now
+      (doseq [f eval-fns]
+        (f))
+      (recur (<! event-chan)))))
 
 (defn klipsify-elements [elements general-settings modes]
   (go
     (let [eval-fns (<! (edit-elements elements general-settings modes))]
       (doseq [eval-fn eval-fns]
-        (<! (eval-fn))))))
+        (<! (eval-fn)))
+      (eval-snippets-on-change general-settings eval-fns))))
 
 (defn snippets-selector [settings selector-names]
   (->> (map settings selector-names)

@@ -46,9 +46,23 @@ Production build: http://localhost:5014/plugin-prod.html and http://localhost:50
 
 Dev build: http://localhost:5014/plugin-dev.html?dev=1
 
- 
+## 3. Publish the npm package
 
-## 3. Deploy to Google Storage
+Upgrade version number in `package.json` and then:
+
+```bash
+npm publish
+```
+
+## 4. Commit and push
+
+## 5. Deploy to clojars
+
+```bash
+lein with-profile deploy deploy clojars
+```
+
+## 6. Deploy to Google Storage
 
 Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is installed.
 
@@ -56,15 +70,3 @@ Make sure [gsutil](https://cloud.google.com/storage/docs/gsutil_install) is inst
 ./scripts/deploy
 ```
 
-## 4. publish the npm package
-
-Upgrade version number in `package.json` and then:
-
-```bash
-npm publish
-```
-## 5. Deploy to clojars
-
-```bash
-lein with-profile deploy deploy clojars
-```

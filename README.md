@@ -42,16 +42,17 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 
 # Supported languages
 
-- javascript: evaluation is done with the javascript function `eval` and pretty printing of the result is done with [pretty-format](https://github.com/thejameskyle/pretty-format)
-- clojure[script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
-- ruby: evaluation is done with [Opal](http://opalrb.com/)
+- JavasSript: evaluation is done with the javascript function `eval` and pretty printing of the result is done with [pretty-format](https://github.com/thejameskyle/pretty-format)
+- Clojure[Script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
+- Ruby: evaluation is done with [Opal](http://opalrb.com/)
 - C++: evaluation is done with [JSCPP](https://github.com/felixhao28/JSCPP)
-- python: evaluation is done with [Skulpt](http://www.skulpt.org/)
-- scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)
-- prolog: evaluation is done with [Tau Prolog](http://tau-prolog.org/)
-- common lisp: evaluation is done with [JSCL](https://github.com/jscl-project/jscl)
+- Python: evaluation is done with [Skulpt](http://www.skulpt.org/)
+- Scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)
+- Prolog: evaluation is done with [Tau Prolog](http://tau-prolog.org/)
+- Common Lisp: evaluation is done with [JSCL](https://github.com/jscl-project/jscl)
 - PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
 - SQL: evaluation is done with [sql.js](https://github.com/kripken/sql.js). See [SQL example](https://blog.klipse.tech/javascript/2016/11/07/best-sql-tutorial.html)
+- Lua: evaluation is done with [wasm_lua](https://github.com/vvanders/wasm_lua)
 - BrainFuck
 - JSX
 - EcmaScript2017
@@ -110,7 +111,7 @@ If you want to host the javascript tag from your own server, see [Host Klipse Lo
 If you want to use an older version of Klipse, see [Use Older Versions](#use-older-versions).
 
 
-## javascript
+## JavasSript
 
 
 Here is the [full interactive guide](https://book.klipse.tech/interactive_javascript_code_snippets.html) of the klipse `javascript` snippets. 
@@ -129,7 +130,7 @@ Here is the [full interactive guide](https://book.klipse.tech/interactive_javasc
 Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/viebel/50oLnykk/).
 And here are detailed explanations about [a javascript live code editor in a blog post](http://untangled.io/how-to-use-the-live-code-editor/).
 
-## clojure and clojurescript in a web page
+## Clojure and ClojureScript in a web page
 
 > Pay attention: for clojure interactive snippets, you must use the **non-minified** version of klipse as for the moment, self-host cljs doesn't support advanced compilation!
 
@@ -151,7 +152,7 @@ You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klips
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
 ```
 
-## clojurescript project
+## ClojureScript project
 
 If you want to integrate Klipse inside a Clojuresccript  project, it is recommended to consume Klipse as a Clojurescript library like any other Clojurescript lib, just like this [![Clojars](https://img.shields.io/clojars/v/viebel/klipse.svg)](https://clojars.org/viebel/klipse). 
 
@@ -169,7 +170,7 @@ Inside your code you have to require two namespaces and call a function:
 
 Here is an example of a [tiny reagent demo project](https://gitlab.com/viebel/clojurescript-reagent-klipse-demo) that integrates Klipse as a Clojurescript library.
 
-## python
+## Python
 
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
@@ -181,7 +182,8 @@ Here is an example of a [tiny reagent demo project](https://gitlab.com/viebel/cl
 </script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
-## ruby
+
+## Ruby
 
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
@@ -193,6 +195,20 @@ Here is an example of a [tiny reagent demo project](https://gitlab.com/viebel/cl
 </script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
+
+## Lua
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+                selector_lua: '.language-klipse-lua', // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
+
 ## Scheme
 
 ```html
@@ -330,7 +346,6 @@ Here is the javascript tag that you need to setup for embedding ReasonML snippet
 
 
 
-
 ## https
 
 If your site runs under `https`, you need to load the klipse plugin from `https://storage.googleapis.com/app.klipse.tech` instead of `http://app.klipse.tech`.
@@ -349,18 +364,19 @@ Here are the settings for the klipse plugin a page level:
 ```javascript
 window.klipse_settings = {
      eval_idle_msec: 20, // idle time in msec before the snippet is evaluated
-     selector: '.language-klipse', //selector for clojure evaluation snippets
+     selector: '.language-klipse', // selector for clojure evaluation snippets
      selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
      selector_reagent: '.language-reagent', // selector for reagent snippets
      selector_google_charts: '.language-google-charts' // selector for google charts snippets
      selector_oblivion: '.language-oblivion' // selector for oblivion snippets
      selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
-     selector_eval_ruby: '.language-klipse-eval-ruby', //selector for ruby evaluation snippets
+     selector_eval_ruby: '.language-klipse-eval-ruby', // selector for ruby evaluation snippets
+     selector_lua: '.language-klipse-lua', // selector for lua evaluation snippets
      selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
      selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
      selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets
      selector_render_jsx: '.language-render-jsx', // selector for jsx rendering snippets		  
-     selector_react: '.language-react', //selector for react snippets
+     selector_react: '.language-react', // selector for react snippets
      selector_eval_php: '.language-klipse-eval-php', // selector for php evaluation snippets
      selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
      selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets

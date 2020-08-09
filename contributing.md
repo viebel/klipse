@@ -27,7 +27,7 @@ See [How to add a language to Klipse](https://github.com/viebel/klipse/wiki/How-
 lein with-profile deploy install
 ```
 
-## How to deploy to production
+# How to deploy to production
 
 ## 0. Prepare
 

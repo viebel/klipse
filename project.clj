@@ -8,6 +8,8 @@
   :lein-tools-deps/config {:config-files [:install :user :project]}
   :profiles {:deploy {:resource-paths ^:replace ["src"]
                       :lein-tools-deps/config ^:replace {:config-files [:install :user]}}}
+  :deploy-repositories [["clojars"  {:sign-releases false
+                                     :url "https://clojars.org/repo"}]]
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-hiera "0.9.5"]
             [lein-tools-deps "0.4.1"]]

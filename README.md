@@ -1,6 +1,6 @@
 # Klipse
 
-Klipse is a Javacript plugin for embedding interactive code snippets in tech blogs. See examples at https://blog.klipse.tech/ 
+Klipse is a Javacript plugin for embedding interactive code snippets in tech blogs. See examples at https://blog.klipse.tech/
 
 
 Get paid support for Klipse on [![xscode](https://img.shields.io/badge/Available%20on-xs%3Acode-blue?style=?style=plastic&logo=appveyor&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////////VXz1bAAAAAJ0Uk5T/wDltzBKAAAAlUlEQVR42uzXSwqAMAwE0Mn9L+3Ggtgkk35QwcnSJo9S+yGwM9DCooCbgn4YrJ4CIPUcQF7/XSBbx2TEz4sAZ2q1RAECBAiYBlCtvwN+KiYAlG7UDGj59MViT9hOwEqAhYCtAsUZvL6I6W8c2wcbd+LIWSCHSTeSAAECngN4xxIDSK9f4B9t377Wd7H5Nt7/Xz8eAgwAvesLRjYYPuUAAAAASUVORK5CYII=)](https://xscode.com/viebel/klipse)
@@ -114,7 +114,7 @@ If you want to use an older version of Klipse, see [Use Older Versions](#use-old
 ## JavasSript
 
 
-Here is the [full interactive guide](https://book.klipse.tech/interactive_javascript_code_snippets.html) of the klipse `javascript` snippets. 
+Here is the [full interactive guide](https://book.klipse.tech/interactive_javascript_code_snippets.html) of the klipse `javascript` snippets.
 
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
@@ -154,7 +154,7 @@ You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klips
 
 ## ClojureScript project
 
-If you want to integrate Klipse inside a Clojuresccript  project, it is recommended to consume Klipse as a Clojurescript library like any other Clojurescript lib, just like this [![Clojars](https://img.shields.io/clojars/v/viebel/klipse.svg)](https://clojars.org/viebel/klipse). 
+If you want to integrate Klipse inside a Clojuresccript  project, it is recommended to consume Klipse as a Clojurescript library like any other Clojurescript lib, just like this [![Clojars](https://img.shields.io/clojars/v/viebel/klipse.svg)](https://clojars.org/viebel/klipse).
 
 Inside your code you have to require two namespaces and call a function:
 
@@ -164,8 +164,8 @@ Inside your code you have to require two namespaces and call a function:
             [klipse.plugin :as klipse-plugin]))
 
 (klipse-plugin/init #js {:selector ".language-klipse"
-                         :selector_reagent ".language-reagent"})))
-  
+                         :selector_reagent ".language-reagent"})
+
 ```
 
 Here is an example of a [tiny reagent demo project](https://gitlab.com/viebel/clojurescript-reagent-klipse-demo) that integrates Klipse as a Clojurescript library.
@@ -200,10 +200,11 @@ Here is an example of a [tiny reagent demo project](https://gitlab.com/viebel/cl
 
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/lua.css">
 
 <script>
     window.klipse_settings = {
-                selector_lua: '.language-klipse-lua', // css selector for the html elements you want to klipsify
+        selector_lua: '.language-klipse-lua', // css selector for the html elements you want to klipsify
     };
 </script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
@@ -365,7 +366,7 @@ Here are the settings for the klipse plugin a page level:
 window.klipse_settings = {
      eval_idle_msec: 20, // idle time in msec before the snippet is evaluated
      selector: '.language-klipse', // selector for clojure evaluation snippets
-     selector_js: '.language-klipse-js', // selector for clojure transpilation snippets 
+     selector_js: '.language-klipse-js', // selector for clojure transpilation snippets
      selector_reagent: '.language-reagent', // selector for reagent snippets
      selector_google_charts: '.language-google-charts' // selector for google charts snippets
      selector_oblivion: '.language-oblivion' // selector for oblivion snippets
@@ -375,7 +376,7 @@ window.klipse_settings = {
      selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
      selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
      selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets
-     selector_render_jsx: '.language-render-jsx', // selector for jsx rendering snippets		  
+     selector_render_jsx: '.language-render-jsx', // selector for jsx rendering snippets
      selector_react: '.language-react', // selector for react snippets
      selector_eval_php: '.language-klipse-eval-php', // selector for php evaluation snippets
      selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
@@ -384,7 +385,7 @@ window.klipse_settings = {
      selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
      selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
      selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
-     selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets 
+     selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets
      selector_brainfuck: '.language-klipse-brainfuck', // selector for brainfuck snippets
      selector_eval_ocaml: '.language-klipse-ocaml', // selector for ocaml evaluation snippets
      selector_transpile_ocaml: '.language-transpile-ocaml', // selector for ocaml transpilation snippets
@@ -403,7 +404,7 @@ window.klipse_settings = {
                                  // "html": The input editor is codemirror. The output editor is html
                                  // "dom": The input editor is plain text. The output editor is plain text
 
- 
+
 };
 
 ```

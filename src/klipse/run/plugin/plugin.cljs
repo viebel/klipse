@@ -22,6 +22,7 @@
             klipse.lang.server-eval
             klipse.lang.clojure
             klipse.lang.reagent
+            klipse.lang.hiccup
             klipse.lang.ocaml
             klipse.lang.reason
             [klipse.plugin :as plugin]))

@@ -2,6 +2,7 @@
   (:require klipse.run.plugin.plugin
             klipse.lang.clojure
             klipse.lang.reagent
+            klipse.lang.hiccup
             klipse.lang.javascript
             klipse.lang.google-charts
             klipse.lang.function-plot

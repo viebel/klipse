@@ -41,10 +41,23 @@ Upgrade version in `project.clj`.
 
 ## 2. Test 
 
+Make sure figwheel runs.
 
-Production build: http://localhost:5014/plugin-prod.html and http://localhost:5014/plugin-prod-more.html (some of the evaluators are incompatible on the same page)
+```bash
+clj -A:figwheel --build dev --repl
+```
 
-Dev build: http://localhost:5014/plugin-dev.html?dev=1
+
+Three test pages to test.
+
+Production build: 
+
+- http://localhost:5014/plugin-prod.html 
+- http://localhost:5014/plugin-prod-more.html (some of the evaluators are incompatible on the same page)
+
+Dev build: 
+
+- http://localhost:5014/plugin-dev.html
 
 ## 3. Publish the npm package
 

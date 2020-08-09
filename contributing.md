@@ -71,8 +71,9 @@ npm publish
 
 ```bash
 git commit -am 'cut version 7.10.0'
-git tag v7.10.10
-git push -tags
+git tag v7.10.0
+git push
+git push --tags
 ```
 
 Draft a new release on [github](https://github.com/viebel/klipse/releases)

@@ -380,6 +380,8 @@ window.klipse_settings = {
      selector_react: '.language-react', // selector for react snippets
      selector_eval_php: '.language-klipse-eval-php', // selector for php evaluation snippets
      selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
+     selector_render_hiccup: '.render-hiccup', // selector for Hiccup rendering snippets
+     selector_transpile_hiccup: '.transpile-hiccup', // selector for Hiccup transpiling snippets
      selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets
      selector_eval_python_client: '.language-klipse-python', // selector for python evaluation snippets
      selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation

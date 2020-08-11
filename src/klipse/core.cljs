@@ -5,9 +5,7 @@
 (enable-console-print!)
 (gadjett/settings! :max-function-calls 100)
 
-(goog-define version "n/a")
-
-(def version "7.9.6")
+(def version "7.10.2")
 (js/console.info "Klipse " version)
 (js/console.info "Clojurescript "  *clojurescript-version*)
 

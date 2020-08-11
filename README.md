@@ -395,7 +395,7 @@ window.klipse_settings = {
      selector_transpile_reason_3_to_ocaml: '.language-transpile-reason-to-ocaml', // selector for reason transpilation into ocaml snippets
      selector_eval_reason_3: '.language-klipse-reason', // selector for reason evaluation snippets
      selector_ocaml_to_reason: '.language-klipse-ocaml-to-reason' // selector for ocaml to reason snippets
-     cached_ns_root: '/my-root', // the root of clojure cached namespace
+     cached_ns_root: '/my-root', // the root of clojure cached namespace, default: https://viebel.github.io/cljs-analysis-cache/cache/
      clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
      clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
      codemirror_root: '/my-codemirror-root', // the root of codemirror files

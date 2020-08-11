@@ -12,7 +12,7 @@ clj -A:figwheel --build dev --repl
 ```
 
 
-From cider, you should tell cider to launch clj with `:fig-cider` alias so that figwheel-main libs are loadeine that cider builds.
+From Cider, you should tell cider to launch clj with `:fig-cider` alias so that figwheel-main library is loaded.
 
 Then, open the browser [http://localhost:5014/js-dbg.html](http://localhost:5014/js-dbg.html)
 

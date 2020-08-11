@@ -31,7 +31,7 @@ lein with-profile deploy install
 
 ## 0. Prepare
 
-Upgrade version in `project.clj`.
+Upgrade version in `project.clj` and in `src/klipse/core.cljs`.
 
 ## 1. Build
 

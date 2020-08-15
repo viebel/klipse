@@ -2,7 +2,7 @@
   (:require [klipse-clj.lang.clojure :refer [str-eval-async str-compile-async]]
             [klipse-clj.lang.clojure.io :refer [*klipse-settings* *verbose?* *cache-buster?*]]
             [cljs.reader :refer [read-string]]
-            [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
+            [klipse.common.registry :refer [codemirror-mode-src register-mode]]
             [klipse.utils :refer [url-parameters verbose? klipse-settings setup-container!]]))
 
 

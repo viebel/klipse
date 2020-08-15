@@ -58,6 +58,7 @@ Production build:
 Dev build: 
 
 - http://localhost:5014/plugin-dev.html
+- http://localhost:5014/plugin-clojure-dev.html
 
 ## 3. Publish the npm package
 

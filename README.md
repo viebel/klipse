@@ -111,7 +111,7 @@ If you want to host the javascript tag from your own server, see [Host Klipse Lo
 If you want to use an older version of Klipse, see [Use Older Versions](#use-older-versions).
 
 
-## JavasSript
+## JavaScript
 
 
 Here is the [full interactive guide](https://book.klipse.tech/interactive_javascript_code_snippets.html) of the klipse `javascript` snippets.

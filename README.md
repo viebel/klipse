@@ -42,7 +42,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 
 # Supported languages
 
-- JavasSript: evaluation is done with the javascript function `eval` and pretty printing of the result is done with [pretty-format](https://github.com/thejameskyle/pretty-format)
+- JavaScript: evaluation is done with the javascript function `eval` and pretty printing of the result is done with [pretty-format](https://github.com/thejameskyle/pretty-format)
 - Clojure[Script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
 - Ruby: evaluation is done with [Opal](http://opalrb.com/)
 - C++: evaluation is done with [JSCPP](https://github.com/felixhao28/JSCPP)

@@ -47,8 +47,7 @@ Make sure figwheel runs.
 clj -A:figwheel --build dev --repl
 ```
 
-
-Three test pages to test.
+Open your browser and test the following test pages:
 
 Production build: 
 

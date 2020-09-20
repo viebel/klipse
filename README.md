@@ -543,6 +543,8 @@ The CodeMirror editors that wrapped results are accessible via the JavaScript gl
 This is an array that contains the CodeMirror editors wrapping the results of the evaluation of the code snippets.
 For instance, you can read the content of the code snippet `i` by calling: `klipse_results[i].getValue();`
 
+Here is a [jsfiddle](https://jsfiddle.net/viebel/4fpsug6t/5/) that shows it in action.
+
 ## Use older versions
 
 Since version `6.8.0`, Klipse is published on [npm](https://www.npmjs.com/package/klipse). Therefore you can access the klipse files of a specific version from [unpkg](https://unpkg.com) - a cdn for stuff that is published to `npm`.

@@ -533,9 +533,15 @@ Ask us any question about the klipse plugin (integration, feature requests...) o
 
 Each code snippet is wrapped into a CodeMirror editor.
 
-The CodeMirror editors are accessible via the javascript global variable: `klipse_editors`. This is an array that contains the CodeMirror editors wrapping the original code snippets. For instance, you can modify the content of the code snippet `i` by calling: `klipse_editors[i].setValue('let a = 1');`
+The CodeMirror editors are accessible via the JavaScript global variable: `klipse_editors`.
+This is an array that contains the CodeMirror editors wrapping the original code snippets. For instance, you can modify the content of the code snippet `i` by calling: `klipse_editors[i].setValue('let a = 1');`
 
 Here is a [jsfiddle](https://jsfiddle.net/yhuh80ry/2/) that shows it in action.
+
+The evaluation of each snippet is also wrapped into a CodeMirror editor. 
+The CodeMirror editors that wrapped results are accessible via the JavaScript global variable: `klipse_results`.
+This is an array that contains the CodeMirror editors wrapping the results of the evaluation of the code snippets.
+For instance, you can read the content of the code snippet `i` by calling: `klipse_results[i].getValue();`
 
 ## Use older versions
 

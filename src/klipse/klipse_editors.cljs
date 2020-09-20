@@ -145,9 +145,15 @@
     #(eval-in-html-editor eval-fn result-element in-editor snippet-args state)))
 
 (def editors (atom {}))
-(defn add-editor [editor snippet-num]
+(def result-elements (atom {}))
+
+(defn add-editor! [editor snippet-num]
   (swap! editors assoc snippet-num editor)
   (j/assoc! js/window :klipse_editors (clj->js @editors)))
+
+(defn add-result-element! [result-element snippet-num]
+  (swap! result-elements assoc snippet-num result-element)
+  (j/assoc! js/window :klipse_results (clj->js @result-elements)))
 
 (defmethod create-editor :code-mirror [_ {:keys [mode snippet-num element source-code eval-fn default-txt idle-msec editor-in-mode editor-out-mode indent? codemirror-options-in codemirror-options-out loop-msec preamble no-result on-edit-cb] :as editor-args}]
   (let [[in-editor-options out-editor-options] (editor-options editor-in-mode editor-out-mode codemirror-options-in codemirror-options-out)
@@ -169,7 +175,8 @@
                                                       #(trigger-autocomplete in-editor (j/call-in js/window [:klipse_clj :lang :clojure :completions] (current-token in-editor))))
                                     :on-should-eval #(do (eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)
                                                          (on-edit-cb snippet-num))}))
-    (add-editor in-editor snippet-num)
+    (add-editor! in-editor snippet-num)
+    (add-result-element! result-element snippet-num)
     #(eval-in-codemirror-editor eval-fn result-element in-editor snippet-args editor-out-mode state)))
 
 (defmethod create-editor :dom [_ {:keys [snippet-num element eval-fn default-txt loop-msec preamble no-result] :as editor-args}]

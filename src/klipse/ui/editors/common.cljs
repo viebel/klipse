@@ -1,14 +1,12 @@
 (ns klipse.ui.editors.common
-  (:require-macros 
+  (:require-macros
    [gadjett.core :refer [dbg]])
   (:require
    [klipse.ui.editors.editor :as editor]
    [klipse.utils :refer [url-parameters create-url-with-input debounce]]))
 
 (defn display-url-with-input [base-url value]
-  (doto (create-url-with-input base-url value)
-    print
-    js/alert))
+  (create-url-with-input base-url value))
 
 (defn refresh-with-code [base-url value]
   (js/location.replace (create-url-with-input base-url value)))

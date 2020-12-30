@@ -10,6 +10,34 @@
    [cemerick.url :refer [url]]
    [applied-science.js-interop :as j]))
 
+(defn fetch-shortened-url
+  "Calls the Cutt.ly API with the current URL and returns
+  a shortened version for the user to copy."
+  [current]
+  (go (let [response (<! (http/get
+      "https://cors-anywhere.herokuapp.com/https://cutt.ly/api/api.php"
+      {:with-credentials? false
+      :headers {"accept" "application/json" "content-type" "application/json"}
+      :query-params {:key "ba890e6ad3b5e17911e7762c5677aa26e29c9" :short current}}))]
+      (let [short-link (goog.object/getValueByKeys (.parse js/JSON (:body response)) "url" "shortLink")]
+        (if (some? short-link)
+          (
+            (js/alert short-link)
+            (print short-link)
+          )
+          (
+            (js/alert current)
+            (print current)
+          )
+        )
+      )
+      (if-not (= (:status response) 200)
+          (
+            (js/alert current)
+            (print current)
+          ))
+  ))
+)
 
 (defn current-url []
   (if-let [loc (if (exists? js/location) js/location "")]
@@ -30,9 +58,18 @@
       (assoc-in [:query (name key)] value)
       str))
 
+(defn process-url [base-url input]
+  (let [a (add-url-parameter base-url :cljs_in input)]
+  (fetch-shortened-url a)
+  )
+)
+
 (defn create-url-with-input [base-url input]
-  (-> (if base-url (url base-url) (current-url))
-      (add-url-parameter :cljs_in input)))
+  (->
+    (if base-url (url base-url) (current-url))
+    (process-url input)
+  )
+  )
 
 (defn debounce [func wait-in-ms]
   (let [counter (atom 0)]
@@ -41,7 +78,7 @@
          (swap! counter inc)
          (<! (timeout wait-in-ms))
          (swap! counter dec)
-         (when (zero? @counter)  
+         (when (zero? @counter)
            (func))))
      (fn [] ; a function that executes `func` immediately
        (go
@@ -54,11 +91,11 @@
   (str "https://gist.githubusercontent.com/" gist-id "/raw" "?" (rand)))
 
 (defn gist-path-page [gist-id]
-  (str "https://gist.github.com/" gist-id)) 
+  (str "https://gist.github.com/" gist-id))
 
 (defn read-input-from-gist [gist-id]
   (go
-    (when gist-id 
+    (when gist-id
       (let [gist-url (gist-path-raw gist-id)
             {:keys [status body]} (<! (http/get
                                        gist-url
@@ -159,7 +196,7 @@
           (if secured-eval?
             (eval-in-global-scope body)
             (unsecured-eval-in-global-scope body))
-          (js/console.info "evaluation done:" script)          
+          (js/console.info "evaluation done:" script)
           [:ok script])
         [status script]))))
 
@@ -193,7 +230,7 @@
     (let [node (js/document.createElement "script")
           body (aget js/document "body")]
       (aset node "src" url)
-      (aset node "onerror" #(put! c [:error url]))      
+      (aset node "onerror" #(put! c [:error url]))
       (aset node "onload" #(put! c [:ok url]))
       (aset node "type" "text/javascript")
       (j/call body :appendChild node)

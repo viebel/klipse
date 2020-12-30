@@ -15,7 +15,7 @@
   a shortened version for the user to copy."
   [current]
   (go (let [response (<! (http/get
-      "https://cutt.ly/api/api.php"
+      "https://cors-anywhere.herokuapp.com/https://cutt.ly/api/api.php"
       {:with-credentials? false
       :headers {"accept" "application/json" "content-type" "application/json"}
       :query-params {:key "ba890e6ad3b5e17911e7762c5677aa26e29c9" :short current}}))]

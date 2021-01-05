@@ -15,27 +15,22 @@
   a shortened version for the user to copy."
   [current]
   (go (let [response (<! (http/get
-      "https://cors-anywhere.herokuapp.com/https://cutt.ly/api/api.php"
+      "https://cors-anywhere.herokuapp.com/https://is.gd/create.php"
       {:with-credentials? false
       :headers {"accept" "application/json" "content-type" "application/json"}
-      :query-params {:key "ba890e6ad3b5e17911e7762c5677aa26e29c9" :short current}}))]
-      (let [short-link (goog.object/getValueByKeys (.parse js/JSON (:body response)) "url" "shortLink")]
-        (if (some? short-link)
-          (
-            (js/alert short-link)
-            (print short-link)
-          )
-          (
-            (js/alert current)
-            (print current)
-          )
-        )
-      )
+      :query-params {:format "simple" :url current}}))]
       (if-not (= (:status response) 200)
           (
             (js/alert current)
             (print current)
-          ))
+          )
+          (let [short-link (:body response)]
+          (
+            (js/alert short-link)
+            (print short-link)
+          )
+      )
+          )
   ))
 )
 

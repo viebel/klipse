@@ -11,7 +11,7 @@
    [applied-science.js-interop :as j]))
 
 (defn fetch-shortened-url
-  "Calls the Cutt.ly API with the current URL and returns
+  "Calls is.gd with the current URL and returns
   a shortened version for the user to copy."
   [current]
   (go (let [response (<! (http/get

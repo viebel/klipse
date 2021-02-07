@@ -8,6 +8,52 @@
     </head>
     <body>
 
+      <h1> Python </h1>
+      <pre><code class="eval-python">a=3</code></pre>
+      <br/>
+      <pre><code class="eval-python">print(a+5)</code></pre>
+      <br/>
+      <pre><code class="eval-python">def foo(n):
+   return n + 2</code></pre>
+      <br/>
+      
+      <pre><code class="eval-python">print(foo(8)) </code></pre>
+      <br/>
+<pre><code class="eval-python">import turtle
+
+def drawTriangle(points,color,myTurtle):
+  myTurtle.fillcolor(color)
+  myTurtle.up()
+  myTurtle.goto(points[0][0],points[0][1])
+  myTurtle.down()
+  myTurtle.begin_fill()
+  myTurtle.goto(points[1][0],points[1][1])
+  myTurtle.goto(points[2][0],points[2][1])
+  myTurtle.goto(points[0][0],points[0][1])
+  myTurtle.end_fill()
+
+def getMid(p1,p2):
+  return ( (p1[0]+p2[0]) / 2, (p1[1] + p2[1]) / 2)
+
+def sierpinski(points,degree,myTurtle):
+  colormap = ['blue','red','green','white','yellow',
+  'violet','orange']
+  drawTriangle(points,colormap[degree],myTurtle)
+  if degree > 0:
+    sierpinski([points[0], getMid(points[0], points[1]), getMid(points[0], points[2])], degree-1, myTurtle)
+    sierpinski([points[1], getMid(points[0], points[1]), getMid(points[1], points[2])], degree-1, myTurtle)
+    sierpinski([points[2], getMid(points[2], points[1]), getMid(points[0], points[2])], degree-1, myTurtle)
+
+def main():
+  myTurtle = turtle.Turtle()
+  myWin = turtle.Screen()
+  myPoints = [[-100,-50],[0,100],[100,-50]]
+  sierpinski(myPoints,3,myTurtle)
+  #myWin.exitonclick()
+
+main()
+</code></pre>
+
 <h1>Ocaml</h1>
 
     <h2>Ocaml transpilation to Javascript</h2>
@@ -51,10 +97,11 @@ let a = "aa" ++ "bb";
 
         <script>
         window.klipse_settings = {
-	    selector_transpile_ocaml: '.transpile-ocaml',
-            selector_transpile_reason_3: '.transpile-reason',
-	    selector_transpile_reason_3_to_ocaml: '.transpile-reason-to-ocaml',
-	    selector_ocaml_to_reason: '.ocaml-to-reason'
+           selector_eval_python_client: '.eval-python',
+	         selector_transpile_ocaml: '.transpile-ocaml',
+           selector_transpile_reason_3: '.transpile-reason',
+	         selector_transpile_reason_3_to_ocaml: '.transpile-reason-to-ocaml',
+	         selector_ocaml_to_reason: '.ocaml-to-reason'
         };
         </script>
         <script src="plugin_prod/js/klipse_plugin.min.js"></script>

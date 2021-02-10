@@ -9,14 +9,14 @@ Get paid support for Klipse on [![xscode](https://img.shields.io/badge/Available
 [![xscode](https://github.com/viebel/klipse/blob/master/images/klipse-banner.png?raw=true)](https://xscode.com/viebel/klipse)
 
 
-Technically, Klipse is a small piece of javascript code that evaluates code snippets in the browser and it is pluggable on any web page.
+Technically, Klipse is a small piece of JavaScript code that evaluates code snippets in the browser and it is pluggable on any web page.
 
 If you like this stuff, please consider a (small donation) on [Patreon](https://www.patreon.com/bePatron?u=18227864).
 
 
 ## Plugin
 
-The klipse plugin is a `javascript` tag (see details [below](https://github.com/viebel/klipse#integration)) that transforms static code snippets of an html page into live and interactive snippets:
+The klipse plugin is a `JavaScript` tag (see details [below](https://github.com/viebel/klipse#integration)) that transforms static code snippets of an html page into live and interactive snippets:
 
 1. **Live**: The code is executed in your browser
 2. **Interactive**: You can modify the code and it is evaluated as you type
@@ -31,7 +31,7 @@ With the klipse plugin, the code is evaluated as you type...
 Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a web page.
 
 
-|Javascript | Ruby |
+|JavaScript | Ruby |
 |-------------------------|-------------------------|
 |![abc](https://raw.githubusercontent.com/viebel/klipse/master/images/javascript-snippet.gif) |  ![abc](https://raw.githubusercontent.com/viebel/klipse/master/images/ruby-snippet.gif)|
 
@@ -42,7 +42,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 
 # Supported languages
 
-- JavaScript: evaluation is done with the javascript function `eval` and pretty printing of the result is done with [pretty-format](https://github.com/thejameskyle/pretty-format)
+- JavaScript: evaluation is done with the JavaScript function `eval` and pretty printing of the result is done with [pretty-format](https://github.com/thejameskyle/pretty-format)
 - Clojure[Script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
 - Ruby: evaluation is done with [Opal](http://opalrb.com/)
 - C++: evaluation is done with [JSCPP](https://github.com/felixhao28/JSCPP)
@@ -63,9 +63,9 @@ The code editing inside the interactive snippets is powered by [CodeMirror](http
 
 # How does it work?
 
-- javascript: [A new way of blogging about javascript](http://blog.klipse.tech/javascript/2016/06/20/blog-javascript.html)
-- ruby: [A new way of blogging about ruby](http://blog.klipse.tech/ruby/2016/06/20/blog-ruby.html)
-- clojure[script]: [How to klipsify a clojure[script] blog post](http://blog.klipse.tech/clojure/2016/06/07/klipse-plugin-tuto.html)
+- JavaScript: [A new way of blogging about JavaScript](http://blog.klipse.tech/javascript/2016/06/20/blog-javascript.html)
+- Ruby: [A new way of blogging about ruby](http://blog.klipse.tech/ruby/2016/06/20/blog-ruby.html)
+- Clojure[Script]: [How to klipsify a clojure[script] blog post](http://blog.klipse.tech/clojure/2016/06/07/klipse-plugin-tuto.html)
 
 # Integration
 
@@ -87,7 +87,7 @@ The selector keys are per language (see below for a list of supported languages)
 </script>
 ```
 
-3. Add the `javascript` library at the **end of the body tag** :
+3. Add the `JavaScript` tag at the **end of the body tag** :
 
 For Clojure:
 
@@ -106,7 +106,7 @@ For other languages:
 Here is an [interactive guide](https://book.klipse.tech/) of the klipse snippets.
 
 
-If you want to host the javascript tag from your own server, see [Host Klipse Locally](#host-klipse-locally).
+If you want to host Klipse JavaScript tag from your own server, see [Host Klipse Locally](#host-klipse-locally).
 
 If you want to use an older version of Klipse, see [Use Older Versions](#use-older-versions).
 
@@ -114,7 +114,7 @@ If you want to use an older version of Klipse, see [Use Older Versions](#use-old
 ## JavaScript
 
 
-Here is the [full interactive guide](https://book.klipse.tech/interactive_javascript_code_snippets.html) of the klipse `javascript` snippets.
+Here is the [full interactive guide](https://book.klipse.tech/interactive_javascript_code_snippets.html) of the klipse `JavaScript` snippets.
 
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
@@ -127,12 +127,12 @@ Here is the [full interactive guide](https://book.klipse.tech/interactive_javasc
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
-Here is a [jsfiddle with the klipse plugin for javascript](https://jsfiddle.net/viebel/50oLnykk/).
-And here are detailed explanations about [a javascript live code editor in a blog post](http://untangled.io/how-to-use-the-live-code-editor/).
+Here is a [jsfiddle with Klipse plugin for JavaScript](https://jsfiddle.net/viebel/50oLnykk/).
+And here are detailed explanations about [a JavaScript live code editor in a blog post](http://untangled.io/how-to-use-the-live-code-editor/).
 
 ## Clojure and ClojureScript in a web page
 
-> Pay attention: for clojure interactive snippets, you must use the **non-minified** version of klipse as for the moment, self-host cljs doesn't support advanced compilation!
+> Pay attention: for Clojure interactive snippets, you must use the **non-minified** version of klipse as for the moment, self-host cljs doesn't support advanced compilation!
 
 Here is the [full interactive guide](https://book.klipse.tech/interactive_clojure[script]_code_snippets.html
 ) of the klipse `clojure` snippets.
@@ -283,11 +283,11 @@ See [A new way of blogging about Prolog](http://blog.klipse.tech/prolog/2019/01/
 We have 4 kinds of ReasonML snippets:
 
 1. Code Evaluation
-2. Transpilation to javascript
+2. Transpilation to JavaScript
 3. Tranpilation to Ocaml
 4. Transpilation from Ocaml
 
-Here is the javascript tag that you need to setup for embedding ReasonML snippets on your page:
+Here is the JavaScript tag that you need to setup for embedding ReasonML snippets on your page:
 
 ```html
 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
@@ -365,43 +365,43 @@ Here are the settings for the klipse plugin a page level:
 ```javascript
 window.klipse_settings = {
      eval_idle_msec: 20, // idle time in msec before the snippet is evaluated
-     selector: '.language-klipse', // selector for clojure evaluation snippets
-     selector_js: '.language-klipse-js', // selector for clojure transpilation snippets
+     selector: '.language-klipse', // selector for Clojure evaluation snippets
+     selector_js: '.language-klipse-js', // selector for Clojure transpilation snippets
      selector_reagent: '.language-reagent', // selector for reagent snippets
-     selector_google_charts: '.language-google-charts' // selector for google charts snippets
+     selector_google_charts: '.language-google-charts' // selector for Google charts snippets
      selector_oblivion: '.language-oblivion' // selector for oblivion snippets
-     selector_eval_js: '.language-klipse-eval-js', // selector for javascript evaluation snippets
-     selector_eval_ruby: '.language-klipse-eval-ruby', // selector for ruby evaluation snippets
+     selector_eval_js: '.language-klipse-eval-js', // selector for JavaScript evaluation snippets
+     selector_eval_ruby: '.language-klipse-eval-ruby', // selector for Ruby evaluation snippets
      selector_lua: '.language-klipse-lua', // selector for lua evaluation snippets
      selector_es2017: '.language-klipse-es2017', // selector for EcmaScript 2017 evaluation snippets
-     selector_jsx: '.language-klipse-jsx', // selector for jsx evaluation snippets
-     selector_transpile_jsx: '.language-transpile-jsx', // selector for jsx transpilation snippets
-     selector_render_jsx: '.language-render-jsx', // selector for jsx rendering snippets
-     selector_react: '.language-react', // selector for react snippets
-     selector_eval_php: '.language-klipse-eval-php', // selector for php evaluation snippets
-     selector_eval_markdown: '.language-klipse-markdown', // selector for markdown transpilation snippets
+     selector_jsx: '.language-klipse-jsx', // selector for JSX evaluation snippets
+     selector_transpile_jsx: '.language-transpile-jsx', // selector for JSX transpilation snippets
+     selector_render_jsx: '.language-render-jsx', // selector for JSX rendering snippets
+     selector_react: '.language-react', // selector for React snippets
+     selector_eval_php: '.language-klipse-eval-php', // selector for PHP evaluation snippets
+     selector_eval_markdown: '.language-klipse-markdown', // selector for Markdown transpilation snippets
      selector_render_hiccup: '.render-hiccup', // selector for Hiccup rendering snippets
      selector_transpile_hiccup: '.transpile-hiccup', // selector for Hiccup transpiling snippets
      selector_eval_lambdaway: '.language-klipse-lambdaway', // selector for lambdaway transpilation snippets
-     selector_eval_python_client: '.language-klipse-python', // selector for python evaluation snippets
+     selector_eval_python_client: '.language-klipse-python', // selector for Python evaluation snippets
      selector_eval_cpp: '.language-klipse-cpp', // selector for cpp evaluation
-     selector_eval_html: '.language-klipse-html', // selector for html evaluation snippets
+     selector_eval_html: '.language-klipse-html', // selector for Html evaluation snippets
      selector_sql: '.language-klipse-sql', // selector for sqlite evaluation snippets
-     selector_eval_scheme: '.language-klipse-scheme', // selector for scheme evaluation snippets
-     selector_brainfuck: '.language-klipse-brainfuck', // selector for brainfuck snippets
-     selector_eval_ocaml: '.language-klipse-ocaml', // selector for ocaml evaluation snippets
-     selector_transpile_ocaml: '.language-transpile-ocaml', // selector for ocaml transpilation snippets
-     selector_transpile_reason_3: '.language-transpile-reason', // selector for reason transpilation snippets
-     selector_transpile_reason_3_to_ocaml: '.language-transpile-reason-to-ocaml', // selector for reason transpilation into ocaml snippets
-     selector_eval_reason_3: '.language-klipse-reason', // selector for reason evaluation snippets
-     selector_ocaml_to_reason: '.language-klipse-ocaml-to-reason' // selector for ocaml to reason snippets
-     cached_ns_root: '/my-root', // the root of clojure cached namespace, default: https://viebel.github.io/cljs-analysis-cache/cache/
-     clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for clojure macro namespaces that are cached
+     selector_eval_scheme: '.language-klipse-scheme', // selector for Scheme evaluation snippets
+     selector_brainfuck: '.language-klipse-brainfuck', // selector for Brainfuck snippets
+     selector_eval_ocaml: '.language-klipse-ocaml', // selector for Ocaml evaluation snippets
+     selector_transpile_ocaml: '.language-transpile-ocaml', // selector for Ocaml transpilation snippets
+     selector_transpile_reason_3: '.language-transpile-reason', // selector for Reason transpilation snippets
+     selector_transpile_reason_3_to_ocaml: '.language-transpile-reason-to-ocaml', // selector for Reason transpilation into ocaml snippets
+     selector_eval_reason_3: '.language-klipse-reason', // selector for Reason evaluation snippets
+     selector_ocaml_to_reason: '.language-klipse-ocaml-to-reason' // selector for Ocaml to reason snippets
+     cached_ns_root: '/my-root', // the root of Clojure cached namespace, default: https://viebel.github.io/cljs-analysis-cache/cache/
+     clojure_cached_macro_ns_regexp: /reagent.*/, // the regexp for Clojure macro namespaces that are cached
      clojure_cached_ns_regexp: /reagent.*/, // the regexp for clojure namespaces that are cached
-     codemirror_root: '/my-codemirror-root', // the root of codemirror files
+     codemirror_root: '/my-codemirror-root', // the root of Codemirror files
      scripts_root: '/my-scripts-root', // the root of scripts files (e.g pretty_format.js, opal.js ...)
      re_evaluate_all_snippets_on_change: false, // Whether all snippets should be reevaluated when any one snippet is edited, since snippets might depend on each other
-     editor_type: 'code-mirror', //the type of the editor for the klipse result (the element where the evaluation of the snippet is displayed). Allowed values:
+     editor_type: 'code-mirror', //the type of the editor for Klipse results (the element where the evaluation of the snippet is displayed). Allowed values:
                                  // "code-mirror": The input editor is codemirror. The output editor is codemirror
                                  // "html": The input editor is codemirror. The output editor is html
                                  // "dom": The input editor is plain text. The output editor is plain text
@@ -450,9 +450,9 @@ The following attributes can be added to the DOM element of the snippet:
   ** "dom": The input editor is plain text. The output editor is plain text
 
 
-### Javascript only
+### JavaScript only
 
-* `data-external-libs`: comma separated list of javascript libraries to load before snippet evaluation
+* `data-external-libs`: comma separated list of JavaScript libraries to load before snippet evaluation
 * `data-async-code`: (default `false`) when `true`, asynchronous calls to `console.log` append their result to the result cell
 
 #### Clojure only
@@ -504,27 +504,27 @@ You can build interactive slides by integrating Klipse with [Reveal.js](https://
 
 Here are a couple of examples of blogs using the klipse plugin:
 
-- clojure: [Procedural Dungeon Generation: A Drunkard's Walk in ClojureScript](http://blog.jrheard.com/procedural-dungeon-generation-drunkards-walk-in-clojurescript)
-- python: [Drawing fractals with a turtle](http://blog.klipse.tech/python/2017/01/04/python-turtle-fractal.html)
-- clojure: [Island Generator](http://exupero.org/hazard/post/islands/)
-- clojurescript transpiled: [blog.ducky.io - More about protocols in ClojureScript](http://blog.ducky.io/clojurescript/2016/06/08/more-defprotocol/)
-- ruby: [jessewaites.com - interactive ruby snippets](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)
-- clojure: [z.caudate.me - live documentation with klipse](http://z.caudate.me/klipse-demo/)
-- ruby, javascript, clojure: [blog.klipse.tech](blog.klipse.tech)
-- prolog: [A new way of blogging about Prolog](http://blog.klipse.tech/prolog/2019/01/01/blog-prolog.html)
-- clojure documentation: [Anonymous functions in clojure](http://clojurebridge.github.io/community-docs/docs/clojure/anonymous-function/)
-- javascript: [Untangled.io - Advanced ES6 destructuring techniques with live examples](http://untangled.io/in-depth-es6-destructuring-with-assembled-avengers/)
-- clojure: [Klipse for Kids: A fun way to learn computer programming](http://kids.klipse.tech/)
-- javascript [Immutable.js: An Introduction with examples written for humans](http://untangled.io/immutable-js-an-introduction-with-examples-written-for-humans/)
-- clojure: [Yet another scheme dialect written in Clojure and ClojureScript](http://liujiacai.net/scheme.clj/)
-- javascript: [Try Partial Lenses with KLIPSE](http://calmm-js.github.io/partial.lenses/)
-- javascript: [Clause.js, a JavaScript contract system, documentation created with klipse](https://clause.js.org)
-- clojure: Reagent deep dive part [1](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [2](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [3](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-3-sequences.html) [4](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-4-application.html)
-- clojurescript: [Visualising Bézier Curves](https://040code.github.io/2017/07/12/bezier-in-clojurescript/)
-- clojure: [core.async fun tutorial](http://abhirag.in/articles/batman_clojure.html)
-- clojurescript: [reagent and reframe playground](https://day8.github.io/re-playground/)
-- javascript: [chai unit tests playground](https://e-zchai.firebaseapp.com/)
-- clojure: [polynomial macro](http://markbastian.github.io/posts-output/2017-07-10-polymacro/)
+- Clojure: [Procedural Dungeon Generation: A Drunkard's Walk in ClojureScript](http://blog.jrheard.com/procedural-dungeon-generation-drunkards-walk-in-clojurescript)
+- Python: [Drawing fractals with a turtle](http://blog.klipse.tech/python/2017/01/04/python-turtle-fractal.html)
+- Clojure: [Island Generator](http://exupero.org/hazard/post/islands/)
+- ClojureScript transpiled: [blog.ducky.io - More about protocols in ClojureScript](http://blog.ducky.io/clojurescript/2016/06/08/more-defprotocol/)
+- Ruby: [jessewaites.com - interactive ruby snippets](http://jessewaites.com/embedding-interactive-ruby-snippets-into-web-pages/)
+- Clojure: [z.caudate.me - live documentation with klipse](http://z.caudate.me/klipse-demo/)
+- Ruby, Javascript, Clojure: [blog.klipse.tech](blog.klipse.tech)
+- Prolog: [A new way of blogging about Prolog](http://blog.klipse.tech/prolog/2019/01/01/blog-prolog.html)
+- Clojure documentation: [Anonymous functions in clojure](http://clojurebridge.github.io/community-docs/docs/clojure/anonymous-function/)
+- JavaScript: [Untangled.io - Advanced ES6 destructuring techniques with live examples](http://untangled.io/in-depth-es6-destructuring-with-assembled-avengers/)
+- Clojure: [Klipse for Kids: A fun way to learn computer programming](http://kids.klipse.tech/)
+- JavaScript [Immutable.js: An Introduction with examples written for humans](http://untangled.io/immutable-js-an-introduction-with-examples-written-for-humans/)
+- Clojure: [Yet another scheme dialect written in Clojure and ClojureScript](http://liujiacai.net/scheme.clj/)
+- JavaScript: [Try Partial Lenses with KLIPSE](http://calmm-js.github.io/partial.lenses/)
+- JavaScript: [Clause.js, a JavaScript contract system, documentation created with klipse](https://clause.js.org)
+- Clojure: Reagent deep dive part [1](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [2](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-1.html) [3](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-3-sequences.html) [4](http://timothypratley.blogspot.com/2017/01/reagent-deep-dive-part-4-application.html)
+- ClojureScript: [Visualising Bézier Curves](https://040code.github.io/2017/07/12/bezier-in-clojurescript/)
+- Clojure: [core.async fun tutorial](http://abhirag.in/articles/batman_clojure.html)
+- ClojureScript: [reagent and reframe playground](https://day8.github.io/re-playground/)
+- JavaScript: [chai unit tests playground](https://e-zchai.firebaseapp.com/)
+- Clojure: [polynomial macro](http://markbastian.github.io/posts-output/2017-07-10-polymacro/)
 
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -551,9 +551,9 @@ Since version `6.8.0`, Klipse is published on [npm](https://www.npmjs.com/packag
 
 For instance, The urls are for the version `6.8.0` are:
 
-- javascript mininfied: https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
-- javascript non-minified:  https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
-- css: https://unpkg.com/klipse@6.8.0/dist/codemirror.css
+- JavaScript mininfied: https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
+- JavaScript non-minified:  https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
+- Css: https://unpkg.com/klipse@6.8.0/dist/codemirror.css
 
 ## Host Klipse locally
 
@@ -561,7 +561,7 @@ You can download klipse with `npm` or `bower`.
 
 In order to serve Klipse from your own server, you have to:
 
-1. Include in your page all the assets that you need from the `dist` folder: `codemirror.css`, `klipse_plugin.js` or `klipse_plugin.min.js`, `javascript.inc.js` (CodeMirror javascript addon), `pretty_format.js` (javascript beautifier)
+1. Include in your page all the assets that you need from the `dist` folder: `codemirror.css`, `klipse_plugin.js` or `klipse_plugin.min.js`, `javascript.inc.js` (CodeMirror JavaScript addon), `pretty_format.js` (JavaScript beautifier)
 2. set `klipse_settings.no_dynamic_scripts=true;`
 
 
@@ -575,7 +575,7 @@ The Web REPL is live at http://app.klipse.tech
 
 Here is [the manual for the KLIPSE web repl](https://github.com/viebel/klipse/blob/master/repl.md).
 
-Languages supported in the REPL: `clojure` and `clojurescript`.
+Languages supported in the REPL: `Clojure` and `ClojureScript`.
 
 
 # License

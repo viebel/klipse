@@ -525,6 +525,7 @@ Here are a couple of examples of blogs using the klipse plugin:
 - ClojureScript: [reagent and reframe playground](https://day8.github.io/re-playground/)
 - JavaScript: [chai unit tests playground](https://e-zchai.firebaseapp.com/)
 - Clojure: [polynomial macro](http://markbastian.github.io/posts-output/2017-07-10-polymacro/)
+- Prolog: A scientific paper with [interactive code snippets](https://pages.di.unipi.it/forti/fogbrain/predicates/fogbrain/fogbrain2.html): [Continuous Reasoning for Managing Next-Gen Distributed Applications] (http://eptcs.web.cse.unsw.edu.au/paper.cgi?ICLP2020.22.pdf)
 
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

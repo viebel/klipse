@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>KLIPSE: a simple and elegant online cljs compiler and evaluator</title>
+        <link rel='shortcut icon' type='image/x-icon' href='img/klipse.png' />
+        <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+    </head>
+    <body>
+      <style>
+	.klipse-snippet {
+	width: 50%;
+	float: left;
+	}
+	.klipse-result {
+	width: 50%;
+	float:left;
+	}
+	.klipse-separator {
+	clear: both;
+	}
+      </style>
+	
+<pre><code class="js">
+a =3
+</code></pre>
+
+<pre><code class="js">
+a
+</code></pre>
+
+<h2>infinite loops </h2>
+<p> Infinite loops don't cause the browser to freeze. Yeah! </p>
+<pre><code class="js">
+window.cnt=0;
+//while(true) { window.cnt = window.cnt + 1} 
+</code></pre>
+
+
+<pre><code class="js">
+alert
+</code></pre>
+
+
+<pre><code class="js" data-gist-id="viebel/5cc67a97903f04036b569c0eb0436e5f">
+</code></pre>
+
+
+    <h2> Function defs should be shared between snippets </h2>
+    <pre><code class="eval-js">
+	function foo(){
+	if (5 > 2){
+	return 5;
+	} else {
+        return 9;
+	}
+	}
+    </code></pre>
+    <pre><code class="eval-js">
+	foo()
+    </code></pre>
+    <div class="eval-js">
+      console.log("aa")
+      console.log("aa", 1, 2, 34, 4)
+      console.log("bb")
+      2 + 3
+    </div>
+    <br/>
+
+      <script>
+        window.klipse_settings = {
+        selector_eval_js: '.js,.eval-js',
+        };
+        </script>
+        <script src="/fig/js/klipse.fig.js"></script>
+    </body>
+</html>

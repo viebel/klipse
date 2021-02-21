@@ -1,0 +1,19 @@
+<html>
+  <body>
+    <textarea width="1000px"></textarea>
+    <script src="https://viebel.github.io/klipse/repo/js/stopify-full.bundle.js"></script>
+    <script>
+
+      const program = `
+      window.cnt = 0;
+      while(true) {
+         window.cnt = window.cnt + 1;
+      }
+    `;
+
+    const asyncRun = stopify.stopifyLocally(program);
+      
+    asyncRun.run((x) => { console.log('program done')});
+    </script>
+  </body>
+</html>

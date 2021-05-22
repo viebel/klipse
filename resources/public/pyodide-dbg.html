@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8" />
+    <title>
+      KLIPSE: a simple and elegant online cljs compiler and evaluator
+    </title>
+    <link rel="shortcut icon" type="image/x-icon" href="img/klipse.png" />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css" />
+    <link rel="stylesheet" type="text/css" href="css/lua.css" />
+  </head>
+  <body>
+    <pre><code class="eval-python">
+def factorial(n):
+  if n == 0:
+    return 1
+  else:
+    return n * factorial(n - 1)
+
+
+print(factorial(5))
+</code>
+</pre>
+    <pre><code class="eval-pyodide">
+def factorial(n):
+  if n == 0:
+    return 1
+  else:
+    return n * factorial(n - 1)
+
+
+print(factorial(5))
+</code>
+</pre>
+    <pre><code class="eval-pyodide">
+max(1, 2)
+</code>
+</pre>
+
+
+    <pre><code class="eval-python3">
+max(1, 2)
+</code>
+</pre>
+
+    <pre>
+      <code class="lua">
+        -- defines a factorial function
+        function fact (n)
+        if n == 0 then
+         return 1
+        else
+         return n * fact(n-1)
+        end
+        end
+
+        print(fact(5))
+      </code>
+    </pre>
+    <script>
+      window.klipse_settings = {
+        selector_eval_python_client: '.eval-python',
+        selector_lua: '.lua',
+        selector_pyodide: '.eval-pyodide',
+        selector_eval_python: '.eval-python3'
+
+      };
+    </script>
+    <script src="/cljs-out/dev-main.js"></script>
+    <!-- <script src="/fig/js/klipse.fig.js"></script> -->
+  </body>
+</html>

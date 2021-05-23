@@ -10,29 +10,41 @@
 (defonce ^:dynamic *loaded* false)
 (defonce ^:dynamic *loading-started* false)
 
-(defn ensure-loaded! []
+(defn ensure-loaded! [out-chan]
   (go 
-    (when-not *loading-started* 
+    (if *loading-started* 
+        (when-not *loaded* 
+          (put! out-chan "Loading..."))
       (let [ready-chan (chan)]
         (set! *loading-started* true)
+
+        (put! out-chan "Loading...")
         (doto 
           (js/loadPyodide)
           (.then (fn []
                    (js/pyodide.loadPackage  "numpy");
-                   (set! *loaded* true))))))))
+                   (put! out-chan "Ready to evaluate...")
+                   (put! ready-chan "Ready to evaluate...")
+                   (set! *loaded* true))))
+        
+        (<! ready-chan)
+        ))))
 
 (defn eval-python [src opts]
   (let [c (chan)] 
     ;; (js/console.log "received src: " src " and opts: " opts)
-  (ensure-loaded!)
-  ;; (put! c (j/call js/pyodide :runPython src ))
-  (try 
-    (let [result (str (js/pyodide.runPython src))]
-  (js/console.log result)
-  (put! c result))
-    (catch js/pyodide.PythonError e
-      (put! c (str e))))
-  c))
+    (go 
+      (<! (ensure-loaded! c))
+      (try 
+        (put! c "Output:\n")
+        (doto (js/pyodide.runPythonAsync src #(put! c %) #(put! c %) )
+          (.then (fn [m]
+                   (if (nil? m) "" (put! c m))))
+          (.catch (fn [m]
+                    (put! c m))))
+        (catch js/pyodide.PythonError e
+          (put! c (str e)))))
+    c))
 
 
 (def opts {:editor-in-mode "python"

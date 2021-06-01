@@ -13,17 +13,13 @@
   <body>
   <h2>Python</h2>
 
-    <pre><code class="eval-pyodide">
-def factorial(n):
+<pre><code class="eval-python eval-pyodide">def factorial(n):
   if n == 0:
     return 1
   else:
     return n * factorial(n - 1)
 
-
-print(factorial(5))
-</code>
-</pre>
+factorial(5)</code></pre>
 
   <h2>Python</h2>
     <pre><code class="eval-pyodide">
@@ -56,10 +52,8 @@ df.to_html()
 
     <script>
       window.klipse_settings = {
-        selector_eval_python_client: '.eval-python',
-        selector_lua: '.lua',
-        selector_pyodide: '.eval-pyodide',
-        selector_eval_python: '.eval-python3'
+        selector_pyodide: '.eval-pyodide'
+        // , editor_type: 'dom'
 
       };
     </script>

@@ -8,47 +8,44 @@
    [applied-science.js-interop :as j]))
 
 (defonce ^:dynamic *loaded* false)
-(defonce ^:dynamic *loading-started* false)
+
+(def load-pyodide (memoize (fn []
+          (doto 
+            (js/loadPyodide)
+            (.then (fn []
+                     (set! *loaded* true)))))))
 
 (defn ensure-loaded! [out-chan]
   (go 
-    (if *loading-started* 
-        (when-not *loaded* 
-          (put! out-chan "Loading..."))
-      (let [ready-chan (chan)]
-        (set! *loading-started* true)
-
+    (let [ready-chan (chan)]
+      (when-not *loaded* 
         (put! out-chan "Loading...")
-        (doto 
-          (js/loadPyodide)
+        (doto (load-pyodide)
           (.then (fn []
-                   (js/pyodide.loadPackage  "numpy");
                    (put! out-chan "Ready to evaluate...")
-                   (put! ready-chan "Ready to evaluate...")
-                   (set! *loaded* true))))
-        
-        (<! ready-chan)
-        ))))
+                   (put! ready-chan "Ready to evaluate..."))))
+        ;I think we need to park here to prevent it from trying to rush ahead
+        ;and eval:
+        (<! ready-chan)))))
 
-(defn eval-python [src opts]
-  (let [c (chan)] 
-    ;; (js/console.log "received src: " src " and opts: " opts)
+(defn eval-python [src _opts]
+  (let [c (chan)
+        to-chan #(put! c %)] 
     (go 
       (<! (ensure-loaded! c))
       (try 
-        (put! c "Output:\n")
-        (doto (js/pyodide.runPythonAsync src #(put! c %) #(put! c %) )
+        (doto (js/pyodide.runPythonAsync src to-chan to-chan)
           (.then (fn [m]
-                   (if (nil? m) "" (put! c m))))
-          (.catch (fn [m]
-                    (put! c m))))
+                   (put! c "Output:\n")
+                   (if (nil? m) "" (to-chan m))))
+          (.catch to-chan))
         (catch js/pyodide.PythonError e
           (put! c (str e)))))
     c))
 
 
 (def opts {:editor-in-mode "python"
-           :editor-out-mode "text"
+           :editor-out-mode "html"
            :eval-fn eval-python
            :external-scripts [(codemirror-mode-src "python") "https://cdn.jsdelivr.net/pyodide/v0.17.0/full/pyodide.js" ]
            :comment-str "#"})

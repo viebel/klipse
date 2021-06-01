@@ -9,10 +9,22 @@
 
 (defonce ^:dynamic *loaded* false)
 
+(def new-print "
+import io
+import builtins
+string_out = io.StringIO()
+
+def print(*args, **kwargs):
+    if not 'file' in kwargs:
+        kwargs['file'] = string_out
+    return builtins.print(*args, **kwargs)
+")
+
 (def load-pyodide (memoize (fn []
           (doto 
             (js/loadPyodide)
             (.then (fn []
+                     (js/pyodide.runPython new-print)
                      (set! *loaded* true)))))))
 
 (defn ensure-loaded! [out-chan]
@@ -37,7 +49,10 @@
         (doto (js/pyodide.runPythonAsync src to-chan to-chan)
           (.then (fn [m]
                    (put! c "Output:\n")
-                   (if (nil? m) "" (to-chan m))))
+                   (if (nil? m) "" (to-chan m))
+                   (put! c (str "\n" (j/call-in js/pyodide [:globals :string_out :getvalue])))
+                   (js/pyodide.runPython  " string_out = io.StringIO()") 
+                   ))
           (.catch to-chan))
         (catch js/pyodide.PythonError e
           (put! c (str e)))))

@@ -13,6 +13,7 @@
             klipse.lang.brainfuck
             klipse.lang.sql
             klipse.lang.python
+            klipse.lang.pyodide
             klipse.lang.prolog
             klipse.lang.cpp
             klipse.lang.server-eval

@@ -11,17 +11,8 @@
     <link rel="stylesheet" type="text/css" href="css/lua.css" />
   </head>
   <body>
-    <pre><code class="eval-python">
-def factorial(n):
-  if n == 0:
-    return 1
-  else:
-    return n * factorial(n - 1)
+  <h2>Python</h2>
 
-
-print(factorial(5))
-</code>
-</pre>
     <pre><code class="eval-pyodide">
 def factorial(n):
   if n == 0:
@@ -33,31 +24,36 @@ def factorial(n):
 print(factorial(5))
 </code>
 </pre>
+
+  <h2>Python</h2>
     <pre><code class="eval-pyodide">
-max(1, 2)
+a = list(range(15))
+if (n := len(a)) > 10:
+    print(f"List is too long ({n} elements, expected <= 10)")
+</code>
+</pre>
+
+  <h2>Numpy</h2>
+
+    <pre><code class="eval-pyodide">
+import numpy as np
+
+np.linspace(0, 100, 11)
 </code>
 </pre>
 
 
-    <pre><code class="eval-python3">
-max(1, 2)
+  <h2>Pandas</h2>
+
+    <pre><code class="eval-pyodide">
+import pandas as pd
+
+df = pd.DataFrame({"x": range(4), "y": [x**2 for x in range(4)]})
+
+df.to_html()
 </code>
 </pre>
 
-    <pre>
-      <code class="lua">
-        -- defines a factorial function
-        function fact (n)
-        if n == 0 then
-         return 1
-        else
-         return n * fact(n-1)
-        end
-        end
-
-        print(fact(5))
-      </code>
-    </pre>
     <script>
       window.klipse_settings = {
         selector_eval_python_client: '.eval-python',

@@ -1,6 +1,6 @@
 {
   "name": "klipse",
-  "version": "7.10.5",
+  "version": "7.10.6",
   "description": "A simple client-side code evaluator pluggable on any web page: clojure, ruby, javascript, python, scheme, es2017, jsx, brainfuck, c++, reagent, ocaml, reason, common lisp",
   "main": "klipse_plugin.min.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/viebel/klipse.git"
   },
   "dependencies": {
-    "codemirror": "5.21.0"
+    "codemirror": ">=5.58.2"
   },
   "keywords": [
     "clojure",

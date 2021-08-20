@@ -24,6 +24,7 @@
             klipse.lang.reagent
             klipse.lang.hiccup
             klipse.lang.ocaml
+            klipse.lang.perl
             klipse.lang.reason
             [klipse.plugin :as plugin]))
 

@@ -6,9 +6,9 @@
    [klipse.dom-utils :refer [create-div-after add-class]]
    [gadjett.collections :as gadjett]
    cljsjs.codemirror
-   cljsjs.codemirror.addon.edit.matchbrackets
-   cljsjs.codemirror.addon.edit.closebrackets
-   cljsjs.codemirror.addon.hint.show-hint
+   #_cljsjs.codemirror.addon.edit.matchbrackets
+   #_cljsjs.codemirror.addon.edit.closebrackets
+   #_cljsjs.codemirror.addon.hint.show-hint
    [clojure.string :refer [blank?]]
    [applied-science.js-interop :as j]))
 

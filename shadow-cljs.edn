@@ -1,0 +1,4 @@
+{:deps   true
+ :builds {:app {:target  :browser
+                :modules {:entries {:init-fn klipse.run.plugin.plugin/init}}}}}
+

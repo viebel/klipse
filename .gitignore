@@ -22,3 +22,6 @@ docs/cache-cljs/local-m2/
 out/
 .rebel_readline_history
 pom.xml*
+.shadow-cljs/
+node_modules/
+public/js/

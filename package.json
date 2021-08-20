@@ -13,6 +13,9 @@
   "dependencies": {
     "codemirror": ">=5.58.2"
   },
+  "devDependencies": {
+    "shadow-cljs": "2.15.5"
+  },
   "keywords": [
     "clojure",
     "repl",

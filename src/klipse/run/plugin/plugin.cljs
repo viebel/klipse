@@ -25,6 +25,7 @@
             klipse.lang.hiccup
             klipse.lang.ocaml
             klipse.lang.reason
+            klipse.lang.golang
             [klipse.plugin :as plugin]))
 
 (js/console.info "settings: " (aget js/window "klipse_settings"))

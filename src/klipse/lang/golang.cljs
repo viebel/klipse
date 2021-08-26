@@ -10,7 +10,9 @@
    [klipse.common.registry :refer [codemirror-mode-src register-mode wasm-src-local scripts-src scripts-src-local]]
    [applied-science.js-interop :as j]))
 
-(defn load-module! []
+(defonce ^:dynamic *loaded* false)
+
+(defn load-module! [ready-chan]
   (let [xhr (new js/window.XMLHttpRequest)]
     (j/call xhr :open "GET" (wasm-src-local "yaegi.wasm"))
     (j/assoc! xhr :responseType "arraybuffer")
@@ -21,16 +23,22 @@
                     (let [gos (new js/Go)]
                         (.then (j/call window.WebAssembly :instantiate (aget xhr "response") (aget gos "importObject")) (fn [result]
                           (j/call gos :run (aget result "instance"))
+                          (put! ready-chan [:ok])
                         ))
                       )
                     ))
     (j/call xhr :send nil)))
 
 (defn the-eval [src _]
-  (add-script-tag! (scripts-src-local "wasm_exec.js"))
-  (load-module!)
-  (let [result (j/call js/window :evalGo src)]
-    (str "stdout:\n" (aget result "stdout") "\n\nstderr:\n" (aget result "stderr"))))
+  (go (let [ready-chan (chan)]
+    (when-not *loaded* 
+      (let [script-chan (add-script-tag! (scripts-src-local "wasm_exec.js"))]
+        (<! script-chan))
+      (load-module! ready-chan)
+      (<! ready-chan)
+      (set! *loaded* true)))
+    (let [result (j/call js/window :evalGo src)]
+      (str "stdout:\n" (aget result "stdout") "\nstderr:\n" (aget result "stderr")))))
 
 
 (def opts {:editor-in-mode "text/x-go"

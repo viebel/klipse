@@ -19,18 +19,8 @@
   (let [root (:scripts_root (klipse-settings) "https://viebel.github.io/klipse/repo/js")]
     (str root "/" name)))
 
-; used for local dev
-(defn scripts-src-local [name]
-  (let [root (:scripts_root (klipse-settings) "http://localhost:5014/repo/js")]
-    (str root "/" name)))
-
 (defn wasm-src [name]
   (let [root (:wasm_root (klipse-settings) "https://viebel.github.io/klipse/repo/wasm")]
-    (str root "/" name)))
-
-; used for local dev
-(defn wasm-src-local [name]
-  (let [root (:wasm_root (klipse-settings) "http://localhost:5014/repo/wasm")]
     (str root "/" name)))
 
 (defn register-mode [mode selector opts]

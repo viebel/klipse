@@ -46,7 +46,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - Clojure[Script]: evaluation is done with [Self-Hosted Clojurescript](http://swannodette.github.io/2015/07/29/clojurescript-17)
 - Ruby: evaluation is done with [Opal](http://opalrb.com/)
 - C++: evaluation is done with [JSCPP](https://github.com/felixhao28/JSCPP)
-- Python: evaluation is done with [Skulpt](http://www.skulpt.org/)
+- Python: evaluation is done with [Skulpt](https://skulpt.org/)
 - Scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)
 - Prolog: evaluation is done with [Tau Prolog](http://tau-prolog.org/)
 - Common Lisp: evaluation is done with [JSCL](https://github.com/jscl-project/jscl)

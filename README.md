@@ -53,6 +53,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - PHP: evaluation is done with [Uniter](https://asmblah.github.io/uniter/)
 - SQL: evaluation is done with [sql.js](https://github.com/kripken/sql.js). See [SQL example](https://blog.klipse.tech/javascript/2016/11/07/best-sql-tutorial.html)
 - Lua: evaluation is done with [wasm_lua](https://github.com/vvanders/wasm_lua)
+- Go: evaluation is done with [Yaegi](https://github.com/traefik/yaegi)
 - BrainFuck
 - JSX
 - EcmaScript2017
@@ -209,6 +210,19 @@ Here is an example of a [tiny reagent demo project](https://gitlab.com/viebel/cl
 </script>
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
+## Go
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_golang: '.language-klipse-go, // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
+
 
 ## Scheme
 

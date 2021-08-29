@@ -223,23 +223,32 @@
             <div class="prolog-query">
 	      brother(X, Y).
 	    </div>
+      <h1> Golang </h1>
+	    <div class="golang">
+	      import "fmt"
 
-            <script>
-              window.klipse_settings = {
-                selector_eval_js: '.eval-js',
-                selector_eval_markdown: '.eval-markdown',
-                selector_eval_lambdaway: '.lambda',
-                selector_eval_html: '.eval-html',
-                selector_eval_php: '.eval-php',
-                selector_eval_ruby: '.eval-ruby',
-                selector_eval_reason_3_with_types: '.eval-reason-types',
-	              selector_eval_ocaml_with_types: '.eval-ocaml',
-	              selector_eval_clisp: '.clisp',
-	              selector_prolog_rules: '.prolog-rules',
-	              selector_prolog_query: '.prolog-query',
-                selector_sql: '.sql',
-              };
-            </script>
-            <script src="plugin_prod/js/klipse_plugin.min.js"></script>
+		    func main() {
+			  fmt.Println("Hi!")
+		    }
+	    </div>
+
+      <script>
+       window.klipse_settings = {
+         selector_eval_js: '.eval-js',
+         selector_eval_markdown: '.eval-markdown',
+         selector_eval_lambdaway: '.lambda',
+         selector_eval_html: '.eval-html',
+         selector_eval_php: '.eval-php',
+         selector_eval_ruby: '.eval-ruby',
+         selector_eval_reason_3_with_types: '.eval-reason-types',
+	       selector_eval_ocaml_with_types: '.eval-ocaml',
+	       selector_eval_clisp: '.clisp',
+	       selector_prolog_rules: '.prolog-rules',
+	       selector_prolog_query: '.prolog-query',
+         selector_sql: '.sql',
+         selector_golang: '.golang',
+       };
+      </script>
+      <script src="plugin_prod/js/klipse_plugin.min.js"></script>
       </body>
 </html>

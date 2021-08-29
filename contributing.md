@@ -53,6 +53,7 @@ Production build:
 
 - http://localhost:5014/plugin-prod.html 
 - http://localhost:5014/plugin-prod-more.html (some of the evaluators are incompatible on the same page)
+- http://localhost:5014/plugin-prod-more-2.html (some of the evaluators are incompatible on the same page)
 
 Dev build: 
 

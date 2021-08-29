@@ -51,6 +51,6 @@
            :editor-out-mode  "text"
            :eval-fn          the-eval
            :external-scripts [(codemirror-mode-src "go")]
-           :comment-str      "--"})
+           :comment-str      "//"})
 
 (register-mode "golang" "selector_golang" opts)

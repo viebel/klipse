@@ -1,4 +1,4 @@
-(defproject viebel/klipse "7.11.1"
+(defproject viebel/klipse "7.11.2"
   :description "Embeddable multi-language WEB REPL"
   :license "GPL-3.0"
   :url "https://github.com/viebel/klipse"

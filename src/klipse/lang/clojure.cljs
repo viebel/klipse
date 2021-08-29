@@ -26,7 +26,7 @@
                 :editor-out-mode  "clojure"
                 :eval-fn          (fn [exp opts] (str-eval-async exp (assoc opts :setup-container-fn setup-container! :verbose (verbose?))))
                 :external-scripts [(codemirror-mode-src "clojure")
-                                   (scripts-src "klipse_clj.min.js?aaaa")]
+                                   (scripts-src "klipse_clj.min.js?bbbb")]
                 :comment-str      ";"})
 
 (def compile-opts {:editor-in-mode   "clojure"

@@ -23,6 +23,7 @@
             klipse.lang.html
             klipse.lang.ocaml
             klipse.lang.reason
+            klipse.lang.golang
             [klipse.plugin :as plugin]))
 
 (print "settings: " (aget js/window "klipse_settings"))

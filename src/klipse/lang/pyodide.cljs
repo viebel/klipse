@@ -8,6 +8,7 @@
    [applied-science.js-interop :as j]))
 
 (defonce ^:dynamic *loaded* false)
+(def pyodide-root "https://cdn.jsdelivr.net/pyodide/v0.17.0/full")
 
 (def new-print "
 import io
@@ -21,11 +22,11 @@ def print(*args, **kwargs):
 ")
 
 (def load-pyodide (memoize (fn []
-          (doto 
-            (js/loadPyodide)
-            (.then (fn []
-                     (js/pyodide.runPython new-print)
-                     (set! *loaded* true)))))))
+                             (doto 
+                                 (js/loadPyodide #js {:indexURL pyodide-root})
+                               (.then (fn [] 
+                                        (js/pyodide.runPython new-print)
+                                        (set! *loaded* true)))))))
 
 (defn ensure-loaded! [out-chan]
   (go 
@@ -59,11 +60,11 @@ def print(*args, **kwargs):
     c))
 
 
-(def opts {:editor-in-mode "python"
-           :editor-out-mode "html"
-           :eval-fn eval-python
-           :external-scripts [(codemirror-mode-src "python") "https://cdn.jsdelivr.net/pyodide/v0.17.0/full/pyodide.js" ]
-           :comment-str "#"})
+(def opts {:editor-in-mode   "python"
+           :editor-out-mode  "html"
+           :eval-fn          eval-python
+           :external-scripts [(codemirror-mode-src "python") (str pyodide-root "/pyodide.js")]
+           :comment-str      "#"})
 
 (register-mode   "pyodide" "selector_pyodide" opts)
 

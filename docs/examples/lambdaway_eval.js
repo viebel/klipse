@@ -1082,10 +1082,10 @@ var toggle_visibility = function ( id ) {
   getId(id).style.visibility = (OK)? "hidden" : "visible";
 }; // toggle_visibility
 var doSave = function () {
-  return confirm( "Save and publish modifs ?" );
+  return confirm( "Save and publish changes ?" );
 };
 var doCancel = function () {
-  if ( confirm( "Exit editor without saving modifs ?" ) ) {
+  if ( confirm( "Exit editor without saving changes ?" ) ) {
     document.location.reload(true); // reload saved initial content
     return true;
   } else {

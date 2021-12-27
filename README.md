@@ -566,7 +566,7 @@ Since version `6.8.0`, Klipse is published on [npm](https://www.npmjs.com/packag
 
 For instance, The urls are for the version `6.8.0` are:
 
-- JavaScript mininfied: https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
+- JavaScript minified: https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
 - JavaScript non-minified:  https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
 - Css: https://unpkg.com/klipse@6.8.0/dist/codemirror.css
 

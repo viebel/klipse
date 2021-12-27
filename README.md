@@ -544,7 +544,7 @@ Here are a couple of examples of blogs using the klipse plugin:
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-## Access the CodeMirror editors programmaticaly
+## Access the CodeMirror editors programmatically
 
 Each code snippet is wrapped into a CodeMirror editor.
 

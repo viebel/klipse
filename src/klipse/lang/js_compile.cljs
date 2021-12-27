@@ -28,7 +28,7 @@
 (def opts {:editor-in-mode "javascript"
            :editor-out-mode "javascript"
            :eval-fn str-compile-js-async
-           :min-eval-idle-msec 5000; advanced compilatio n takes a while, so we throttle a bit
+           :min-eval-idle-msec 5000; advanced compilation takes a while, so we throttle a bit
            :comment-str "//"})
 
 (register-mode "compile-javascript" "selector_compile_js" opts)

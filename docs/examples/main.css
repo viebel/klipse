@@ -64,7 +64,7 @@ table{max-width:100%;background-color:transparent;border-collapse:collapse;borde
 .btn.btn-inverse{background:#333333;color:#FFF;}.btn.btn-inverse:hover{background:#1f1f1f;}
 .btn.btn-large{padding:12px 18px;}
 .btn.btn-small{padding:2px 5px;}
-.btn.disabled{opacity:0.5;cursur:default;}
+.btn.disabled{opacity:0.5;cursor:default;}
 .btn-group{position:relative;display:inline-block;font-size:0;white-space:nowrap;vertical-align:middle;padding:1px 0;}.btn-group .btn{border-radius:0;font-size:13px;margin-left:-1px;}.btn-group .btn:first-child{border-radius:2px 0 0 2px;}
 .btn-group .btn:last-child{border-radius:0 2px 2px 0;}
 .caret{display:none;}

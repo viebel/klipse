@@ -155,7 +155,7 @@ You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klips
 
 ## ClojureScript project
 
-If you want to integrate Klipse inside a Clojuresccript  project, it is recommended to consume Klipse as a Clojurescript library like any other Clojurescript lib, just like this [![Clojars](https://img.shields.io/clojars/v/viebel/klipse.svg)](https://clojars.org/viebel/klipse).
+If you want to integrate Klipse inside a Clojurescript  project, it is recommended to consume Klipse as a Clojurescript library like any other Clojurescript lib, just like this [![Clojars](https://img.shields.io/clojars/v/viebel/klipse.svg)](https://clojars.org/viebel/klipse).
 
 Inside your code you have to require two namespaces and call a function:
 

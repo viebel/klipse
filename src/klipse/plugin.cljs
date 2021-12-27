@@ -44,9 +44,9 @@
       "html" :html
       :code-mirror)))
 
-(defn load-external-scripts [scripts no-dynamic-scritps?]
+(defn load-external-scripts [scripts no-dynamic-scripts?]
   (go
-    (if no-dynamic-scritps?
+    (if no-dynamic-scripts?
       [:ok :ok]
       (let [[status http-status script] (<! (load-scripts-mem scripts))]
         (if (= :ok status)

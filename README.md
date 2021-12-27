@@ -298,7 +298,7 @@ We have 4 kinds of ReasonML snippets:
 
 1. Code Evaluation
 2. Transpilation to JavaScript
-3. Tranpilation to Ocaml
+3. Transpilation to Ocaml
 4. Transpilation from Ocaml
 
 Here is the JavaScript tag that you need to setup for embedding ReasonML snippets on your page:

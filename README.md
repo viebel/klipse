@@ -244,7 +244,7 @@ Prolog code snippets are separated into two kinds:
 - Rules
 - Queries
 
-In the query, you must ommit the `?-` characters.
+In the query, you must omit the `?-` characters.
 
 See [A new way of blogging about Prolog](http://blog.klipse.tech/prolog/2019/01/01/blog-prolog.html) for a full example and guide.
 

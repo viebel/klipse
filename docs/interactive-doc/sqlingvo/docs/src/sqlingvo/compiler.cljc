@@ -44,8 +44,8 @@
     (cons (replace sql #"^\(|\)$" "") args)))
 
 (defn- compile-set-op [db op {:keys [stmts all] :as node}]
-  (let [separater (str " " (upper-case (name op)) " " (if all "ALL "))]
-    (compile-sql-join db separater (:stmts node))))
+  (let [separator (str " " (upper-case (name op)) " " (if all "ALL "))]
+    (compile-sql-join db separator (:stmts node))))
 
 (defn- placeholder
   "Returns the next placeholder for an SQL parameter."

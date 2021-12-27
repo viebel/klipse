@@ -2,7 +2,7 @@
 
 KLIPSE is live at http://app.klipse.tech
 
-KLIPSE layout is intentionnaly kept flat without any buttons.
+KLIPSE layout is intentionally kept flat without any buttons.
 
 Tweaking is done with url parameters and hotkeys.
 

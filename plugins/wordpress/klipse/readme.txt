@@ -1,6 +1,6 @@
 === Klipse ===
 Contributors: Yehonathan Sharvit
-Tags: code, snippets, interactive, javsascript
+Tags: code, snippets, interactive, javascript
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 

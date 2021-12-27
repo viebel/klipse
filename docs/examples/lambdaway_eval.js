@@ -280,7 +280,7 @@ var hide_braces = function( s ) { // deactivate s-exprs
 var show_braces = function( s ) { // reactivate s-exprs
   return s.replace(/&#123;/g, '{').replace(/&#125;/g, '}') 
 };
-var supertrim = function (str) {  // trimed + multiple spaces reduced to one
+var supertrim = function (str) {  // trimmed + multiple spaces reduced to one
   return str.trim().replace(/\s+/g, ' ')
 };
 var doWikiLink = function ( m, nom ) { 

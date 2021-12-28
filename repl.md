@@ -2,7 +2,7 @@
 
 KLIPSE is live at http://app.klipse.tech
 
-KLIPSE layout is intentionnaly kept flat without any buttons.
+KLIPSE layout is intentionally kept flat without any buttons.
 
 Tweaking is done with url parameters and hotkeys.
 
@@ -18,7 +18,7 @@ KLIPSE configuration is done with the url parameters:
 * `eval_only=1` - display only `input`, `eval` and `print` boxes
 * `static-fns=true` - eval and transpile js code with [static dispatch](https://github.com/clojure/clojurescript/wiki/Compiler-Options#static-fns)
 * `external-libs` - array of external libs to resolve the namespace dependencies. Here is an [example with the gadjett library](http://app.klipse.tech/?cljs_in.gist=viebel/56695ae0360b8692255cc84115d37c6b&external-libs=[https://raw.githubusercontent.com/viebel/gadjett/master/src/]).
-* `verbose` - (default false) passed to bootstraped `eval` and `compile` functions as `:verbose` opts
+* `verbose` - (default false) passed to bootstrapped `eval` and `compile` functions as `:verbose` opts
 * `cache-buster` - (default false) when true the namespaces are loaded with a cache buster
 * `max-eval-duration` - (default 1000) max number of 1000 seconds the code is allowed to run synchronously before being interrupted.
 * `compile-display-guard`: (default false) when true, display the anti-starvation code inside result of compilation

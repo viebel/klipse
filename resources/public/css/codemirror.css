@@ -341,7 +341,7 @@ div.CodeMirror-dragcursors {
 /* Help users use markselection to safely style text background */
 span.CodeMirror-selectedtext { background: none; }
 
-/* rules for autocompletio add on */
+/* rules for autocompletion add on */
 .CodeMirror-hints {
   position: absolute;
   z-index: 10;
@@ -378,4 +378,4 @@ li.CodeMirror-hint-active {
   background: #08f;
   color: white;
 }
-/* rules for autocompletio add on */
+/* rules for autocompletion add on */

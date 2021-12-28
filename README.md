@@ -155,7 +155,7 @@ You can manipulate the DOM inside KLIPSE: here is a [tutorial](http://read.klips
 
 ## ClojureScript project
 
-If you want to integrate Klipse inside a Clojuresccript  project, it is recommended to consume Klipse as a Clojurescript library like any other Clojurescript lib, just like this [![Clojars](https://img.shields.io/clojars/v/viebel/klipse.svg)](https://clojars.org/viebel/klipse).
+If you want to integrate Klipse inside a Clojurescript  project, it is recommended to consume Klipse as a Clojurescript library like any other Clojurescript lib, just like this [![Clojars](https://img.shields.io/clojars/v/viebel/klipse.svg)](https://clojars.org/viebel/klipse).
 
 Inside your code you have to require two namespaces and call a function:
 
@@ -244,7 +244,7 @@ Prolog code snippets are separated into two kinds:
 - Rules
 - Queries
 
-In the query, you must ommit the `?-` characters.
+In the query, you must omit the `?-` characters.
 
 See [A new way of blogging about Prolog](http://blog.klipse.tech/prolog/2019/01/01/blog-prolog.html) for a full example and guide.
 
@@ -298,7 +298,7 @@ We have 4 kinds of ReasonML snippets:
 
 1. Code Evaluation
 2. Transpilation to JavaScript
-3. Tranpilation to Ocaml
+3. Transpilation to Ocaml
 4. Transpilation from Ocaml
 
 Here is the JavaScript tag that you need to setup for embedding ReasonML snippets on your page:
@@ -425,7 +425,7 @@ window.klipse_settings = {
 
 ```
 
-Additionaly, you can configure CodeMirror input (snippet source code) and output (snippet evaluation) by setting `codemirror_options_in` and `codemirror_options_out`:
+Additionally, you can configure CodeMirror input (snippet source code) and output (snippet evaluation) by setting `codemirror_options_in` and `codemirror_options_out`:
 
 Currently, we support all the settings [CodeMirror Configuration settings](http://codemirror.net/doc/manual.html#config) and part of the [Addons settings](http://codemirror.net/doc/manual.html#addons):  `matchBrackets` and `autoCloseBrackets`.
 
@@ -477,10 +477,10 @@ Here is a [live demo](https://book.klipse.tech/interactive_clojure[script]_code_
 The following data attributes are supported on a klipse snippet DOM element:
 
 * `data-static-fns`: (default `false`) set to true for using [static dispatch](http://blog.klipse.tech/clojurescript/2016/04/13/static-fns.html)
-* `data-external-libs`: comma separated list of github repositories to resolve dependencies: you need to provide the full list of dependencies (including the dependencies of dependencies recursively). See for instance [Lambda Caclulus with clojure and Klipse](http://blog.klipse.tech/lambda/2016/07/24/lambda-calculus-2.html)
+* `data-external-libs`: comma separated list of github repositories to resolve dependencies: you need to provide the full list of dependencies (including the dependencies of dependencies recursively). See for instance [Lambda Calculus with clojure and Klipse](http://blog.klipse.tech/lambda/2016/07/24/lambda-calculus-2.html)
 * `data-print-length`: (default 1000) max number of items in collections to display - useful to prevent browser stuck when evaluating infinite sequences like `(range)`
 * `data-beautify-strings`: (default false) when evaluation result is a string - display the "interior" of the string without escaping the quotes.
-* `data-verbose`: (default false) passed to boostrapped `eval` and `compile` `:verbose` opts
+* `data-verbose`: (default false) passed to bootstrapped `eval` and `compile` `:verbose` opts
 * `data-max-eval-duration`: (default 1000) max number of milliseconds the snippet code is allowed to run synchronously before being interrupted.
 * `data-compile-display-guard`: (default false) when true, display the anti-starvation code inside result of compilation
 
@@ -544,7 +544,7 @@ Here are a couple of examples of blogs using the klipse plugin:
 
 Ask us any question about the klipse plugin (integration, feature requests...) on [![Join the chat at https://gitter.im/viebel/klipse](https://badges.gitter.im/viebel/klipse.svg)](https://gitter.im/viebel/klipse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-## Access the CodeMirror editors programmaticaly
+## Access the CodeMirror editors programmatically
 
 Each code snippet is wrapped into a CodeMirror editor.
 
@@ -566,7 +566,7 @@ Since version `6.8.0`, Klipse is published on [npm](https://www.npmjs.com/packag
 
 For instance, The urls are for the version `6.8.0` are:
 
-- JavaScript mininfied: https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
+- JavaScript minified: https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
 - JavaScript non-minified:  https://unpkg.com/klipse@6.8.0/dist/klipse_plugin.min.js
 - Css: https://unpkg.com/klipse@6.8.0/dist/codemirror.css
 

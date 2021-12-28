@@ -17,7 +17,7 @@ From Cider, you should tell cider to launch clj with `:fig-cider` alias so that 
 Then, open the browser [http://localhost:5014/js-dbg.html](http://localhost:5014/js-dbg.html)
 
 From now on, the code is auto-compiled on every changes.
-You might need to refreh the test page to make sure the code changes were applied.
+You might need to refresh the test page to make sure the code changes were applied.
  
 See [How to add a language to Klipse](https://github.com/viebel/klipse/wiki/How-to-add-a-language-to-klipse) to learn how to add a language to Klipse.
 

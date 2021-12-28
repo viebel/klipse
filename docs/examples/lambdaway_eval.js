@@ -77,7 +77,7 @@ var catch_sexpression = function( symbol, str ) {
   else if (symbol === "{") { d0 = 0; d1 = 0; d2 = 1; } 
   else                     { d0 = 0; d1 = symbol.length; d2 = 0; }
   var nb = 1, index = start+d0;
-  while(nb > 0) { if (index > 100000) {console.log( 'ooops' ); return 'none';}
+  while(nb > 0) { if (index > 100000) {console.log( 'oops' ); return 'none';}
     index++;
          if ( str.charAt(index) == '{' ) nb++;
     else if ( str.charAt(index) == '}' ) nb--;
@@ -280,7 +280,7 @@ var hide_braces = function( s ) { // deactivate s-exprs
 var show_braces = function( s ) { // reactivate s-exprs
   return s.replace(/&#123;/g, '{').replace(/&#125;/g, '}') 
 };
-var supertrim = function (str) {  // trimed + multiple spaces reduced to one
+var supertrim = function (str) {  // trimmed + multiple spaces reduced to one
   return str.trim().replace(/\s+/g, ' ')
 };
 var doWikiLink = function ( m, nom ) { 
@@ -797,7 +797,7 @@ dict['input'] = function () {
   if (args.match( /type\s*=\s*("|')\s*file\s*("|')/ ))
     return 'Sorry, type="file" is not allowed';
   var attr = args.match( /@@[\s\S]*?@@/ ); // any whitespace or not -> all
-  if (attr == null) return 'ooops';
+  if (attr == null) return 'oops';
   attr = attr[0].replace(/^@@/, '').replace(/@@$/, ''); // clean attributes
   return '<input ' + attr + ' />';
 };
@@ -851,7 +851,7 @@ dict['note_start'] = function () { // {note_start an_ID any text}
 dict['note_end'] = function () { // {note_end {@ id="ID" style="style"} text}
   var args = arguments[0];
   var attr = args.match( /@@[\s\S]*?@@/ ); // any whitespace or not -> all
-  if (attr == null) return 'ooops';
+  if (attr == null) return 'oops';
   args = args.replace( attr[0], '' ).trim(); // extract attributes
   attr = attr[0].replace(/^@@/, '').replace(/@@$/, ''); // clean attributes
   return '<div class="note" ' + attr + '>' + args + '</div>';
@@ -892,7 +892,7 @@ dict['show'] = function () { // use the lightbox.js and lightbox.css files
   // {show {@ src="s" height="h" width="w" title="some text"}}
   var args = arguments[0];
   var attr = args.match( /@@[\s\S]*?@@/ );
-  if (attr == null) return 'ooops';
+  if (attr == null) return 'oops';
   attr = attr[0].replace(/^@@/, '').replace(/@@$/, ''); // clean attributes
   var s = attribute_extract( attr, 'src' );
   var h = attribute_extract( attr, 'height' );
@@ -905,7 +905,7 @@ dict['lightbox'] = function () {
   var h1 = 30, h2 = 30; // thumb_preview_height, thumb_display_height
   var args = arguments[0];
   var attr = args.match( /@@[\s\S]*?@@/ );
-  if (attr == null) return 'ooops';
+  if (attr == null) return 'oops';
   args = args.replace( attr[0], '' ).trim(); // extract attributes
   attr = attr[0].replace(/^@@/, '').replace(/@@$/, ''); // clean attributes
   var h_start = attribute_extract( attr, 'height' );
@@ -1082,10 +1082,10 @@ var toggle_visibility = function ( id ) {
   getId(id).style.visibility = (OK)? "hidden" : "visible";
 }; // toggle_visibility
 var doSave = function () {
-  return confirm( "Save and publish modifs ?" );
+  return confirm( "Save and publish changes ?" );
 };
 var doCancel = function () {
-  if ( confirm( "Exit editor without saving modifs ?" ) ) {
+  if ( confirm( "Exit editor without saving changes ?" ) ) {
     document.location.reload(true); // reload saved initial content
     return true;
   } else {

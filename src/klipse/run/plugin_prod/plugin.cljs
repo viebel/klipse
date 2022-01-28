@@ -12,6 +12,7 @@
             klipse.lang.brainfuck
             klipse.lang.sql
             klipse.lang.python
+            klipse.lang.pyodide
             klipse.lang.prolog
             klipse.lang.scheme
             klipse.lang.clisp            

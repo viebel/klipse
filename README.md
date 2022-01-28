@@ -47,6 +47,7 @@ Here is a [live demo](https://book.klipse.tech/) of the embedding of klipse in a
 - Ruby: evaluation is done with [Opal](http://opalrb.com/)
 - C++: evaluation is done with [JSCPP](https://github.com/felixhao28/JSCPP)
 - Python: evaluation is done with [Skulpt](https://skulpt.org/)
+- Python3: evaluation is done with [Pyodide](https://github.com/pyodide/pyodide)
 - Scheme: evaluation is done with [BiwasScheme](http://www.biwascheme.org/)
 - Prolog: evaluation is done with [Tau Prolog](http://tau-prolog.org/)
 - Common Lisp: evaluation is done with [JSCL](https://github.com/jscl-project/jscl)
@@ -184,6 +185,18 @@ Here is an example of a [tiny reagent demo project](https://gitlab.com/viebel/cl
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
 ```
 
+## Python3 (numpy, pandas)
+
+```html
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+
+<script>
+    window.klipse_settings = {
+        selector_pyodide: '.language-klipse-pyodide', // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>
+```
 ## Ruby
 
 ```html

@@ -20,12 +20,13 @@ def print(*args, **kwargs):
     return builtins.print(*args, **kwargs)
 ")
 
-(def load-pyodide (memoize (fn []
-          (doto 
-            (j/call js/window :loadPyodide)
-            (.then (fn []
-                     (j/call js/pyodide :runPython new-print)
-                     (set! *loaded* true)))))))
+(def load-pyodide 
+  (memoize (fn []
+             (doto 
+               (j/call js/window :loadPyodide)
+               (.then (fn []
+                        (j/call js/pyodide :runPython new-print)
+                        (set! *loaded* true)))))))
 
 (defn ensure-loaded! [out-chan]
   (go 
@@ -48,11 +49,10 @@ def print(*args, **kwargs):
       (try 
         (doto (j/call js/pyodide :runPythonAsync src to-chan to-chan)
           (.then (fn [m]
-                   (put! c "Output:\n")
+                   (put! c "\nOutput:\n")
                    (if (nil? m) "" (to-chan m))
                    (put! c (str "\n" (j/call-in js/pyodide [:globals :string_out :getvalue])))
-                   (j/call js/pyodide :runPython  " string_out = io.StringIO()") 
-                   ))
+                   (j/call js/pyodide :runPython  " string_out = io.StringIO()")))
           (.catch to-chan))
         (catch :default e
           (put! c (str e)))))
@@ -62,6 +62,7 @@ def print(*args, **kwargs):
 (def opts {:editor-in-mode "python"
            :editor-out-mode "html"
            :eval-fn eval-python
+           :beautify?        false
            :external-scripts [(codemirror-mode-src "python") "https://cdn.jsdelivr.net/pyodide/v0.17.0/full/pyodide.js" ]
            :comment-str "#"})
 

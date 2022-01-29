@@ -1,3 +1,4 @@
+set -e
 echo "zipping files"
 gzip resources/public/plugin/js/klipse_plugin.js
 gzip resources/public/plugin_prod/js/klipse_plugin.min.js

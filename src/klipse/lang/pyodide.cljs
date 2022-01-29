@@ -1,10 +1,10 @@
 (ns klipse.lang.pyodide
   (:require-macros
-   [cljs.core.async.macros :refer [go go-loop]])
+   [cljs.core.async.macros :refer [go]])
   (:require
    [cljs.core.async :refer [<! put! chan]]
    ;; [klipse.utils :refer [runonce]]
-   [klipse.common.registry :refer [codemirror-mode-src register-mode scripts-src]]
+   [klipse.common.registry :refer[codemirror-mode-src register-mode]]
    [applied-science.js-interop :as j]))
 
 (defonce ^:dynamic *loaded* false)
@@ -22,9 +22,9 @@ def print(*args, **kwargs):
 
 (def load-pyodide (memoize (fn []
           (doto 
-            (js/loadPyodide)
+            (j/call js/window :loadPyodide)
             (.then (fn []
-                     (js/pyodide.runPython new-print)
+                     (j/call js/pyodide :runPython new-print)
                      (set! *loaded* true)))))))
 
 (defn ensure-loaded! [out-chan]
@@ -46,15 +46,15 @@ def print(*args, **kwargs):
     (go 
       (<! (ensure-loaded! c))
       (try 
-        (doto (js/pyodide.runPythonAsync src to-chan to-chan)
+        (doto (j/call js/pyodide :runPythonAsync src to-chan to-chan)
           (.then (fn [m]
                    (put! c "Output:\n")
                    (if (nil? m) "" (to-chan m))
                    (put! c (str "\n" (j/call-in js/pyodide [:globals :string_out :getvalue])))
-                   (js/pyodide.runPython  " string_out = io.StringIO()") 
+                   (j/call js/pyodide :runPython  " string_out = io.StringIO()") 
                    ))
           (.catch to-chan))
-        (catch js/pyodide.PythonError e
+        (catch :default e
           (put! c (str e)))))
     c))
 

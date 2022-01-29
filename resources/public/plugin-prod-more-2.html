@@ -18,9 +18,19 @@
 		  }
 	  </div>
 
+    <h1> Python 3 </h1>
+	  <div class="python3">
+import pandas as pd
+
+df = pd.DataFrame({"x": range(4), "y": [x**2 for x in range(4)]})
+
+df
+	  </div>
+
     <script>
      window.klipse_settings = {
        selector_golang: '.golang',
+       selector_pyodide: '.python3',
      };
     </script>
     <script src="plugin_prod/js/klipse_plugin.min.js"></script>

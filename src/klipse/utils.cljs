@@ -1,6 +1,5 @@
 (ns klipse.utils
   (:require-macros
-   [gadjett.core :refer [dbg]]
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
    [cljs.reader :refer [read-string]]
@@ -9,7 +8,6 @@
    [cljs.core.async :refer [timeout <! chan put!]]
    [cemerick.url :refer [url]]
    [applied-science.js-interop :as j]))
-
 
 (defn current-url []
   (if-let [loc (if (exists? js/location) js/location "")]
@@ -21,18 +19,6 @@
       keywordize-keys))
 
 (def url-parameters (memoize url-parameters*))
-
-(defn add-url-parameter
-  "Returns the current url with an additional parameter.
-  If the parameter already exists, it is overridden."
-  [base-url key value]
-  (-> base-url
-      (assoc-in [:query (name key)] value)
-      str))
-
-(defn create-url-with-input [base-url input]
-  (-> (if base-url (url base-url) (current-url))
-      (add-url-parameter :cljs_in input)))
 
 (defn debounce [func wait-in-ms]
   (let [counter (atom 0)]

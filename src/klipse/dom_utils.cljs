@@ -15,6 +15,13 @@
       (gdom/insertSiblingAfter div element)
       div))
 
+(defn append-div [element attrs]
+    (let [div (gdom/createDom "div" (clj->js attrs) (gdom/createTextNode ""))]
+      (gdom/append element div)
+      div))
+
+(defn body []
+  (j/get js/document :body))
 
 (defn value [element]
   (j/get element :value))

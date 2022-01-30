@@ -1,6 +1,5 @@
 (ns klipse.plugin
   (:require-macros
-    [gadjett.core :refer [dbg]]
     [cljs.core.async.macros :refer [go go-loop]])
   (:require
     [klipse.common.registry :refer [selector->mode mode-options]]
@@ -11,8 +10,9 @@
     [clojure.walk :refer [keywordize-keys]]
     [clojure.string :refer [join]]
     [goog.dom :refer [isElement]]
-    [cljs.core.async :refer [chan <! >! timeout]]
-    [gadjett.collections :refer [collify compactize-map]]))
+    [cljs.core.async :refer [chan <! >!]]
+    [gadjett.collections :refer [collify compactize-map]]
+    [klipse.dom-utils :refer [append-div body]]))
 
 (def out-placeholder "the evaluation will appear here (soon)...")
 
@@ -136,11 +136,16 @@
         (f))
       (recur (<! event-chan)))))
 
+(defn mark-first-eval! []
+  (js/console.warn "First evaluation of all snippets is done")
+  (append-div (body) {:id "klipse-ready"}))
+
 (defn klipsify-elements [elements general-settings modes]
   (go
     (let [eval-fns (<! (edit-elements elements general-settings modes))]
       (doseq [eval-fn eval-fns]
         (<! (eval-fn)))
+      (mark-first-eval!)
       (eval-snippets-on-change general-settings eval-fns))))
 
 (defn snippets-selector [settings selector-names]

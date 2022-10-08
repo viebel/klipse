@@ -1,0 +1,20 @@
+#+html_head_extra: <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css" />
+
+* Sample Clojure code
+
+** sample defn
+
+#+BEGIN_SRC clojure
+(defn add [x y]  
+  (+ x y))
+#+END_SRC
+
+** sample invoking function
+
+#+BEGIN_SRC clojure
+(add 1 2)
+#+END_SRC
+
+#+html: <script type="text/javascript">window.klipse_settings = {selector: '.src-clojure'};</script>
+#+html: <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+

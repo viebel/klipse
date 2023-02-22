@@ -112,10 +112,10 @@
   (set! secured-eval true)
   (let [original-eval js/eval]
     (j/assoc! js/window :eval (fn [src]
-                        (original-eval (str "with (klipse_eval_sandbox){ " src "}"))))
+                        (original-eval (str ";(function(){with (this){ " src "}}).call(klipse_eval_sandbox)"))))
     (set! eval-in-global-scope js/eval)
     (j/assoc! js/window :klipse_unsecured_eval original-eval)
-    (j/assoc! js/window :klipse_eval_sandbox (clj->js (zipmap the-forbidden-symbols (repeat {}))))
+    (j/assoc! js/window :klipse_eval_sandbox (clj->js (zipmap the-forbidden-symbols (repeat (js/Object.create nil)))))
     #_(set! js/klipse-eval-sandbox (clj->js (zipmap (js/Object.getOwnPropertyNames js/window) (repeat {}))))
     #_(doseq [sym permitted-symbols]
       (aset js/klipse-eval-sandbox sym (aget js/window sym)))))

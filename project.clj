@@ -1,4 +1,4 @@
-(defproject viebel/klipse "7.12.0"
+(defproject viebel/klipse "7.13.0"
   :description "Embeddable multi-language WEB REPL"
   :license "GPL-3.0"
   :url "https://github.com/viebel/klipse"
@@ -10,9 +10,9 @@
                       :lein-tools-deps/config ^:replace {:config-files [:install :user]}}}
   :deploy-repositories [["clojars" {:sign-releases false
                                     :url "https://clojars.org/repo"}]]
-  :plugins [[lein-cljsbuild "1.1.7"]
-            [lein-hiera "0.9.5"]
-            [lein-tools-deps "0.4.1"]]
+  :plugins [[lein-cljsbuild "1.1.8"]
+            [lein-hiera "2.0.0"]
+            [lein-tools-deps "0.4.5"]]
   :clean-targets ^{:protect false} ["targets"]
   :hiera {:path "deps-graph.png"
           :vertical true

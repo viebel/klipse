@@ -8,7 +8,7 @@ Klipse is written in Clojurescript.
 from the terminal:
 
 ```bash
-clj -A:figwheel --build dev --repl
+clj -M:figwheel --build dev --repl
 ```
 
 
@@ -44,7 +44,7 @@ Upgrade version in `project.clj` and in `src/klipse/core.cljs`.
 Make sure figwheel runs.
 
 ```bash
-clj -A:figwheel --build dev --repl
+clj -M:figwheel --build dev --repl
 ```
 
 Open your browser and test the following test pages:

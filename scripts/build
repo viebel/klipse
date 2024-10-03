@@ -1,8 +1,10 @@
+set -eu
+
 rm -rf resources/public/plugin/
 rm -rf resources/public/plugin_prod/
 
-clojure  -A:figwheel  --build-once plugin
-clojure  -A:figwheel  --build-once plugin_prod
+clojure  -M:figwheel  --build-once plugin
+clojure  -M:figwheel  --build-once plugin_prod
 
 mkdir -p resources/public/plugin/js
 mkdir -p resources/public/plugin_prod/js
